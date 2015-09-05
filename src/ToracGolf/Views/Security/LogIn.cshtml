@@ -2,4 +2,8 @@
     Layout = "_ToracGolfLayout";
     ViewBag.Title = "Log In";
 }
+@model  ToracGolf.ViewModels.Security.LogInViewModel
 
+@section Breadcrumb{
+    @Html.Partial("_Breadcrumb", Model.Breadcrumb)
+}

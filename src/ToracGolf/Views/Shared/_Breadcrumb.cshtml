@@ -1,0 +1,17 @@
+﻿@model IList<ToracGolf.ViewModels.Navigation.BreadcrumbNavItem>
+
+@for (int i = 0; i < Model.Count; i++)
+{
+    var NavItem = Model[i];
+
+    bool IsLastItem = i == Model.Count - 1;
+
+    if (IsLastItem)
+    {
+        <li>@NavItem.Text</li>
+    }
+    else
+    {
+        <li><a href="@NavItem.Url">@NavItem.Text</a></li>
+    }
+}
