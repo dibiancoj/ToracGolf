@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ToracGolf</title>
+
+    <environment names="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    </environment>
+
+    <!-- Boomerang styles -->
+    <link id="wpStylesheet" type="text/css" href="css/global-style.css" rel="stylesheet" media="screen">
+
+</head>
+<body>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; 2015 - ToracGolf</p>
+        </footer>
+    </div>
+    <environment names="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/Ajax/AjaxJquery.js"></script>
+        <script src="~/lib/JLinq/JLinq.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/js/ToracGolfCore.min.js" asp-append-version="true"></script>
+    </environment>
+
+    <script src="~/lib/bootstraptemplate/js/modernizr.custom.js"></script>
+    <script src="~/lib/bootstraptemplate/js/jquery.mousewheel-3.0.6.pack.js"></script>
+    <script src="~/lib/bootstraptemplate/js/jquery.easing.js"></script>
+    <script src="~/lib/bootstraptemplate/js/jquery.metadata.js"></script>
+    <script src="~/lib/bootstraptemplate/js/jquery.hoverup.js"></script>
+    <script src="~/lib/bootstraptemplate/js/jquery.hoverdir.js"></script>
+    <script src="~/lib/bootstraptemplate/js/jquery.stellar.js"></script>
+
+    <!-- Boomerang App JS -->
+    <script src="js/wp.app.js"></script>
+    <!--[if lt IE 9]>
+        <script src="js/html5shiv.js"></script>
+        <script src="js/respond.min.js"></script>
+    <![endif]-->
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>
