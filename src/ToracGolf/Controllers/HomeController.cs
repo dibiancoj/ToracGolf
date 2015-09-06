@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
+using ToracGolf.ViewModels.Home;
+using ToracGolf.ViewModels.Navigation;
 
 namespace ToracGolf.Controllers
 {
@@ -10,21 +12,11 @@ namespace ToracGolf.Controllers
     {
         public IActionResult Index()
         {
-            return View();
-        }
+            var breadCrumb = new List<BreadcrumbNavItem>();
 
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
+            breadCrumb.Add(new BreadcrumbNavItem("Home", "#"));
 
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
+            return View(new IndexViewModel(breadCrumb));
         }
 
         public IActionResult Error()

@@ -9,7 +9,11 @@
 }
 
 @section TopNav{
-    @Html.Partial("_TopNav")
+    @Html.Partial("_TopNav", new ToracGolf.ViewModels.Navigation.TopNavViewModel(false))
+}
+
+@section PageDescription{
+Log In
 }
 
 <section class="slice slice-lg bg-image" style="background-image:url(images/backgrounds/LogInBackground.jpg);">
