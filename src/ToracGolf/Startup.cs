@@ -17,6 +17,8 @@ using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
 using ToracGolf.Models;
 using ToracGolf.Services;
+using Microsoft.AspNet.Mvc.Rendering;
+using Microsoft.Framework.Caching.Memory;
 
 namespace ToracGolf
 {
@@ -77,6 +79,9 @@ namespace ToracGolf
             // Uncomment the following line to add Web API services which makes it easier to port Web API 2 controllers.
             // You will also need to add the Microsoft.AspNet.Mvc.WebApiCompatShim package to the 'dependencies' section of project.json.
             // services.AddWebApiConventions();
+
+            //jason added this to cache item
+            services.AddSingleton<IMemoryCache, MemoryCache>();
 
             // Register application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();

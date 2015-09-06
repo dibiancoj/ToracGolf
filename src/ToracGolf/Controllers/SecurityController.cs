@@ -8,6 +8,8 @@ using ToracGolf.ViewModels.Security;
 using Microsoft.AspNet.Authorization;
 using ToracGolf.Models;
 using Microsoft.AspNet.Identity;
+using System.Collections.Immutable;
+using Microsoft.Framework.Caching.Memory;
 
 namespace ToracGolf.Controllers
 {
@@ -18,9 +20,10 @@ namespace ToracGolf.Controllers
 
         #region Constructor
 
-        public SecurityController(SignInManager<ApplicationUser> signInManagerAPI)
+        public SecurityController(SignInManager<ApplicationUser> signInManagerAPI, IMemoryCache cache)
         {
             SignInManagerAPI = signInManagerAPI;
+            Cache = cache;
         }
 
         #endregion
@@ -28,6 +31,8 @@ namespace ToracGolf.Controllers
         #region Properties
 
         private SignInManager<ApplicationUser> SignInManagerAPI { get; }
+
+        private IMemoryCache Cache { get; }
 
         #endregion
 
@@ -99,7 +104,19 @@ namespace ToracGolf.Controllers
             breadCrumb.Add(new BreadcrumbNavItem("Home", "#"));
             breadCrumb.Add(new BreadcrumbNavItem("Sign Up", "#"));
 
-            return View(new SignUpInViewModel(breadCrumb));
+            //TODO: should implement caching code.
+
+            IImmutableDictionary<string, string> states;
+
+#if DNX451
+            // utilize resource only available with .NET Framework
+            states = ToracLibrary.Core.States.State.UnitedStatesStateListing();
+#else
+            //todo: do i need to add a .net core thing here?
+            states = new Dictionary<string,string>().ToImmutableDictionary();
+#endif
+
+            return View(new SignUpInViewModel(breadCrumb, states));
         }
 
         #endregion

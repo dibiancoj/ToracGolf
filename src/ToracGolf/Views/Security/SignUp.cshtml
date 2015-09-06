@@ -90,10 +90,7 @@
                                                 <div class="form-group">
                                                     <label class="label">State Where You Play The Most</label>
                                                     <label class="select">
-                                                        <select name="HomeState">
-                                                            <option value="1">New York</option>
-                                                            <option value="2">Conn</option>
-                                                        </select>
+                                                        <select name="HomeState" asp-for="SelectedState" asp-items="Model.StateListing"></select>
                                                     </label>
                                                 </div>
                                             </div>

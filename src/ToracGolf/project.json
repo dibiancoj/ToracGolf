@@ -16,6 +16,7 @@
     "Microsoft.AspNet.Identity.EntityFramework": "3.0.0-beta7",
     "Microsoft.AspNet.Mvc": "6.0.0-beta7",
     "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-beta7",
+    "Microsoft.AspNet.Mvc.ViewFeatures": "6.0.0-beta7",
     "Microsoft.AspNet.Server.IIS": "1.0.0-beta7",
     "Microsoft.AspNet.Server.WebListener": "1.0.0-beta7",
     "Microsoft.AspNet.StaticFiles": "1.0.0-beta7",
@@ -27,6 +28,7 @@
     "Microsoft.Framework.Logging.Console": "1.0.0-beta7",
     "Microsoft.Framework.Logging.Debug": "1.0.0-beta7",
     "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-beta7",
+    "System.Collections.Immutable": "1.1.37"
   },
 
   "commands": {
@@ -35,7 +37,11 @@
   },
 
   "frameworks": {
-    "dnx451": { },
+    "dnx451": {
+      "dependencies": {
+        "ToracLibrary.Core": "1.0.0-*"
+      }
+    },
     "dnxcore50": { }
   },
 
