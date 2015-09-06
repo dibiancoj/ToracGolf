@@ -33,6 +33,8 @@ namespace ToracGolf.Controllers
 
         #region Methods
 
+        #region Log In
+
         [HttpGet]
         [AllowAnonymous]
         [Route("LogIn")]
@@ -80,6 +82,20 @@ namespace ToracGolf.Controllers
         //    // If we got this far, something failed, redisplay form
         //    return View(model);
         //}
+
+        #endregion
+
+        #endregion
+
+        #region Sign Up
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("SignUp")]
+        public IActionResult SignUp()
+        {
+            return View();    
+        }
 
         #endregion
 
