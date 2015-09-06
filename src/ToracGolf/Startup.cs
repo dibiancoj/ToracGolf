@@ -81,7 +81,7 @@ namespace ToracGolf
             // You will also need to add the Microsoft.AspNet.Mvc.WebApiCompatShim package to the 'dependencies' section of project.json.
             // services.AddWebApiConventions();
 
-            //jason added this to cache item
+            //add the IMemory cache so we can add this now
             services.AddSingleton<IMemoryCache, MemoryCache>();
 
 #if DNX451
