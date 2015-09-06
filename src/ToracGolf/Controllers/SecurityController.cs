@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity;
 using System.Collections.Immutable;
 using Microsoft.Framework.Caching.Memory;
 using Microsoft.AspNet.Mvc.Rendering;
+using ToracLibrary.AspNet.Caching.FactoryStore;
 
 namespace ToracGolf.Controllers
 {
@@ -21,10 +22,11 @@ namespace ToracGolf.Controllers
 
         #region Constructor
 
-        public SecurityController(SignInManager<ApplicationUser> signInManagerAPI, IMemoryCache cache)
+        public SecurityController(SignInManager<ApplicationUser> signInManagerAPI, IMemoryCache cache, ICacheFactoryStore cacheFactoryStore)
         {
             SignInManagerAPI = signInManagerAPI;
             Cache = cache;
+            CacheFactory = cacheFactoryStore;
         }
 
         #endregion
@@ -34,6 +36,8 @@ namespace ToracGolf.Controllers
         private SignInManager<ApplicationUser> SignInManagerAPI { get; }
 
         private IMemoryCache Cache { get; }
+
+        private ICacheFactoryStore CacheFactory { get; }
 
         #endregion
 
@@ -105,20 +109,7 @@ namespace ToracGolf.Controllers
             breadCrumb.Add(new BreadcrumbNavItem("Home", "#"));
             breadCrumb.Add(new BreadcrumbNavItem("Sign Up", "#"));
 
-            //TODO: should implement caching code.
-
-            IImmutableDictionary<string, string> states;
-
-#if DNX451
-            // utilize resource only available with .NET Framework
-            states = ToracLibrary.Core.States.State.UnitedStatesStateListing();
-#else
-            //todo: do i need to add a .net core thing here?
-            states = new Dictionary<string,string>().ToImmutableDictionary();
-#endif
-
-            return View(new SignUpInViewModel(breadCrumb, states.Select(x => new SelectListItem { Text = x.Value, Value = x.Key })
-                                                                .OrderBy(x => x.Text).ToArray()));
+            return View(new SignUpInViewModel(breadCrumb, CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>("StateListing", Cache)));
         }
 
         #endregion
