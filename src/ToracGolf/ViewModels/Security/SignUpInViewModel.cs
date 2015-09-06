@@ -10,16 +10,17 @@ namespace ToracGolf.ViewModels.Security
     public class SignUpInViewModel
     {
 
-        public SignUpInViewModel(IList<Navigation.BreadcrumbNavItem> breadcrumb, IImmutableDictionary<string, string> stateListing)
+        public SignUpInViewModel(IList<Navigation.BreadcrumbNavItem> breadcrumb, IEnumerable<SelectListItem> stateListing)
         {
             Breadcrumb = breadcrumb;
-            StateListing = stateListing.OrderBy(x => x.Value).Select(x => new SelectListItem { Value = x.Key, Text = x.Value }).ToArray();
+            StateListing = stateListing;
             SelectedState = string.Empty;
         }
 
         public IList<Navigation.BreadcrumbNavItem> Breadcrumb { get; }
 
         public string SelectedState { get; }
+
         public IEnumerable<SelectListItem> StateListing { get; }
     }
 
