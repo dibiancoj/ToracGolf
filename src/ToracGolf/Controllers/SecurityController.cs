@@ -94,7 +94,12 @@ namespace ToracGolf.Controllers
         [Route("SignUp")]
         public IActionResult SignUp()
         {
-            return View();    
+            var breadCrumb = new List<BreadcrumbNavItem>();
+
+            breadCrumb.Add(new BreadcrumbNavItem("Home", "#"));
+            breadCrumb.Add(new BreadcrumbNavItem("Sign Up", "#"));
+
+            return View(new SignUpInViewModel(breadCrumb));
         }
 
         #endregion
