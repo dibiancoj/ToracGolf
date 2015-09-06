@@ -19,7 +19,6 @@ using ToracGolf.Models;
 using ToracGolf.Services;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Framework.Caching.Memory;
-using ToracLibrary.AspNet5.Caching;
 
 namespace ToracGolf
 {
@@ -82,24 +81,24 @@ namespace ToracGolf
             // services.AddWebApiConventions();
 
             //jason added this to cache item
-            services.AddSingleton<IMemoryCache, MemoryCache>();
+//            services.AddSingleton<IMemoryCache, MemoryCache>();
 
-#if DNX451
-            // utilize resource only available with .NET Framework
-            //add my cached items
-            var cacheFactory = new CacheFactory();
+//#if DNX451
+//            // utilize resource only available with .NET Framework
+//            //add my cached items
+//            var cacheFactory = new CacheFactory();
 
-            cacheFactory.AddCacheFactory(new InMemoryCache<IEnumerable<SelectListItem>>("StateListing",
-                () => ToracLibrary.Core.States.State.UnitedStatesStateListing()
-                .OrderBy(x => x.Value)
-                .Select(y => new SelectListItem { Text = y.Value, Value = y.Key })
-                .ToList()));
+//            cacheFactory.AddCacheFactory(new InMemoryCache<IEnumerable<SelectListItem>>("StateListing",
+//                () => ToracLibrary.Core.States.State.UnitedStatesStateListing()
+//                .OrderBy(x => x.Value)
+//                .Select(y => new SelectListItem { Text = y.Value, Value = y.Key })
+//                .ToList()));
 
-            services.AddSingleton<ICacheFactory, CacheFactory>((x) => cacheFactory);
-#else
-            //todo: do i need to add a .net core thing here?
+//            services.AddSingleton<ICacheFactory, CacheFactory>((x) => cacheFactory);
+//#else
+//            //todo: do i need to add a .net core thing here?
           
-#endif
+//#endif
 
             // Register application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
