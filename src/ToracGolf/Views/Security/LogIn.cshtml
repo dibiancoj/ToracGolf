@@ -13,7 +13,7 @@
 }
 
 @section PageDescription{
-Log In
+    Log In
 }
 
 <section class="slice slice-lg bg-image" style="background-image:url(images/backgrounds/LogInBackground.jpg);">
@@ -26,30 +26,35 @@ Log In
                             <h2>Sign in to your account</h2>
                         </div>
                         <div class="form-body">
-                            <form action="" id="frmLogin" class="sky-form">
+                            <form id="frmLogin" asp-controller="Security" asp-action="LogInAttempt" method="post" class="sky-form">
+                                <div asp-validation-summary="ValidationSummary.All" class="text-danger"></div>
                                 <fieldset>
                                     <section>
                                         <div class="form-group">
-                                            <label class="label">Email</label>
+                                            <label asp-for="LogInUserEntered.Email" class="label"></label>
                                             <label class="input">
                                                 <i class="icon-append fa fa-user"></i>
-                                                <input type="email" name="email">
+                                                <input type="email" name="email" asp-for="LogInUserEntered.Email" />
+                                                <span asp-validation-for="LogInUserEntered.Email" class="text-danger"></span>
                                             </label>
                                         </div>
                                     </section>
                                     <section>
                                         <div class="form-group">
-                                            <label class="label">Password</label>
+                                            <label asp-for="LogInUserEntered.Password" class="label"></label>
                                             <label class="input">
                                                 <i class="icon-append fa fa-lock"></i>
-                                                <input type="password" name="password">
+                                                <input type="password" name="password" asp-for="LogInUserEntered.Password" />
+                                                <span asp-validation-for="LogInUserEntered.Password" class="text-danger"></span>
                                             </label>
                                         </div>
                                     </section>
                                     <section>
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <label class="checkbox"><input type="checkbox" name="remember" checked><i></i>Keep me logged in</label>
+                                                <label asp-for="LogInUserEntered.RememberMe" class="checkbox">
+                                                    <input type="checkbox" name="remember" checked asp-for="LogInUserEntered.RememberMe" />
+                                                </label>
                                             </div>
                                         </div>
                                     </section>

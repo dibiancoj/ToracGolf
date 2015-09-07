@@ -46,53 +46,58 @@ namespace ToracGolf.Controllers
 
         #region Log In
 
-        [HttpGet]
-        [AllowAnonymous]
-        [Route("LogIn")]
-        public IActionResult LogIn()
+        private static IList<BreadcrumbNavItem> BuildLogInBreadcrumb()
         {
             var breadCrumb = new List<BreadcrumbNavItem>();
 
             breadCrumb.Add(new BreadcrumbNavItem("Home", "#"));
             breadCrumb.Add(new BreadcrumbNavItem("Log In", "#"));
 
-            return View(new LogInViewModel(breadCrumb));
+            return breadCrumb;
         }
 
-        //[HttpPost]
-        //[AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
-        //{
-        //    ViewData["ReturnUrl"] = returnUrl;
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("LogIn")]
+        public IActionResult LogIn()
+        {
+            return View(new LogInViewModel { Breadcrumb = BuildLogInBreadcrumb(), LogInUserEntered = new LogInEnteredData() });
+        }
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        // This doesn't count login failures towards account lockout
-        //        // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-        //        var result = await SignInManagerAPI.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-        //        if (result.Succeeded)
-        //        {
-        //            return RedirectToLocal(returnUrl);
-        //        }
-        //        if (result.RequiresTwoFactor)
-        //        {
-        //            return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-        //        }
-        //        if (result.IsLockedOut)
-        //        {
-        //            return View("Lockout");
-        //        }
-        //        else
-        //        {
-        //            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-        //            return View(model);
-        //        }
-        //    }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LogInAttempt(LogInEnteredData model)
+        {
+            if (ModelState.IsValid)
+            {
+                // This doesn't count login failures towards account lockout
+                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                // var result = await SignInManagerAPI.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                //if (result.Succeeded)
+                //{
+                //    return RedirectToLocal(returnUrl);
+                //}
+                //if (result.RequiresTwoFactor)
+                //{
+                //    return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                //}
+                //if (result.IsLockedOut)
+                //{
+                //    return View("Lockout");
+                //}
+                // else
+                // {
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                // return View("LogIn", model);
+                // }
+            }
 
-        //    // If we got this far, something failed, redisplay form
-        //    return View(model);
-        //}
+            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+
+            // If we got this far, something failed, redisplay form
+            return View("LogIn", new LogInViewModel { Breadcrumb = BuildLogInBreadcrumb(), LogInUserEntered = model });
+        }
 
         #endregion
 

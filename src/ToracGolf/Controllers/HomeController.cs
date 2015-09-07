@@ -12,6 +12,7 @@ namespace ToracGolf.Controllers
     {
         public IActionResult Index()
         {
+            return RedirectToAction("LogIn", "Security", new { });
             var breadCrumb = new List<BreadcrumbNavItem>();
 
             breadCrumb.Add(new BreadcrumbNavItem("Home", "#"));
