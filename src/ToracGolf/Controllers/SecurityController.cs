@@ -66,8 +66,9 @@ namespace ToracGolf.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [Route("LogIn")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LogInAttempt(LogInEnteredData model)
+        public async Task<IActionResult> LogIn(LogInEnteredData model)
         {
             if (ModelState.IsValid)
             {

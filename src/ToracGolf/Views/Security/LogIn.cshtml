@@ -26,7 +26,7 @@
                             <h2>Sign in to your account</h2>
                         </div>
                         <div class="form-body">
-                            <form id="frmLogin" asp-controller="Security" asp-action="LogInAttempt" method="post" class="sky-form">
+                            <form id="frmLogin" asp-route="LogIn" method="post" class="sky-form">
                                 <div asp-validation-summary="ValidationSummary.All" class="text-danger"></div>
                                 <fieldset>
                                     <section>
