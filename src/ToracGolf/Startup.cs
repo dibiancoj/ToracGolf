@@ -20,6 +20,7 @@ using ToracGolf.Services;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Framework.Caching.Memory;
 using ToracLibrary.AspNet.Caching.FactoryStore;
+using ToracGolf.Constants;
 
 namespace ToracGolf
 {
@@ -90,7 +91,7 @@ namespace ToracGolf
             var cacheFactory = new CacheFactoryStore();
 
             //add the state listing factory configuration
-            cacheFactory.AddConfiguration("StateListing",
+            cacheFactory.AddConfiguration(CacheKeyNames.StateListing,
                  () => ToracLibrary.Core.States.State.UnitedStatesStateListing()
                 .OrderBy(x => x.Value)
                 .Select(y => new SelectListItem { Text = y.Value, Value = y.Key })
@@ -98,8 +99,8 @@ namespace ToracGolf
 
             services.AddSingleton<ICacheFactoryStore, CacheFactoryStore>((x) => cacheFactory);
 #else
-            //todo: do i need to add a .net core thing here?
-          
+            //todo: we probably aren't going to use this in linx / mac...so just throw an exception
+            throw new NotImplementedException("State Listing Needs To Ported To .Net Core");         
 #endif
 
             // Register application services.

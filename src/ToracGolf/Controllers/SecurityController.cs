@@ -12,6 +12,7 @@ using System.Collections.Immutable;
 using Microsoft.Framework.Caching.Memory;
 using Microsoft.AspNet.Mvc.Rendering;
 using ToracLibrary.AspNet.Caching.FactoryStore;
+using ToracGolf.Constants;
 
 namespace ToracGolf.Controllers
 {
@@ -53,7 +54,7 @@ namespace ToracGolf.Controllers
             var breadCrumb = new List<BreadcrumbNavItem>();
 
             breadCrumb.Add(new BreadcrumbNavItem("Home", "#"));
-            breadCrumb.Add(new BreadcrumbNavItem("Sign In", "#"));
+            breadCrumb.Add(new BreadcrumbNavItem("Log In", "#"));
 
             return View(new LogInViewModel(breadCrumb));
         }
@@ -109,7 +110,7 @@ namespace ToracGolf.Controllers
             breadCrumb.Add(new BreadcrumbNavItem("Home", "#"));
             breadCrumb.Add(new BreadcrumbNavItem("Sign Up", "#"));
 
-            return View(new SignUpInViewModel(breadCrumb, CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>("StateListing", Cache)));
+            return View(new SignUpInViewModel(breadCrumb, CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache)));
         }
 
         #endregion
