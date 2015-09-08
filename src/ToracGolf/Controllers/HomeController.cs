@@ -5,9 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using ToracGolf.ViewModels.Home;
 using ToracGolf.ViewModels.Navigation;
+using Microsoft.AspNet.Authorization;
 
 namespace ToracGolf.Controllers
 {
+
+    [Authorize]
     public class HomeController : Controller
     {
 
@@ -15,8 +18,6 @@ namespace ToracGolf.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-           return RedirectToAction("LogIn", "Security", new { });
-
             var breadCrumb = new List<BreadcrumbNavItem>();
 
             breadCrumb.Add(new BreadcrumbNavItem("Home", "#"));
@@ -29,4 +30,5 @@ namespace ToracGolf.Controllers
             return View("~/Views/Shared/Error.cshtml");
         }
     }
+
 }

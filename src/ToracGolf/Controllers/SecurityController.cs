@@ -13,6 +13,7 @@ using Microsoft.Framework.Caching.Memory;
 using Microsoft.AspNet.Mvc.Rendering;
 using ToracLibrary.AspNet.Caching.FactoryStore;
 using ToracGolf.Constants;
+using System.Security.Claims;
 
 namespace ToracGolf.Controllers
 {
@@ -23,9 +24,8 @@ namespace ToracGolf.Controllers
 
         #region Constructor
 
-        public SecurityController(SignInManager<ApplicationUser> signInManagerAPI, IMemoryCache cache, ICacheFactoryStore cacheFactoryStore)
+        public SecurityController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore)
         {
-            SignInManagerAPI = signInManagerAPI;
             Cache = cache;
             CacheFactory = cacheFactoryStore;
         }
@@ -33,8 +33,6 @@ namespace ToracGolf.Controllers
         #endregion
 
         #region Properties
-
-        private SignInManager<ApplicationUser> SignInManagerAPI { get; }
 
         private IMemoryCache Cache { get; }
 
@@ -93,12 +91,19 @@ namespace ToracGolf.Controllers
                 // return View("LogIn", model);
                 // }
 
+
+                var claims = new List<Claim>();
+                claims.Add(new Claim(ClaimTypes.Name, "Jason DiBianco"));
+                claims.Add(new Claim(ClaimTypes.Email, "dibiancoj@gmail.com"));
+                var id = new ClaimsIdentity(claims, "Cookies");
+                await Context.Authentication.SignInAsync("Cookies", new ClaimsPrincipal(id));
+
                 //replace with database call
                 if (string.Equals(model.Email, "dibiancoj@gmail.com", StringComparison.OrdinalIgnoreCase))
                 {
                     //var result = await SignInManagerAPI.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
 
-                    return RedirectToRoute("Home");
+                    return RedirectToAction("Index", "Home");
                 }
             }
 
