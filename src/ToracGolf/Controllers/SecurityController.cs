@@ -58,7 +58,7 @@ namespace ToracGolf.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [Route("LogIn")]
+        [Route("LogIn", Name = "LogIn")]
         public IActionResult LogIn()
         {
             return View(new LogInViewModel { Breadcrumb = BuildLogInBreadcrumb(), LogInUserEntered = new LogInEnteredData() });
@@ -66,10 +66,11 @@ namespace ToracGolf.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [Route("LogIn")]
+        [Route("LogIn", Name = "LogIn")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LogIn(LogInEnteredData model)
         {
+            //do we have a valid model?
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
@@ -89,12 +90,17 @@ namespace ToracGolf.Controllers
                 //}
                 // else
                 // {
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                 // return View("LogIn", model);
                 // }
-            }
 
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                //replace with database call
+                if (string.Equals(model.Email, "dibiancoj@gmail.com", StringComparison.OrdinalIgnoreCase))
+                {
+                    //var result = await SignInManagerAPI.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+
+                    return RedirectToRoute("Home");
+                }
+            }
 
             // If we got this far, something failed, redisplay form
             return View("LogIn", new LogInViewModel { Breadcrumb = BuildLogInBreadcrumb(), LogInUserEntered = model });
@@ -108,7 +114,7 @@ namespace ToracGolf.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [Route("SignUp")]
+        [Route("SignUp", Name = "SignUp")]
         public IActionResult SignUp()
         {
             var breadCrumb = new List<BreadcrumbNavItem>();

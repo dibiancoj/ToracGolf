@@ -10,14 +10,18 @@ namespace ToracGolf.Controllers
 {
     public class HomeController : Controller
     {
+
+        //[Route("Home", Name = "Home")]
+        [HttpGet]
         public IActionResult Index()
         {
-            return RedirectToAction("LogIn", "Security", new { });
+           return RedirectToAction("LogIn", "Security", new { });
+
             var breadCrumb = new List<BreadcrumbNavItem>();
 
             breadCrumb.Add(new BreadcrumbNavItem("Home", "#"));
 
-            return View(new IndexViewModel(breadCrumb));
+            return View("Index", new IndexViewModel(breadCrumb));
         }
 
         public IActionResult Error()
