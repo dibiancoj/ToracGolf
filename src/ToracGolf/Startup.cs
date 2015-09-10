@@ -22,6 +22,7 @@ using Microsoft.Framework.Caching.Memory;
 using ToracLibrary.AspNet.Caching.FactoryStore;
 using ToracGolf.Constants;
 using ToracGolf.Settings;
+using System.Collections.Immutable;
 
 namespace ToracGolf
 {
@@ -100,7 +101,7 @@ namespace ToracGolf
             cacheFactory.AddConfiguration(CacheKeyNames.StateListing,
                  () => MiddleLayer.States.StateListing.StateSelect(connectionString)
                 .Select(y => new SelectListItem { Text = y.Description, Value = y.StateId.ToString() })
-                .ToList());
+                .ToImmutableList());
 
             services.AddSingleton<ICacheFactoryStore, CacheFactoryStore>((x) => cacheFactory);
 #else
