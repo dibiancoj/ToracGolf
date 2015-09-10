@@ -15,7 +15,7 @@ namespace ToracGolf.MiddleLayer.States
             {
                 //need to pull in the model for each of these, then pull the states...i think just create a dummy model in another app then copy it over.
                 //or just look online for a simple code first model
-                context.Database.ExecuteSqlCommand("select 1", new object[0]);
+                var t = context.Ref_State.OrderBy(x => x.Description).ToArray();
             }
 
             throw new NotImplementedException();
