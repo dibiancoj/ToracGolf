@@ -64,7 +64,7 @@ namespace ToracGolf
             //grab the ef connection string
             var connectionString = Configuration["Data:DefaultConnection:ConnectionString"];
 
-            services.AddSingleton<AppSettings>(new Func<IServiceProvider, AppSettings>(x => new AppSettings {  ConnectionString = connectionString }));
+            services.AddSingleton(new Func<IServiceProvider, AppSettings>(x => new AppSettings { ConnectionString = connectionString }));
 
             // Configure the options for the authentication middleware.
             // You can add options for Google, Twitter and other middleware as shown below.
@@ -98,15 +98,13 @@ namespace ToracGolf
 
             //add the state listing factory configuration
             cacheFactory.AddConfiguration(CacheKeyNames.StateListing,
-                 () => ToracLibrary.Core.States.State.UnitedStatesStateListing()
-                .OrderBy(x => x.Value)
-                .Select(y => new SelectListItem { Text = y.Value, Value = y.Key })
+                 () => MiddleLayer.States.StateListing.StateSelect(connectionString)
+                .Select(y => new SelectListItem { Text = y.Description, Value = y.StateId.ToString() })
                 .ToList());
 
             services.AddSingleton<ICacheFactoryStore, CacheFactoryStore>((x) => cacheFactory);
 #else
-            //todo: we probably aren't going to use this in linx / mac...so just throw an exception
-            throw new NotImplementedException("State Listing Needs To Ported To .Net Core");         
+          //not sure if we will support .net core yet
 #endif
 
             // Register application services.

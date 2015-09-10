@@ -131,8 +131,6 @@ namespace ToracGolf.Controllers
             breadCrumb.Add(new BreadcrumbNavItem("Home", "#"));
             breadCrumb.Add(new BreadcrumbNavItem("Sign Up", "#"));
 
-            var t = MiddleLayer.States.StateListing.StateSelect(AppSetting.ConnectionString);
-
             return View(new SignUpInViewModel(breadCrumb, CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache)));
         }
 
