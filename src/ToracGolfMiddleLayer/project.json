@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0-*",
+  "description": "ToracGolfMiddleLayer Class Library",
+  "authors": [ "Jason" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+  "frameworks": {
+    "dnx451": { }
+  },
+  "dependencies": {
+    "EntityFramework": "6.1.3"
+  }
+}

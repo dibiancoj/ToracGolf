@@ -1,7 +1,8 @@
 {
   "Data": {
     "DefaultConnection": {
-      "ConnectionString": "Server=(localdb)\\mssqllocaldb;Database=aspnet5-ToracGolf-cc8a9d31-1338-42ba-bb81-f898723e2fab;Trusted_Connection=True;MultipleActiveResultSets=true"
+      "ConnectionString": "data source=localhost;initial catalog=ToracGolf;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
     }
+
   }
 }

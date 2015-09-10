@@ -29,6 +29,7 @@
     "Microsoft.Framework.Logging.Debug": "1.0.0-beta7",
     "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-beta7",
     "System.Collections.Immutable": "1.1.37",
+    "ToracGolfMiddleLayer": "1.0.0-*",
     "ToracLibrary.AspNet": "1.0.0-*"
   },
 
@@ -42,8 +43,7 @@
       "dependencies": {
         "ToracLibrary.Core": "1.0.0-*"
       }
-    },
-    "dnxcore50": { }
+    }
   },
 
   "exclude": [

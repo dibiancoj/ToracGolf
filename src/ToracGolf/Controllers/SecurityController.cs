@@ -14,6 +14,7 @@ using Microsoft.AspNet.Mvc.Rendering;
 using ToracLibrary.AspNet.Caching.FactoryStore;
 using ToracGolf.Constants;
 using System.Security.Claims;
+using ToracGolf.Settings;
 
 namespace ToracGolf.Controllers
 {
@@ -24,8 +25,9 @@ namespace ToracGolf.Controllers
 
         #region Constructor
 
-        public SecurityController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore)
+        public SecurityController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore , AppSettings settings)
         {
+            AppSetting = settings;
             Cache = cache;
             CacheFactory = cacheFactoryStore;
         }
@@ -33,6 +35,8 @@ namespace ToracGolf.Controllers
         #endregion
 
         #region Properties
+
+        private AppSettings AppSetting { get; }
 
         private IMemoryCache Cache { get; }
 
@@ -126,6 +130,8 @@ namespace ToracGolf.Controllers
 
             breadCrumb.Add(new BreadcrumbNavItem("Home", "#"));
             breadCrumb.Add(new BreadcrumbNavItem("Sign Up", "#"));
+
+            var t = MiddleLayer.States.StateListing.StateSelect(AppSetting.ConnectionString);
 
             return View(new SignUpInViewModel(breadCrumb, CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache)));
         }

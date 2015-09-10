@@ -21,6 +21,7 @@ using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Framework.Caching.Memory;
 using ToracLibrary.AspNet.Caching.FactoryStore;
 using ToracGolf.Constants;
+using ToracGolf.Settings;
 
 namespace ToracGolf
 {
@@ -59,6 +60,11 @@ namespace ToracGolf
             //services.AddIdentity<ApplicationUser, IdentityRole>()
             //    .AddEntityFrameworkStores<ApplicationDbContext>()
             //    .AddDefaultTokenProviders();
+
+            //grab the ef connection string
+            var connectionString = Configuration["Data:DefaultConnection:ConnectionString"];
+
+            services.AddSingleton<AppSettings>(new Func<IServiceProvider, AppSettings>(x => new AppSettings {  ConnectionString = connectionString }));
 
             // Configure the options for the authentication middleware.
             // You can add options for Google, Twitter and other middleware as shown below.
