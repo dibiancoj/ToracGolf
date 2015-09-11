@@ -11,7 +11,7 @@ namespace ToracGolf.Controllers
 {
 
     [Authorize]
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
 
         //[Route("Home", Name = "Home")]

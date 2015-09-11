@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using ToracGolf.Constants;
 using ToracGolf.MiddleLayer.EFModel;
+using ToracGolf.MiddleLayer.SecurityManager;
 using ToracGolf.ViewModels.Navigation;
 using ToracGolf.ViewModels.Security;
 using ToracLibrary.AspNet.Caching.FactoryStore;
@@ -17,7 +18,7 @@ namespace ToracGolf.Controllers
 {
 
     [Authorize]
-    public class SecurityController : Controller
+    public class SecurityController : BaseController
     {
 
         #region Constructor
@@ -60,6 +61,12 @@ namespace ToracGolf.Controllers
         [Route("LogIn", Name = "LogIn")]
         public IActionResult LogIn()
         {
+            if (IsUserAuthenticated())
+            {
+                //go send them to the main page
+                return RedirectToAction("Index", "Home");
+            }
+
             return View(new LogInViewModel { Breadcrumb = BuildLogInBreadcrumb(), LogInUserEntered = new LogInEnteredData() });
         }
 
@@ -72,38 +79,26 @@ namespace ToracGolf.Controllers
             //do we have a valid model?
             if (ModelState.IsValid)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                // var result = await SignInManagerAPI.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-                //if (result.Succeeded)
-                //{
-                //    return RedirectToLocal(returnUrl);
-                //}
-                //if (result.RequiresTwoFactor)
-                //{
-                //    return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                //}
-                //if (result.IsLockedOut)
-                //{
-                //    return View("Lockout");
-                //}
-                // else
-                // {
-                // return View("LogIn", model);
-                // }
+                //let's try to log this user in
+                var userLogInAttempt = await Security.UserLogIn(DbContext, model.Email, model.Password);
 
-
-                var claims = new List<Claim>();
-                claims.Add(new Claim(ClaimTypes.Name, "Jason DiBianco"));
-                claims.Add(new Claim(ClaimTypes.Email, "dibiancoj@gmail.com"));
-                var id = new ClaimsIdentity(claims, "Cookies");
-                await Context.Authentication.SignInAsync("Cookies", new ClaimsPrincipal(id));
-
-                //replace with database call
-                if (string.Equals(model.Email, "dibiancoj@gmail.com", StringComparison.OrdinalIgnoreCase))
+                //did we find a user?
+                if (userLogInAttempt == null)
                 {
-                    //var result = await SignInManagerAPI.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                    //can't find the user, add an error
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                }
+                else
+                {
+                    var claims = new List<Claim>();
 
+                    claims.Add(new Claim(ClaimTypes.Name, "Jason DiBianco"));
+                    claims.Add(new Claim(ClaimTypes.Email, "dibiancoj@gmail.com"));
+
+                    //sign the user in
+                    await Context.Authentication.SignInAsync(SecuritySettings.SecurityType, new ClaimsPrincipal(new ClaimsIdentity(claims, SecuritySettings.SecurityType)));
+
+                    //go send them to the main page
                     return RedirectToAction("Index", "Home");
                 }
             }

@@ -36,15 +36,16 @@
     <link rel="stylesheet" href="~/lib/bootstraptemplate/assets/owl-carousel/owl.carousel.css">
     <link rel="stylesheet" href="~/lib/bootstraptemplate/assets/owl-carousel/owl.theme.css">
     <link rel="stylesheet" href="~/lib/bootstraptemplate/assets/sky-forms/css/sky-forms.css">
+
+    <!-- Page styles -->
+    @RenderSection("Styles", required: false)
+
     <!--[if lt IE 9]>
         <link rel="stylesheet" href="assets/sky-forms/css/sky-forms-ie8.css">
     <![endif]-->
     <!-- Required JS -->
     <script src="~/lib/bootstraptemplate/js/jquery.js"></script>
     <script src="~/lib/bootstraptemplate/js/jquery-ui.min.js"></script>
-
-    <!-- Page scripts -->
-    @RenderSection("scripts", required: false)
 </head>
 <body>
 

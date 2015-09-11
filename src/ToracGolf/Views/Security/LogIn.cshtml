@@ -16,6 +16,10 @@
     Log In
 }
 
+@section Styles{
+    <link href="~/css/security.css" rel="stylesheet" />
+}
+
 <section class="slice slice-lg bg-image" style="background-image:url(images/backgrounds/LogInBackground.png);">
     <div class="wp-section">
         <div class="container">
@@ -27,7 +31,6 @@
                         </div>
                         <div class="form-body">
                             <form id="frmLogin" asp-route="LogIn" method="post" class="sky-form">
-                                <div asp-validation-summary="ValidationSummary.All" class="text-danger"></div>
                                 <fieldset>
                                     <section>
                                         <div class="form-group">
@@ -50,12 +53,16 @@
                                         </div>
                                     </section>
                                     <section>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <label asp-for="LogInUserEntered.RememberMe" class="checkbox">
-                                                    <input type="checkbox" name="remember" checked asp-for="LogInUserEntered.RememberMe" />
-                                                </label>
-                                            </div>
+                                        <div class="form-group">
+                                            <label asp-for="LogInUserEntered.RememberMe" class="checkbox">
+                                                <input type="checkbox" name="remember" checked asp-for="LogInUserEntered.RememberMe" />
+                                            </label>
+                                        </div>
+                                    </section>
+
+                                    <section>
+                                        <div id="ValidationSummary" class="form-group">
+                                            <div asp-validation-summary="ValidationSummary.All" class="text-danger"></div>
                                         </div>
                                     </section>
 

@@ -13,19 +13,11 @@ namespace ToracGolf.MiddleLayer.EFModel
         {
         }
 
-        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserAccounts> Users { get; set; }
         public virtual DbSet<Ref_State> Ref_State { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
-                .Property(e => e.EmailAddress)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<User>()
-           .Property(e => e.Password)
-           .IsUnicode(false);
-
         }
 
     }

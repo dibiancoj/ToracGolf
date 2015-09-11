@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ToracGolf.MiddleLayer.EFModel.Tables
 {
-    public class User
+    public class UserAccounts
     {
 
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -18,11 +18,19 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
         public string EmailAddress { get; set; }
 
         [Required]
+        [StringLength(50)]
+        public string FirstName { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string LastName { get; set; }
+
+        [Required]
         [StringLength(100)]
         public string Password { get; set; }
 
         [Required]
-        public int CurrentSeason { get; set; }
+        public int CurrentSeasonId { get; set; }
 
         [Required]
         public DateTime CreatedDate { get; set; }
