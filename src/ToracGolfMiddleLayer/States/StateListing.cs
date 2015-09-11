@@ -10,12 +10,9 @@ namespace ToracGolf.MiddleLayer.States
     public static class StateListing
     {
 
-        public static IEnumerable<Ref_State> StateSelect(string connectionString)
+        public static IEnumerable<Ref_State> StateSelect(ToracGolfContext dbContext)
         {
-            using (var context = new ToracGolfContext(connectionString))
-            {
-                return context.Ref_State.AsNoTracking().OrderBy(x => x.Description).ToArray();
-            }
+            return dbContext.Ref_State.AsNoTracking().OrderBy(x => x.Description).ToArray();
         }
 
     }

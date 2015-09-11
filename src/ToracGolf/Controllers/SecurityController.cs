@@ -1,20 +1,17 @@
-﻿using System;
+﻿using Microsoft.AspNet.Authorization;
+using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.Mvc.Rendering;
+using Microsoft.Framework.Caching.Memory;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
+using ToracGolf.Constants;
+using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.ViewModels.Navigation;
 using ToracGolf.ViewModels.Security;
-using Microsoft.AspNet.Authorization;
-using ToracGolf.Models;
-using Microsoft.AspNet.Identity;
-using System.Collections.Immutable;
-using Microsoft.Framework.Caching.Memory;
-using Microsoft.AspNet.Mvc.Rendering;
 using ToracLibrary.AspNet.Caching.FactoryStore;
-using ToracGolf.Constants;
-using System.Security.Claims;
-using ToracGolf.Settings;
 
 namespace ToracGolf.Controllers
 {
@@ -25,9 +22,9 @@ namespace ToracGolf.Controllers
 
         #region Constructor
 
-        public SecurityController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore , AppSettings settings)
+        public SecurityController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, ToracGolfContext dbContext)
         {
-            AppSetting = settings;
+            DbContext = dbContext;
             Cache = cache;
             CacheFactory = cacheFactoryStore;
         }
@@ -36,7 +33,7 @@ namespace ToracGolf.Controllers
 
         #region Properties
 
-        private AppSettings AppSetting { get; }
+        private ToracGolfContext DbContext { get; }
 
         private IMemoryCache Cache { get; }
 

@@ -1,28 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Authentication.Facebook;
+﻿using Microsoft.AspNet.Authentication.Facebook;
 using Microsoft.AspNet.Authentication.Google;
 using Microsoft.AspNet.Authentication.MicrosoftAccount;
 using Microsoft.AspNet.Authentication.Twitter;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Diagnostics.Entity;
 using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Data.Entity;
+using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Dnx.Runtime;
+using Microsoft.Framework.Caching.Memory;
 using Microsoft.Framework.Configuration;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
-using ToracGolf.Models;
-using ToracGolf.Services;
-using Microsoft.AspNet.Mvc.Rendering;
-using Microsoft.Framework.Caching.Memory;
-using ToracLibrary.AspNet.Caching.FactoryStore;
-using ToracGolf.Constants;
-using ToracGolf.Settings;
+using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
+using System.Threading.Tasks;
+using ToracGolf.Constants;
+using ToracGolf.MiddleLayer.EFModel;
+using ToracGolf.Services;
+using ToracGolf.Settings;
+using ToracLibrary.AspNet.Caching.FactoryStore;
 
 namespace ToracGolf
 {
@@ -65,7 +63,7 @@ namespace ToracGolf
             //grab the ef connection string
             var connectionString = Configuration["Data:DefaultConnection:ConnectionString"];
 
-            services.AddSingleton(new Func<IServiceProvider, AppSettings>(x => new AppSettings { ConnectionString = connectionString }));
+            services.AddTransient(x => new ToracGolfContext(connectionString));
 
             // Configure the options for the authentication middleware.
             // You can add options for Google, Twitter and other middleware as shown below.
@@ -99,7 +97,7 @@ namespace ToracGolf
 
             //add the state listing factory configuration
             cacheFactory.AddConfiguration(CacheKeyNames.StateListing,
-                 () => MiddleLayer.States.StateListing.StateSelect(connectionString)
+                 () => MiddleLayer.States.StateListing.StateSelect(services.BuildServiceProvider().GetService<ToracGolfContext>())
                 .Select(y => new SelectListItem { Text = y.Description, Value = y.StateId.ToString() })
                 .ToImmutableList());
 
