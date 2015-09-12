@@ -73,6 +73,8 @@ namespace ToracGolf.Controllers
         [HttpGet]
         [AllowAnonymous]
         [Route("LogIn", Name = "LogIn")]
+        //don't cache it so when they hit the back button, they won't get an anti forgery message. so they log in, and they can't get back without logging out
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult LogIn()
         {
             if (IsUserAuthenticated())
