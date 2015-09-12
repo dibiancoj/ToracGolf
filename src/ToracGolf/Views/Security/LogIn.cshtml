@@ -37,7 +37,7 @@
                                             <label asp-for="LogInUserEntered.Email" class="label"></label>
                                             <label class="input">
                                                 <i class="icon-append fa fa-user"></i>
-                                                <input type="email" name="email" asp-for="LogInUserEntered.Email" />
+                                                <input type="email" name="email" asp-for="LogInUserEntered.Email" maxlength="100" />
                                                 <span asp-validation-for="LogInUserEntered.Email" class="text-danger"></span>
                                             </label>
                                         </div>
@@ -47,7 +47,7 @@
                                             <label asp-for="LogInUserEntered.Password" class="label"></label>
                                             <label class="input">
                                                 <i class="icon-append fa fa-lock"></i>
-                                                <input type="password" name="password" asp-for="LogInUserEntered.Password" />
+                                                <input type="password" name="password" asp-for="LogInUserEntered.Password" maxlength="100" />
                                                 <span asp-validation-for="LogInUserEntered.Password" class="text-danger"></span>
                                             </label>
                                         </div>
@@ -59,13 +59,11 @@
                                             </label>
                                         </div>
                                     </section>
-
                                     <section>
                                         <div id="ValidationSummary" class="form-group">
                                             <div asp-validation-summary="ValidationSummary.All" class="text-danger"></div>
                                         </div>
                                     </section>
-
                                     <section>
                                         <button class="btn btn-base btn-icon btn-icon-right btn-sign-in pull-right" type="submit">
                                             <span>Next Step</span>

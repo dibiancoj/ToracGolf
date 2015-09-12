@@ -17,6 +17,10 @@
     Sign Up
 }
 
+@section Styles{
+    <link href="~/css/security.css" rel="stylesheet" />
+}
+
 <section class="slice slice-lg bg-image" style="background-image:url(images/backgrounds/SignUpBackground.jpg)">
     <div class="wp-section">
         <div class="container">
@@ -27,16 +31,17 @@
                             <h2>Create your own account</h2>
                         </div>
                         <div class="form-body">
-                            <form action="" id="frmRegister" class="sky-form">
+                            <form id="frmRegister" asp-route="SignUp" method="post" class="sky-form">
                                 <fieldset class="no-padding">
                                     <section class="">
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <div class="form-group">
-                                                    <label class="label">Email</label>
+                                                    <label asp-for="SignUpUserEntered.Email" class="label"></label>
                                                     <label class="input">
                                                         <i class="icon-append fa fa-envelope"></i>
-                                                        <input type="email" name="email" placeholder="Email">
+                                                        <input type="email" name="Email" asp-for="SignUpUserEntered.Email" maxlength="100" />
+                                                        <span asp-validation-for="SignUpUserEntered.Email" class="text-danger"></span>
                                                     </label>
                                                 </div>
                                             </div>
@@ -44,10 +49,11 @@
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <div class="form-group">
-                                                    <label class="label">First Name</label>
+                                                    <label asp-for="SignUpUserEntered.FirstName" class="label"></label>
                                                     <label class="input">
                                                         <i class="icon-append fa fa-user"></i>
-                                                        <input type="text" name="firstname" placeholder="First Name">
+                                                        <input type="text" name="FirstName" asp-for="SignUpUserEntered.FirstName" placeholder="First Name" maxlength="50">
+                                                        <span asp-validation-for="SignUpUserEntered.FirstName" class="text-danger"></span>
                                                     </label>
                                                 </div>
                                             </div>
@@ -55,10 +61,10 @@
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <div class="form-group">
-                                                    <label class="label">Last Name</label>
+                                                    <label asp-for="SignUpUserEntered.LastName" class="label"></label>
                                                     <label class="input">
                                                         <i class="icon-append fa fa-user"></i>
-                                                        <input type="text" name="lastname" placeholder="Last Name">
+                                                        <input type="text" name="LastName" asp-for="SignUpUserEntered.LastName" placeholder="Last Name" maxlength="50">
                                                     </label>
                                                 </div>
                                             </div>
@@ -66,10 +72,10 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label class="label">Password</label>
+                                                    <label asp-for="SignUpUserEntered.Password" class="label"></label>
                                                     <label class="input">
                                                         <i class="icon-append fa fa-lock"></i>
-                                                        <input type="password" name="password" placeholder="Password">
+                                                        <input type="password" asp-for="SignUpUserEntered.Password" name="password" placeholder="Password" maxlength="100">
                                                     </label>
                                                 </div>
                                             </div>
@@ -77,10 +83,21 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label class="label">Current Season Name</label>
+                                                    <label asp-for="SignUpUserEntered.PasswordReenter" class="label"></label>
+                                                    <label class="input">
+                                                        <i class="icon-append fa fa-lock"></i>
+                                                        <input type="password" asp-for="SignUpUserEntered.PasswordReenter" name="PasswordReenter" placeholder="Re-enter Password" maxlength="100">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label asp-for="SignUpUserEntered.CurrentSeason" class="label"></label>
                                                     <label class="input">
                                                         <i class="icon-append fa fa-download"></i>
-                                                        <input type="text" name="CurrentSeason" placeholder="Current Season" value="@DateTime.Now.Year">
+                                                        <input type="text" name="CurrentSeason" asp-for="SignUpUserEntered.CurrentSeason" placeholder="Current Season" maxlength="50">
                                                     </label>
                                                 </div>
                                             </div>
@@ -88,12 +105,17 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label class="label">State Where You Play The Most</label>
+                                                    <label asp-for="SignUpUserEntered.HomeState" class="label"></label>
                                                     <label class="select">
                                                         <select name="HomeState" asp-for="SelectedState" asp-items="Model.StateListing"></select>
                                                     </label>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </section>
+                                    <section>
+                                        <div id="ValidationSummary" class="form-group">
+                                            <div asp-validation-summary="ValidationSummary.All" class="text-danger"></div>
                                         </div>
                                     </section>
                                     <section>

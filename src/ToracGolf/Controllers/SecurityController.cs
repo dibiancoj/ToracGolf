@@ -4,11 +4,14 @@ using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Framework.Caching.Memory;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ToracGolf.Constants;
 using ToracGolf.MiddleLayer.EFModel;
+using ToracGolf.MiddleLayer.EFModel.Tables;
+using ToracGolf.MiddleLayer.Security;
 using ToracGolf.MiddleLayer.SecurityManager;
 using ToracGolf.ViewModels.Navigation;
 using ToracGolf.ViewModels.Security;
@@ -56,6 +59,17 @@ namespace ToracGolf.Controllers
             return breadCrumb;
         }
 
+        private async Task LogUserIn(UserAccounts userLogInAttempt)
+        {
+            var claims = new List<Claim>();
+
+            claims.Add(new Claim(ClaimTypes.Name, userLogInAttempt.FirstName + " " + userLogInAttempt.LastName));
+            claims.Add(new Claim(ClaimTypes.Email, userLogInAttempt.EmailAddress));
+
+            //sign the user in
+            await Context.Authentication.SignInAsync(SecuritySettings.SecurityType, new ClaimsPrincipal(new ClaimsIdentity(claims, SecuritySettings.SecurityType)));
+        }
+
         [HttpGet]
         [AllowAnonymous]
         [Route("LogIn", Name = "LogIn")]
@@ -90,13 +104,8 @@ namespace ToracGolf.Controllers
                 }
                 else
                 {
-                    var claims = new List<Claim>();
-
-                    claims.Add(new Claim(ClaimTypes.Name, "Jason DiBianco"));
-                    claims.Add(new Claim(ClaimTypes.Email, "dibiancoj@gmail.com"));
-
-                    //sign the user in
-                    await Context.Authentication.SignInAsync(SecuritySettings.SecurityType, new ClaimsPrincipal(new ClaimsIdentity(claims, SecuritySettings.SecurityType)));
+                    //go log the user in
+                    await LogUserIn(userLogInAttempt);
 
                     //go send them to the main page
                     return RedirectToAction("Index", "Home");
@@ -113,17 +122,72 @@ namespace ToracGolf.Controllers
 
         #region Sign Up
 
-        [HttpGet]
-        [AllowAnonymous]
-        [Route("SignUp", Name = "SignUp")]
-        public IActionResult SignUp()
+        private static IList<BreadcrumbNavItem> BuildSignUpBreadcrumb()
         {
             var breadCrumb = new List<BreadcrumbNavItem>();
 
             breadCrumb.Add(new BreadcrumbNavItem("Home", "#"));
             breadCrumb.Add(new BreadcrumbNavItem("Sign Up", "#"));
 
-            return View(new SignUpInViewModel(breadCrumb, CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache)));
+            return breadCrumb;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("SignUp", Name = "SignUp")]
+        public IActionResult SignUp()
+        {
+            return View(new SignUpInViewModel(BuildSignUpBreadcrumb(),
+                                              CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
+                                              new SignUpEnteredData { CurrentSeason = DateTime.Now.Year.ToString() }));
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("SignUp", Name = "SignUp")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SignUp(SignUpEnteredData model)
+        {
+            //do we have a valid model?
+            if (ModelState.IsValid)
+            {
+                UserAccounts userRegisterAttempt = null;
+
+                try
+                {
+                    //let's try to add this user to the system
+                    userRegisterAttempt = await Security.RegisterUser(DbContext, model);
+                }
+                catch (Exception ex)
+                {
+                    if (ex.ToString().Contains("UQ_Email"))
+                    {
+                        ModelState.AddModelError(string.Empty, "E-mail address is already registered.");
+                    }
+                }
+
+                //did we find a user?
+                if (userRegisterAttempt != null)
+                {
+                    //go log the user in
+                    await LogUserIn(userRegisterAttempt);
+
+                    //go send them to the main page
+                    return RedirectToAction("Index", "Home");
+                }
+
+                //if we don't have a duplicate email error, then just add a generic register error
+                if (ModelState.ErrorCount == 0)
+                {
+                    //can't find the user, add an error
+                    ModelState.AddModelError(string.Empty, "Invalid register attempt.");
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(new SignUpInViewModel(BuildSignUpBreadcrumb(),
+                                             CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
+                                             model));
         }
 
         #endregion
