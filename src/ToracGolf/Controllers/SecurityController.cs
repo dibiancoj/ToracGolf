@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
+using Microsoft.Data.Entity;
 using Microsoft.Framework.Caching.Memory;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Claims;
@@ -162,9 +164,18 @@ namespace ToracGolf.Controllers
                 }
                 catch (Exception ex)
                 {
-                    if (ex.ToString().Contains("UQ_Email"))
+                    var sqlException = ToracLibrary.Core.Exceptions.ExceptionUtilities.RetrieveExceptionType<SqlException>(ex);
+
+                    //do we have a sql exception/* PK/UKC violation */
+                    if (sqlException != null && sqlException.Errors.OfType<SqlError>().Any(x => x.Number == 2627))
                     {
+                        // it's a dupe... do something about it
                         ModelState.AddModelError(string.Empty, "E-mail address is already registered.");
+                    }
+                    else
+                    {
+                        // it's something else...
+                        throw;
                     }
                 }
 
