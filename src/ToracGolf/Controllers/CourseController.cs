@@ -16,7 +16,6 @@ namespace ToracGolf.Controllers
 
         #region Add A Course
 
-
         private static IList<BreadcrumbNavItem> BuildAddACourseBreadcrumb()
         {
             var breadCrumb = new List<BreadcrumbNavItem>();
