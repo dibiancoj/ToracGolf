@@ -9,16 +9,16 @@ namespace ToracGolf.Controllers
 {
 
     [Authorize]
-    public class SettingsController : Controller
+    public class SettingsController : BaseController
     {
 
         [HttpGet]
-        [AllowAnonymous]
         [Route("ChangeMySettings", Name = "ChangeMySettings")]      
         public IActionResult Index()
         {
             return View();
         }
+
     }
 
 }

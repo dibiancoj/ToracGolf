@@ -17,6 +17,8 @@ namespace ToracGolf.MiddleLayer.EFModel
         public virtual DbSet<Ref_State> Ref_State { get; set; }
         public virtual DbSet<Ref_Season> Ref_Season { get; set; }
         public virtual DbSet<UserSeason> UserSeason { get; set; }
+        public virtual DbSet<Course> Course { get; set; }
+        public virtual DbSet<CourseTeeLocations> CourseTeeLocations { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
