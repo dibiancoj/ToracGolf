@@ -4,7 +4,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc.Rendering;
-using System.ComponentModel.DataAnnotations;
 using ToracGolf.MiddleLayer.Security;
 
 namespace ToracGolf.ViewModels.Security

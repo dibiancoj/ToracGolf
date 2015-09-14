@@ -6,6 +6,11 @@ using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Authorization;
 using ToracGolf.ViewModels.Navigation;
 using ToracGolf.ViewModels.Courses;
+using ToracGolf.MiddleLayer.EFModel;
+using Microsoft.Framework.Caching.Memory;
+using ToracLibrary.AspNet.Caching.FactoryStore;
+using Microsoft.AspNet.Mvc.Rendering;
+using ToracGolf.Constants;
 
 namespace ToracGolf.Controllers
 {
@@ -13,6 +18,27 @@ namespace ToracGolf.Controllers
     [Authorize]
     public class CourseController : BaseController
     {
+
+        #region Constructor
+
+        public CourseController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, ToracGolfContext dbContext)
+        {
+            DbContext = dbContext;
+            Cache = cache;
+            CacheFactory = cacheFactoryStore;
+        }
+
+        #endregion
+
+        #region Properties
+
+        private ToracGolfContext DbContext { get; }
+
+        private IMemoryCache Cache { get; }
+
+        private ICacheFactoryStore CacheFactory { get; }
+
+        #endregion
 
         #region Add A Course
 
@@ -31,10 +57,66 @@ namespace ToracGolf.Controllers
         [Route("AddACourse", Name = "AddACourse")]
         public IActionResult CourseAdd()
         {
-            return View(new CourseAddViewModel
-            {
-                Breadcrumb = BuildAddACourseBreadcrumb()
-            });
+            return View(new CourseAddViewModel(
+                BuildAddACourseBreadcrumb(),
+                CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
+                new CourseAddEnteredData()));
+        }
+
+        [HttpPost]
+        [Route("AddACourse", Name = "AddACourse")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SignUp(CourseAddEnteredData model)
+        {
+            //do we have a valid model?
+            //if (ModelState.IsValid)
+            //{
+            //    UserAccounts userRegisterAttempt = null;
+
+            //    try
+            //    {
+            //        //let's try to add this user to the system
+            //        userRegisterAttempt = await Security.RegisterUser(DbContext, model);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        var sqlException = ToracLibrary.Core.Exceptions.ExceptionUtilities.RetrieveExceptionType<SqlException>(ex);
+
+            //        //do we have a sql exception/* PK/UKC violation */
+            //        if (sqlException != null && sqlException.Errors.OfType<SqlError>().Any(x => x.Number == 2627))
+            //        {
+            //            // it's a dupe... do something about it
+            //            ModelState.AddModelError(string.Empty, "E-mail address is already registered.");
+            //        }
+            //        else
+            //        {
+            //            // it's something else...
+            //            throw;
+            //        }
+            //    }
+
+            //    //did we find a user?
+            //    if (userRegisterAttempt != null)
+            //    {
+            //        //go log the user in
+            //        await LogUserIn(userRegisterAttempt);
+
+            //        //go send them to the main page
+            //        return RedirectToAction("Index", "Home");
+            //    }
+
+            //    //if we don't have a duplicate email error, then just add a generic register error
+            //    if (ModelState.ErrorCount == 0)
+            //    {
+            //        //can't find the user, add an error
+            //        ModelState.AddModelError(string.Empty, "Invalid register attempt.");
+            //    }
+            //}
+
+            // If we got this far, something failed, redisplay form
+            return View(new CourseAddViewModel(BuildAddACourseBreadcrumb(),
+                                             CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
+                                             model));
         }
 
         #endregion

@@ -27,31 +27,49 @@
                 <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
                     <div class="wp-block default user-form user-form-alpha no-margin">
                         <div class="form-header">
-                            <h2>Sign in to your account</h2>
+                            <h2>Add A New Course</h2>
                         </div>
                         <div class="form-body">
-                            <form id="frmLogin" asp-route="LogIn" method="post" class="sky-form">
-                                @*<fieldset>
-                                        <section>
-                                            <div class="form-group">
-                                                <label asp-for="LogInUserEntered.Email" class="label"></label>
+                            <form id="frmAddACourse" asp-route="CourseAdd" method="post" class="sky-form">
+                                <fieldset>
+                                    <section>
+                                        <label asp-for="CourseAddUserEntered.Name" class="label"></label>
+                                        <label class="input">
+                                            <i class="icon-append fa fa-user"></i>
+                                            <input type="text" name="name" asp-for="CourseAddUserEntered.Name" maxlength="100" />
+                                            <span asp-validation-for="CourseAddUserEntered.Name" class="text-danger"></span>
+                                        </label>
+                                    </section>
+                                    <section>
+                                        <div class="row">
+                                            <div class="col-md-6 col-xs-12">
+                                                <label asp-for="CourseAddUserEntered.Location" class="label"></label>
                                                 <label class="input">
                                                     <i class="icon-append fa fa-user"></i>
-                                                    <input type="email" name="email" asp-for="LogInUserEntered.Email" maxlength="100" />
-                                                    <span asp-validation-for="LogInUserEntered.Email" class="text-danger"></span>
+                                                    <input type="text" name="location" asp-for="CourseAddUserEntered.Location" maxlength="100" />
+                                                    <span asp-validation-for="CourseAddUserEntered.Location" class="text-danger"></span>
                                                 </label>
                                             </div>
-                                        </section>
-                                        <section>
-                                            <button class="btn btn-base btn-icon btn-icon-right btn-sign-in pull-right" type="submit">
-                                                <span>Next Step</span>
-                                            </button>
-                                        </section>
-                                    </fieldset>*@
+                                            <div class="col-md-6 col-xs-12">
+                                                <label asp-for="CourseAddUserEntered.StateListing" class="label"></label>
+                                                <label class="select">
+                                                    <select name="StateListing" asp-for="CourseAddUserEntered.StateListing" asp-items="Model.StateListing"></select>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <section>
+                                        <div id="ValidationSummary" class="form-group">
+                                            <div asp-validation-summary="ValidationSummary.All" class="text-danger"></div>
+                                        </div>
+                                    </section>
+                                    <section>
+                                        <button class="btn btn-base btn-icon btn-icon-right btn-sign-in pull-right" type="submit">
+                                            <span>Next Step</span>
+                                        </button>
+                                    </section>
+                                </fieldset>
                             </form>
-                        </div>
-                        <div class="form-footer">
-                            <p>Lost your password? <a href="#" class="ForceBlueColor">Click here to recover.</a></p>
                         </div>
                     </div>
                 </div>

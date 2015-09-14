@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
-using Microsoft.Data.Entity;
 using Microsoft.Framework.Caching.Memory;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Claims;
