@@ -11,6 +11,7 @@ using Microsoft.Framework.Caching.Memory;
 using ToracLibrary.AspNet.Caching.FactoryStore;
 using Microsoft.AspNet.Mvc.Rendering;
 using ToracGolf.Constants;
+using System.Security.Claims;
 
 namespace ToracGolf.Controllers
 {
@@ -57,10 +58,13 @@ namespace ToracGolf.Controllers
         [Route("AddACourse", Name = "AddACourse")]
         public IActionResult CourseAdd()
         {
+            //get the user's preference, so we can the state he will most likely add
+            var usersDefaultState = Context.User.Claims.First(x => x.Type == ClaimTypes.StateOrProvince).Value;
+
             return View(new CourseAddViewModel(
                 BuildAddACourseBreadcrumb(),
                 CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
-                new CourseAddEnteredData()));
+                new CourseAddEnteredData() { StateListing = usersDefaultState }));
         }
 
         [HttpPost]

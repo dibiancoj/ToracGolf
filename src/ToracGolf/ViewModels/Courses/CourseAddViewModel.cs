@@ -32,7 +32,7 @@ namespace ToracGolf.ViewModels.Courses
         [Display(Name = "Course Name")]
         [Required]
         [MaxLength(75)]
-        public string Name { get; set; }
+        public string CourseName { get; set; }
 
         [Display(Name = "Location")]
         [Required]

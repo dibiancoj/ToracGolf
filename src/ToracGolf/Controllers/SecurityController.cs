@@ -65,6 +65,7 @@ namespace ToracGolf.Controllers
 
             claims.Add(new Claim(ClaimTypes.Name, userLogInAttempt.FirstName + " " + userLogInAttempt.LastName));
             claims.Add(new Claim(ClaimTypes.Email, userLogInAttempt.EmailAddress));
+            claims.Add(new Claim(ClaimTypes.StateOrProvince, userLogInAttempt.StateId.ToString()));
 
             //sign the user in
             await Context.Authentication.SignInAsync(SecuritySettings.SecurityType, new ClaimsPrincipal(new ClaimsIdentity(claims, SecuritySettings.SecurityType)));
