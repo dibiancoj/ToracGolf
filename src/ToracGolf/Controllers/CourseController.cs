@@ -64,13 +64,13 @@ namespace ToracGolf.Controllers
             return View(new CourseAddViewModel(
                 BuildAddACourseBreadcrumb(),
                 CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
-                new CourseAddEnteredData() { StateListing = usersDefaultState }));
+                new CourseAddEnteredData { StateListing = usersDefaultState }));
         }
 
         [HttpPost]
         [Route("AddACourse", Name = "AddACourse")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SignUp(CourseAddEnteredData model)
+        public async Task<IActionResult> CourseAdd(CourseAddEnteredData model)
         {
             //do we have a valid model?
             //if (ModelState.IsValid)
