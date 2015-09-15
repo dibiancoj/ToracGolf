@@ -3,7 +3,8 @@
     "src",
     "test",
     "wrap",
-    "../../ToracLibrary.AspNet/src"
+    "../../ToracLibrary.AspNet/src",
+    "../ToracLibrary.AspNet/src"
   ],
   "sdk": {
     "version": "1.0.0-beta7"

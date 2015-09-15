@@ -38,8 +38,7 @@
                             <h2>Add A New Course</h2>
                         </div>
                         <div class="form-body">
-                            <form id="frmAddACourse" method="post" class="sky-form" ng-submit="processForm()">
-                                @Html.AntiForgeryToken()
+                            <form id="frmAddACourse" asp-route="AddACourse" method="post" ng-submit="processForm()" class="sky-form">
                                 <fieldset>
                                     <section>
                                         <label asp-for="CourseAddUserEntered.CourseName" class="label"></label>
