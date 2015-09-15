@@ -11,9 +11,7 @@
 
         $scope.processForm = function () {
 
-            var data2 = { model: $scope.model };
-
-           
+            
             var token = $('[name=__RequestVerificationToken]').val();
 
             debugger;
@@ -21,7 +19,7 @@
                 method: 'POST',
                 url: 'AddACourse',
                 headers: { "__RequestVerificationToken": token },
-                data: data2
+                data: JSON.stringify($scope.model)
             }
 
             debugger;
