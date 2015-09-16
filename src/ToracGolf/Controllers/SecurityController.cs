@@ -97,7 +97,7 @@ namespace ToracGolf.Controllers
             if (ModelState.IsValid)
             {
                 //let's try to log this user in
-                var userLogInAttempt = (new UserAccounts { UserId = 1, EmailAddress = "dibiancoj@gmail.com", Password = "0", StateId = 32 });// await Security.UserLogIn(DbContext, model.Email, model.Password);
+                var userLogInAttempt = await Security.UserLogIn(DbContext, model.Email, model.Password);
 
                 //did we find a user?
                 if (userLogInAttempt == null)
