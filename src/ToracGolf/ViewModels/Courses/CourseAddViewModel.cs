@@ -22,6 +22,7 @@ namespace ToracGolf.ViewModels.Courses
         public IList<Navigation.BreadcrumbNavItem> Breadcrumb { get; set; }
 
         public IEnumerable<SelectListItem> StateListing { get; }
+
     }
 
     public class CourseAddEnteredData

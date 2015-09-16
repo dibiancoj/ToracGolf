@@ -3,6 +3,7 @@
     ViewBag.Title = "Add A Course";
 }
 @model  ToracGolf.ViewModels.Courses.CourseAddViewModel
+@inject Microsoft.AspNet.Antiforgery.IAntiforgery Xsrf
 
 @section Breadcrumb{
     @Html.Partial("_Breadcrumb", Model.Breadcrumb)
@@ -26,6 +27,15 @@
     <script src="~/js/courseaddcontroller.js"></script>
 }
 
+@functions
+{
+    public string GetAntiXsrfToken()
+    {
+        var tokens = Xsrf.GetTokens(Context);
+        return tokens.CookieToken + ":" + tokens.FormToken;
+    }
+}
+
 @*so init is a method in my angular controller. we serialize the model and pass it into that method which set's the scope*@
 <section ng-app="toracApp" ng-controller="CourseAddController" ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model.CourseAddUserEntered))" class="slice slice-lg bg-image" style="background-image:url(images/backgrounds/LogInBackground.png);">
     <div class="wp-section">
@@ -38,7 +48,7 @@
                         </div>
                         <div class="form-body">
                             <form id="frmAddACourse" method="post" ng-submit="processForm()" class="sky-form">
-                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="__RequestVerificationToken" value="@GetAntiXsrfToken()" />
                                 <fieldset>
                                     <section>
                                         <label asp-for="CourseAddUserEntered.CourseName" class="label"></label>

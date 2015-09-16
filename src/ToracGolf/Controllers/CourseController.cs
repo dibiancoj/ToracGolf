@@ -12,6 +12,8 @@ using ToracLibrary.AspNet.Caching.FactoryStore;
 using Microsoft.AspNet.Mvc.Rendering;
 using ToracGolf.Constants;
 using System.Security.Claims;
+using Microsoft.AspNet.Antiforgery;
+using ToracGolf.Filters;
 
 namespace ToracGolf.Controllers
 {
@@ -22,11 +24,12 @@ namespace ToracGolf.Controllers
 
         #region Constructor
 
-        public CourseController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, ToracGolfContext dbContext)
+        public CourseController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, ToracGolfContext dbContext, IAntiforgery antiForgery)
         {
             DbContext = dbContext;
             Cache = cache;
             CacheFactory = cacheFactoryStore;
+            AntiForgery = antiForgery;
         }
 
         #endregion
@@ -38,6 +41,8 @@ namespace ToracGolf.Controllers
         private IMemoryCache Cache { get; }
 
         private ICacheFactoryStore CacheFactory { get; }
+
+        private IAntiforgery AntiForgery { get; }
 
         #endregion
 
@@ -69,8 +74,8 @@ namespace ToracGolf.Controllers
 
         [HttpPost]
         [Route("AddACourse", Name = "AddACourse")]
-        [ValidateAntiForgeryToken]
-        public IActionResult CourseAdd(CourseAddEnteredData model)
+        [ValidateCustomAntiForgeryToken()]
+        public IActionResult CourseAdd([FromBody]CourseAddEnteredData model)
         {
             //do we have a valid model?
             //if (ModelState.IsValid)
