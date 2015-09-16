@@ -24,12 +24,11 @@ namespace ToracGolf.Controllers
 
         #region Constructor
 
-        public CourseController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, ToracGolfContext dbContext, IAntiforgery antiForgery)
+        public CourseController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, ToracGolfContext dbContext)
         {
             DbContext = dbContext;
             Cache = cache;
             CacheFactory = cacheFactoryStore;
-            AntiForgery = antiForgery;
         }
 
         #endregion
@@ -41,8 +40,6 @@ namespace ToracGolf.Controllers
         private IMemoryCache Cache { get; }
 
         private ICacheFactoryStore CacheFactory { get; }
-
-        private IAntiforgery AntiForgery { get; }
 
         #endregion
 
