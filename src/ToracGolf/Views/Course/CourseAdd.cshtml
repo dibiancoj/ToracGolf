@@ -28,7 +28,7 @@
 
 @*so init is a method in my angular controller. we serialize the model and pass it into that method which set's the scope*@
 <section ng-app="toracApp" ng-controller="CourseAddController" ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model.CourseAddUserEntered))" class="slice slice-lg bg-image" style="background-image:url(images/backgrounds/LogInBackground.png);">
-
+    @Html.AntiForgeryToken()
     <div class="wp-section">
         <div class="container">
             <div class="row">
@@ -38,7 +38,7 @@
                             <h2>Add A New Course</h2>
                         </div>
                         <div class="form-body">
-                            <form id="frmAddACourse" asp-route="AddACourse" method="post" ng-submit="processForm()" class="sky-form">
+                            <form id="frmAddACourse" method="post" ng-submit="processForm()" class="sky-form">
                                 <fieldset>
                                     <section>
                                         <label asp-for="CourseAddUserEntered.CourseName" class="label"></label>

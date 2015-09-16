@@ -70,7 +70,7 @@ namespace ToracGolf.Controllers
         [HttpPost]
         [Route("AddACourse", Name = "AddACourse")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CourseAdd(CourseAddEnteredData model)
+        public IActionResult CourseAdd(CourseAddEnteredData model)
         {
             //do we have a valid model?
             //if (ModelState.IsValid)
@@ -117,10 +117,12 @@ namespace ToracGolf.Controllers
             //    }
             //}
 
+            return Json(new { id = 5 });
+
             // If we got this far, something failed, redisplay form
-            return View(new CourseAddViewModel(BuildAddACourseBreadcrumb(),
-                                             CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
-                                             model));
+            //return View(new CourseAddViewModel(BuildAddACourseBreadcrumb(),
+            //                                 CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
+            //                                 model));
         }
 
         #endregion
