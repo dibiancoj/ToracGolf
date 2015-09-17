@@ -10,7 +10,7 @@
         },
 
         $scope.processForm = function () {
-            
+
             var token = $('[name=__RequestVerificationToken]').val();
 
             var config = {
@@ -31,10 +31,22 @@
                    // this callback will be called asynchronously
                    // when the response is available
                }, function (response) {
-                   var s = response;
+      
+                   $scope.showValidationErrors($scope, response);
                    // called asynchronously if an error occurs
                    // or server returns response with an error status.
                });
+        }
+
+        $scope.showValidationErrors = function ($scope, error) {
+            $scope.validationErrors = [];
+            if (error.data && angular.isObject(error.data)) {
+                for (var key in error.data) {
+                    $scope.validationErrors.push(error.data[key][0]);
+                }
+            } else {
+                $scope.validationErrors.push('Could not add the course.');
+            };
         }
 
     });

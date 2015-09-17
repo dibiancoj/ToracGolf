@@ -1,0 +1,8 @@
+﻿<div id="ValidationSummary" ng-cloak class="form-group">
+    <div class="text-danger validationErrors" ng-show="validationErrors">
+        <ul>
+            <li ng-repeat="error in validationErrors">{{error}}</li>
+        </ul>
+    </div>
+    @* <div asp-validation-summary="ValidationSummary.All" class=""></div>*@
+</div>

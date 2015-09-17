@@ -119,6 +119,15 @@ namespace ToracGolf.Controllers
             //    }
             //}
 
+            //ModelState.AddModelError("bla", "bla2");
+
+            if (ModelState.ErrorCount > 0)
+            {
+                return new BadRequestObjectResult(ModelState);
+            }
+
+
+
             return Json(new { id = 5 });
 
             // If we got this far, something failed, redisplay form
