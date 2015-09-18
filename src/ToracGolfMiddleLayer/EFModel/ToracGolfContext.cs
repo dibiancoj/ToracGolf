@@ -23,6 +23,7 @@ namespace ToracGolf.MiddleLayer.EFModel
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserSeason>().ToTable("UserSeason");
+            modelBuilder.Entity<Course>().ToTable("Course");
         }
 
     }

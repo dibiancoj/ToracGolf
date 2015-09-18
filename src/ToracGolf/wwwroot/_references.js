@@ -5,3 +5,4 @@
 /// <reference path="js/angular/toracgolfapp.js" />
 /// <reference path="js/site.js" />
 /// <reference path="js/toracgolfcore.min.js" />
+/// <reference path="js/ValidationController.js" />

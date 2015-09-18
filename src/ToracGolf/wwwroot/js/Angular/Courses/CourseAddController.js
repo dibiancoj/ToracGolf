@@ -18,7 +18,7 @@
 
             $http.post('AddACourse', $scope.model, config, ValidationFactory)
                .then(function (response) {
-                   debugger;
+              
                    var s = response;
 
                    $scope.model.Location = 'teststest';

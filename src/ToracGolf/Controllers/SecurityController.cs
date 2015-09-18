@@ -63,6 +63,7 @@ namespace ToracGolf.Controllers
         {
             var claims = new List<Claim>();
 
+            claims.Add(new Claim(ClaimTypes.Hash, userLogInAttempt.UserId.ToString()));
             claims.Add(new Claim(ClaimTypes.Name, userLogInAttempt.FirstName + " " + userLogInAttempt.LastName));
             claims.Add(new Claim(ClaimTypes.Email, userLogInAttempt.EmailAddress));
             claims.Add(new Claim(ClaimTypes.StateOrProvince, userLogInAttempt.StateId.ToString()));
@@ -166,7 +167,7 @@ namespace ToracGolf.Controllers
                     var sqlException = ToracLibrary.Core.Exceptions.ExceptionUtilities.RetrieveExceptionType<SqlException>(ex);
 
                     //do we have a sql exception/* PK/UKC violation */
-                    if (sqlException != null && sqlException.Errors.OfType<SqlError>().Any(x => x.Number == 2627))
+                    if (sqlException != null && sqlException.Errors.OfType<SqlError>().Any(x => x.Number == UniqueConstraintId))
                     {
                         // it's a dupe... do something about it
                         ModelState.AddModelError(string.Empty, "E-mail address is already registered.");

@@ -1,19 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
-using Microsoft.AspNet.Authorization;
-using ToracGolf.ViewModels.Navigation;
-using ToracGolf.ViewModels.Courses;
-using ToracGolf.MiddleLayer.EFModel;
-using Microsoft.Framework.Caching.Memory;
-using ToracLibrary.AspNet.Caching.FactoryStore;
 using Microsoft.AspNet.Mvc.Rendering;
-using ToracGolf.Constants;
+using Microsoft.Framework.Caching.Memory;
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
 using System.Security.Claims;
-using Microsoft.AspNet.Antiforgery;
+using System.Threading.Tasks;
+using ToracGolf.Constants;
 using ToracGolf.Filters;
+using ToracGolf.MiddleLayer.Courses;
+using ToracGolf.MiddleLayer.EFModel;
+using ToracGolf.ViewModels.Courses;
+using ToracGolf.ViewModels.Navigation;
+using ToracLibrary.AspNet.Caching.FactoryStore;
 
 namespace ToracGolf.Controllers
 {
@@ -72,68 +73,45 @@ namespace ToracGolf.Controllers
         [HttpPost]
         [Route("AddACourse", Name = "AddACourse")]
         [ValidateCustomAntiForgeryToken()]
-        public IActionResult CourseAdd([FromBody]CourseAddEnteredData model)
+        public async Task<IActionResult> CourseAdd([FromBody]CourseAddEnteredData model)
         {
             //do we have a valid model?
-            //if (ModelState.IsValid)
-            //{
-            //    UserAccounts userRegisterAttempt = null;
-
-            //    try
-            //    {
-            //        //let's try to add this user to the system
-            //        userRegisterAttempt = await Security.RegisterUser(DbContext, model);
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        var sqlException = ToracLibrary.Core.Exceptions.ExceptionUtilities.RetrieveExceptionType<SqlException>(ex);
-
-            //        //do we have a sql exception/* PK/UKC violation */
-            //        if (sqlException != null && sqlException.Errors.OfType<SqlError>().Any(x => x.Number == 2627))
-            //        {
-            //            // it's a dupe... do something about it
-            //            ModelState.AddModelError(string.Empty, "E-mail address is already registered.");
-            //        }
-            //        else
-            //        {
-            //            // it's something else...
-            //            throw;
-            //        }
-            //    }
-
-            //    //did we find a user?
-            //    if (userRegisterAttempt != null)
-            //    {
-            //        //go log the user in
-            //        await LogUserIn(userRegisterAttempt);
-
-            //        //go send them to the main page
-            //        return RedirectToAction("Index", "Home");
-            //    }
-
-            //    //if we don't have a duplicate email error, then just add a generic register error
-            //    if (ModelState.ErrorCount == 0)
-            //    {
-            //        //can't find the user, add an error
-            //        ModelState.AddModelError(string.Empty, "Invalid register attempt.");
-            //    }
-            //}
-
-            //ModelState.AddModelError("bla", "bla2");
-
-            if (ModelState.ErrorCount > 0)
+            if (ModelState.IsValid)
             {
-                return new BadRequestObjectResult(ModelState);
+                try
+                {
+                    //let's try to add this user to the system
+                    var courseAddAttempt = await Courses.CourseAdd(DbContext, GetUserId(), model);
+
+                    //we saved it successfully
+                    return Json(new { id = 5 });
+                }
+                catch (Exception ex)
+                {
+                    var sqlException = ToracLibrary.Core.Exceptions.ExceptionUtilities.RetrieveExceptionType<SqlException>(ex);
+
+                    //do we have a sql exception/* PK/UKC violation */
+                    if (sqlException != null && sqlException.Errors.OfType<SqlError>().Any(x => x.Number == UniqueConstraintId))
+                    {
+                        // it's a dupe... do something about it
+                        ModelState.AddModelError(string.Empty, "Course Name Is Already Registered.");
+                    }
+                    else
+                    {
+                        // it's something else...
+                        throw;
+                    }
+                }
             }
 
+            //add a generic error if we don't have (this way we return something)
+            if (ModelState.ErrorCount == 0)
+            {
+                ModelState.AddModelError(string.Empty, "Not Able To Save Course");
+            }
 
-
-            return Json(new { id = 5 });
-
-            // If we got this far, something failed, redisplay form
-            //return View(new CourseAddViewModel(BuildAddACourseBreadcrumb(),
-            //                                 CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
-            //                                 model));
+            //return the error here
+            return new BadRequestObjectResult(ModelState);
         }
 
         #endregion
