@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using ToracGolf.MiddleLayer.CustomValidations;
 
 namespace ToracGolf.MiddleLayer.Courses
 {
@@ -34,6 +35,7 @@ namespace ToracGolf.MiddleLayer.Courses
         [Required]
         public bool OnlyAllow18Holes { get; set; }
 
+        [EnsureMinimumElements(1, ErrorMessage = "No Tee Locations Have Been Entered. You Need Atleast 1 Tee Location.")]
         [Display(Name = "Tee Box Locations")]
         public IList<CourseAddEnteredDataTeeLocations> TeeLocations { get; set; }
 
