@@ -21,7 +21,7 @@
               
                    var s = response;
 
-                   $scope.model.Location = 'teststest';
+                   //$scope.model.Location = 'teststest';
 
 
 

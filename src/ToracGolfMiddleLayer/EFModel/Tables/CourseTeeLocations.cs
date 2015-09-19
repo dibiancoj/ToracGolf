@@ -16,10 +16,11 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
         public int CourseId { get; set; }
 
         [Required]
-        public int TeeLocationSortOrderId { get; set; }
+        [StringLength(50)]
+        public string Description { get; set; }
 
         [Required]
-        public bool OnlyAllow18Holes { get; set; }
+        public int TeeLocationSortOrderId { get; set; }
 
         [Required]
         public int Yardage { get; set; }

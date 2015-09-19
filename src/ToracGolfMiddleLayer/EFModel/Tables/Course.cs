@@ -37,6 +37,9 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
         [Required]
         public bool IsActive { get; set; }
 
+        [Required]
+        public bool OnlyAllow18Holes { get; set; }
+
         public ICollection<CourseTeeLocations> CourseTeeLocations { get; set; }
 
     }

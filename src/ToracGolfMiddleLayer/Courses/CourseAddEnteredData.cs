@@ -30,7 +30,39 @@ namespace ToracGolf.MiddleLayer.Courses
         [MaxLength(200)]
         public string Description { get; set; }
 
+        [Display(Name = "Only Allow 18 Holes")]
+        [Required]
+        public bool OnlyAllow18Holes { get; set; }
+
+        [Display(Name = "Tee Box Locations")]
+        public IList<CourseAddEnteredDataTeeLocations> TeeLocations { get; set; }
+
         #endregion
 
     }
+
+    public class CourseAddEnteredDataTeeLocations
+    {
+        [Display(Name = "Description")]
+        [Required]
+        [StringLength(50)]
+        public string Description { get; set; }
+
+        [Required]
+        public int Yardage { get; set; }
+
+        [Required]
+        public int Front9Par { get; set; }
+
+        [Required]
+        public int Back9Par { get; set; }
+
+        [Required]
+        public decimal Rating { get; set; }
+
+        [Required]
+        public decimal Slope { get; set; }
+
+    }
+
 }

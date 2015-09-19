@@ -20,7 +20,8 @@ namespace ToracGolf.MiddleLayer.Courses
                 Pending = true,
                 Location = CourseData.Location,
                 StateId = Convert.ToInt32(CourseData.StateListing),
-                UserIdThatCreatedCourse = userId
+                UserIdThatCreatedCourse = userId,
+                OnlyAllow18Holes = CourseData.OnlyAllow18Holes
             };
 
             //go add the course record
