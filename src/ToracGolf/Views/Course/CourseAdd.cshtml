@@ -44,23 +44,7 @@
 <section ng-app="toracApp" ng-controller="CourseAddController" ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model.CourseAddUserEntered))" class="slice slice-lg bg-image" style="background-image:url(images/backgrounds/LogInBackground.png);">
 
 
-    <div class="form-body" ng-cloak ng-show="ViewMode=='EditTeeLocation'">
-        <fieldset>
-            <section>
-                bla
-            </section>
-        </fieldset>
-        <section>
-            <button id="EditTeeLocation" ng-click="CancelTeeLocation()" class="btn btn-base btn-icon btn-icon-right btn-sign-in pull-right" type="button">
-                <span>Cancel</span>
-            </button>
-            <button class="btn btn-base btn-icon btn-icon-right btn-sign-in pull-right" type="button">
-                <span>Save Tee Location</span>
-            </button>
-        </section>
-    </div>
-
-    <div class="wp-section">
+    <div id="EditTeeLocation" class="wp-section" ng-cloak ng-show="ViewMode=='EditTeeLocation'">
         <div class="container">
             <div class="row">
                 <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
@@ -69,10 +53,36 @@
                             <h2>Add A New Course</h2>
                         </div>
 
-                       
+                        <div class="form-body" >
+                            <fieldset>
+                                <section>
+                                    bla
+                                </section>
+                            </fieldset>
+                            <section>
+                                <button id="EditTeeLocation" ng-click="CancelTeeLocation()" class="btn btn-base btn-icon btn-icon-right btn-sign-in pull-right" type="button">
+                                    <span>Cancel</span>
+                                </button>
+                                <button class="btn btn-base btn-icon btn-icon-right btn-sign-in pull-right" type="button">
+                                    <span>Save Tee Location</span>
+                                </button>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                         
-                        <div class="form-body" ng-show="ViewMode=='AddCourse'">
+    <div id="AddCourse" class="wp-section" ng-show="ViewMode=='AddCourse'">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+                    <div class="wp-block default user-form user-form-alpha no-margin">
+                        <div class="form-header">
+                            <h2>Add A New Course</h2>
+                        </div>
+                        <div class="form-body" >
                             <form id="frmAddACourse" method="post" ng-submit="processForm()" class="sky-form">
                                 <input type="hidden" name="__RequestVerificationToken" value="@GetAntiXsrfToken()" />
                                 <fieldset>

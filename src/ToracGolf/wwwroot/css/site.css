@@ -8,12 +8,3 @@
 
 
 
-/* when hiding the div */
-.ng-hide-add {
-    animation: 0.5s fadeIn ease;
-}
-
- /*when showing the div*/
-.ng-hide-remove {
-    animation: 0.5s fadeOut ease;
-}
