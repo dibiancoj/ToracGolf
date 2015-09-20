@@ -4,6 +4,7 @@
 
         $scope.init = function (courseAddModel) {
             $scope.model = courseAddModel;
+            $scope.ViewMode = 'AddCourse';
         },
 
         $scope.processForm = function () {
@@ -18,7 +19,7 @@
 
             $http.post('AddACourse', $scope.model, config, ValidationFactory)
                .then(function (response) {
-              
+
                    var s = response;
 
                    //$scope.model.Location = 'teststest';
@@ -31,6 +32,14 @@
 
 
                });
+        },
+
+        $scope.EditTeeLocation = function () {
+            $scope.ViewMode = 'EditTeeLocation';
+        },
+
+        $scope.CancelTeeLocation = function(){
+            $scope.ViewMode = 'AddCourse';
         }
 
         //$scope.showValidationErrors = function ($scope, error) {

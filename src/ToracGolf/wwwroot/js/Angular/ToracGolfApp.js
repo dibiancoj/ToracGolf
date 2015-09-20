@@ -1,1 +1,1 @@
-﻿var appToracGolf = angular.module('toracApp', []);
+﻿var appToracGolf = angular.module('toracApp', ['ngAnimate']);

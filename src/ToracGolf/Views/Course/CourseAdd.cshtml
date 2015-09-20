@@ -25,6 +25,7 @@
 @section Scripts{
 
     <script src="~/lib/angular/angular.js"></script>
+    <script src="~/lib/angular/angular-animate.js"></script>
     <script src="~/js/angular/toracgolfapp.js"></script>
     <script src="~/js/angular/common/validationfactory.js"></script>
     <script src="~/js/angular/courses/courseaddcontroller.js"></script>
@@ -41,6 +42,24 @@
 
 @*so init is a method in my angular controller. we serialize the model and pass it into that method which set's the scope*@
 <section ng-app="toracApp" ng-controller="CourseAddController" ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model.CourseAddUserEntered))" class="slice slice-lg bg-image" style="background-image:url(images/backgrounds/LogInBackground.png);">
+
+
+    <div class="form-body" ng-cloak ng-show="ViewMode=='EditTeeLocation'">
+        <fieldset>
+            <section>
+                bla
+            </section>
+        </fieldset>
+        <section>
+            <button id="EditTeeLocation" ng-click="CancelTeeLocation()" class="btn btn-base btn-icon btn-icon-right btn-sign-in pull-right" type="button">
+                <span>Cancel</span>
+            </button>
+            <button class="btn btn-base btn-icon btn-icon-right btn-sign-in pull-right" type="button">
+                <span>Save Tee Location</span>
+            </button>
+        </section>
+    </div>
+
     <div class="wp-section">
         <div class="container">
             <div class="row">
@@ -49,7 +68,11 @@
                         <div class="form-header">
                             <h2>Add A New Course</h2>
                         </div>
-                        <div class="form-body">
+
+                       
+
+                         
+                        <div class="form-body" ng-show="ViewMode=='AddCourse'">
                             <form id="frmAddACourse" method="post" ng-submit="processForm()" class="sky-form">
                                 <input type="hidden" name="__RequestVerificationToken" value="@GetAntiXsrfToken()" />
                                 <fieldset>
@@ -93,7 +116,7 @@
                                     </section>
                                     <hr />
                                     <section>
-                                        @{ 
+                                        @{
                                             bool hasAnyTeeBoxes = Model.CourseAddUserEntered.TeeLocations.AnyWithNullCheck();
 
                                             string classToAddToSpan = hasAnyTeeBoxes ? string.Empty : "display: inline-block;";
@@ -121,6 +144,10 @@
                                     <section>
                                         <button class="btn btn-base btn-icon btn-icon-right btn-sign-in pull-right" type="submit">
                                             <span>Save</span>
+                                        </button>
+
+                                        <button id="EditTeeLocation" ng-click="EditTeeLocation()" class="btn btn-base btn-icon btn-icon-right btn-sign-in pull-right" type="button">
+                                            <span>Edit Tee Location</span>
                                         </button>
                                     </section>
                                 </fieldset>
