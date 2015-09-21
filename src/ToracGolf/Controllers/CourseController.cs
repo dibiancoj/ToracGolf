@@ -67,7 +67,7 @@ namespace ToracGolf.Controllers
             return View(new CourseAddViewModel(
                 BuildAddACourseBreadcrumb(),
                 CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
-                new CourseAddEnteredData { StateListing = usersDefaultState }));
+                new CourseAddEnteredData { StateListing = usersDefaultState, TeeLocations = new List<CourseAddEnteredDataTeeLocations>() }));
         }
 
         [HttpPost]

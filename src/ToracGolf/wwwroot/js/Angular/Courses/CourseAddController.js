@@ -30,15 +30,37 @@
 
                    ValidationFactory.ShowValidationErrors($scope, response);
 
-
                });
         },
 
         $scope.EditTeeLocation = function () {
             $scope.ViewMode = 'EditTeeLocation';
+
+            //add a new tee location model
+            $scope.TempTeeLocation = {
+                Description: '',
+                Front9Par: 0,
+                Back9Par: 0,
+                TotalYardage: 0,
+                Slope: 0,
+                Rating: 0
+            };
         },
 
-        $scope.CancelTeeLocation = function(){
+        $scope.CancelTeeLocation = function () {
+            $scope.ViewMode = 'AddCourse';
+        },
+
+        $scope.SaveTeeLocation = function () {
+
+            //if we have 0 tee locations create a new array
+            if ($scope.model.TeeLocations == null) {
+                $scope.model.TeeLocations = [];
+            }
+
+            //put the temp tee location into the main model
+            $scope.model.TeeLocations.push($scope.TempTeeLocation);
+
             $scope.ViewMode = 'AddCourse';
         }
 
