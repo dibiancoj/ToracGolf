@@ -172,10 +172,12 @@
                                     <hr />
                                     <section>
 
-                                        <div ng-repeat="teeBox in model.TeeLocations track by teeBox.Description">
-                                            @*<span>{{Description}}</span>*@
-                                            jason
+                                        <span ng-show="model.TeeLocations.length == 0">
+                                            No Tee Boxes Specified
+                                        </span>
 
+                                        <div ng-cloak ng-repeat="teeBox in model.TeeLocations track by teeBox.Description">
+                                            <span>{{teeBox.Description}}</span>                      
                                         </div>
 
                                         @*@{
