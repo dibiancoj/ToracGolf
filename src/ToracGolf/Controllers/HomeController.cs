@@ -36,6 +36,16 @@ namespace ToracGolf.Controllers
 
             return RedirectToRoute("AddACourse");
 
+
+
+
+
+
+
+
+
+
+
             var breadCrumb = new List<BreadcrumbNavItem>();
 
             breadCrumb.Add(new BreadcrumbNavItem("Home", "#"));
