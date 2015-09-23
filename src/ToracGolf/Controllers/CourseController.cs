@@ -88,7 +88,7 @@ namespace ToracGolf.Controllers
                 }
                 catch (Exception ex)
                 {
-                    var sqlException = ToracLibrary.Core.Exceptions.ExceptionUtilities.RetrieveExceptionType<SqlException>(ex);
+                    var sqlException = ToracLibrary.AspNet.ExceptionHelpers.ExceptionUtilities.RetrieveExceptionType<SqlException>(ex);
 
                     //do we have a sql exception/* PK/UKC violation */
                     if (sqlException != null && sqlException.Errors.OfType<SqlError>().Any(x => x.Number == UniqueConstraintId))

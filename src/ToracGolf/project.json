@@ -39,7 +39,6 @@
   "frameworks": {
     "dnx451": {
       "dependencies": {
-        "ToracLibrary.Core": "1.0.0-*"
       }
     }
   },
