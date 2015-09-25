@@ -14,7 +14,7 @@
                         $scope.validationErrors.push(error.data[key][0]);
                     }
                 } else {
-                    $scope.validationErrors.push('Could not add the course.');
+                    $scope.validationErrors.push(error.data);
                 };
 
             }
