@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Authorization;
+﻿using Microsoft.AspNet.Antiforgery;
+using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Framework.Caching.Memory;
@@ -25,11 +26,12 @@ namespace ToracGolf.Controllers
 
         #region Constructor
 
-        public CourseController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, ToracGolfContext dbContext)
+        public CourseController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, ToracGolfContext dbContext, IAntiforgery antiforgery)
         {
             DbContext = dbContext;
             Cache = cache;
             CacheFactory = cacheFactoryStore;
+            Antiforgery = antiforgery;
         }
 
         #endregion
@@ -41,6 +43,8 @@ namespace ToracGolf.Controllers
         private IMemoryCache Cache { get; }
 
         private ICacheFactoryStore CacheFactory { get; }
+
+        private IAntiforgery Antiforgery { get; }
 
         #endregion
 
@@ -64,10 +68,13 @@ namespace ToracGolf.Controllers
             //get the user's preference, so we can the state he will most likely add
             var usersDefaultState = Context.User.Claims.First(x => x.Type == ClaimTypes.StateOrProvince).Value;
 
+            var token = Antiforgery.GetAndStoreTokens(Context);
+
             return View(new CourseAddViewModel(
                 BuildAddACourseBreadcrumb(),
                 CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
-                new CourseAddEnteredData { StateListing = usersDefaultState, TeeLocations = new List<CourseAddEnteredDataTeeLocations>() }));
+                new CourseAddEnteredData { StateListing = usersDefaultState, TeeLocations = new List<CourseAddEnteredDataTeeLocations>() },
+                token));
         }
 
         [HttpPost]
