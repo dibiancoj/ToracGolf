@@ -68,13 +68,11 @@ namespace ToracGolf.Controllers
             //get the user's preference, so we can the state he will most likely add
             var usersDefaultState = Context.User.Claims.First(x => x.Type == ClaimTypes.StateOrProvince).Value;
 
-            var token = Antiforgery.GetAndStoreTokens(Context);
-
             return View(new CourseAddViewModel(
                 BuildAddACourseBreadcrumb(),
                 CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
                 new CourseAddEnteredData { StateListing = usersDefaultState, TeeLocations = new List<CourseAddEnteredDataTeeLocations>() },
-                token));
+                BuildTokenSet(Antiforgery)));
         }
 
         [HttpPost]
@@ -82,7 +80,7 @@ namespace ToracGolf.Controllers
         [ValidateCustomAntiForgeryToken()]
         public async Task<IActionResult> CourseAdd([FromBody]CourseAddEnteredData model)
         {
-           //when published, the token in chrome and IE is not working. Doesn't look like its getting the cookie token. Need to research why!
+            //when published, the token in chrome and IE is not working. Doesn't look like its getting the cookie token. Need to research why!
 
 
             //do we have a valid model?

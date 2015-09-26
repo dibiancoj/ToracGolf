@@ -8,5 +8,6 @@ namespace ToracGolf.Constants
     public static class SecuritySettings
     {
         public const string SecurityType = "Cookies";
+        public const string AntiforgeryCookieName = "TGAntiForgeryCookie";
     }
 }
