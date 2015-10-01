@@ -21,7 +21,7 @@
 }
 
 @section Scripts{
-
+    <script src="~/lib/jlinq/jlinq.js"></script>
     <script src="~/lib/angular/angular.js"></script>
     <script src="~/lib/angular/angular-animate.js"></script>
     <script src="~/js/angular/toracgolfapp.js"></script>
@@ -36,7 +36,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
-                    <div class="wp-block default user-form user-form-alpha no-margin">
+                    <div class="wp-block default user-form user-form-alpha no-margin" style="padding-bottom:10px;">
                         <div class="form-header">
                             <h2>Add A New Tee Location</h2>
                         </div>
@@ -91,6 +91,9 @@
                                         </label>
                                     </div>
                                 </div>
+                            </section>
+                            <section>
+                                @Html.Partial("_ValidationSummaryAngular")
                             </section>
                             <section>
                                 <button id="EditTeeLocationCancel" ng-click="CancelTeeLocation()" class="btn btn-base btn-icon btn-icon-right btn-sign-in pull-right" type="button">
@@ -159,36 +162,14 @@
                                     </section>
                                     <hr />
                                     <section>
-
                                         <span ng-show="model.TeeLocations.length == 0">
                                             No Tee Boxes Specified
                                         </span>
 
                                         <div ng-cloak ng-repeat="teeBox in model.TeeLocations track by teeBox.Description">
-                                            <span>{{teeBox.Description}}</span>                      
+                                            <span ng-click="EditTeeLocation($index)" class="IsFakeLink">{{teeBox.Description}}</span>
+                                            <span ng-click="DeleteTeeLocation($index)" class="glyphicon glyphicon-trash IsFakeLink DeleteTeeLocation" aria-hidden="true"></span>
                                         </div>
-
-                                        @*@{
-                                                bool hasAnyTeeBoxes = Model.CourseAddUserEntered.TeeLocations.AnyWithNullCheck();
-
-                                                string classToAddToSpan = hasAnyTeeBoxes ? string.Empty : "display: inline-block;";
-
-                                            }
-
-                                            <label asp-for="CourseAddUserEntered.TeeLocations" class="label" style="@classToAddToSpan"></label>
-
-                                            @if (!hasAnyTeeBoxes)
-                                            {
-                                                <span class="label" style="@classToAddToSpan">No Tee Locations Entered</span>
-                                            }
-                                            else
-                                            {
-                                                @foreach (var TeeLocation in Model.CourseAddUserEntered.TeeLocations)
-                                                {
-
-                                                }
-                                            }*@
-
                                     </section>
                                     <section>
                                         @Html.Partial("_ValidationSummaryAngular")
@@ -198,8 +179,8 @@
                                             <span>Save</span>
                                         </button>
 
-                                        <button id="EditTeeLocation" ng-click="EditTeeLocation()" class="btn btn-base btn-icon btn-icon-right btn-sign-in pull-right" type="button">
-                                            <span>Edit Tee Location</span>
+                                        <button id="EditTeeLocation" ng-click="AddTeeLocation()" class="btn btn-base btn-icon btn-icon-right btn-sign-in pull-right" type="button">
+                                            <span>Add Tee Location</span>
                                         </button>
                                     </section>
                                 </fieldset>

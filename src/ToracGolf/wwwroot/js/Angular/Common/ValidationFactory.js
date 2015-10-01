@@ -21,8 +21,4 @@
         }
 
     });
-
-    //ValidationFactory.$inject = ['$http'];
-
-
 })();
