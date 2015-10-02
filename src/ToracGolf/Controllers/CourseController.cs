@@ -80,9 +80,6 @@ namespace ToracGolf.Controllers
         [ValidateCustomAntiForgeryToken()]
         public async Task<IActionResult> CourseAdd([FromBody]CourseAddEnteredData model)
         {
-            //when published, the token in chrome and IE is not working. Doesn't look like its getting the cookie token. Need to research why!
-
-
             //do we have a valid model?
             if (ModelState.IsValid)
             {
@@ -119,6 +116,26 @@ namespace ToracGolf.Controllers
             }
 
             //return the error here
+            return new BadRequestObjectResult(ModelState);
+        }
+
+        #endregion
+
+        #region Tee Locations
+
+        [HttpPost]
+        [Route("ValidateTeeLocation", Name = "ValidateTeeLocation")]
+        [ValidateCustomAntiForgeryToken()]
+        public IActionResult ValidateTeeLocation([FromBody]CourseAddEnteredDataTeeLocations teeLocationToValidate)
+        {
+            //specifically calling this so we can validate the tee location and get the model state
+            if (ModelState.ErrorCount == 0)
+            {
+                //we are ok, just return true
+                return Json(true);
+            }
+
+            //we have errors, return the model state
             return new BadRequestObjectResult(ModelState);
         }
 

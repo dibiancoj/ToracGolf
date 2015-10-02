@@ -45,23 +45,29 @@ namespace ToracGolf.MiddleLayer.Courses
 
     public class CourseAddEnteredDataTeeLocations
     {
+
         [Display(Name = "Description")]
         [Required]
         [StringLength(50)]
         public string Description { get; set; }
 
+        [Range(1, int.MaxValue, ErrorMessage = "Yardage Must Be Greater Than 0")]
         [Required]
         public int Yardage { get; set; }
 
+        [Range(1, int.MaxValue, ErrorMessage = "Front 9 Par Must Be Greater Than 0")]
         [Required]
         public int Front9Par { get; set; }
 
+        [Range(1, int.MaxValue, ErrorMessage = "Back 9 Par Must Be Greater Than 0")]
         [Required]
         public int Back9Par { get; set; }
 
+        [Range(50, 100, ErrorMessage = "Rating Must Be Between 50 and 100")]
         [Required]
         public decimal Rating { get; set; }
 
+        [Range(55, 155, ErrorMessage = "Slope Must Be Between 55 and 155")]
         [Required]
         public decimal Slope { get; set; }
 
