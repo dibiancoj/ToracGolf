@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.MiddleLayer.EFModel;
+using ToracGolf.MiddleLayer.EFModel.Tables;
 
 namespace ToracGolf.MiddleLayer.Courses
 {
@@ -12,7 +13,7 @@ namespace ToracGolf.MiddleLayer.Courses
         public static async Task<int> CourseAdd(ToracGolfContext dbContext, int userId, CourseAddEnteredData CourseData)
         {
             //course record to add
-            var courseToAdd = new EFModel.Tables.Course
+            var courseToAdd = new Course
             {
                 Name = CourseData.CourseName,
                 Description = CourseData.Description,
@@ -24,7 +25,19 @@ namespace ToracGolf.MiddleLayer.Courses
                 OnlyAllow18Holes = CourseData.OnlyAllow18Holes
             };
 
-            //go add the course record
+            courseToAdd.CourseTeeLocations = CourseData.TeeLocations.Select((x, i) => new CourseTeeLocations
+            {
+                CourseId = courseToAdd.CourseId,
+                Description = x.Description,
+                TeeLocationSortOrderId = i,
+                Front9Par = x.Front9Par,
+                Back9Par = x.Back9Par,
+                Rating = x.Rating,
+                Slope = x.Slope,
+                Yardage = x.Yardage
+            }).ToArray();
+
+            //add the course to the context
             dbContext.Course.Add(courseToAdd);
 
             //go save it
