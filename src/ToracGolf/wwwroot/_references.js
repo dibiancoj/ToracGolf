@@ -1,5 +1,6 @@
 ﻿/// <autosync enabled="true" />
 /// <reference path="../gulpfile.js" />
+/// <reference path="js/angular/common/modaldirective.js" />
 /// <reference path="js/angular/common/validationfactory.js" />
 /// <reference path="js/angular/courses/courseaddcontroller.js" />
 /// <reference path="js/angular/toracgolfapp.js" />
