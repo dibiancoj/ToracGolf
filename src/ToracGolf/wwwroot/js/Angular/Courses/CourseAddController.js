@@ -10,7 +10,7 @@
             $scope.model = courseAddModel;
             $scope.ViewMode = 'AddCourse';
 
-            $scope.ShowSavedSuccessfulModel = true;
+            //$scope.ShowSavedSuccessfulModal = true;
         },
 
         $scope.SaveACourse = function () {
@@ -19,7 +19,7 @@
                .then(function (response) {
 
                    //go show the save dialog
-                   $scope.ShowSavedSuccessfulModel = true;
+                   $scope.ShowSavedSuccessfulModal = true;
 
                    //$('#CourseSaveDialog').modal('show');
 

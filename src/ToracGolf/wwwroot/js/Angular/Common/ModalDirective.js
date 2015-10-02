@@ -5,7 +5,7 @@
     appToracGolf.directive('modal', function () {
 
         //sample html
-        //<modal title="Saved Succesfully" showdalog="ShowSavedSuccessfulModel" bodyhtml="Your Course Has Been Saved Successfully." closebuttontext="Ok" onmodalcloseevent="SaveACourseDialogOkEvent()">
+        //<modal title="Saved Succesfully" showdialog="ShowSavedSuccessfulModal" bodyhtml="Your Course Has Been Saved Successfully." closebuttontext="Ok" onmodalcloseevent="SaveACourseDialogOkEvent()">
         //</modal>
 
         return {
@@ -29,8 +29,7 @@
             //scope: true,
             scope: {
                 onmodalcloseevent: '&',
-                showdialog: '=',
-                ShowSavedSuccessfulModel: '='
+                ShowSavedSuccessfulModal: '='
             },
             link: function postLink(scope, element, attrs) {
                 scope.title = attrs.title;
