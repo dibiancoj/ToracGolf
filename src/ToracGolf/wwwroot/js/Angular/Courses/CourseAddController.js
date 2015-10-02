@@ -10,12 +10,13 @@
             $scope.ViewMode = 'AddCourse';
         },
 
-        $scope.processForm = function () {
+        $scope.SaveACourse = function () {
 
             $http.post('AddACourse', $scope.model, ValidationFactory)
                .then(function (response) {
 
-                   var s = response;
+                   //we are all set...course has been saved, push them over to the home page
+                   window.location.href = '/';
 
                }, function (response) {
 

@@ -119,7 +119,7 @@
                             <h2>Add A New Course</h2>
                         </div>
                         <div class="form-body">
-                            <form id="frmAddACourse" method="post" ng-submit="processForm()" class="sky-form">
+                            <form id="frmAddACourse" method="post" ng-submit="SaveACourse()" class="sky-form">
                                 <input type="hidden" name="__RequestVerificationToken" value="@(Model.TokenSet.CookieToken + ":" + Model.TokenSet.FormToken)" />
                                 <fieldset>
                                     <section>
