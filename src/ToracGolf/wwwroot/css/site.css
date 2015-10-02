@@ -3,7 +3,7 @@
 }
 
 .IsFakeLink {
-    cursor: pointer;
+    cursor: pointer !important;
 }
 
 [ng\:cloak], [ng-cloak], .ng-cloak {

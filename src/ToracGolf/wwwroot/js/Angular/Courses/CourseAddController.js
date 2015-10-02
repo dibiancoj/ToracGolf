@@ -33,7 +33,10 @@
                 Back9Par: 0,
                 Yardage: 0,
                 Slope: 0,
-                Rating: 0
+                Rating: 0,
+                Par: function () {
+                    return parseInt(this.Front9Par) + parseInt(this.Back9Par);
+                }
             });
         },
 

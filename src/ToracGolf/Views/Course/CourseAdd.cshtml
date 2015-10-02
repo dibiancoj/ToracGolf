@@ -166,10 +166,26 @@
                                             No Tee Boxes Specified
                                         </span>
 
-                                        <div ng-cloak ng-repeat="teeBox in model.TeeLocations track by teeBox.Description">
-                                            <span ng-click="EditTeeLocation($index)" class="IsFakeLink">{{teeBox.Description}}</span>
-                                            <span ng-click="DeleteTeeLocation($index)" class="glyphicon glyphicon-trash IsFakeLink DeleteTeeLocation" aria-hidden="true"></span>
-                                        </div>
+                                        <table ng-show="model.TeeLocations.length > 0" ng-cloak class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Description</th>
+                                                    <th>Par</th>
+                                                    <th>Slope</th>
+                                                    <th>Rating</th>
+                                                    <th>Delete</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="teeBox in model.TeeLocations track by teeBox.Description">
+                                                    <td ng-click="EditTeeLocation($index)" class="IsFakeLink">{{teeBox.Description}}</td>
+                                                    <td ng-click="EditTeeLocation($index)" class="IsFakeLink">{{teeBox.Par()}}</td>
+                                                    <td ng-click="EditTeeLocation($index)" class="IsFakeLink">{{teeBox.Slope}}</td>
+                                                    <td ng-click="EditTeeLocation($index)" class="IsFakeLink">{{teeBox.Rating}}</td>
+                                                    <td ng-click="DeleteTeeLocation($index)"><span class="glyphicon glyphicon-trash IsFakeLink DeleteTeeLocation" aria-hidden="true"></span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </section>
                                     <section>
                                         @Html.Partial("_ValidationSummaryAngular")
