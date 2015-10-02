@@ -5,15 +5,12 @@
         //set the default http headers, so we don't need to keep setting it everytime we make an ajax call
         $http.defaults.headers.common.RequestVerificationToken = $('[name=__RequestVerificationToken]').val();
 
-        //add the event handler to close the dailog, after we save the course and the user hit ok on the dialog
-        $('#CourseSaveDialog').on('hidden.bs.modal', function () {
-            //we are all set...course has been saved, push them over to the home page
-            window.location.href = '/';
-        })
-
         $scope.init = function (courseAddModel) {
+
             $scope.model = courseAddModel;
             $scope.ViewMode = 'AddCourse';
+
+            $scope.ShowSavedSuccessfulModel = true;
         },
 
         $scope.SaveACourse = function () {
@@ -22,13 +19,21 @@
                .then(function (response) {
 
                    //go show the save dialog
-                   $('#CourseSaveDialog').modal('show');
+                   $scope.ShowSavedSuccessfulModel = true;
+
+                   //$('#CourseSaveDialog').modal('show');
 
                }, function (response) {
 
                    ValidationFactory.ShowValidationErrors($scope, response);
 
                });
+        },
+
+        //event when the user clicks ok on the dialog
+        $scope.SaveACourseDialogOkEvent = function () {
+            //we are all set...course has been saved, push them over to the home page
+            window.location.href = '/jason';
         },
 
         $scope.AddTeeLocation = function () {

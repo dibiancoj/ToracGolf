@@ -25,12 +25,25 @@
     <script src="~/lib/angular/angular.js"></script>
     <script src="~/lib/angular/angular-animate.js"></script>
     <script src="~/js/angular/toracgolfapp.js"></script>
+    <script src="~/js/angular/common/modaldirective.js"></script>
     <script src="~/js/angular/common/validationfactory.js"></script>
     <script src="~/js/angular/courses/courseaddcontroller.js"></script>
 }
 
+@*add the save successfully dialog*@
+@*@Html.Partial("_Dialog", new ToracGolf.ViewModels.Dialogs.DialogViewModel("CourseSaveDialog", "Saved Successfully", "Your Course Has Been Saved Successfully.", new ToracGolf.ViewModels.Dialogs.DialogButton[]
+    {
+      new ToracGolf.ViewModels.Dialogs.DialogButton("Ok", "btn-default btn-primary", true)
+    }))*@
+
+
+
 @*so init is a method in my angular controller. we serialize the model and pass it into that method which set's the scope*@
 <section ng-app="toracApp" ng-controller="CourseAddController" ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model.CourseAddUserEntered))" class="slice slice-lg bg-image" style="background-image:url(images/backgrounds/LogInBackground.png);">
+
+    <modal title="Saved Succesfully" showdialog="ShowSavedSuccessfulModel" bodyhtml="Your Course Has Been Saved Successfully." closebuttontext="Ok" onmodalcloseevent="SaveACourseDialogOkEvent()">
+
+    </modal>
 
     <div id="EditTeeLocation" class="wp-section sky-form" ng-cloak ng-show="ViewMode=='EditTeeLocation'">
         <div class="container">
