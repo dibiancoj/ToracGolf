@@ -5,6 +5,12 @@
         //set the default http headers, so we don't need to keep setting it everytime we make an ajax call
         $http.defaults.headers.common.RequestVerificationToken = $('[name=__RequestVerificationToken]').val();
 
+        //add the event handler to close the dailog, after we save the course and the user hit ok on the dialog
+        $('#CourseSaveDialog').on('hidden.bs.modal', function () {
+            //we are all set...course has been saved, push them over to the home page
+            window.location.href = '/';
+        })
+
         $scope.init = function (courseAddModel) {
             $scope.model = courseAddModel;
             $scope.ViewMode = 'AddCourse';
@@ -15,8 +21,8 @@
             $http.post('AddACourse', $scope.model, ValidationFactory)
                .then(function (response) {
 
-                   //we are all set...course has been saved, push them over to the home page
-                   window.location.href = '/';
+                   //go show the save dialog
+                   $('#CourseSaveDialog').modal('show');
 
                }, function (response) {
 
@@ -65,7 +71,7 @@
 
             //we are going to remove this item from tee location list...this way it makes validation a tad easier
             if (indexToUpdateOrAdd != null) {
-                 
+
                 //we are in edit mode
                 $scope.model.TeeLocations.splice(indexToUpdateOrAdd, 1); //at the index, remove 1 element (the element we are editing)
             }
