@@ -85,11 +85,29 @@ namespace ToracGolf.Controllers
             {
                 try
                 {
-                    //let's try to add this user to the system
-                    var courseAddAttempt = await Courses.CourseAdd(DbContext, GetUserId(), model);
+                    var delimiters = new[] { ':', ';', ',' };
 
-                    //we saved it successfully
-                    return Json(new { id = 5 });
+                    if (model.CourseImage != null)
+                    {
+
+                        var parts = model.CourseImage.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
+
+                        var MimeType = parts[1];
+
+                        if (parts.Length == 4 || parts.Length == 5)
+                        {
+                            var fileToSave = Convert.FromBase64String(parts[parts.Length - 1]);
+
+                            //to save
+                           // System.IO.File.WriteAllBytes();
+                        }
+
+                        //let's try to add this user to the system
+                        var courseAddAttempt = await Courses.CourseAdd(DbContext, GetUserId(), model);
+
+                        //we saved it successfully
+                        return Json(new { id = 5 });
+                    }
                 }
                 catch (Exception ex)
                 {

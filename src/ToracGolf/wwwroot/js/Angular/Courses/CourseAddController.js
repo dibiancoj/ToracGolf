@@ -15,20 +15,48 @@
 
         $scope.SaveACourse = function () {
 
+            //let's go grab the upload file and put it into the model
+            var file = document.getElementById('CoursePicture').files[0]; //Files[0] = 1st file
+
+            //do they have a file
+            if (file == null) {
+
+                //no file, go save the rest
+                $scope.SaveACourseToServer(null);
+            }
+            else {
+
+                //we have a file, go read it
+                var reader = new FileReader();
+
+                //create the event so when it's done we can go save the record (file reader is async)
+                reader.onload = function (e) {
+                    $scope.SaveACourseToServer(e.target.result);
+                }
+
+                //go read the file now
+                reader.readAsDataURL(file);
+            }
+        },
+
+        $scope.SaveACourseToServer = function (imageData) {
+
+            //set the image data on the model
+            $scope.model.CourseImage = imageData;
+
+            //go to the server and try to save this
             $http.post('AddACourse', $scope.model, ValidationFactory)
                .then(function (response) {
 
                    //go show the save dialog
                    $scope.ShowSavedSuccessfulModal = true;
 
-                   //$('#CourseSaveDialog').modal('show');
-
                }, function (response) {
 
                    ValidationFactory.ShowValidationErrors($scope, response);
 
                });
-        },
+        }
 
         //event when the user clicks ok on the dialog
         $scope.SaveACourseDialogOkEvent = function () {

@@ -35,6 +35,11 @@ namespace ToracGolf.MiddleLayer.Courses
         [Required]
         public bool OnlyAllow18Holes { get; set; }
 
+        /// <summary>
+        /// This will be base 64 encoded from the json passed in
+        /// </summary>
+        public string CourseImage { get; set; }
+
         [EnsureMinimumElements(1, ErrorMessage = "No Tee Locations Have Been Entered. You Need Atleast 1 Tee Location.")]
         [Display(Name = "Tee Box Locations")]
         public IList<CourseAddEnteredDataTeeLocations> TeeLocations { get; set; }
