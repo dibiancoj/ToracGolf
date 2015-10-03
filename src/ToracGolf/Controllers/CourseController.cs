@@ -85,10 +85,15 @@ namespace ToracGolf.Controllers
             {
                 try
                 {
+                    //holds the byte array for the course image
+                    byte[] fileToSave = null;
 
-                    var fileToSave = ToracLibrary.AspNet.Graphics.GraphicsUtilities.ImageFromJsonBase64String(model.CourseImage);
-
-
+                    //do we have a course image?
+                    if (model.CourseImage != null)
+                    {
+                        //grab the byte array for the file
+                        fileToSave = ToracLibrary.AspNet.Graphics.GraphicsUtilities.ImageFromJsonBase64String(model.CourseImage).FileBytes;
+                    }
 
                     //let's try to add this user to the system
                     var courseAddAttempt = await Courses.CourseAdd(DbContext, GetUserId(), model);
