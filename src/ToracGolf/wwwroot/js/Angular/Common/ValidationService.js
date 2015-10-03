@@ -2,7 +2,7 @@
     'use strict';
 
     //create the factory
-    appToracGolf.service('ValidationFactory', function () {
+    appToracGolf.service('ValidationService', function () {
 
         return {
 

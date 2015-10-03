@@ -1,6 +1,6 @@
 ﻿(function () {
 
-    appToracGolf.controller('CourseAddController', ['$scope', '$http', 'ValidationFactory', function ($scope, $http, ValidationFactory) {
+    appToracGolf.controller('CourseAddController', ['$scope', '$http', 'ValidationService', 'FileReader', function ($scope, $http, ValidationService, FileReader) {
 
         //set the default http headers, so we don't need to keep setting it everytime we make an ajax call
         $http.defaults.headers.common.RequestVerificationToken = $('[name=__RequestVerificationToken]').val();
@@ -15,48 +15,26 @@
 
         $scope.SaveACourse = function () {
 
-            //let's go grab the upload file and put it into the model
-            var file = document.getElementById('CoursePicture').files[0]; //Files[0] = 1st file
+            //let's go grab the image
+            FileReader.ReadAsDataURL(document.getElementById('CoursePicture').files[0], $scope)
+                      .then(function (result) {
 
-            //do they have a file
-            if (file == null) {
+                          $scope.model.CourseImage = result;
 
-                //no file, go save the rest
-                $scope.SaveACourseToServer(null);
-            }
-            else {
+                          //let's go try to save our record
+                          $http.post('AddACourse', $scope.model, ValidationService)
+                             .then(function (response) {
 
-                //we have a file, go read it
-                var reader = new FileReader();
+                                 //go show the save dialog
+                                 $scope.ShowSavedSuccessfulModal = true;
 
-                //create the event so when it's done we can go save the record (file reader is async)
-                reader.onload = function (e) {
-                    $scope.SaveACourseToServer(e.target.result);
-                }
+                             }, function (response) {
 
-                //go read the file now
-                reader.readAsDataURL(file);
-            }
+                                 ValidationService.ShowValidationErrors($scope, response);
+
+                             });
+                      });
         },
-
-        $scope.SaveACourseToServer = function (imageData) {
-
-            //set the image data on the model
-            $scope.model.CourseImage = imageData;
-
-            //go to the server and try to save this
-            $http.post('AddACourse', $scope.model, ValidationFactory)
-               .then(function (response) {
-
-                   //go show the save dialog
-                   $scope.ShowSavedSuccessfulModal = true;
-
-               }, function (response) {
-
-                   ValidationFactory.ShowValidationErrors($scope, response);
-
-               });
-        }
 
         //event when the user clicks ok on the dialog
         $scope.SaveACourseDialogOkEvent = function () {
@@ -132,14 +110,14 @@
             if ($scope.model.TeeLocations.Any(function (x) { return x.Description === $scope.TempTeeLocation.Description; })) {
 
                 //we have 1 with the name name, let's throw up an error messsage
-                ValidationFactory.ShowValidationErrors($scope, { data: 'There is already a tee box with the same name' });
+                ValidationService.ShowValidationErrors($scope, { data: 'There is already a tee box with the same name' });
 
                 //exit the method
                 return;
             }
 
             //let's do a full validation now on the server
-            $http.post('ValidateTeeLocation', $scope.TempTeeLocation, ValidationFactory)
+            $http.post('ValidateTeeLocation', $scope.TempTeeLocation, ValidationService)
                 .then(function (response) {
 
                     //add this to the collection of tee boxes
@@ -154,7 +132,7 @@
                 }, function (response) {
 
                     //we have an error, so raise the validation error and show it
-                    ValidationFactory.ShowValidationErrors($scope, response);
+                    ValidationService.ShowValidationErrors($scope, response);
                 });
         },
 
