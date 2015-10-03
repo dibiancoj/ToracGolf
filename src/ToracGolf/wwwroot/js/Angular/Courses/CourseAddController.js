@@ -140,6 +140,14 @@
 
             //remove the guy from the collection
             $scope.model.TeeLocations.splice(index, 1);
+        },
+
+        $scope.DefaultTeeButton = function (event) {
+
+            //if they hit the enter key then trigger the save button
+            if ((event.which && event.which == 13) || (event.keyCode && event.keyCode == 13)) {
+                $scope.SaveTeeLocation();
+            }
         }
 
     }]);
