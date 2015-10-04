@@ -4,6 +4,7 @@
 /// <reference path="js/angular/common/modaldirective.js" />
 /// <reference path="js/angular/common/validationfactory.js" />
 /// <reference path="js/angular/courses/courseaddcontroller.js" />
+/// <reference path="js/angular/courses/validationservice.js" />
 /// <reference path="js/angular/toracgolfapp.js" />
 /// <reference path="js/site.js" />
 /// <reference path="js/toracgolfcore.min.js" />

@@ -1,9 +1,6 @@
 ﻿(function () {
 
-    appToracGolf.controller('CourseAddController', ['$scope', '$http', 'ValidationService', 'FileReader', function ($scope, $http, ValidationService, FileReader) {
-
-        //set the default http headers, so we don't need to keep setting it everytime we make an ajax call
-        $http.defaults.headers.common.RequestVerificationToken = $('[name=__RequestVerificationToken]').val();
+    appToracGolf.controller('CourseAddController', ['$scope', 'ValidationService', 'FileReader', 'CourseHttp', function ($scope, ValidationService, FileReader, CourseHttp) {
 
         $scope.init = function (courseAddModel) {
 
@@ -19,20 +16,18 @@
             FileReader.ReadAsDataURL(document.getElementById('CoursePicture').files[0], $scope)
                       .then(function (result) {
 
+                          //set the course image
                           $scope.model.CourseImage = result;
 
-                          //let's go try to save our record
-                          $http.post('AddACourse', $scope.model, ValidationService)
-                             .then(function (response) {
-
-                                 //go show the save dialog
-                                 $scope.ShowSavedSuccessfulModal = true;
-
-                             }, function (response) {
-
-                                 ValidationService.ShowValidationErrors($scope, response);
-
-                             });
+                          //go make the http call using the service
+                          CourseHttp.AddCourse($scope.model, ValidationService)
+                            .then(function (response) {
+                                //go show the save dialog
+                                $scope.ShowSavedSuccessfulModal = true;
+                            },
+                            function (errResponse) {
+                                ValidationService.ShowValidationErrors($scope, errResponse);
+                            });
                       });
         },
 
@@ -116,24 +111,24 @@
                 return;
             }
 
-            //let's do a full validation now on the server
-            $http.post('ValidateTeeLocation', $scope.TempTeeLocation, ValidationService)
-                .then(function (response) {
+            //go make the http call using the service
+            CourseHttp.AddTeeLocation($scope.TempTeeLocation, ValidationService)
+                    .then(function (response) {
 
-                    //add this to the collection of tee boxes
-                    $scope.model.TeeLocations.push($scope.TempTeeLocation);
+                        //add this to the collection of tee boxes
+                        $scope.model.TeeLocations.push($scope.TempTeeLocation);
 
-                    //set the view mode
-                    $scope.ViewMode = 'AddCourse';
+                        //set the view mode
+                        $scope.ViewMode = 'AddCourse';
 
-                    //so we are ok with this tee location, clear out the validation errors
-                    $scope.validationErrors = [];
+                        //so we are ok with this tee location, clear out the validation errors
+                        $scope.validationErrors = [];
 
-                }, function (response) {
+                    }, function (errResponse) {
 
-                    //we have an error, so raise the validation error and show it
-                    ValidationService.ShowValidationErrors($scope, response);
-                });
+                        //we have an error, so raise the validation error and show it
+                        ValidationService.ShowValidationErrors($scope, errResponse);
+                    });
         },
 
         $scope.DeleteTeeLocation = function (index) {
