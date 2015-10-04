@@ -39,6 +39,9 @@
 
         $scope.AddTeeLocation = function () {
 
+            //set the tee location title
+            $scope.TeeLocationTitle = 'Add A New Tee Location';
+
             //pass in a new tee location
             $scope.InitTeeLocationView(null, {
                 Description: '',
@@ -54,6 +57,9 @@
         },
 
         $scope.EditTeeLocation = function (index) {
+
+            //set the tee location title
+            $scope.TeeLocationTitle = 'Edit Tee Location';
 
             //we are going to not clone the object.
 
