@@ -56,25 +56,30 @@ namespace ToracGolf.MiddleLayer.Courses
         [StringLength(50)]
         public string Description { get; set; }
 
+        [Display(Name = "Yardage")]
         [Range(1, int.MaxValue, ErrorMessage = "Yardage Must Be Greater Than 0")]
         [Required]
-        public int Yardage { get; set; }
+        public int? Yardage { get; set; }
 
+        [Display(Name = "Front 9 Par")]
         [Range(1, int.MaxValue, ErrorMessage = "Front 9 Par Must Be Greater Than 0")]
         [Required]
-        public int Front9Par { get; set; }
+        public int? Front9Par { get; set; }
 
+        [Display(Name = "Back 9 Par")]
         [Range(1, int.MaxValue, ErrorMessage = "Back 9 Par Must Be Greater Than 0")]
         [Required]
-        public int Back9Par { get; set; }
+        public int? Back9Par { get; set; }
 
+        [Display(Name = "Rating")]
         [Range(50, 100, ErrorMessage = "Rating Must Be Between 50 and 100")]
         [Required]
-        public decimal Rating { get; set; }
+        public decimal? Rating { get; set; }
 
+        [Display(Name = "Slope")]
         [Range(55, 155, ErrorMessage = "Slope Must Be Between 55 and 155")]
         [Required]
-        public decimal Slope { get; set; }
+        public decimal? Slope { get; set; }
 
     }
 

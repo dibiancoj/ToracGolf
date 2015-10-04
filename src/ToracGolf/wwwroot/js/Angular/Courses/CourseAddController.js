@@ -45,11 +45,11 @@
             //pass in a new tee location
             $scope.InitTeeLocationView(null, {
                 Description: '',
-                Front9Par: 0,
-                Back9Par: 0,
-                Yardage: 0,
-                Slope: 0,
-                Rating: 0,
+                Front9Par: null,
+                Back9Par: null,
+                Yardage: null,
+                Slope: null,
+                Rating: null,
                 Par: function () {
                     return parseInt(this.Front9Par) + parseInt(this.Back9Par);
                 }

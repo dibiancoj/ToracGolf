@@ -30,11 +30,11 @@ namespace ToracGolf.MiddleLayer.Courses
                 CourseId = courseToAdd.CourseId,
                 Description = x.Description,
                 TeeLocationSortOrderId = i,
-                Front9Par = x.Front9Par,
-                Back9Par = x.Back9Par,
-                Rating = x.Rating,
-                Slope = x.Slope,
-                Yardage = x.Yardage
+                Front9Par = x.Front9Par.Value,
+                Back9Par = x.Back9Par.Value,
+                Rating = x.Rating.Value,
+                Slope = x.Slope.Value,
+                Yardage = x.Yardage.Value
             }).ToArray();
 
             //add the course to the context
