@@ -19,11 +19,13 @@ namespace ToracGolf.MiddleLayer.EFModel
         public virtual DbSet<UserSeason> UserSeason { get; set; }
         public virtual DbSet<Course> Course { get; set; }
         public virtual DbSet<CourseTeeLocations> CourseTeeLocations { get; set; }
+        public virtual DbSet<CourseImages> CourseImages { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserSeason>().ToTable("UserSeason");
             modelBuilder.Entity<Course>().ToTable("Course");
+            //modelBuilder.Entity<CourseImages>().ToTable("CourseImages");
         }
 
     }

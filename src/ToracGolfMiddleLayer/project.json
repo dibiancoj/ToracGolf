@@ -9,6 +9,7 @@
     "dnx451": { }
   },
   "dependencies": {
-    "EntityFramework": "6.1.3"
+    "EntityFramework": "6.1.3",
+    "ToracLibrary.AspNet": "1.0.0-*"
   }
 }

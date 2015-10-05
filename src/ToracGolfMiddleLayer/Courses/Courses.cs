@@ -43,6 +43,19 @@ namespace ToracGolf.MiddleLayer.Courses
             //go save it
             await dbContext.SaveChangesAsync();
 
+            //do we have a course image?
+            if (CourseData.CourseImage != null)
+            {
+                //grab the byte array for the file
+                byte[] fileToSave = ToracLibrary.AspNet.Graphics.GraphicsUtilities.ImageFromJsonBase64String(CourseData.CourseImage).FileBytes;
+
+                //let's go save the image
+                dbContext.CourseImages.Add(new CourseImages { CourseId = courseToAdd.CourseId, CourseImage = fileToSave });
+
+                //save it now
+                await dbContext.SaveChangesAsync();
+            }
+
             //return the course id
             return courseToAdd.CourseId;
         }
