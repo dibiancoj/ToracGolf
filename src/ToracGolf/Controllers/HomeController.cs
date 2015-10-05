@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using ToracGolf.ViewModels.Home;
 using ToracGolf.ViewModels.Navigation;
-using Microsoft.AspNet.Authorization;
 using ToracGolf.MiddleLayer.EFModel.Tables;
 using System.Security.Claims;
 using ToracGolf.Constants;

@@ -42,7 +42,7 @@
 
 
 @*so init is a method in my angular controller. we serialize the model and pass it into that method which set's the scope*@
-<section ng-app="toracApp" ng-controller="CourseAddController" ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model.CourseAddUserEntered))" class="slice slice-lg bg-image" style="background-image:url(images/backgrounds/LogInBackground.png);">
+<section ng-app="toracApp" ng-controller="CourseAddController" ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model.CourseAddUserEntered))" class="slice slice-lg bg-image" style="background-image:url(images/backgrounds/CourseAddBackground.jpg);">
 
     <modal title="Saved Succesfully" showdialog="ShowSavedSuccessfulModal" bodyhtml="Your Course Has Been Saved Successfully." closebuttontext="Ok" onmodalcloseevent="SaveACourseDialogOkEvent()">
 
@@ -61,14 +61,14 @@
                             <section>
                                 <label class="label">Description</label>
                                 <label class="input">
-                                    <i class="icon-append fa fa-user"></i>
+                                    <i class="icon-append fa fa-edit"></i>
                                     <input type="text" name="TeeLocationDescription" maxlength="50" ng-model="TempTeeLocation.Description" ng-keyup="DefaultTeeButton($event)" />
                                 </label>
                             </section>
                             <section>
                                 <label class="label">Total Yardage</label>
                                 <label class="input">
-                                    <i class="icon-append fa fa-user"></i>
+                                    <i class="icon-append fa fa-globe"></i>
                                     <input type="text" numbers-only numbers-only-allowOnlyInts="true" name="Total Yardage" ng-model="TempTeeLocation.Yardage" ng-keyup="DefaultTeeButton($event)" maxlength="4" />
                                 </label>
                             </section>
@@ -77,14 +77,14 @@
                                     <div class="col-md-6 col-xs-12">
                                         <label class="label">Front 9 Par</label>
                                         <label class="input">
-                                            <i class="icon-append fa fa-user"></i>
+                                            <i class="icon-append fa fa-tag"></i>
                                             <input type="text" name="Front9Par" numbers-only numbers-only-allowOnlyInts="true" ng-model="TempTeeLocation.Front9Par" ng-keyup="DefaultTeeButton($event)" maxlength="2" />
                                         </label>
                                     </div>
                                     <div class="col-md-6 col-xs-12">
                                         <label class="label">Back 9 Par</label>
                                         <label class="input">
-                                            <i class="icon-append fa fa-user"></i>
+                                            <i class="icon-append fa fa-tags"></i>
                                             <input type="text" name="Back9Par" numbers-only numbers-only-allowOnlyInts="true" ng-model="TempTeeLocation.Back9Par" ng-keyup="DefaultTeeButton($event)" maxlength="2" />
                                         </label>
                                     </div>
@@ -95,14 +95,14 @@
                                     <div class="col-md-6 col-xs-12">
                                         <label class="label">Rating</label>
                                         <label class="input">
-                                            <i class="icon-append fa fa-user"></i>
+                                            <i class="icon-append fa fa-calculator"></i>
                                             <input type="text" name="Rating" numbers-only numbers-only-allowOnlyInts="false" ng-model="TempTeeLocation.Rating" ng-keyup="DefaultTeeButton($event)" maxlength="5" />
                                         </label>
                                     </div>
                                     <div class="col-md-6 col-xs-12">
                                         <label class="label">Slope</label>
                                         <label class="input">
-                                            <i class="icon-append fa fa-user"></i>
+                                            <i class="icon-append fa fa-bar-chart"></i>
                                             <input type="text" name="Slope" numbers-only numbers-only-allowOnlyInts="false" ng-model="TempTeeLocation.Slope" ng-keyup="DefaultTeeButton($event)" maxlength="5" />
                                         </label>
                                     </div>
@@ -112,10 +112,10 @@
                                 @Html.Partial("_ValidationSummaryAngular")
                             </section>
                             <section>
-                                <button id="EditTeeLocationCancel" ng-click="CancelTeeLocation()" class="btn btn-base btn-icon btn-icon-right btn-sign-in pull-right" type="button">
+                                <button id="EditTeeLocationCancel" ng-click="CancelTeeLocation()" class="btn btn-base btn-icon btn-icon-right  fa-close pull-right" type="button">
                                     <span>Cancel</span>
                                 </button>
-                                <button id="EditTeeLocationSave" ng-click="SaveTeeLocation()" class="btn btn-base btn-icon btn-icon-right btn-sign-in pull-right" type="button">
+                                <button id="EditTeeLocationSave" ng-click="SaveTeeLocation()" class="CourseButtonLeft btn btn-base btn-icon btn-icon-right btn-sign-in pull-right" type="button">
                                     <span>Save</span>
                                 </button>
                             </section>
@@ -141,7 +141,7 @@
                                     <section>
                                         <label asp-for="CourseAddUserEntered.CourseName" class="label"></label>
                                         <label class="input">
-                                            <i class="icon-append fa fa-user"></i>
+                                            <i class="icon-append fa fa-edit"></i>
                                             <input type="text" name="CourseName" maxlength="100" ng-model="model.CourseName" />
                                             <span asp-validation-for="CourseAddUserEntered.CourseName" class="text-danger"></span>
                                         </label>
@@ -151,7 +151,7 @@
                                             <div class="col-md-6 col-xs-12">
                                                 <label asp-for="CourseAddUserEntered.Location" class="label"></label>
                                                 <label class="input">
-                                                    <i class="icon-append fa fa-user"></i>
+                                                    <i class="icon-append fa fa-globe"></i>
                                                     <input type="text" name="Location" ng-model="model.Location" maxlength="100" />
                                                     <span asp-validation-for="CourseAddUserEntered.Location" class="text-danger"></span>
                                                 </label>
@@ -167,7 +167,7 @@
                                     <section>
                                         <label asp-for="CourseAddUserEntered.Description" class="label"></label>
                                         <label class="input">
-                                            <i class="icon-append fa fa-user"></i>
+                                            <i class="icon-append fa fa-folder-o"></i>
                                             <input type="text" name="CourseName" maxlength="200" ng-model="model.Description" />
                                             <span asp-validation-for="CourseAddUserEntered.Description" class="text-danger"></span>
                                         </label>
@@ -175,7 +175,7 @@
                                     <section>
                                         <label>Course Picture</label>
                                         <label class="input">
-                                            <i class="icon-append fa fa-user"></i>
+                                            <i class="icon-append fa fa-file-picture-o"></i>
                                             <input id="CoursePicture" type="file" name="CoursePicture" />
                                         </label>
                                     </section>
@@ -218,8 +218,8 @@
                                             <span>Save</span>
                                         </button>
 
-                                        <button id="EditTeeLocation" ng-click="AddTeeLocation()" class="btn btn-base btn-icon btn-icon-right btn-sign-in pull-right" type="button">
-                                            <span>Add Tee Location</span>
+                                        <button id="EditTeeLocation" ng-click="AddTeeLocation()" class="CourseButtonLeft btn btn-base btn-icon btn-icon-right fa-plus-square pull-right" type="button">
+                                            <span id="AddTeeBoxButton">Add Tee Box</span>
                                         </button>
                                     </section>
                                 </fieldset>
