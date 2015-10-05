@@ -1,0 +1,38 @@
+﻿@{
+    Layout = "_ToracGolfLayout";
+    ViewBag.Title = "Course Listing";
+}
+@model  ToracGolf.ViewModels.Courses.CourseListingViewModel
+
+@section Breadcrumb{
+    @Html.Partial("_Breadcrumb", Model.Breadcrumb)
+}
+
+@section TopNav{
+    @Html.Partial("_TopNav", new ToracGolf.ViewModels.Navigation.TopNavViewModel(true))
+}
+
+@section PageDescription{
+    Course Listing
+}
+
+@*@section Styles{
+    <link href="~/css/Courses.css" rel="stylesheet" />
+}
+
+@section Scripts{
+    <script src="~/lib/jlinq/jlinq.js"></script>
+    <script src="~/lib/angular/angular.js"></script>
+    <script src="~/lib/angular/angular-animate.js"></script>
+    <script src="~/js/angular/toracgolfapp.js"></script>
+    <script src="~/js/angular/common/modaldirective.js"></script>
+    <script src="~/js/angular/common/numberonlydirective.js"></script>
+    <script src="~/js/angular/common/ValidationService.js"></script>
+    <script src="~/js/angular/common/filereaderfactory.js"></script>
+    <script src="~/js/angular/courses/coursehttp.js"></script>
+    <script src="~/js/angular/courses/courseaddcontroller.js"></script>
+}*@
+
+
+
+BLAAAAAAAAA

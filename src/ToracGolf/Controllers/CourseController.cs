@@ -48,14 +48,26 @@ namespace ToracGolf.Controllers
 
         #endregion
 
-        #region Add A Course
+        #region Breadcrumbs
 
-        private static IList<BreadcrumbNavItem> BuildAddACourseBreadcrumb()
+        private static IList<BreadcrumbNavItem> BaseBreadCrumb()
         {
             var breadCrumb = new List<BreadcrumbNavItem>();
 
             breadCrumb.Add(new BreadcrumbNavItem("Home", "/"));
             breadCrumb.Add(new BreadcrumbNavItem("Courses", "#"));
+
+            return breadCrumb;
+        }
+
+        #endregion
+
+        #region Add A Course
+
+        private static IList<BreadcrumbNavItem> BuildAddACourseBreadcrumb()
+        {
+            var breadCrumb = BaseBreadCrumb();
+
             breadCrumb.Add(new BreadcrumbNavItem("Add A Course", "#"));
 
             return breadCrumb;
@@ -137,6 +149,28 @@ namespace ToracGolf.Controllers
 
             //we have errors, return the model state
             return new BadRequestObjectResult(ModelState);
+        }
+
+        #endregion
+
+        #region Course Listing
+
+        private static IList<BreadcrumbNavItem> CourseListingBreadcrumb()
+        {
+            var breadCrumb = BaseBreadCrumb();
+
+            breadCrumb.Add(new BreadcrumbNavItem("Course Listing", "#"));
+
+            return breadCrumb;
+        }
+
+        [HttpGet]
+        [Route("ViewCourses", Name = "ViewCourses")]
+        public IActionResult CourseListing()
+        {
+            return View(new CourseListingViewModel(
+              CourseListingBreadcrumb(),
+              BuildTokenSet(Antiforgery)));
         }
 
         #endregion
