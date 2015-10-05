@@ -166,11 +166,12 @@ namespace ToracGolf.Controllers
 
         [HttpGet]
         [Route(ApplicationConstants.CourseListingRouteName, Name = ApplicationConstants.CourseListingRouteName)]
-        public IActionResult CourseListing()
+        public async Task<IActionResult> CourseListing()
         {
             return View(new CourseListingViewModel(
               CourseListingBreadcrumb(),
-              BuildTokenSet(Antiforgery)));
+              BuildTokenSet(Antiforgery),
+              await Courses.TotalNumberOfCourses(DbContext)));
         }
 
         [HttpPost]

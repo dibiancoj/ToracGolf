@@ -2,10 +2,13 @@
 
     appToracGolf.controller('CourseListingController', ['$scope', 'ValidationService', 'CourseHttp', function ($scope, ValidationService, CourseHttp) {
 
-        $scope.init = function (courseViewModel) {
+        $scope.init = function (totalNumberOfPages) {
 
             //set the initial page
             $scope.CurrentPageId = 0;
+
+            //total number of pages
+            $scope.TotalNumberOfPages = totalNumberOfPages;
 
             //go grab the records to display
             CourseHttp.CourseListing($scope.CurrentPageId)

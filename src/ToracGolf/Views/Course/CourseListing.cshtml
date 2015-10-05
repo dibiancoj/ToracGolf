@@ -30,7 +30,7 @@
     <script src="~/js/angular/courses/courselistingcontroller.js"></script>
 }
 
-<section ng-cloak class="slice bg-white" ng-app="toracApp" ng-controller="CourseListingController" ng-init="init()">
+<section ng-cloak class="slice bg-white" ng-app="toracApp" ng-controller="CourseListingController" ng-init="init(@Model.TotalPagesOfCourses)">
     <div class="wp-section">
         <div class="container">
             <div class="row">

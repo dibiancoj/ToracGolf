@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.EFModel.Tables;
+using ToracLibrary.AspNet.Paging;
 
 namespace ToracGolf.MiddleLayer.Courses
 {
@@ -61,10 +62,14 @@ namespace ToracGolf.MiddleLayer.Courses
             return courseToAdd.CourseId;
         }
 
+        #region Course Listing
+
+        private const int RecordsPerPage = 10;
+
         /// <param name="pageId">0 base index that holds what page we are on</param>
         public static async Task<IEnumerable<CourseListingData>> CourseSelect(ToracGolfContext dbContext, int pageId)
         {
-            const int recordsPerPage = 10;
+            const int recordsPerPage = RecordsPerPage;
             int skipAmount = pageId * recordsPerPage;
 
             return await dbContext.Course.OrderBy(x => x.Name).Select(x => new CourseListingData
@@ -75,6 +80,13 @@ namespace ToracGolf.MiddleLayer.Courses
                 CourseImage = dbContext.CourseImages.FirstOrDefault(y => y.CourseId == x.CourseId)
             }).Skip(skipAmount).Take(recordsPerPage).ToArrayAsync();
         }
+
+        public static async Task<int> TotalNumberOfCourses(ToracGolfContext dbContext)
+        {
+            return DataSetPaging.CalculateTotalPages(await dbContext.Course.CountAsync(), RecordsPerPage);
+        }
+
+        #endregion
 
     }
 }
