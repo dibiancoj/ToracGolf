@@ -15,6 +15,10 @@
 
             AddTeeLocation: function (model, validationService) {
                 return $http.post('ValidateTeeLocation', model, validationService);
+            },
+
+            CourseListing: function (pageId) {
+                return $http.post('CourseListingSelectPage', { pageIndexId: pageId });
             }
         }
 

@@ -6,6 +6,7 @@
 /// <reference path="js/angular/common/validationservice.js" />
 /// <reference path="js/angular/courses/courseaddcontroller.js" />
 /// <reference path="js/angular/courses/coursehttp.js" />
+/// <reference path="js/angular/courses/courselistingcontroller.js" />
 /// <reference path="js/angular/toracgolfapp.js" />
 /// <reference path="js/site.js" />
 /// <reference path="js/toracgolfcore.min.js" />

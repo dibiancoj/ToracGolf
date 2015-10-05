@@ -55,7 +55,7 @@ namespace ToracGolf.Controllers
             var breadCrumb = new List<BreadcrumbNavItem>();
 
             breadCrumb.Add(new BreadcrumbNavItem("Home", "/"));
-            breadCrumb.Add(new BreadcrumbNavItem("Courses", "#"));
+            breadCrumb.Add(new BreadcrumbNavItem("Courses", "CourseListingSelectPage"));
 
             return breadCrumb;
         }
@@ -171,6 +171,16 @@ namespace ToracGolf.Controllers
             return View(new CourseListingViewModel(
               CourseListingBreadcrumb(),
               BuildTokenSet(Antiforgery)));
+        }
+
+        [HttpPost]
+        [Route("CourseListingSelectPage", Name = "CourseListingSelectPage")]
+        public async Task<IActionResult> CourseListingSelect([FromBody] int pageIndexId)
+        {
+            return Json(new
+            {
+                PagedData = await Courses.CourseSelect(DbContext, 0)
+            });
         }
 
         #endregion

@@ -16,7 +16,7 @@
     Course Listing
 }
 
-@*@section Styles{
+@section Styles{
     <link href="~/css/Courses.css" rel="stylesheet" />
 }
 
@@ -25,14 +25,109 @@
     <script src="~/lib/angular/angular.js"></script>
     <script src="~/lib/angular/angular-animate.js"></script>
     <script src="~/js/angular/toracgolfapp.js"></script>
-    <script src="~/js/angular/common/modaldirective.js"></script>
-    <script src="~/js/angular/common/numberonlydirective.js"></script>
     <script src="~/js/angular/common/ValidationService.js"></script>
-    <script src="~/js/angular/common/filereaderfactory.js"></script>
     <script src="~/js/angular/courses/coursehttp.js"></script>
-    <script src="~/js/angular/courses/courseaddcontroller.js"></script>
-}*@
+    <script src="~/js/angular/courses/courselistingcontroller.js"></script>
+}
+
+<section ng-cloak class="slice bg-white" ng-app="toracApp" ng-controller="CourseListingController" ng-init="init()">
+    <div class="wp-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="wp-block default product-list-filters light-gray">
+                        <ul class="pagination pagination pull-left">
+                            <li><a href="#" hidefocus="true">«</a></li>
+                            <li class="active"><a href="#" hidefocus="true">1</a></li>
+                            <li><a href="#" hidefocus="true">2</a></li>
+                            <li><a href="#" hidefocus="true">3</a></li>
+                            <li><a href="#" hidefocus="true">4</a></li>
+                            <li><a href="#" hidefocus="true">5</a></li>
+                            <li><a href="#" hidefocus="true">»</a></li>
+                        </ul>
+                        <div class="filter sort-filter pull-right">
+                            <label>Sort by</label>
+                            <select>
+                                <option>Price low</option>
+                                <option>Price high</option>
+                                <option>Property type</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
 
 
+                <div class="col-md-8" ng-repeat="course in PagedData track by CourseData.CourseId">
+                    <ul class="list-listings-2">
+                        <li class="featured">
+                            <div class="listing-header bg-base">
+                                {{course.CourseData.Name}}
+                            </div>
+                            <div class="listing-image">
+                                <img src="{{'data:image/png;base64,' + course.CourseImage.CourseImage}}" class="img-responsive CourseListingImage CourseListingHeight" alt="">
+                                <a href="#" class="btn btn-lg btn-square btn-base btn-block-bm btn-icon btn-icon-go">See more</a>
+                            </div>
+                            <div class="cell">
+                                <div class="listing-body clearfix CourseListingHeight">
+                                    <h3><a href="#">{{course.CourseData.Name}}</a></h3>
+                                    <h4>{{course.CourseData.Location}}</h4>
+                                    <p>
+                                        {{course.CourseData.Description}}
+                                    </p>
+                                </div>
+                                <div class="listing-footer">
+                                    <ul class="aux-info">
+                                        <li><i class="fa fa-calendar"></i><strong>Date:</strong> 23 July</li>
+                                        <li><i class="fa fa-user"></i><strong>Jobs:</strong> 33 Jobs</li>
+                                        <li><i class="fa fa-globe"></i><strong>City:</strong> London</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
 
-BLAAAAAAAAA
+
+                <div class="col-md-4">
+                    <div class="sidebar">
+                        <ul class="categories mb-20">
+                            <li><a href="#">Web design (23)</a></li>
+                            <li><a href="#">Online business (100)</a></li>
+                            <li><a href="#">Marketing strategy (7)</a></li>
+                            <li><a href="#">Technology (33)</a></li>
+                            <li><a href="#">About finance (123)</a></li>
+                        </ul>
+                        <div class="panel panel-default panel-sidebar-1">
+                            <div class="panel-heading"><h2>Filter by</h2></div>
+                            <div class="panel-body">
+                                <form class="form-light" role="form">
+                                    <div class="form-group">
+                                        <label>Search for products</label>
+                                        <input type="text" class="form-control" placeholder="I want to find...">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Category</label>
+                                        <select class="form-control">
+                                            <option>Phones</option>
+                                            <option>Laptops</option>
+                                            <option>Cameras</option>
+                                            <option>Tablets</option>
+                                        </select>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox"> Display all
+                                        </label>
+                                    </div>
+                                    <button type="submit" class="btn btn-base">Search</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

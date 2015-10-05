@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.MiddleLayer.EFModel;
@@ -58,6 +59,20 @@ namespace ToracGolf.MiddleLayer.Courses
 
             //return the course id
             return courseToAdd.CourseId;
+        }
+
+        /// <param name="pageId">0 base index that holds what page we are on</param>
+        public static async Task<IEnumerable<CourseListingData>> CourseSelect(ToracGolfContext dbContext, int pageId)
+        {
+            const int recordsPerPage = 10;
+            int skipAmount = pageId * recordsPerPage;
+
+            return await dbContext.Course.OrderBy(x => x.CourseId).Select(x => new CourseListingData
+            {
+                CourseData = x,
+                TeeLocationCount = dbContext.CourseTeeLocations.Count(y => y.CourseId == x.CourseId),
+                CourseImage = dbContext.CourseImages.FirstOrDefault(y => y.CourseId == x.CourseId)
+            }).Skip(skipAmount).Take(recordsPerPage).ToArrayAsync();
         }
 
     }

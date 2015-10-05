@@ -2,11 +2,20 @@
     margin-left: 15px;
 }
 
-.CourseButtonLeft{
+.CourseButtonLeft {
     margin-right: 5px;
 }
 
-#AddTeeBoxButton{
+#AddTeeBoxButton {
     padding-left: 5px !important;
     padding-right: 35px !important;
+}
+
+.CourseListingHeight{
+     height: 200px !important;
+}
+
+.CourseListingImage {
+    width: 250px !important;
+    /*any element with this class should also use CourseListingHeight*/
 }
