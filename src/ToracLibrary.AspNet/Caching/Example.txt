@@ -1,0 +1,40 @@
+﻿in startup.cs - ConfigureServices
+
+            //jason added this to cache item
+            services.AddSingleton<IMemoryCache, MemoryCache>();
+
+#if DNX451
+            // utilize resource only available with .NET Framework
+            //add my cached items
+            var cacheFactory = new CacheFactoryStore();
+
+            //add the state listing factory configuration
+            cacheFactory.AddConfiguration("StateListing",
+                 () => ToracLibrary.Core.States.State.UnitedStatesStateListing()
+                .OrderBy(x => x.Value)
+                .Select(y => new SelectListItem { Text = y.Value, Value = y.Key })
+                .ToList());
+
+            services.AddSingleton<ICacheFactoryStore, CacheFactoryStore>((x) => cacheFactory);
+#else
+            //todo: do i need to add a .net core thing here?
+          
+#endif
+
+
+----
+
+in the controller constructor
+
+   public SecurityController(SignInManager<ApplicationUser> signInManagerAPI, IMemoryCache cache, ICacheFactoryStore cacheFactoryStore)
+        {
+
+
+
+
+
+---------
+
+Then to resolve
+
+CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>("StateListing", Cache))
