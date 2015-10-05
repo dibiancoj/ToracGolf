@@ -40,7 +40,7 @@ namespace ToracGolf.MiddleLayer.Courses
         /// </summary>
         public string CourseImage { get; set; }
 
-        [EnsureMinimumElements(1, ErrorMessage = "No Tee Locations Have Been Entered. You Need Atleast 1 Tee Location.")]
+        [EnsureMinimumElements(1, ErrorMessage = "No Tee Locations Have Been Entered.")]
         [Display(Name = "Tee Box Locations")]
         public IList<CourseAddEnteredDataTeeLocations> TeeLocations { get; set; }
 
