@@ -20,7 +20,7 @@ namespace ToracGolf.MiddleLayer.Courses
                 Description = CourseData.Description,
                 IsActive = true,
                 Pending = true,
-                Location = CourseData.Location,
+                City = CourseData.City,
                 StateId = Convert.ToInt32(CourseData.StateListing),
                 UserIdThatCreatedCourse = userId,
                 OnlyAllow18Holes = CourseData.OnlyAllow18Holes
@@ -70,6 +70,7 @@ namespace ToracGolf.MiddleLayer.Courses
             return await dbContext.Course.OrderBy(x => x.Name).Select(x => new CourseListingData
             {
                 CourseData = x,
+                StateDescription = dbContext.Ref_State.FirstOrDefault(y => y.StateId == x.StateId).Description,
                 TeeLocationCount = dbContext.CourseTeeLocations.Count(y => y.CourseId == x.CourseId),
                 CourseImage = dbContext.CourseImages.FirstOrDefault(y => y.CourseId == x.CourseId)
             }).Skip(skipAmount).Take(recordsPerPage).ToArrayAsync();

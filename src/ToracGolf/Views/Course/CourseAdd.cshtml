@@ -33,14 +33,6 @@
     <script src="~/js/angular/courses/courseaddcontroller.js"></script>
 }
 
-@*add the save successfully dialog*@
-@*@Html.Partial("_Dialog", new ToracGolf.ViewModels.Dialogs.DialogViewModel("CourseSaveDialog", "Saved Successfully", "Your Course Has Been Saved Successfully.", new ToracGolf.ViewModels.Dialogs.DialogButton[]
-    {
-      new ToracGolf.ViewModels.Dialogs.DialogButton("Ok", "btn-default btn-primary", true)
-    }))*@
-
-
-
 @*so init is a method in my angular controller. we serialize the model and pass it into that method which set's the scope*@
 <section ng-app="toracApp" ng-controller="CourseAddController" ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model.CourseAddUserEntered))" class="slice slice-lg bg-image" style="background-image:url(images/backgrounds/CourseAddBackground.jpg);">
 
@@ -149,11 +141,11 @@
                                     <section>
                                         <div class="row">
                                             <div class="col-md-6 col-xs-12">
-                                                <label asp-for="CourseAddUserEntered.Location" class="label"></label>
+                                                <label asp-for="CourseAddUserEntered.City" class="label"></label>
                                                 <label class="input">
                                                     <i class="icon-append fa fa-globe"></i>
-                                                    <input type="text" name="Location" ng-model="model.Location" maxlength="100" />
-                                                    <span asp-validation-for="CourseAddUserEntered.Location" class="text-danger"></span>
+                                                    <input type="text" name="Location" ng-model="model.City" maxlength="100" />
+                                                    <span asp-validation-for="CourseAddUserEntered.City" class="text-danger"></span>
                                                 </label>
                                             </div>
                                             <div class="col-md-6 col-xs-12">

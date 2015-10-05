@@ -19,7 +19,7 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
 
         [Required]
         [StringLength(100)]
-        public string Location { get; set; }
+        public string City { get; set; }
 
         [Required]
         public int StateId { get; set; }
