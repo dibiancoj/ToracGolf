@@ -34,7 +34,7 @@
         //event when the user clicks ok on the dialog
         $scope.SaveACourseDialogOkEvent = function () {
             //we are all set...course has been saved, push them over to the home page
-            window.location.href = '/jason';
+            window.location.href = 'ViewCourses';
         },
 
         $scope.AddTeeLocation = function () {

@@ -67,7 +67,7 @@ namespace ToracGolf.MiddleLayer.Courses
             const int recordsPerPage = 10;
             int skipAmount = pageId * recordsPerPage;
 
-            return await dbContext.Course.OrderBy(x => x.CourseId).Select(x => new CourseListingData
+            return await dbContext.Course.OrderBy(x => x.Name).Select(x => new CourseListingData
             {
                 CourseData = x,
                 TeeLocationCount = dbContext.CourseTeeLocations.Count(y => y.CourseId == x.CourseId),

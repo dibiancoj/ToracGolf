@@ -55,7 +55,7 @@ namespace ToracGolf.Controllers
             var breadCrumb = new List<BreadcrumbNavItem>();
 
             breadCrumb.Add(new BreadcrumbNavItem("Home", "/"));
-            breadCrumb.Add(new BreadcrumbNavItem("Courses", "CourseListingSelectPage"));
+            breadCrumb.Add(new BreadcrumbNavItem("Courses", ApplicationConstants.CourseListingRouteName));
 
             return breadCrumb;
         }
@@ -165,7 +165,7 @@ namespace ToracGolf.Controllers
         }
 
         [HttpGet]
-        [Route("ViewCourses", Name = "ViewCourses")]
+        [Route(ApplicationConstants.CourseListingRouteName, Name = ApplicationConstants.CourseListingRouteName)]
         public IActionResult CourseListing()
         {
             return View(new CourseListingViewModel(
