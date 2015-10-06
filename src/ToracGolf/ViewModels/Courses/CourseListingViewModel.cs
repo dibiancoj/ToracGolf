@@ -4,13 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ToracGolf.MiddleLayer.Courses;
 
 namespace ToracGolf.ViewModels.Courses
 {
     public class CourseListingViewModel
     {
 
-        public CourseListingViewModel(IList<Navigation.BreadcrumbNavItem> breadcrumb, AntiforgeryTokenSet tokenSet, int totalPagesOfCourses, IEnumerable<SelectListItem> sortOrder)
+        public CourseListingViewModel(IList<Navigation.BreadcrumbNavItem> breadcrumb, AntiforgeryTokenSet tokenSet, int totalPagesOfCourses, IEnumerable<CourseListingSortOrderModel> sortOrder)
         {
             Breadcrumb = breadcrumb;
             TokenSet = tokenSet;
@@ -24,7 +25,7 @@ namespace ToracGolf.ViewModels.Courses
 
         public int TotalPagesOfCourses { get; }
 
-        public IEnumerable<SelectListItem> SortOrder { get; }
+        public IEnumerable<CourseListingSortOrderModel> SortOrder { get; }
 
     }
 

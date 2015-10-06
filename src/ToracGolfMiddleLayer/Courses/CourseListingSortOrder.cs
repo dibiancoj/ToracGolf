@@ -8,8 +8,10 @@ using ToracLibrary.AspNet.EnumUtilities;
 namespace ToracGolf.MiddleLayer.Courses
 {
 
-    public static class CourseListingSortOrder
+    public class CourseListingSortOrder
     {
+
+        #region Enum
 
         public enum CourseListingSortEnum
         {
@@ -17,30 +19,55 @@ namespace ToracGolf.MiddleLayer.Courses
             [Description("Most Times Played")]
             MostTimesPlayed = 0,
 
+            [Description("Course Name Ascending")]
+            CourseNameAscending = 1,
+
+            [Description("Course Name Descending")]
+            CourseNameDescending = 2,
+
             [Description("Hardest Courses")]
-            HardestCourses = 1,
+            HardestCourses = 3,
 
             [Description("Easiest Courses")]
-            EasiestCourses = 2
+            EasiestCourses = 4
         }
+
+        #endregion
 
         #region Course Listing Sort Drop Down Builder
 
-        public static IDictionary<string, string> BuildDropDownValues()
+        public static IList<CourseListingSortOrderModel> BuildDropDownValues()
         {
-            var dct = new Dictionary<string, string>();
+            var lst = new List<CourseListingSortOrderModel>();
 
             foreach (var enumValue in EnumUtility.GetValuesLazy<CourseListingSortEnum>())
             {
-                dct.Add(enumValue.ToString(), EnumUtility.CustomAttributeGet<DescriptionAttribute>(enumValue).Description);
+                lst.Add(new CourseListingSortOrderModel(Convert.ToInt32(enumValue),
+                        enumValue.ToString(),
+                        EnumUtility.CustomAttributeGet<DescriptionAttribute>(enumValue).Description));
             }
 
-            return dct;
+            return lst;
         }
 
         #endregion
 
 
+    }
+
+    public class CourseListingSortOrderModel
+    {
+
+        public CourseListingSortOrderModel(int sortOrder, string value, string description)
+        {
+            SortOrder = sortOrder;
+            Value = value;
+            Description = description;
+        }
+
+        public int SortOrder { get; }
+        public string Value { get; }
+        public string Description { get; }
     }
 
 }

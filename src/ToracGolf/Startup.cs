@@ -110,7 +110,7 @@ namespace ToracGolf
 
             //add the course list sort oder
             cacheFactory.AddConfiguration(CacheKeyNames.CourseListingSortOrder,
-                () => MiddleLayer.Courses.CourseListingSortOrder.BuildDropDownValues().ToImmutableDictionary());
+                () => MiddleLayer.Courses.CourseListingSortOrder.BuildDropDownValues().ToImmutableList());
 
             services.AddSingleton<ICacheFactoryStore, CacheFactoryStore>((x) => cacheFactory);
 #else

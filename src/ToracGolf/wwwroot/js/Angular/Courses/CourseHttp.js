@@ -17,8 +17,8 @@
                 return $http.post('ValidateTeeLocation', model, validationService);
             },
 
-            CourseListing: function (pageId) {
-                return $http.post('CourseListingSelectPage', { PageIndexId: pageId });
+            CourseListing: function (pageId, sortBy) {
+                return $http.post('CourseListingSelectPage', { PageIndexId: pageId, SortBy: sortBy });
             }
         }
 

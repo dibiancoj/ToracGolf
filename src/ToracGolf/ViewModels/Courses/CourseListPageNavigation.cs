@@ -19,7 +19,7 @@ namespace ToracGolf.ViewModels.Courses
 
         public int PageIndexId { get; set; }
 
-        public CourseListingSortEnum SortOrder { get; set; }
+        public CourseListingSortEnum SortBy { get; set; }
 
         #endregion
 

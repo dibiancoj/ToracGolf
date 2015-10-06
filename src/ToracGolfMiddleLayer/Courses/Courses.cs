@@ -67,12 +67,39 @@ namespace ToracGolf.MiddleLayer.Courses
         private const int RecordsPerPage = 1;
 
         /// <param name="pageId">0 base index that holds what page we are on</param>
-        public static async Task<IEnumerable<CourseListingData>> CourseSelect(ToracGolfContext dbContext, int pageId)
+        public static async Task<IEnumerable<CourseListingData>> CourseSelect(ToracGolfContext dbContext, int pageId, CourseListingSortOrder.CourseListingSortEnum SortBy)
         {
             const int recordsPerPage = RecordsPerPage;
             int skipAmount = pageId * recordsPerPage;
 
-            return await dbContext.Course.OrderBy(x => x.Name).Select(x => new CourseListingData
+            //build the queryable
+            var queryable = dbContext.Course.AsQueryable();
+
+            //figure out what you want to order by
+            if (SortBy == CourseListingSortOrder.CourseListingSortEnum.CourseNameAscending)
+            {
+                queryable = queryable.OrderBy(x => x.Name);
+            }
+            else if (SortBy == CourseListingSortOrder.CourseListingSortEnum.CourseNameDescending)
+            {
+                queryable = queryable.OrderByDescending(x => x.Name);
+            }
+            else if (SortBy == CourseListingSortOrder.CourseListingSortEnum.EasiestCourses)
+            {
+                queryable = queryable.OrderBy(x => x.CourseTeeLocations.Min(y => y.Slope));
+            }
+            else if (SortBy == CourseListingSortOrder.CourseListingSortEnum.HardestCourses)
+            {
+                queryable = queryable.OrderByDescending(x => x.CourseTeeLocations.Max(y => y.Slope));
+            }
+            else if (SortBy == CourseListingSortOrder.CourseListingSortEnum.MostTimesPlayed)
+            {
+                //todo: need to fix when we get the rounds table going
+                queryable = queryable.OrderBy(x => x.Name);
+            }
+
+            //go run the query now
+            return await queryable.Select(x => new CourseListingData
             {
                 CourseData = x,
                 StateDescription = dbContext.Ref_State.FirstOrDefault(y => y.StateId == x.StateId).Description,

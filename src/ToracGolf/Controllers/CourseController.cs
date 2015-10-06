@@ -101,7 +101,7 @@ namespace ToracGolf.Controllers
                     var courseAddAttempt = await Courses.CourseAdd(DbContext, GetUserId(), model);
 
                     //we saved it successfully
-                    return Json(new { id = 5 });
+                    return Json(new { result = true });
                 }
                 catch (Exception ex)
                 {
@@ -172,7 +172,7 @@ namespace ToracGolf.Controllers
               CourseListingBreadcrumb(),
               BuildTokenSet(Antiforgery),
               await Courses.TotalNumberOfCourses(DbContext),
-              CacheFactory.GetCacheItem<IDictionary<string, string>>(CacheKeyNames.CourseListingSortOrder, Cache).Select(x => new SelectListItem { Value = x.Key, Text = x.Value }).ToArray()));
+              CacheFactory.GetCacheItem<IList<CourseListingSortOrderModel>>(CacheKeyNames.CourseListingSortOrder, Cache).ToArray()));
         }
 
         [HttpPost]
@@ -181,7 +181,7 @@ namespace ToracGolf.Controllers
         {
             return Json(new
             {
-                PagedData = await Courses.CourseSelect(DbContext, listNav.PageIndexId)
+                PagedData = await Courses.CourseSelect(DbContext, listNav.PageIndexId, listNav.SortBy)
             });
         }
 
