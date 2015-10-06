@@ -74,12 +74,12 @@ namespace ToracGolf.MiddleLayer.Courses
         [Display(Name = "Rating")]
         [Range(50, 100, ErrorMessage = "Rating Must Be Between 50 and 100")]
         [Required(ErrorMessage = "Rating Is A Required Field")]
-        public decimal? Rating { get; set; }
+        public double? Rating { get; set; }
 
         [Display(Name = "Slope")]
         [Range(55, 155, ErrorMessage = "Slope Must Be Between 55 and 155")]
         [Required(ErrorMessage = "Slope Is A Required Field")]
-        public decimal? Slope { get; set; }
+        public double? Slope { get; set; }
 
     }
 

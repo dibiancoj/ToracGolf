@@ -9,7 +9,7 @@ using ToracLibrary.AspNet.Paging;
 
 namespace ToracGolf.MiddleLayer.Courses
 {
-    public static class Courses
+    public static class CourseDataProvider
     {
 
         public static async Task<int> CourseAdd(ToracGolfContext dbContext, int userId, CourseAddEnteredData CourseData)
@@ -67,7 +67,7 @@ namespace ToracGolf.MiddleLayer.Courses
         public static IQueryable<Course> CourseSelectQueryBuilder(ToracGolfContext dbContext, string courseNameFilter, int? StateFilter)
         {
             //build the queryable
-            var queryable = dbContext.Course.AsQueryable();
+            var queryable = dbContext.Course.AsNoTracking().AsQueryable();
 
             //if we have a course name, add it as a filter
             if (!string.IsNullOrEmpty(courseNameFilter))

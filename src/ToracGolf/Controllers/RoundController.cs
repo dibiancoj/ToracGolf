@@ -6,6 +6,7 @@ using Microsoft.Framework.Caching.Memory;
 using Microsoft.Framework.OptionsModel;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -89,52 +90,44 @@ namespace ToracGolf.Controllers
                 new RoundAddEnteredData() { RoundDate = DateTime.Now, StateId = Context.User.Claims.First(x => x.Type == ClaimTypes.StateOrProvince).Value }));
         }
 
-        //[HttpPost]
-        //[Route("AddARound", Name = "AddARound")]
-        //[ValidateCustomAntiForgeryToken()]
-        //public async Task<IActionResult> RoundAdd([FromBody]CourseAddEnteredData model)
-        //{
-        //    //do we have a valid model?
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            //let's try to add this user to the system
-        //            var courseAddAttempt = await Courses.CourseAdd(DbContext, GetUserId(), model);
+        [HttpPost]
+        [Route("AddARound", Name = "AddARound")]
+        [ValidateCustomAntiForgeryToken()]
+        public async Task<IActionResult> RoundAdd([FromBody]RoundAddEnteredData model)
+        {
+            //do we have a valid model?
+            if (ModelState.IsValid)
+            {
+                //let's try to add this user to the system
+                //var roundAddAttempt = await Courses.CourseAdd(DbContext, GetUserId(), model);
 
-        //            //we saved it successfully
-        //            return Json(new { result = true });
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            var sqlException = ToracLibrary.AspNet.ExceptionHelpers.ExceptionUtilities.RetrieveExceptionType<SqlException>(ex);
+                //we saved it successfully
+                return Json(new { result = true });
+            }
 
-        //            //do we have a sql exception/* PK/UKC violation */
-        //            if (sqlException != null && sqlException.Errors.OfType<SqlError>().Any(x => x.Number == UniqueConstraintId))
-        //            {
-        //                // it's a dupe... do something about it
-        //                ModelState.AddModelError(string.Empty, "Course Name Is Already Registered.");
-        //            }
-        //            else
-        //            {
-        //                // it's something else...
-        //                throw;
-        //            }
-        //        }
-        //    }
+            //add a generic error if we don't have (this way we return something)
+            if (ModelState.ErrorCount == 0)
+            {
+                ModelState.AddModelError(string.Empty, "Not Able To Save Round");
+            }
 
-        //    //add a generic error if we don't have (this way we return something)
-        //    if (ModelState.ErrorCount == 0)
-        //    {
-        //        ModelState.AddModelError(string.Empty, "Not Able To Save Course");
-        //    }
+            //return the error here
+            return new BadRequestObjectResult(ModelState);
+        }
 
-        //    //return the error here
-        //    return new BadRequestObjectResult(ModelState);
-        //}
+        [HttpPost]
+        [Route("CourseSelectByState", Name = "CourseSelectByState")]
+        [ValidateCustomAntiForgeryToken()]
+        public async Task<IActionResult> SelectCoursesForState([FromBody]CourseSelectByStateId model)
+        {
+            //go grab the course listing
+            return Json(new
+            {
+                CourseData = await RoundDataProvider.CoursesSelectForState(DbContext, model.StateId)
+            });
+        }
 
         #endregion
 
     }
-
 }

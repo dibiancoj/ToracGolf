@@ -1,6 +1,6 @@
 ﻿(function () {
 
-    appToracGolf.controller('RoundAddController', ['$scope', 'ValidationService', 'RoundHttp', function ($scope, ValidationService, RoundHttp) {
+    appToracGolf.controller('RoundAddController', ['$scope', 'ValidationService', 'RoundHttp', '$filter', function ($scope, ValidationService, RoundHttp, $filter) {
 
         $scope.init = function (roundAddModel) {
 
@@ -8,10 +8,14 @@
             $scope.model = roundAddModel;
         },
 
+        $scope.$watch('model.RoundDate', function (newValue) {
+            $scope.model.RoundDate = $filter('date')(newValue, 'MM/dd/yyyy');
+        });
+
         $scope.SaveARound = function () {
 
             //go make the http call using the service
-            CourseHttp.AddRound($scope.model, ValidationService)
+            RoundHttp.AddRound($scope.model, ValidationService)
               .then(function (response) {
                   //go show the save dialog
                   $scope.ShowSavedSuccessfulModal = true;
@@ -27,8 +31,17 @@
             window.location.href = 'ViewRounds';
         },
 
-        $scope.SaveRound = function () {
-            $scope.model.RoundDate = '10/7/2015';
+        $scope.FetchCoursesForState = function () {
+
+            RoundHttp.FetchCoursesForState($scope.model.StateId)
+             .then(function (response) {
+
+                 //set the courses for this state
+                 $scope.CourseLookup = response.data.CourseData;
+             },
+             function (errResponse) {
+                 alert('Error Calling FetchCoursesForState');
+             });
         }
 
     }]);

@@ -11,6 +11,10 @@
 
             AddRound: function (model, validationService) {
                 return $http.post('AddARound', model, validationService);
+            },
+
+            FetchCoursesForState: function (stateId) {
+                return $http.post('CourseSelectByState', { StateId: stateId });
             }
         }
 

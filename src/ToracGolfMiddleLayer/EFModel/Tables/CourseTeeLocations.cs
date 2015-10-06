@@ -31,16 +31,11 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
         [Required]
         public int Back9Par { get; set; }
 
-        public int CoursePar
-        {
-            get { return Front9Par + Back9Par; }
-        }
+        [Required]
+        public double Rating { get; set; }
 
         [Required]
-        public decimal Rating { get; set; }
-
-        [Required]
-        public decimal Slope { get; set; }
+        public double Slope { get; set; }
 
     }
 }

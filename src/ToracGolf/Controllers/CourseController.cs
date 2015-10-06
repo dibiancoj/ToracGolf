@@ -100,7 +100,7 @@ namespace ToracGolf.Controllers
                 try
                 {
                     //let's try to add this user to the system
-                    var courseAddAttempt = await Courses.CourseAdd(DbContext, GetUserId(), model);
+                    var courseAddAttempt = await CourseDataProvider.CourseAdd(DbContext, GetUserId(), model);
 
                     //we saved it successfully
                     return Json(new { result = true });
@@ -176,7 +176,7 @@ namespace ToracGolf.Controllers
             return View(new CourseListingViewModel(
               breadCrumb,
               BuildTokenSet(Antiforgery),
-              await Courses.TotalNumberOfCourses(DbContext, null, null, Configuration.Options.CourseListingRecordsPerPage),
+              await CourseDataProvider.TotalNumberOfCourses(DbContext, null, null, Configuration.Options.CourseListingRecordsPerPage),
               CacheFactory.GetCacheItem<IList<CourseListingSortOrderModel>>(CacheKeyNames.CourseListingSortOrder, Cache).ToArray(),
               stateListing,
               Context.User.Claims.First(x => x.Type == ClaimTypes.StateOrProvince).Value));
@@ -192,8 +192,8 @@ namespace ToracGolf.Controllers
 
             return Json(new
             {
-                PagedData = await Courses.CourseSelect(DbContext, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, stateFilter, Configuration.Options.CourseListingRecordsPerPage),
-                TotalNumberOfPages = listNav.ResetPager ? new int?(await Courses.TotalNumberOfCourses(DbContext, listNav.CourseNameFilter, stateFilter, Configuration.Options.CourseListingRecordsPerPage)) : null
+                PagedData = await CourseDataProvider.CourseSelect(DbContext, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, stateFilter, Configuration.Options.CourseListingRecordsPerPage),
+                TotalNumberOfPages = listNav.ResetPager ? new int?(await CourseDataProvider.TotalNumberOfCourses(DbContext, listNav.CourseNameFilter, stateFilter, Configuration.Options.CourseListingRecordsPerPage)) : null
             });
         }
 

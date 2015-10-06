@@ -37,7 +37,6 @@
 <section ng-app="toracApp" ng-controller="RoundAddController" ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model.RoundEnteredData))" class="slice slice-lg bg-image" style="background-image:url(images/backgrounds/CourseAddBackground.jpg);">
 
     <modal title="Saved Succesfully" showdialog="ShowSavedSuccessfulModal" bodyhtml="Your Round Has Been Saved Successfully." closebuttontext="Ok" onmodalcloseevent="SaveARoundDialogOkEvent()">
-
     </modal>
 
     <div id="AddRound" class="wp-section">
@@ -56,25 +55,34 @@
                                         <label asp-for="RoundEnteredData.RoundDate" class="label"></label>
                                         <label class="input">
                                             <i class="icon-append fa fa-edit"></i>
-                                            <input id="RoundDate" date-picker name="RoundDate" maxlength="100" ng-model="model.RoundDate | date:'shortDate'" />
+                                            <input id="RoundDate" date-picker name="RoundDate" maxlength="100" ng-model="model.RoundDate" />
                                         </label>
                                     </section>
                                     <section>
                                         <label>State</label>
                                         <label class="select">
-                                            <select name="StateListing" ng-model="model.StateId" asp-for="RoundEnteredData.StateId" asp-items="Model.StateListing"></select>
+                                            <select name="StateListing" ng-change="FetchCoursesForState()" ng-model="model.StateId" asp-for="RoundEnteredData.StateId" asp-items="Model.StateListing"></select>
                                         </label>
                                     </section>
                                     <section>
                                         <label asp-for="RoundEnteredData.CourseId" class="label"></label>
                                         <label class="select">
+                                            <select ng-model="model.CourseId">
+                                                <option value="{{course.CourseId}}" ng-repeat="course in CourseLookup" ng-selected="course.CourseId == model.CourseId">
+                                                    {{course.Name}}
+                                                </option>
+                                            </select>
                                             @* <select name="CourseListing" ng-model="model.StateListing" asp-for="CourseAddUserEntered.StateListing" asp-items="Model.StateListing"></select>*@
                                         </label>
                                     </section>
                                     <section>
                                         <label asp-for="RoundEnteredData.TeeLocationId" class="label"></label>
                                         <label class="select">
-                                            @*<select name="TeeBoxListing" ng-model="model.StateListing" asp-for="CourseAddUserEntered.StateListing" asp-items="Model.StateListing"></select>*@
+                                            <select ng-model="model.CourseId">
+                                                <option value="{{teeBox.CourseTeeLocationId}}" ng-repeat="teeBox in CourseLookup.TeeLocations" ng-selected="teeBox.CourseTeeLocationId == model.TeeLocationId">
+                                                    {{teeBox.Description}}
+                                                </option>
+                                            </select>
                                         </label>
                                     </section>
                                     <section>
@@ -88,9 +96,7 @@
                                             </div>
                                             <div class="col-md-6 col-xs-12">
                                                 <label asp-for="RoundEnteredData.NineHoleScore" class="label"></label>
-
                                                 <input type="checkbox" name="NineHoleScore" ng-model="model.NineHoleScore" />
-
                                             </div>
                                         </div>
                                     </section>
