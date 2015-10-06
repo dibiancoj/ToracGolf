@@ -6,6 +6,9 @@
 
             //set the model
             $scope.model = roundAddModel;
+
+            //go grab the course for the selected states
+            $scope.FetchCoursesForState();
         },
 
         $scope.$watch('model.RoundDate', function (newValue) {
@@ -23,7 +26,7 @@
               function (errResponse) {
                   ValidationService.ShowValidationErrors($scope, errResponse);
               });
-        },
+        }, 
 
         //event when the user clicks ok on the dialog
         $scope.SaveARoundDialogOkEvent = function () {
