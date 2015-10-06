@@ -1,0 +1,3 @@
+﻿@model  Microsoft.AspNet.Antiforgery.AntiforgeryTokenSet
+
+<input type="hidden" name="__RequestVerificationToken" value="@(Model.CookieToken + ":" + Model.FormToken)" />

@@ -8,5 +8,6 @@ namespace ToracGolf.Constants
     public static class ApplicationConstants
     {
         public const string CourseListingRouteName = "ViewCourses";
+        public const string RoundListingRouteName = "ViewRounds";
     }
 }

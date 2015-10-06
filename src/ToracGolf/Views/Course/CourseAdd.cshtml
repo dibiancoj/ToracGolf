@@ -128,14 +128,13 @@
                         </div>
                         <div class="form-body">
                             <form id="frmAddACourse" method="post" ng-submit="SaveACourse()" class="sky-form">
-                                <input type="hidden" name="__RequestVerificationToken" value="@(Model.TokenSet.CookieToken + ":" + Model.TokenSet.FormToken)" />
+                                @Html.Partial("_AngularTokenSet", Model.TokenSet)
                                 <fieldset>
                                     <section>
                                         <label asp-for="CourseAddUserEntered.CourseName" class="label"></label>
                                         <label class="input">
                                             <i class="icon-append fa fa-edit"></i>
                                             <input type="text" name="CourseName" maxlength="100" ng-model="model.CourseName" />
-                                            <span asp-validation-for="CourseAddUserEntered.CourseName" class="text-danger"></span>
                                         </label>
                                     </section>
                                     <section>
@@ -145,13 +144,12 @@
                                                 <label class="input">
                                                     <i class="icon-append fa fa-globe"></i>
                                                     <input type="text" name="Location" ng-model="model.City" maxlength="100" />
-                                                    <span asp-validation-for="CourseAddUserEntered.City" class="text-danger"></span>
                                                 </label>
                                             </div>
                                             <div class="col-md-6 col-xs-12">
                                                 <label asp-for="CourseAddUserEntered.StateListing" class="label"></label>
                                                 <label class="select">
-                                                    <select name="StateListing" ng-model="model.StateListing" asp-for="CourseAddUserEntered.StateListing" asp-items="Model.StateListing"></select>
+                                                    <select name="StateListing" ng-model="model.StateId" asp-for="CourseAddUserEntered.StateListing" asp-items="Model.StateListing"></select>
                                                 </label>
                                             </div>
                                         </div>
@@ -161,7 +159,6 @@
                                         <label class="input">
                                             <i class="icon-append fa fa-folder-o"></i>
                                             <input type="text" name="CourseName" maxlength="200" ng-model="model.Description" />
-                                            <span asp-validation-for="CourseAddUserEntered.Description" class="text-danger"></span>
                                         </label>
                                     </section>
                                     <section>

@@ -1,0 +1,140 @@
+﻿@{
+    Layout = "_ToracGolfLayout";
+    ViewBag.Title = "Add A Round";
+}
+@model  ToracGolf.ViewModels.Rounds.RoundAddViewModel
+
+@section Breadcrumb{
+    @Html.Partial("_Breadcrumb", Model.Breadcrumb)
+}
+
+@section TopNav{
+    @Html.Partial("_TopNav", new ToracGolf.ViewModels.Navigation.TopNavViewModel(true))
+}
+
+@section PageDescription{
+    Add A New Round
+}
+
+@section Styles{
+    <link href="~/css/Rounds.css" rel="stylesheet" />
+}
+
+@section Scripts{
+    <script src="~/lib/jlinq/jlinq.js"></script>
+    <script src="~/lib/angular/angular.js"></script>
+    <script src="~/lib/angular/angular-animate.js"></script>
+    <script src="~/js/angular/toracgolfapp.js"></script>
+    <script src="~/js/angular/common/modaldirective.js"></script>
+    <script src="~/js/angular/common/numberonlydirective.js"></script>
+    <script src="~/js/angular/common/datepickerdirective.js"></script>
+    <script src="~/js/angular/common/ValidationService.js"></script>
+    <script src="~/js/angular/rounds/roundhttp.js"></script>
+    <script src="~/js/angular/rounds/roundaddcontroller.js"></script>
+}
+
+@*so init is a method in my angular controller. we serialize the model and pass it into that method which set's the scope*@
+<section ng-app="toracApp" ng-controller="RoundAddController" ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model.RoundEnteredData))" class="slice slice-lg bg-image" style="background-image:url(images/backgrounds/CourseAddBackground.jpg);">
+
+    <modal title="Saved Succesfully" showdialog="ShowSavedSuccessfulModal" bodyhtml="Your Round Has Been Saved Successfully." closebuttontext="Ok" onmodalcloseevent="SaveARoundDialogOkEvent()">
+
+    </modal>
+
+    <div id="AddRound" class="wp-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+                    <div class="wp-block default user-form user-form-alpha no-margin">
+                        <div class="form-header">
+                            <h2>Add A New Round</h2>
+                        </div>
+                        <div class="form-body">
+                            <form id="frmAddACourse" method="post" ng-submit="SaveACourse()" class="sky-form">
+                                @Html.Partial("_AngularTokenSet", Model.TokenSet)
+                                <fieldset>
+                                    <section>
+                                        <label asp-for="RoundEnteredData.RoundDate" class="label"></label>
+                                        <label class="input">
+                                            <i class="icon-append fa fa-edit"></i>
+                                            <input id="RoundDate" date-picker name="RoundDate" maxlength="100" ng-model="model.RoundDate | date:'shortDate'" />
+                                        </label>
+                                    </section>
+                                    <section>
+                                        <label>State</label>
+                                        <label class="select">
+                                            <select name="StateListing" ng-model="model.StateId" asp-for="RoundEnteredData.StateId" asp-items="Model.StateListing"></select>
+                                        </label>
+                                    </section>
+                                    <section>
+                                        <label asp-for="RoundEnteredData.CourseId" class="label"></label>
+                                        <label class="select">
+                                            @* <select name="CourseListing" ng-model="model.StateListing" asp-for="CourseAddUserEntered.StateListing" asp-items="Model.StateListing"></select>*@
+                                        </label>
+                                    </section>
+                                    <section>
+                                        <label asp-for="RoundEnteredData.TeeLocationId" class="label"></label>
+                                        <label class="select">
+                                            @*<select name="TeeBoxListing" ng-model="model.StateListing" asp-for="CourseAddUserEntered.StateListing" asp-items="Model.StateListing"></select>*@
+                                        </label>
+                                    </section>
+                                    <section>
+                                        <div class="row">
+                                            <div class="col-md-6 col-xs-12">
+                                                <label asp-for="RoundEnteredData.Score" class="label"></label>
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-folder-o"></i>
+                                                    <input type="text" name="Score" numbers-only numbers-only-allowOnlyInts="true" maxlength="3" ng-model="model.Score" />
+                                                </label>
+                                            </div>
+                                            <div class="col-md-6 col-xs-12">
+                                                <label asp-for="RoundEnteredData.NineHoleScore" class="label"></label>
+
+                                                <input type="checkbox" name="NineHoleScore" ng-model="model.NineHoleScore" />
+
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <hr />
+                                    <section>
+                                        <span ng-show="model.TeeLocations.length == 0">
+                                            No Tee Boxes Specified
+                                        </span>
+
+                                        <table ng-show="model.TeeLocations.length > 0" ng-cloak class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Description</th>
+                                                    <th>Par</th>
+                                                    <th>Slope</th>
+                                                    <th>Rating</th>
+                                                    <th>Delete</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="teeBox in model.TeeLocations track by teeBox.Description">
+                                                    <td ng-click="EditTeeLocation($index)" class="IsFakeLink">{{teeBox.Description}}</td>
+                                                    <td ng-click="EditTeeLocation($index)" class="IsFakeLink">{{teeBox.Par()}}</td>
+                                                    <td ng-click="EditTeeLocation($index)" class="IsFakeLink">{{teeBox.Slope}}</td>
+                                                    <td ng-click="EditTeeLocation($index)" class="IsFakeLink">{{teeBox.Rating}}</td>
+                                                    <td ng-click="DeleteTeeLocation($index)"><span class="glyphicon glyphicon-trash IsFakeLink DeleteTeeLocation" aria-hidden="true"></span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </section>
+                                    <section>
+                                        @Html.Partial("_ValidationSummaryAngular")
+                                    </section>
+                                    <section>
+                                        <button ng-click="SaveRound()" class="btn btn-base btn-icon btn-icon-right btn-sign-in pull-right" type="submit">
+                                            <span>Save</span>
+                                        </button>
+                                    </section>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

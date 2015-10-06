@@ -69,24 +69,21 @@ namespace ToracGolf.Controllers
 
         #region Add A Course
 
-        private static IList<BreadcrumbNavItem> BuildAddACourseBreadcrumb()
-        {
-            var breadCrumb = BaseBreadCrumb();
-
-            breadCrumb.Add(new BreadcrumbNavItem("Add A Course", "#"));
-
-            return breadCrumb;
-        }
-
         [HttpGet]
         [Route("AddACourse", Name = "AddACourse")]
         public IActionResult CourseAdd()
         {
+            //build the breadcrumb
+            var breadCrumb = BaseBreadCrumb();
+
+            //add the current screen
+            breadCrumb.Add(new BreadcrumbNavItem("Add A Course", "#"));
+
             //get the user's preference, so we can the state he will most likely add
             var usersDefaultState = Context.User.Claims.First(x => x.Type == ClaimTypes.StateOrProvince).Value;
 
             return View(new CourseAddViewModel(
-                BuildAddACourseBreadcrumb(),
+                breadCrumb,
                 CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
                 new CourseAddEnteredData { StateListing = usersDefaultState, TeeLocations = new List<CourseAddEnteredDataTeeLocations>() },
                 BuildTokenSet(Antiforgery)));
@@ -160,19 +157,15 @@ namespace ToracGolf.Controllers
 
         #region Course Listing
 
-        private static IList<BreadcrumbNavItem> CourseListingBreadcrumb()
-        {
-            var breadCrumb = BaseBreadCrumb();
-
-            breadCrumb.Add(new BreadcrumbNavItem("Course Listing", "#"));
-
-            return breadCrumb;
-        }
-
         [HttpGet]
         [Route(ApplicationConstants.CourseListingRouteName, Name = ApplicationConstants.CourseListingRouteName)]
         public async Task<IActionResult> CourseListing()
         {
+            //build the breadcrumb
+            var breadCrumb = BaseBreadCrumb();
+
+            breadCrumb.Add(new BreadcrumbNavItem("Course Listing", "#"));
+
             //grab the state listing
             var stateListing = CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache).ToList();
 
@@ -181,7 +174,7 @@ namespace ToracGolf.Controllers
 
             //return the view
             return View(new CourseListingViewModel(
-              CourseListingBreadcrumb(),
+              breadCrumb,
               BuildTokenSet(Antiforgery),
               await Courses.TotalNumberOfCourses(DbContext, null, null, Configuration.Options.CourseListingRecordsPerPage),
               CacheFactory.GetCacheItem<IList<CourseListingSortOrderModel>>(CacheKeyNames.CourseListingSortOrder, Cache).ToArray(),
@@ -191,6 +184,7 @@ namespace ToracGolf.Controllers
 
         [HttpPost]
         [Route("CourseListingSelectPage", Name = "CourseListingSelectPage")]
+        [ValidateCustomAntiForgeryToken()]
         public async Task<IActionResult> CourseListingSelect([FromBody] CourseListPageNavigation listNav)
         {
             //state filter to use
