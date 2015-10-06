@@ -18,7 +18,7 @@
             },
 
             CourseListing: function (pageId) {
-                return $http.post('CourseListingSelectPage', { pageIndexId: pageId });
+                return $http.post('CourseListingSelectPage', { PageIndexId: pageId });
             }
         }
 

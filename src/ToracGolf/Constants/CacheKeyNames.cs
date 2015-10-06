@@ -9,6 +9,7 @@ namespace ToracGolf.Constants
     public static class CacheKeyNames
     {
         public const string StateListing = "StateListing";
+        public const string CourseListingSortOrder = "CourseListingSortOrder";
     }
 
 }

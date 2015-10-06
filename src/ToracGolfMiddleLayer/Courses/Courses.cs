@@ -64,7 +64,7 @@ namespace ToracGolf.MiddleLayer.Courses
 
         #region Course Listing
 
-        private const int RecordsPerPage = 10;
+        private const int RecordsPerPage = 1;
 
         /// <param name="pageId">0 base index that holds what page we are on</param>
         public static async Task<IEnumerable<CourseListingData>> CourseSelect(ToracGolfContext dbContext, int pageId)

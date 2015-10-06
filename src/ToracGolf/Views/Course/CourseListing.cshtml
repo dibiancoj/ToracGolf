@@ -30,27 +30,27 @@
     <script src="~/js/angular/courses/courselistingcontroller.js"></script>
 }
 
-<section ng-cloak class="slice bg-white" ng-app="toracApp" ng-controller="CourseListingController" ng-init="init(@Model.TotalPagesOfCourses)">
+<section ng-cloak class="slice bg-white" ng-app="toracApp" ng-controller="CourseListingController" ng-init="init(@Model.TotalPagesOfCourses, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.SortOrder))">
     <div class="wp-section">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
                     <div class="wp-block default product-list-filters light-gray">
-                        <ul class="pagination pagination pull-left">
-                            <li><a href="#" hidefocus="true">«</a></li>
-                            <li class="active"><a href="#" hidefocus="true">1</a></li>
-                            <li><a href="#" hidefocus="true">2</a></li>
-                            <li><a href="#" hidefocus="true">3</a></li>
-                            <li><a href="#" hidefocus="true">4</a></li>
-                            <li><a href="#" hidefocus="true">5</a></li>
-                            <li><a href="#" hidefocus="true">»</a></li>
+                        <ul class="pagination pagination pull-left" ng-hide="@Model.TotalPagesOfCourses == 1">
+                            <li><a ng-click="PagerClick(0)" hidefocus="true">«</a></li>
+
+                            <li ng-class="pageId == CurrentPageId ?'active':''" ng-repeat="pageId in PagerElements track by pageId">
+                                <a hidefocus="true" ng-click="PagerClick($index)">{{pageId + 1}}</a>
+                            </li>
+
+                            <li><a ng-click="PagerClick(TotalNumberOfPages - 1)" hidefocus="true">»</a></li>
                         </ul>
                         <div class="filter sort-filter pull-right">
                             <label>Sort by</label>
-                            <select>
-                                <option>Price low</option>
-                                <option>Price high</option>
-                                <option>Property type</option>
+                            <select ng-model="SortBy" ng-change="FetchAPageOfData()">
+                                <option value="{{option.Value}}" ng-repeat="option in SortByLookup" ng-selected="option.Value == SortBy">
+                                    {{option.Text}}
+                                </option>
                             </select>
                         </div>
                     </div>

@@ -10,11 +10,12 @@ namespace ToracGolf.ViewModels.Courses
     public class CourseListingViewModel
     {
 
-        public CourseListingViewModel(IList<Navigation.BreadcrumbNavItem> breadcrumb, AntiforgeryTokenSet tokenSet, int totalPagesOfCourses)
+        public CourseListingViewModel(IList<Navigation.BreadcrumbNavItem> breadcrumb, AntiforgeryTokenSet tokenSet, int totalPagesOfCourses, IEnumerable<SelectListItem> sortOrder)
         {
             Breadcrumb = breadcrumb;
             TokenSet = tokenSet;
             TotalPagesOfCourses = totalPagesOfCourses;
+            SortOrder = sortOrder;
         }
 
         public IList<Navigation.BreadcrumbNavItem> Breadcrumb { get; }
@@ -22,6 +23,8 @@ namespace ToracGolf.ViewModels.Courses
         public AntiforgeryTokenSet TokenSet { get; }
 
         public int TotalPagesOfCourses { get; }
+
+        public IEnumerable<SelectListItem> SortOrder { get; }
 
     }
 

@@ -171,16 +171,17 @@ namespace ToracGolf.Controllers
             return View(new CourseListingViewModel(
               CourseListingBreadcrumb(),
               BuildTokenSet(Antiforgery),
-              await Courses.TotalNumberOfCourses(DbContext)));
+              await Courses.TotalNumberOfCourses(DbContext),
+              CacheFactory.GetCacheItem<IDictionary<string, string>>(CacheKeyNames.CourseListingSortOrder, Cache).Select(x => new SelectListItem { Value = x.Key, Text = x.Value }).ToArray()));
         }
 
         [HttpPost]
         [Route("CourseListingSelectPage", Name = "CourseListingSelectPage")]
-        public async Task<IActionResult> CourseListingSelect([FromBody] int pageIndexId)
+        public async Task<IActionResult> CourseListingSelect([FromBody] CourseListPageNavigation listNav)
         {
             return Json(new
             {
-                PagedData = await Courses.CourseSelect(DbContext, 0)
+                PagedData = await Courses.CourseSelect(DbContext, listNav.PageIndexId)
             });
         }
 

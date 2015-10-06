@@ -108,6 +108,10 @@ namespace ToracGolf
                 .Select(y => new SelectListItem { Text = y.Description, Value = y.StateId.ToString() })
                 .ToImmutableList());
 
+            //add the course list sort oder
+            cacheFactory.AddConfiguration(CacheKeyNames.CourseListingSortOrder,
+                () => MiddleLayer.Courses.CourseListingSortOrder.BuildDropDownValues().ToImmutableDictionary());
+
             services.AddSingleton<ICacheFactoryStore, CacheFactoryStore>((x) => cacheFactory);
 #else
           //not sure if we will support .net core yet
