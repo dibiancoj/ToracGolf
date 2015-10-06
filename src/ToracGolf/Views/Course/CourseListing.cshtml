@@ -30,7 +30,7 @@
     <script src="~/js/angular/courses/courselistingcontroller.js"></script>
 }
 
-<section ng-cloak class="slice bg-white" ng-app="toracApp" ng-controller="CourseListingController" ng-init="init(@Model.TotalPagesOfCourses, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.SortOrder))">
+<section ng-cloak class="slice bg-white" ng-app="toracApp" ng-controller="CourseListingController" ng-init="init(@Model.TotalPagesOfCourses, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.SortOrder), '@Model.UserStatePreference')">
     <div class="wp-section">
         <div class="container">
             <div class="row">
@@ -92,36 +92,31 @@
 
                 <div class="col-md-4">
                     <div class="sidebar">
-                        <ul class="categories mb-20">
+                        @*<ul class="categories mb-20">
                             <li><a href="#">Web design (23)</a></li>
                             <li><a href="#">Online business (100)</a></li>
                             <li><a href="#">Marketing strategy (7)</a></li>
                             <li><a href="#">Technology (33)</a></li>
                             <li><a href="#">About finance (123)</a></li>
-                        </ul>
+                        </ul>*@
                         <div class="panel panel-default panel-sidebar-1">
                             <div class="panel-heading"><h2>Filter by</h2></div>
                             <div class="panel-body">
                                 <form class="form-light" role="form">
                                     <div class="form-group">
-                                        <label>Search for products</label>
-                                        <input type="text" class="form-control" placeholder="I want to find...">
+                                        <label>Search For Course</label>
+                                        <input type="text" ng-model="SearchByCourseName" class="form-control" placeholder="I want to find...">
                                     </div>
                                     <div class="form-group">
-                                        <label>Category</label>
-                                        <select class="form-control">
-                                            <option>Phones</option>
-                                            <option>Laptops</option>
-                                            <option>Cameras</option>
-                                            <option>Tablets</option>
+                                        <label>State</label>
+                                        <select class="form-control" ng-model="StateFilter" ng-change="FetchAPageOfData(true)">
+                                            @foreach (var stateToAdd in Model.StateListing)
+                                            {
+                                                <option value="@stateToAdd.Value">@stateToAdd.Text</option>
+                                            }
                                         </select>
                                     </div>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox"> Display all
-                                        </label>
-                                    </div>
-                                    <button type="submit" class="btn btn-base">Search</button>
+                                    <button type="submit" ng-click="FetchAPageOfData(true)" class="btn btn-base">Search</button>
                                 </form>
                             </div>
                         </div>

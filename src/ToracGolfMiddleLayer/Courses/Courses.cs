@@ -66,14 +66,35 @@ namespace ToracGolf.MiddleLayer.Courses
 
         private const int RecordsPerPage = 1;
 
-        /// <param name="pageId">0 base index that holds what page we are on</param>
-        public static async Task<IEnumerable<CourseListingData>> CourseSelect(ToracGolfContext dbContext, int pageId, CourseListingSortOrder.CourseListingSortEnum SortBy)
+        public static IQueryable<Course> CourseSelectQueryBuilder(ToracGolfContext dbContext, string courseNameFilter, int? StateFilter)
         {
-            const int recordsPerPage = RecordsPerPage;
-            int skipAmount = pageId * recordsPerPage;
-
             //build the queryable
             var queryable = dbContext.Course.AsQueryable();
+
+            //if we have a course name, add it as a filter
+            if (!string.IsNullOrEmpty(courseNameFilter))
+            {
+                queryable = queryable.Where(x => x.Name.Contains(courseNameFilter));
+            }
+
+            //do we have a state filter?
+            if (StateFilter.HasValue)
+            {
+                queryable = queryable.Where(x => x.StateId == StateFilter.Value);
+            }
+
+            //return the queryable
+            return queryable;
+        }
+
+        /// <param name="pageId">0 base index that holds what page we are on</param>
+        public static async Task<IEnumerable<CourseListingData>> CourseSelect(ToracGolfContext dbContext, int pageId, CourseListingSortOrder.CourseListingSortEnum SortBy, string courseNameFilter, int? StateFilter)
+        {
+            //how many items to skip
+            int skipAmount = pageId * RecordsPerPage;
+
+            //go grab the query
+            var queryable = CourseSelectQueryBuilder(dbContext, courseNameFilter, StateFilter);
 
             //figure out what you want to order by
             if (SortBy == CourseListingSortOrder.CourseListingSortEnum.CourseNameAscending)
@@ -105,12 +126,12 @@ namespace ToracGolf.MiddleLayer.Courses
                 StateDescription = dbContext.Ref_State.FirstOrDefault(y => y.StateId == x.StateId).Description,
                 TeeLocationCount = dbContext.CourseTeeLocations.Count(y => y.CourseId == x.CourseId),
                 CourseImage = dbContext.CourseImages.FirstOrDefault(y => y.CourseId == x.CourseId)
-            }).Skip(skipAmount).Take(recordsPerPage).ToArrayAsync();
+            }).Skip(skipAmount).Take(RecordsPerPage).ToArrayAsync();
         }
 
-        public static async Task<int> TotalNumberOfCourses(ToracGolfContext dbContext)
+        public static async Task<int> TotalNumberOfCourses(ToracGolfContext dbContext, string courseNameFilter, int? StateFilter)
         {
-            return DataSetPaging.CalculateTotalPages(await dbContext.Course.CountAsync(), RecordsPerPage);
+            return DataSetPaging.CalculateTotalPages(await CourseSelectQueryBuilder(dbContext, courseNameFilter, StateFilter).CountAsync(), RecordsPerPage);
         }
 
         #endregion

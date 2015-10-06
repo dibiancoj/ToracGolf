@@ -17,9 +17,15 @@ namespace ToracGolf.ViewModels.Courses
 
         #region Properties
 
+        public bool ResetPager { get; set; }
+
         public int PageIndexId { get; set; }
 
         public CourseListingSortEnum SortBy { get; set; }
+
+        public string CourseNameFilter { get; set; }
+
+        public string StateFilter { get; set; }
 
         #endregion
 

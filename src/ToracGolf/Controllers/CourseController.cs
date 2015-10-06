@@ -168,20 +168,33 @@ namespace ToracGolf.Controllers
         [Route(ApplicationConstants.CourseListingRouteName, Name = ApplicationConstants.CourseListingRouteName)]
         public async Task<IActionResult> CourseListing()
         {
+            //grab the state listing
+            var stateListing = CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache).ToList();
+
+            //add the "all"
+            stateListing.Insert(0, new SelectListItem { Text = "All", Value = "" });
+
+            //return the view
             return View(new CourseListingViewModel(
               CourseListingBreadcrumb(),
               BuildTokenSet(Antiforgery),
-              await Courses.TotalNumberOfCourses(DbContext),
-              CacheFactory.GetCacheItem<IList<CourseListingSortOrderModel>>(CacheKeyNames.CourseListingSortOrder, Cache).ToArray()));
+              await Courses.TotalNumberOfCourses(DbContext, null, null),
+              CacheFactory.GetCacheItem<IList<CourseListingSortOrderModel>>(CacheKeyNames.CourseListingSortOrder, Cache).ToArray(),
+              stateListing,
+              Context.User.Claims.First(x => x.Type == ClaimTypes.StateOrProvince).Value));
         }
 
         [HttpPost]
         [Route("CourseListingSelectPage", Name = "CourseListingSelectPage")]
         public async Task<IActionResult> CourseListingSelect([FromBody] CourseListPageNavigation listNav)
         {
+            //state filter to use
+            int? stateFilter = string.IsNullOrEmpty(listNav.StateFilter) ? new int?() : Convert.ToInt32(listNav.StateFilter);
+
             return Json(new
             {
-                PagedData = await Courses.CourseSelect(DbContext, listNav.PageIndexId, listNav.SortBy)
+                PagedData = await Courses.CourseSelect(DbContext, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, stateFilter),
+                TotalNumberOfPages = listNav.ResetPager ? new int?(await Courses.TotalNumberOfCourses(DbContext, listNav.CourseNameFilter, stateFilter)) : null
             });
         }
 
