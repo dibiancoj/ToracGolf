@@ -127,6 +127,18 @@ namespace ToracGolf.Controllers
             });
         }
 
+        [HttpPost]
+        [Route("TeeLocationSelectForCourseId", Name = "TeeLocationSelectForCourseId")]
+        [ValidateCustomAntiForgeryToken()]
+        public async Task<IActionResult> SelectTeeBoxForCourseId([FromBody]TeeBoxSelectByCourseId model)
+        {
+            //go grab the course listing
+            return Json(new
+            {
+                TeeBoxData = await RoundDataProvider.TeeBoxSelectForCourse(DbContext, model.CourseId)
+            });
+        }
+
         #endregion
 
     }

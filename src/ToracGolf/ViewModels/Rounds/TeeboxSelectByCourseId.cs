@@ -3,15 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ToracGolf.MiddleLayer.Rounds.Models
+namespace ToracGolf.ViewModels.Rounds
 {
-
-    public class CourseForRoundAddScreen
+    public class TeeBoxSelectByCourseId
     {
-
         public int CourseId { get; set; }
-        public string Name { get; set; }
-
     }
-
 }

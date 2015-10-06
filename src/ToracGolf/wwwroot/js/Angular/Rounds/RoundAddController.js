@@ -15,6 +15,10 @@
             $scope.model.RoundDate = $filter('date')(newValue, 'MM/dd/yyyy');
         });
 
+        $scope.$watch('model.TeeLocationId', function (newValue) {
+            var z = 10;
+        });
+
         $scope.SaveARound = function () {
 
             //go make the http call using the service
@@ -26,7 +30,7 @@
               function (errResponse) {
                   ValidationService.ShowValidationErrors($scope, errResponse);
               });
-        }, 
+        },
 
         //event when the user clicks ok on the dialog
         $scope.SaveARoundDialogOkEvent = function () {
@@ -45,6 +49,20 @@
              function (errResponse) {
                  alert('Error Calling FetchCoursesForState');
              });
+        },
+
+        $scope.FetchTeeBoxesForCourse = function () {
+
+            RoundHttp.FetchTeeBoxForCourseId($scope.model.CourseId)
+            .then(function (response) {
+
+                //set the courses for this state
+                $scope.TeeBoxLookup = response.data.TeeBoxData;
+            },
+            function (errResponse) {
+                alert('Error Calling FetchTeeBoxesForCourse');
+            });
+
         }
 
     }]);

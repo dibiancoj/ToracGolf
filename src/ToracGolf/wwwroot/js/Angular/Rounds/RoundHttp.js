@@ -15,6 +15,10 @@
 
             FetchCoursesForState: function (stateId) {
                 return $http.post('CourseSelectByState', { StateId: stateId });
+            },
+
+            FetchTeeBoxForCourseId: function (courseId) {
+                return $http.post('TeeLocationSelectForCourseId', { CourseId: courseId });
             }
         }
 

@@ -34,7 +34,7 @@
 }
 
 @*so init is a method in my angular controller. we serialize the model and pass it into that method which set's the scope*@
-<section ng-app="toracApp" ng-controller="RoundAddController" ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model.RoundEnteredData))" class="slice slice-lg bg-image" style="background-image:url(images/backgrounds/CourseAddBackground.jpg);">
+<section ng-app="toracApp" ng-cloak ng-controller="RoundAddController" ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model.RoundEnteredData))" class="slice slice-lg bg-image" style="background-image:url(images/backgrounds/CourseAddBackground.jpg);">
 
     <modal title="Saved Succesfully" showdialog="ShowSavedSuccessfulModal" bodyhtml="Your Round Has Been Saved Successfully." closebuttontext="Ok" onmodalcloseevent="SaveARoundDialogOkEvent()">
     </modal>
@@ -67,7 +67,7 @@
                                     <section>
                                         <label asp-for="RoundEnteredData.CourseId" class="label"></label>
                                         <label class="select">
-                                            <select ng-model="model.CourseId">
+                                            <select ng-model="model.CourseId" ng-change="FetchTeeBoxesForCourse()">
                                                 <option value="{{course.CourseId}}" ng-repeat="course in CourseLookup" ng-selected="course.CourseId == model.CourseId">
                                                     {{course.Name}}
                                                 </option>
@@ -77,13 +77,34 @@
                                     <section>
                                         <label asp-for="RoundEnteredData.TeeLocationId" class="label"></label>
                                         <label class="select">
-                                            <select ng-model="model.CourseId">
-                                                <option value="{{teeBox.CourseTeeLocationId}}" ng-repeat="teeBox in CourseLookup.TeeLocations" ng-selected="teeBox.CourseTeeLocationId == model.TeeLocationId">
+                                            <select ng-model="model.TeeLocationId">
+                                                <option value="{{teeBox.CourseTeeLocationId}}" ng-repeat="teeBox in TeeBoxLookup">
                                                     {{teeBox.Description}}
                                                 </option>
                                             </select>
                                         </label>
                                     </section>
+                                    <section>
+                                        <div class="row">
+                                            <div class="col-md-6 col-xs-12">
+                                                Yardage: 7,000
+                                            </div>
+                                            <div class="col-md-6 col-xs-12">
+                                                Par: 72
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <section>
+                                        <div class="row">
+                                            <div class="col-md-6 col-xs-12">
+                                                Rating: 70.2
+                                            </div>
+                                            <div class="col-md-6 col-xs-12">
+                                                Slope: 138
+                                            </div>
+                                        </div>
+                                    </section>
+                                   
                                     <section>
                                         <div class="row">
                                             <div class="col-md-6 col-xs-12">
@@ -97,6 +118,11 @@
                                                 <label asp-for="RoundEnteredData.NineHoleScore" class="label"></label>
                                                 <input type="checkbox" name="NineHoleScore" ng-model="model.NineHoleScore" />
                                             </div>
+                                        </div>
+                                    </section>
+                                    <section>
+                                        <div id="MaxScoreDiv" class="alert alert-warning">
+                                            Max Score Per Hole Is <strong>9</strong> Strokes
                                         </div>
                                     </section>
                                     <hr />
@@ -130,7 +156,7 @@
                                         @Html.Partial("_ValidationSummaryAngular")
                                     </section>
                                     <section>
-                                        <button ng-click="SaveRound()" class="btn btn-base btn-icon btn-icon-right btn-sign-in pull-right" type="submit">
+                                        <button ng-click="SaveARound()" class="btn btn-base btn-icon btn-icon-right btn-sign-in pull-right" type="submit">
                                             <span>Save</span>
                                         </button>
                                     </section>

@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.MiddleLayer.EFModel;
+using ToracGolf.MiddleLayer.EFModel.Tables;
 using ToracGolf.MiddleLayer.Rounds.Models;
 
 namespace ToracGolf.MiddleLayer.Rounds
@@ -19,17 +20,24 @@ namespace ToracGolf.MiddleLayer.Rounds
                        {
                            CourseId = x.CourseId,
                            Name = x.Name,
-                           TeeLocations = dbContext.CourseTeeLocations.Where(y => y.CourseId == x.CourseId).OrderBy(y => y.TeeLocationSortOrderId).Select(y => new TeeBoxForRoundAddScreen
-                           {
-                               CourseTeeLocationId = y.CourseTeeLocationId,
-                               Description = y.Description,
-                               Front9Par = y.Front9Par,
-                               Back9Par = y.Back9Par,
-                               Rating = y.Rating,
-                               Slope = y.Slope,
-                               Yardage = y.Yardage
-                           })
+                           //TeeLocations = dbContext.CourseTeeLocations.Where(y => y.CourseId == x.CourseId).OrderBy(y => y.TeeLocationSortOrderId).Select(y => new TeeBoxForRoundAddScreen
+                           //{
+                           //    CourseTeeLocationId = y.CourseTeeLocationId,
+                           //    Description = y.Description,
+                           //    Front9Par = y.Front9Par,
+                           //    Back9Par = y.Back9Par,
+                           //    Rating = y.Rating,
+                           //    Slope = y.Slope,
+                           //    Yardage = y.Yardage
+                           //})                       
                        }).ToArrayAsync();
+        }
+
+        public static async Task<IEnumerable<CourseTeeLocations>> TeeBoxSelectForCourse(ToracGolfContext dbContext, int courseId)
+        {
+            return await dbContext.CourseTeeLocations.AsNoTracking()
+                         .Where(x => x.CourseId == courseId).ToArrayAsync();
+
         }
 
     }
