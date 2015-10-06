@@ -16,7 +16,34 @@
         });
 
         $scope.$watch('model.TeeLocationId', function (newValue) {
-            var z = 10;
+
+            //go set the yardage,par, scope, rating
+
+            //grab the selected tee box
+            var selectedTeeBox = null;
+
+            //if we have a new value, then go try to find it
+            if (newValue != null && $scope.TeeBoxLookup != null) {
+                selectedTeeBox = $scope.TeeBoxLookup.FirstOrDefault(function (x) { return x.CourseTeeLocationId == newValue });
+            }
+
+            //func to select the items
+            var selector = function (selectedTee, propertyToReturn) {
+                if (selectedTee == null) {
+                    return null;
+                }
+                else {
+                    return selectedTee[propertyToReturn];
+                }
+            }
+
+            $scope.TeeBoxSelectedInfo = {
+                Yardage: selector(selectedTeeBox, 'Yardage'),
+                Par: selectedTeeBox == null ? null : selectedTeeBox.Front9Par + selectedTeeBox.Back9Par,
+                Slope: selector(selectedTeeBox, 'Slope'),
+                Rating: selector(selectedTeeBox, 'Rating'),
+                MaxScorePerHole: 16
+            };
         });
 
         $scope.SaveARound = function () {
