@@ -59,7 +59,7 @@
             <div class="row">
 
 
-                <div class="col-md-8">
+                <div class="col-md-9">
                     <ul class="list-listings-2" ng-repeat="course in PagedData track by course.CourseData.Name">
                         <li class="featured">
                             <div class="listing-header bg-base">
@@ -76,12 +76,16 @@
                                     <p>
                                         {{course.CourseData.Description}}
                                     </p>
+                                    <p>
+                                        Tee Locations: {{course.TeeLocationCount}}
+                                    </p>
                                 </div>
                                 <div class="listing-footer">
                                     <ul class="aux-info">
-                                        <li><i class="fa fa-calendar"></i><strong>Date:</strong> 23 July</li>
-                                        <li><i class="fa fa-user"></i><strong>Jobs:</strong> 33 Jobs</li>
-                                        <li><i class="fa fa-globe"></i><strong>City:</strong> London</li>
+                                        <li><i class="fa fa-bar-chart-o"></i><strong>Rounds: </strong>30</li>
+                                        <li><i class="fa fa-smile-o"></i><strong>Top Score: </strong>85</li>
+                                        <li><i class="fa fa-frown-o"></i><strong>Worse Score: </strong>98</li>
+                                        <li><i class="fa fa-calculator"></i><strong>Avg Score: </strong>93.35</li>
                                     </ul>
                                 </div>
                             </div>
@@ -90,7 +94,7 @@
                 </div>
 
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="sidebar">
                         @*<ul class="categories mb-20">
                             <li><a href="#">Web design (23)</a></li>

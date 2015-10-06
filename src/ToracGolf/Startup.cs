@@ -40,7 +40,9 @@ namespace ToracGolf
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
                 builder.AddUserSecrets();
             }
+
             builder.AddEnvironmentVariables();
+
             Configuration = builder.Build();
         }
 
@@ -59,6 +61,8 @@ namespace ToracGolf
             //services.AddIdentity<ApplicationUser, IdentityRole>()
             //    .AddEntityFrameworkStores<ApplicationDbContext>()
             //    .AddDefaultTokenProviders();
+
+            services.Configure<AppSettings>(Configuration);
 
             //grab the ef connection string
             var connectionString = Configuration["Data:DefaultConnection:ConnectionString"];

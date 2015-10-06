@@ -3,6 +3,7 @@ using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Framework.Caching.Memory;
+using Microsoft.Framework.OptionsModel;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -13,6 +14,7 @@ using ToracGolf.Constants;
 using ToracGolf.Filters;
 using ToracGolf.MiddleLayer.Courses;
 using ToracGolf.MiddleLayer.EFModel;
+using ToracGolf.Settings;
 using ToracGolf.ViewModels.Courses;
 using ToracGolf.ViewModels.Navigation;
 using ToracLibrary.AspNet.Caching.FactoryStore;
@@ -26,12 +28,13 @@ namespace ToracGolf.Controllers
 
         #region Constructor
 
-        public CourseController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, ToracGolfContext dbContext, IAntiforgery antiforgery)
+        public CourseController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, ToracGolfContext dbContext, IAntiforgery antiforgery, IOptions<AppSettings> configuration)
         {
             DbContext = dbContext;
             Cache = cache;
             CacheFactory = cacheFactoryStore;
             Antiforgery = antiforgery;
+            Configuration = configuration;
         }
 
         #endregion
@@ -45,6 +48,8 @@ namespace ToracGolf.Controllers
         private ICacheFactoryStore CacheFactory { get; }
 
         private IAntiforgery Antiforgery { get; }
+
+        private IOptions<AppSettings> Configuration { get; }
 
         #endregion
 
@@ -178,7 +183,7 @@ namespace ToracGolf.Controllers
             return View(new CourseListingViewModel(
               CourseListingBreadcrumb(),
               BuildTokenSet(Antiforgery),
-              await Courses.TotalNumberOfCourses(DbContext, null, null),
+              await Courses.TotalNumberOfCourses(DbContext, null, null, Configuration.Options.CourseListingRecordsPerPage),
               CacheFactory.GetCacheItem<IList<CourseListingSortOrderModel>>(CacheKeyNames.CourseListingSortOrder, Cache).ToArray(),
               stateListing,
               Context.User.Claims.First(x => x.Type == ClaimTypes.StateOrProvince).Value));
@@ -193,8 +198,8 @@ namespace ToracGolf.Controllers
 
             return Json(new
             {
-                PagedData = await Courses.CourseSelect(DbContext, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, stateFilter),
-                TotalNumberOfPages = listNav.ResetPager ? new int?(await Courses.TotalNumberOfCourses(DbContext, listNav.CourseNameFilter, stateFilter)) : null
+                PagedData = await Courses.CourseSelect(DbContext, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, stateFilter, Configuration.Options.CourseListingRecordsPerPage),
+                TotalNumberOfPages = listNav.ResetPager ? new int?(await Courses.TotalNumberOfCourses(DbContext, listNav.CourseNameFilter, stateFilter, Configuration.Options.CourseListingRecordsPerPage)) : null
             });
         }
 

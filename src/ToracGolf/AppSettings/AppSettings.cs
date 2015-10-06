@@ -5,8 +5,23 @@ using System.Threading.Tasks;
 
 namespace ToracGolf.Settings
 {
+
     public class AppSettings
+    {
+
+        public AppSettingsData Data { get; set; }
+
+        public int CourseListingRecordsPerPage { get; set; }
+    }
+
+    public class AppSettingsData
+    {
+        public AppSetingsConnectionStrings DefaultConnection { get; set; }
+    }
+
+    public class AppSetingsConnectionStrings
     {
         public string ConnectionString { get; set; }
     }
+
 }

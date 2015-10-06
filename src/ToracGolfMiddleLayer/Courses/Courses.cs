@@ -64,8 +64,6 @@ namespace ToracGolf.MiddleLayer.Courses
 
         #region Course Listing
 
-        private const int RecordsPerPage = 1;
-
         public static IQueryable<Course> CourseSelectQueryBuilder(ToracGolfContext dbContext, string courseNameFilter, int? StateFilter)
         {
             //build the queryable
@@ -88,7 +86,7 @@ namespace ToracGolf.MiddleLayer.Courses
         }
 
         /// <param name="pageId">0 base index that holds what page we are on</param>
-        public static async Task<IEnumerable<CourseListingData>> CourseSelect(ToracGolfContext dbContext, int pageId, CourseListingSortOrder.CourseListingSortEnum SortBy, string courseNameFilter, int? StateFilter)
+        public static async Task<IEnumerable<CourseListingData>> CourseSelect(ToracGolfContext dbContext, int pageId, CourseListingSortOrder.CourseListingSortEnum SortBy, string courseNameFilter, int? StateFilter, int RecordsPerPage)
         {
             //how many items to skip
             int skipAmount = pageId * RecordsPerPage;
@@ -129,7 +127,7 @@ namespace ToracGolf.MiddleLayer.Courses
             }).Skip(skipAmount).Take(RecordsPerPage).ToArrayAsync();
         }
 
-        public static async Task<int> TotalNumberOfCourses(ToracGolfContext dbContext, string courseNameFilter, int? StateFilter)
+        public static async Task<int> TotalNumberOfCourses(ToracGolfContext dbContext, string courseNameFilter, int? StateFilter, int RecordsPerPage)
         {
             return DataSetPaging.CalculateTotalPages(await CourseSelectQueryBuilder(dbContext, courseNameFilter, StateFilter).CountAsync(), RecordsPerPage);
         }
