@@ -72,6 +72,16 @@
 
                  //set the courses for this state
                  $scope.CourseLookup = response.data.CourseData;
+
+                 //if we have records, then we want to set the course as the first course is in the list
+                 if ($scope.CourseLookup != null && $scope.CourseLookup.length > 0) {
+
+                     //set the course id to the first item in the list (just so something is selected)
+                     $scope.model.CourseId = $scope.CourseLookup[0].CourseId;
+
+                     //go grab the tee box location
+                     $scope.FetchTeeBoxesForCourse();
+                 }
              },
              function (errResponse) {
                  alert('Error Calling FetchCoursesForState');

@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    appToracGolf.directive('datePicker', ['$parse', function ($parse) {
+    appToracGolf.directive('datePicker', function () {
 
         //<input id="RoundDate" date-picker name="RoundDate" maxlength="100" ng-model="model.RoundDate | date:'shortDate'" />
 
@@ -26,6 +26,6 @@
             }
 
         }
-    }])
+    })
 
 })();

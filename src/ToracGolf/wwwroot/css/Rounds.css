@@ -11,3 +11,7 @@
     /*trying to smoosh the form (removing the default spacing for just round add)*/
     padding-top: 0px !important;
 }
+
+.Select2DropDown{
+    width: 100%;
+}

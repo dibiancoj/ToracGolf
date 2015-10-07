@@ -17,6 +17,8 @@
 }
 
 @section Styles{
+    <link href="~/lib/select2/assets/select2.css" rel="stylesheet" />
+    <link href="~/lib/select2/assets/select2-bootstrap.css" rel="stylesheet" />
     <link href="~/css/Rounds.css" rel="stylesheet" />
 }
 
@@ -24,12 +26,14 @@
     <script src="~/lib/jlinq/jlinq.js"></script>
     <script src="~/lib/angular/angular.js"></script>
     <script src="~/lib/angular/angular-animate.js"></script>
+    <script src="~/lib/select2/js/select2.js"></script>
     <script src="~/js/angular/toracgolfapp.js"></script>
     <script src="~/js/angular/common/modaldirective.js"></script>
     <script src="~/js/angular/common/numberonlydirective.js"></script>
     <script src="~/js/angular/common/datepickerdirective.js"></script>
     <script src="~/js/angular/common/ValidationService.js"></script>
     <script src="~/js/angular/rounds/roundhttp.js"></script>
+    <script src="~/js/angular/common/select2directive.js"></script>
     <script src="~/js/angular/rounds/roundaddcontroller.js"></script>
 }
 
@@ -67,7 +71,7 @@
                                     <section class="RoundAddSection">
                                         <label asp-for="RoundEnteredData.CourseId" class="label"></label>
                                         <label ng-show="CourseLookup.length > 0" class="select">
-                                            <select ng-model="model.CourseId" ng-change="FetchTeeBoxesForCourse()" ng-options="course.CourseId as course.Name for course in CourseLookup"></select>
+                                            <select id="CourseSelect" class="Select2DropDown" select2 ng-model="model.CourseId" ng-change="FetchTeeBoxesForCourse()" ng-options="course.CourseId as course.Name for course in CourseLookup"></select>
                                         </label>
                                         <div ng-show="CourseLookup.length == 0" class="alert alert-info AlertDiv">
                                             No Courses Available In This State
