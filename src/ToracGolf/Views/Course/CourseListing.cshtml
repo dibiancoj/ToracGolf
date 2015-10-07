@@ -49,10 +49,7 @@
                         </ul>
                         <div class="filter sort-filter pull-right">
                             <label>Sort by</label>
-                            <select ng-model="SortBy" ng-change="FetchAPageOfData(true)">
-                                <option value="{{option.Value}}" ng-repeat="option in SortByLookup" ng-selected="option.Value == SortBy">
-                                    {{option.Description}}
-                                </option>
+                            <select ng-model="SortBy" ng-change="FetchAPageOfData(true)" ng-options="option.Value as option.Description for option in SortByLookup">
                             </select>
                         </div>
                     </div>

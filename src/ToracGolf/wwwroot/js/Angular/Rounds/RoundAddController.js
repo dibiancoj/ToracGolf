@@ -83,6 +83,9 @@
             RoundHttp.FetchTeeBoxForCourseId($scope.model.CourseId)
             .then(function (response) {
 
+                //set the tee box to the first one
+                $scope.model.TeeLocationId = response.data.TeeBoxData[0].CourseTeeLocationId;
+
                 //set the courses for this state
                 $scope.TeeBoxLookup = response.data.TeeBoxData;
             },

@@ -67,21 +67,13 @@
                                     <section>
                                         <label asp-for="RoundEnteredData.CourseId" class="label"></label>
                                         <label class="select">
-                                            <select ng-model="model.CourseId" ng-change="FetchTeeBoxesForCourse()">
-                                                <option value="{{course.CourseId}}" ng-repeat="course in CourseLookup" ng-selected="course.CourseId == model.CourseId">
-                                                    {{course.Name}}
-                                                </option>
-                                            </select>
+                                            <select ng-model="model.CourseId" ng-change="FetchTeeBoxesForCourse()" ng-options="course.CourseId as course.Name for course in CourseLookup"></select>
                                         </label>
                                     </section>
                                     <section>
                                         <label asp-for="RoundEnteredData.TeeLocationId" class="label"></label>
                                         <label class="select">
-                                            <select ng-model="model.TeeLocationId">
-                                                <option value="{{teeBox.CourseTeeLocationId}}" ng-repeat="teeBox in TeeBoxLookup">
-                                                    {{teeBox.Description}}
-                                                </option>
-                                            </select>
+                                            <select ng-model="model.TeeLocationId" ng-options="teeBox.CourseTeeLocationId as teeBox.Description for teeBox in TeeBoxLookup"></select>
                                         </label>
                                     </section>
                                     <section>
