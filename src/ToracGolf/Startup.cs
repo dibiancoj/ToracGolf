@@ -31,8 +31,8 @@ namespace ToracGolf
             // Setup configuration sources.
 
             var builder = new ConfigurationBuilder(appEnv.ApplicationBasePath)
-                .AddJsonFile("config.json")
-                .AddJsonFile($"config.{env.EnvironmentName}.json", optional: true);
+               //.AddJsonFile("config.json")
+               .AddJsonFile($"config.{env.EnvironmentName}.json", optional: true);
 
             if (env.IsDevelopment())
             {
@@ -63,8 +63,6 @@ namespace ToracGolf
             //    .AddDefaultTokenProviders();
 
             services.Configure<AppSettings>(Configuration);
-
-            need prod vs dev . prod uses security account for connection string
 
             //grab the ef connection string
             var connectionString = Configuration["Data:DefaultConnection:ConnectionString"];
