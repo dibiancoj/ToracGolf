@@ -50,43 +50,50 @@
                         <div class="form-body">
                             <form id="frmAddACourse" method="post" ng-submit="SaveACourse()" class="sky-form">
                                 @Html.Partial("_AngularTokenSet", Model.TokenSet)
-                                <fieldset>
-                                    <section>
+                                <fieldset id="RoundAddFieldSet">
+                                    <section class="RoundAddSection">
                                         <label asp-for="RoundEnteredData.RoundDate" class="label"></label>
                                         <label class="input">
                                             <i class="icon-append fa fa-edit"></i>
                                             <input id="RoundDate" date-picker name="RoundDate" maxlength="100" ng-model="model.RoundDate" />
                                         </label>
                                     </section>
-                                    <section>
+                                    <section class="RoundAddSection">
                                         <label>State</label>
                                         <label class="select">
                                             <select name="StateListing" ng-change="FetchCoursesForState()" ng-model="model.StateId" asp-for="RoundEnteredData.StateId" asp-items="Model.StateListing"></select>
                                         </label>
                                     </section>
-                                    <section>
+                                    <section class="RoundAddSection">
                                         <label asp-for="RoundEnteredData.CourseId" class="label"></label>
-                                        <label class="select">
+                                        <label ng-show="CourseLookup.length > 0" class="select">
                                             <select ng-model="model.CourseId" ng-change="FetchTeeBoxesForCourse()" ng-options="course.CourseId as course.Name for course in CourseLookup"></select>
                                         </label>
+                                        <div ng-show="CourseLookup.length == 0" class="alert alert-info AlertDiv">
+                                            No Courses Available In This State
+                                        </div>
                                     </section>
-                                    <section>
+                                    <section class="RoundAddSection">
                                         <label asp-for="RoundEnteredData.TeeLocationId" class="label"></label>
-                                        <label class="select">
+                                        <label ng-show="CourseLookup.length > 0 && TeeBoxLookup.length > 0" class="select">
                                             <select ng-model="model.TeeLocationId" ng-options="teeBox.CourseTeeLocationId as teeBox.Description for teeBox in TeeBoxLookup"></select>
                                         </label>
+                                        <div ng-show="CourseLookup.length == 0 || TeeBoxLookup == null || TeeBoxLookup.length == 0" class="alert alert-info AlertDiv">
+                                            No Tee Boxes Are Available
+                                        </div>
+
                                     </section>
-                                    <section>
+                                    <section class="RoundAddSection">
                                         <div class="row">
                                             <div class="col-md-6 col-xs-12">
-                                                Yardage:  {{TeeBoxSelectedInfo.Yardage}}
+                                                Yardage:  {{TeeBoxSelectedInfo.Yardage | number:0}}
                                             </div>
                                             <div class="col-md-6 col-xs-12">
                                                 Par: {{TeeBoxSelectedInfo.Par}}
                                             </div>
                                         </div>
                                     </section>
-                                    <section>
+                                    <section class="RoundAddSection">
                                         <div class="row">
                                             <div class="col-md-6 col-xs-12">
                                                 Rating: {{TeeBoxSelectedInfo.Rating}}
@@ -96,8 +103,8 @@
                                             </div>
                                         </div>
                                     </section>
-
-                                    <section>
+                                    <hr />
+                                    <section class="RoundAddSection">
                                         <div class="row">
                                             <div class="col-md-6 col-xs-12">
                                                 <label asp-for="RoundEnteredData.Score" class="label"></label>
@@ -112,13 +119,13 @@
                                             </div>
                                         </div>
                                     </section>
-                                    <section>
-                                        <div id="MaxScoreDiv" class="alert alert-warning">
+                                    <section class="RoundAddSection">
+                                        <div class="AlertDiv alert alert-warning">
                                             Max Score Per Hole Is <strong>{{TeeBoxSelectedInfo.MaxScorePerHole}}</strong> Strokes
                                         </div>
                                     </section>
                                     <hr />
-                                    <section>
+                                    <section class="RoundAddSection">
                                         <span ng-show="model.TeeLocations.length == 0">
                                             No Tee Boxes Specified
                                         </span>
@@ -144,10 +151,10 @@
                                             </tbody>
                                         </table>
                                     </section>
-                                    <section>
+                                    <section class="RoundAddSection">
                                         @Html.Partial("_ValidationSummaryAngular")
                                     </section>
-                                    <section>
+                                    <section class="RoundAddSection">
                                         <button ng-click="SaveARound()" class="btn btn-base btn-icon btn-icon-right btn-sign-in pull-right" type="submit">
                                             <span>Save</span>
                                         </button>

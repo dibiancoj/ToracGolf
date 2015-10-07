@@ -1,3 +1,13 @@
-﻿#MaxScoreDiv {
+﻿.AlertDiv {
     padding: 5px !important;
+}
+
+.RoundAddSection {
+    /*trying to smoosh the form (removing the default spacing for just round add)*/
+    margin-bottom: 5px !important;
+}
+
+#RoundAddFieldSet {
+    /*trying to smoosh the form (removing the default spacing for just round add)*/
+    padding-top: 0px !important;
 }

@@ -80,6 +80,15 @@
 
         $scope.FetchTeeBoxesForCourse = function () {
 
+            //if we change states, then we need to wait until we have a course selected
+            if ($scope.model.CourseId == null)
+            {
+                $scope.model.TeeLocationId = null;
+                $scope.TeeBoxLookup = null;
+
+                return;
+            }
+
             RoundHttp.FetchTeeBoxForCourseId($scope.model.CourseId)
             .then(function (response) {
 
