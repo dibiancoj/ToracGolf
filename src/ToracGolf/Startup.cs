@@ -64,6 +64,8 @@ namespace ToracGolf
 
             services.Configure<AppSettings>(Configuration);
 
+            need prod vs dev . prod uses security account for connection string
+
             //grab the ef connection string
             var connectionString = Configuration["Data:DefaultConnection:ConnectionString"];
 
