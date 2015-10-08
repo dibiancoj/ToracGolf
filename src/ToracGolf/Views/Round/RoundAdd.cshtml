@@ -38,7 +38,7 @@
 }
 
 @*so init is a method in my angular controller. we serialize the model and pass it into that method which set's the scope*@
-<section ng-app="toracApp" ng-cloak ng-controller="RoundAddController" ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model.RoundEnteredData))" class="slice slice-lg bg-image" style="background-image:url(images/backgrounds/CourseAddBackground.jpg);">
+<section ng-app="toracApp" ng-cloak ng-controller="RoundAddController" ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model.RoundEnteredData))" class="slice slice-lg bg-image" style="background-image:url(images/backgrounds/RoundAdd.jpg);">
 
     <modal title="Saved Succesfully" showdialog="ShowSavedSuccessfulModal" bodyhtml="Your Round Has Been Saved Successfully." closebuttontext="Ok" onmodalcloseevent="SaveARoundDialogOkEvent()">
     </modal>
