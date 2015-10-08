@@ -27,6 +27,8 @@ namespace ToracGolf.ViewModels.Courses
 
         public string StateFilter { get; set; }
 
+        public int CoursesPerPage { get; set; }
+
         #endregion
 
     }

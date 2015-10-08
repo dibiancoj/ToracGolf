@@ -177,9 +177,11 @@ namespace ToracGolf.Controllers
               breadCrumb,
               BuildTokenSet(Antiforgery),
               await CourseDataProvider.TotalNumberOfCourses(DbContext, null, null, Configuration.Options.CourseListingRecordsPerPage),
-              CacheFactory.GetCacheItem<IList<CourseListingSortOrderModel>>(CacheKeyNames.CourseListingSortOrder, Cache).ToArray(),
+              CacheFactory.GetCacheItem<IList<CourseListingSortOrderModel>>(CacheKeyNames.CourseListingSortOrder, Cache),
               stateListing,
-              Context.User.Claims.First(x => x.Type == ClaimTypes.StateOrProvince).Value));
+              Context.User.Claims.First(x => x.Type == ClaimTypes.StateOrProvince).Value,
+              Configuration.Options.CourseListingRecordsPerPage,
+              CacheFactory.GetCacheItem<IEnumerable<int>>(CacheKeyNames.CourseListingCoursesPerPage, Cache)));
         }
 
         [HttpPost]
@@ -192,8 +194,8 @@ namespace ToracGolf.Controllers
 
             return Json(new
             {
-                PagedData = await CourseDataProvider.CourseSelect(DbContext, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, stateFilter, Configuration.Options.CourseListingRecordsPerPage),
-                TotalNumberOfPages = listNav.ResetPager ? new int?(await CourseDataProvider.TotalNumberOfCourses(DbContext, listNav.CourseNameFilter, stateFilter, Configuration.Options.CourseListingRecordsPerPage)) : null
+                PagedData = await CourseDataProvider.CourseSelect(DbContext, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, stateFilter, listNav.CoursesPerPage),
+                TotalNumberOfPages = listNav.ResetPager ? new int?(await CourseDataProvider.TotalNumberOfCourses(DbContext, listNav.CourseNameFilter, stateFilter, listNav.CoursesPerPage)) : null
             });
         }
 

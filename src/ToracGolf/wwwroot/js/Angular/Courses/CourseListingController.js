@@ -2,13 +2,19 @@
 
     appToracGolf.controller('CourseListingController', ['$scope', 'ValidationService', 'CourseHttp', function ($scope, ValidationService, CourseHttp) {
 
-        $scope.init = function (totalNumberOfPages, courseSortOrder, userStatePreference) {
+        $scope.init = function (totalNumberOfPages, courseSortOrder, userStatePreference, defaultCoursesPerPage, coursesPerPageLookup) {
 
             //set the drop down items
             $scope.SortByLookup = courseSortOrder;
 
+            //set the courses per page lookup
+            $scope.CoursesPerPageLookup = coursesPerPageLookup;
+
             //add a sort by model (to sort the grid)
             $scope.SortBy = courseSortOrder[0].Value;
+
+            //set the default courses per page
+            $scope.CoursesPerPage = defaultCoursesPerPage;
 
             //state filter
             $scope.StateFilter = userStatePreference;
@@ -62,7 +68,7 @@
             }
 
             //go grab the records to display
-            CourseHttp.CourseListing(resetPagerToPage1, $scope.CurrentPageId, $scope.SortBy, $scope.SearchByCourseName, $scope.StateFilter)
+            CourseHttp.CourseListing(resetPagerToPage1, $scope.CurrentPageId, $scope.SortBy, $scope.SearchByCourseName, $scope.StateFilter, $scope.CoursesPerPage)
                 .then(function (result) {
 
                     //set the paged data

@@ -115,6 +115,10 @@ namespace ToracGolf
             //add the course list sort oder
             cacheFactory.AddConfiguration(CacheKeyNames.CourseListingSortOrder,
                 () => MiddleLayer.Courses.CourseListingSortOrder.BuildDropDownValues().ToImmutableList());
+            
+            //add the courses per page options (this way we don't have to keep creating arrays)
+            cacheFactory.AddConfiguration(CacheKeyNames.CourseListingCoursesPerPage,
+                () => new int[] { 10, 25, 50, 75, 100 }.ToImmutableList());
 
             services.AddSingleton<ICacheFactoryStore, CacheFactoryStore>((x) => cacheFactory);
 #else

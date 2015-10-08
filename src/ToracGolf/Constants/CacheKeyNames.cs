@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,6 +11,7 @@ namespace ToracGolf.Constants
     {
         public const string StateListing = "StateListing";
         public const string CourseListingSortOrder = "CourseListingSortOrder";
+        public const string CourseListingCoursesPerPage = "CoursesPerPage";
     }
 
 }

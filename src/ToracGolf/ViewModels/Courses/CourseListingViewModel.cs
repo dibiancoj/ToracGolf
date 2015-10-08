@@ -11,12 +11,14 @@ namespace ToracGolf.ViewModels.Courses
     public class CourseListingViewModel
     {
 
-        public CourseListingViewModel(IList<Navigation.BreadcrumbNavItem> breadcrumb, 
-                                      AntiforgeryTokenSet tokenSet, 
-                                      int totalPagesOfCourses, 
-                                      IEnumerable<CourseListingSortOrderModel> sortOrder, 
+        public CourseListingViewModel(IList<Navigation.BreadcrumbNavItem> breadcrumb,
+                                      AntiforgeryTokenSet tokenSet,
+                                      int totalPagesOfCourses,
+                                      IEnumerable<CourseListingSortOrderModel> sortOrder,
                                       IEnumerable<SelectListItem> stateListing,
-                                      string userStatePreference)
+                                      string userStatePreference,
+                                      int defaultCoursesPerPage,
+                                      IEnumerable<int> coursesPerPage)
         {
             Breadcrumb = breadcrumb;
             TokenSet = tokenSet;
@@ -24,6 +26,8 @@ namespace ToracGolf.ViewModels.Courses
             SortOrder = sortOrder;
             StateListing = stateListing;
             UserStatePreference = userStatePreference;
+            DefaultCoursesPerPage = defaultCoursesPerPage;
+            CoursesPerPage = coursesPerPage;
         }
 
         public IList<Navigation.BreadcrumbNavItem> Breadcrumb { get; }
@@ -37,6 +41,10 @@ namespace ToracGolf.ViewModels.Courses
         public IEnumerable<SelectListItem> StateListing { get; }
 
         public string UserStatePreference { get; }
+
+        public int DefaultCoursesPerPage { get; }
+
+        public IEnumerable<int> CoursesPerPage { get; }
 
     }
 
