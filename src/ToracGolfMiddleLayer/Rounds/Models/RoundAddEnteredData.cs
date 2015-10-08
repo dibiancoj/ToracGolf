@@ -25,8 +25,9 @@ namespace ToracGolf.MiddleLayer.Rounds
         public int TeeLocationId { get; set; }
 
         [Display(Name = "Score")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please Enter A Score Above 0")]
         [Required(ErrorMessage = "Score Is A Required Field")]
-        public int Score { get; set; }
+        public int? Score { get; set; }
 
         [Display(Name = "9 Hole Score")]
         [Required()]
