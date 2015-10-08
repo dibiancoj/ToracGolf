@@ -40,5 +40,10 @@ namespace ToracGolf.MiddleLayer.Rounds
 
         }
 
+        public static async Task<bool> SaveRound(ToracGolfContext dbContext, int userId, RoundAddEnteredData roundData)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

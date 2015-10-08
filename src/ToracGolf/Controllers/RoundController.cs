@@ -6,7 +6,6 @@ using Microsoft.Framework.Caching.Memory;
 using Microsoft.Framework.OptionsModel;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -99,7 +98,7 @@ namespace ToracGolf.Controllers
             if (ModelState.IsValid)
             {
                 //let's try to add this user to the system
-                //var roundAddAttempt = await Courses.CourseAdd(DbContext, GetUserId(), model);
+                var roundAddAttempt = await RoundDataProvider.SaveRound(DbContext, GetUserId(), model);
 
                 //we saved it successfully
                 return Json(new { result = true });
