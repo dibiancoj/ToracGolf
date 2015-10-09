@@ -19,17 +19,7 @@ namespace ToracGolf.MiddleLayer.Rounds
                        .Select(x => new CourseForRoundAddScreen
                        {
                            CourseId = x.CourseId,
-                           Name = x.Name,
-                           //TeeLocations = dbContext.CourseTeeLocations.Where(y => y.CourseId == x.CourseId).OrderBy(y => y.TeeLocationSortOrderId).Select(y => new TeeBoxForRoundAddScreen
-                           //{
-                           //    CourseTeeLocationId = y.CourseTeeLocationId,
-                           //    Description = y.Description,
-                           //    Front9Par = y.Front9Par,
-                           //    Back9Par = y.Back9Par,
-                           //    Rating = y.Rating,
-                           //    Slope = y.Slope,
-                           //    Yardage = y.Yardage
-                           //})                       
+                           Name = x.Name,                    
                        }).ToArrayAsync();
         }
 
@@ -40,9 +30,28 @@ namespace ToracGolf.MiddleLayer.Rounds
 
         }
 
-        public static async Task<bool> SaveRound(ToracGolfContext dbContext, int userId, RoundAddEnteredData roundData)
+        public static async Task<int> SaveRound(ToracGolfContext dbContext, int userId, int seasonId, RoundAddEnteredData roundData)
         {
-            throw new NotImplementedException();
+            //build the round record
+            var round = new Round
+            {
+                CourseId = roundData.CourseId,
+                CourseTeeLocationId = roundData.TeeLocationId,
+                RoundDate = roundData.RoundDate,
+                Is9HoleScore = roundData.NineHoleScore,
+                Score = roundData.Score.Value,
+                UserId = userId,
+                SeasonId = seasonId
+            };
+
+            //add the round
+            dbContext.Rounds.Add(round);
+
+            //save the round
+            await dbContext.SaveChangesAsync();
+
+            //return the round id
+            return round.RoundId;
         }
 
     }

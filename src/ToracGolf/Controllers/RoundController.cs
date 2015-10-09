@@ -13,6 +13,7 @@ using ToracGolf.Constants;
 using ToracGolf.Filters;
 using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.Rounds;
+using ToracGolf.MiddleLayer.Season;
 using ToracGolf.Settings;
 using ToracGolf.ViewModels.Navigation;
 using ToracGolf.ViewModels.Rounds;
@@ -97,8 +98,11 @@ namespace ToracGolf.Controllers
             //do we have a valid model?
             if (ModelState.IsValid)
             {
+                //grab the user id
+                var userId = GetUserId();
+
                 //let's try to add this user to the system
-                var roundAddAttempt = await RoundDataProvider.SaveRound(DbContext, GetUserId(), model);
+                var roundAddAttempt = await RoundDataProvider.SaveRound(DbContext, userId, await SeasonDataProvider.CurrentSeasonForUser(DbContext, userId), model);
 
                 //we saved it successfully
                 return Json(new { result = true });

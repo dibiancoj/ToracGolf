@@ -1,0 +1,122 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using ToracGolf.MiddleLayer.HandicapCalculator.Models;
+
+namespace ToracGolf.MiddleLayer.HandicapCalculator
+{
+
+    public static class Handicapper
+    {
+
+        #region Public Methods
+
+        /// <summary>
+        /// Calculate a handicap
+        /// </summary>
+        /// <param name="Last20Rounds">Last 20 rounds to calculate. If the player hasn't played 20, whatever they have</param>
+        /// <returns>The handicap. Null if we don't have any rounds</returns>
+        public static double? CalculateHandicap(ICollection<Last20Rounds> Last20RoundsToCalculate)
+        {
+            //validate there isn't more then 20 rounds
+            if (Last20RoundsToCalculate.Count > 20)
+            {
+                throw new ArgumentOutOfRangeException(nameof(Last20Rounds), "Only 20 Items Allowed In The Last20Round Collection");
+            }
+
+            if (!Last20RoundsToCalculate.Any())
+            {
+                //we don't have any rounds just return null
+                return null;
+            }
+
+            //validation is done...
+
+            //we need to calculate the differential (so loop through each round and calc the differential)
+            var sortedDifferential = (from myData in Last20RoundsToCalculate
+                                      select new
+                                      {
+                                          Differential = CalculateDifferential(myData.RoundScore, myData.Rating, myData.Scope),
+                                          RoundRecord = myData
+                                      }).OrderBy(x => x.Differential).ToArray();
+
+            //how many rounds are we using to calculate this thing with?
+            int howManyRoundToUse = HowManyRoundsToUseInFormula(Last20RoundsToCalculate.Count);
+
+
+
+            //now sum the differential for x amount of rounds that we have above
+            float sumOfDifferential = sortedDifferential.Take(howManyRoundToUse).Sum(x => x.Differential);
+
+            //now grab the avg
+            float averageDifferential = sumOfDifferential / howManyRoundToUse;
+
+            //add the special clause
+            return Math.Round(averageDifferential * .96, 1);
+
+        }
+
+        #endregion
+
+        #region Helper Methods
+
+        private static float CalculateDifferential(int score, float teeBoxRating, float teeBoxScope)
+        {
+            return ((score - teeBoxRating) * 113 / teeBoxScope);
+        }
+
+        private static int HowManyRoundsToUseInFormula(int howManyRoundsToCalculateWith)
+        {
+            switch (howManyRoundsToCalculateWith)
+            {
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
+                    return 1;
+
+                case 7:
+                case 8:
+                    return 2;
+
+                case 9:
+                case 10:
+                    return 3;
+
+                case 11:
+                case 12:
+                    return 4;
+
+                case 13:
+                case 14:
+                    return 5;
+
+                case 15:
+                case 16:
+                    return 6;
+
+                case 17:
+                    return 7;
+
+                case 18:
+                    return 8;
+
+                case 19:
+                    return 9;
+
+                case 20:
+                    return 10;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(howManyRoundsToCalculateWith), "You should only have 20 rounds at most to calculate");
+            }
+        }
+
+        #endregion
+
+    }
+
+}
