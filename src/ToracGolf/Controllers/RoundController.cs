@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using ToracGolf.Constants;
 using ToracGolf.Filters;
 using ToracGolf.MiddleLayer.EFModel;
+using ToracGolf.MiddleLayer.GridCommon;
 using ToracGolf.MiddleLayer.Rounds;
 using ToracGolf.Settings;
 using ToracGolf.ViewModels.Navigation;
@@ -168,7 +169,11 @@ namespace ToracGolf.Controllers
                 breadCrumb,
                 CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
                 BuildTokenSet(Antiforgery),
-                GetUserDefaultState()));
+                GetUserDefaultState(),
+                await RoundDataProvider.TotalNumberOfRounds(DbContext, null, null, Configuration.Options.DefaultListingRecordsPerPage),
+                CacheFactory.GetCacheItem<IList<SortOrderViewModel>>(CacheKeyNames.RoundListingSortOrder, Cache),
+                Configuration.Options.DefaultListingRecordsPerPage,
+                CacheFactory.GetCacheItem<IEnumerable<int>>(CacheKeyNames.NumberOfListingsPerPage, Cache)));
         }
 
         #endregion

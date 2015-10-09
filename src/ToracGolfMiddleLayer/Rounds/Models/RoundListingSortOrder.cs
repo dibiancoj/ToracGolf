@@ -6,31 +6,38 @@ using System.Threading.Tasks;
 using ToracGolf.MiddleLayer.GridCommon;
 using ToracLibrary.AspNet.EnumUtilities;
 
-namespace ToracGolf.MiddleLayer.Courses
+namespace ToracGolf.MiddleLayer.Rounds.Models
 {
 
-    public class CourseListingSortOrder
+    public class RoundListingSortOrder
     {
 
         #region Enum
 
-        public enum CourseListingSortEnum
+        public enum RoundListingSortEnum
         {
 
+            [Description("Round Date Ascending")]
+            RoundDateAscending = 0,
+
+            [Description("Round Date Descending")]
+            RoundDateDescending = 1,
+
             [Description("Most Times Played")]
-            MostTimesPlayed = 0,
+            MostTimesPlayed = 2,
 
             [Description("Course Name Ascending")]
-            CourseNameAscending = 1,
+            CourseNameAscending = 3,
 
             [Description("Course Name Descending")]
-            CourseNameDescending = 2,
+            CourseNameDescending = 4,
 
             [Description("Hardest Courses")]
-            HardestCourses = 3,
+            HardestCourses = 5,
 
             [Description("Easiest Courses")]
-            EasiestCourses = 4
+            EasiestCourses = 6
+
         }
 
         #endregion
@@ -41,7 +48,7 @@ namespace ToracGolf.MiddleLayer.Courses
         {
             var lst = new List<SortOrderViewModel>();
 
-            foreach (var enumValue in EnumUtility.GetValuesLazy<CourseListingSortEnum>())
+            foreach (var enumValue in EnumUtility.GetValuesLazy<RoundListingSortEnum>())
             {
                 lst.Add(new SortOrderViewModel(Convert.ToInt32(enumValue),
                         enumValue.ToString(),
@@ -52,7 +59,6 @@ namespace ToracGolf.MiddleLayer.Courses
         }
 
         #endregion
-
 
     }
 

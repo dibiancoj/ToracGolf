@@ -11,7 +11,8 @@ namespace ToracGolf.Constants
     {
         public const string StateListing = "StateListing";
         public const string CourseListingSortOrder = "CourseListingSortOrder";
-        public const string CourseListingCoursesPerPage = "CoursesPerPage";
+        public const string RoundListingSortOrder = "RoundListingSortOrder";
+        public const string NumberOfListingsPerPage = "ListingPerPage";
     }
 
 }

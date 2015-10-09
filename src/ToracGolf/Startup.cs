@@ -125,12 +125,16 @@ namespace ToracGolf
                 .Select(y => new SelectListItem { Text = y.Description, Value = y.StateId.ToString() })
                 .ToImmutableList());
 
-            //add the course list sort oder
+            //add the course list sort order
             cacheFactory.AddConfiguration(CacheKeyNames.CourseListingSortOrder,
                 () => MiddleLayer.Courses.CourseListingSortOrder.BuildDropDownValues().ToImmutableList());
 
+            //add the round list sort order
+            cacheFactory.AddConfiguration(CacheKeyNames.RoundListingSortOrder,
+                () => MiddleLayer.Rounds.Models.RoundListingSortOrder.BuildDropDownValues().ToImmutableList());
+
             //add the courses per page options (this way we don't have to keep creating arrays)
-            cacheFactory.AddConfiguration(CacheKeyNames.CourseListingCoursesPerPage,
+            cacheFactory.AddConfiguration(CacheKeyNames.NumberOfListingsPerPage,
                 () => new int[] { 10, 25, 50, 75, 100 }.ToImmutableList());
 
             services.AddSingleton<ICacheFactoryStore, CacheFactoryStore>((x) => cacheFactory);

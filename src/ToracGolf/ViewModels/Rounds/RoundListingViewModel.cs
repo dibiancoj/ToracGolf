@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ToracGolf.MiddleLayer.GridCommon;
 using ToracGolf.ViewModels.Handicap;
 
 namespace ToracGolf.ViewModels.Rounds
@@ -12,15 +13,26 @@ namespace ToracGolf.ViewModels.Rounds
     public class RoundListingViewModel
     {
 
-        public RoundListingViewModel(HandicapStatusViewModel handicapStatus, IList<Navigation.BreadcrumbNavItem> breadcrumb, IEnumerable<SelectListItem> stateListing, AntiforgeryTokenSet tokenSet, string usersDefaultState)
+        public RoundListingViewModel(HandicapStatusViewModel handicapStatus,
+                                     IList<Navigation.BreadcrumbNavItem> breadcrumb,
+                                     IEnumerable<SelectListItem> stateListing,
+                                     AntiforgeryTokenSet tokenSet,
+                                     string usersDefaultState,
+                                     int totalNumberofPages,
+                                     IList<SortOrderViewModel> sortOrder,
+                                     int defaultRoundsPerPage,
+                                     IEnumerable<int> roundsPerPage)
         {
             HandicapStatus = handicapStatus;
             Breadcrumb = breadcrumb;
             StateListing = stateListing;
             TokenSet = tokenSet;
-            UsersDefaultState = usersDefaultState;  
+            UsersDefaultState = usersDefaultState;
+            TotalNumberofPages = totalNumberofPages;
+            SortOrder = sortOrder;
+            DefaultRoundsPerPage = defaultRoundsPerPage;
+            RoundsPerPage = roundsPerPage;
         }
-
 
         public HandicapStatusViewModel HandicapStatus { get; }
 
@@ -31,6 +43,14 @@ namespace ToracGolf.ViewModels.Rounds
         public AntiforgeryTokenSet TokenSet { get; }
 
         public string UsersDefaultState { get; }
+
+        public int TotalNumberofPages { get; }
+
+        public IList<SortOrderViewModel> SortOrder { get; }
+
+        public int DefaultRoundsPerPage { get; }
+
+        public IEnumerable<int> RoundsPerPage { get; set; }
 
     }
 

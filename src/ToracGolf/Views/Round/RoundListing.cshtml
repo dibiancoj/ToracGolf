@@ -4,35 +4,143 @@
 }
 @model  ToracGolf.ViewModels.Rounds.RoundListingViewModel
 
-    @section Breadcrumb{
-        @Html.Partial("_Breadcrumb", Model.Breadcrumb)
-    }
+@section Breadcrumb{
+    @Html.Partial("_Breadcrumb", Model.Breadcrumb)
+}
 
-    @section TopNav{
-        @Html.Partial("_TopNav", new ToracGolf.ViewModels.Navigation.TopNavViewModel(true))
-    }
+@section TopNav{
+    @Html.Partial("_TopNav", new ToracGolf.ViewModels.Navigation.TopNavViewModel(true))
+}
 
-    @section HandicapStatus{
-        @Html.Partial("_HandicapStatus", Model.HandicapStatus)
-    }
+@section HandicapStatus{
+    @Html.Partial("_HandicapStatus", Model.HandicapStatus)
+}
 
-    @section Styles{
-        <link href="~/lib/select2/assets/select2.css" rel="stylesheet" />
-        <link href="~/lib/select2/assets/select2-bootstrap.css" rel="stylesheet" />
-        <link href="~/css/Rounds.css" rel="stylesheet" />
-    }
+@section Styles{
+    <link href="~/lib/select2/assets/select2.css" rel="stylesheet" />
+    <link href="~/lib/select2/assets/select2-bootstrap.css" rel="stylesheet" />
+    <link href="~/css/Rounds.css" rel="stylesheet" />
+}
 
-    @section Scripts{
-        <script src="~/lib/jlinq/jlinq.js"></script>
-        <script src="~/lib/angular/angular.js"></script>
-        <script src="~/lib/angular/angular-animate.js"></script>
-        <script src="~/lib/select2/js/select2.js"></script>
-        <script src="~/js/angular/toracgolfapp.js"></script>
-        <script src="~/js/angular/common/modaldirective.js"></script>
-        <script src="~/js/angular/common/numberonlydirective.js"></script>
-        <script src="~/js/angular/common/datepickerdirective.js"></script>
-        <script src="~/js/angular/common/ValidationService.js"></script>
-        <script src="~/js/angular/rounds/roundhttp.js"></script>
-        <script src="~/js/angular/common/select2directive.js"></script>
-        <script src="~/js/angular/rounds/roundaddcontroller.js"></script>
-    }
+@section Scripts{
+    <script src="~/lib/jlinq/jlinq.js"></script>
+    <script src="~/lib/angular/angular.js"></script>
+    <script src="~/lib/angular/angular-animate.js"></script>
+    <script src="~/lib/select2/js/select2.js"></script>
+    <script src="~/js/angular/toracgolfapp.js"></script>
+    <script src="~/js/angular/common/modaldirective.js"></script>
+    <script src="~/js/angular/common/numberonlydirective.js"></script>
+    <script src="~/js/angular/common/datepickerdirective.js"></script>
+    <script src="~/js/angular/common/ValidationService.js"></script>
+    <script src="~/js/angular/rounds/roundhttp.js"></script>
+    <script src="~/js/angular/common/select2directive.js"></script>
+    <script src="~/js/angular/rounds/roundlistingcontroller.js"></script>
+}
+
+<section ng-cloak class="slice bg-white" ng-app="toracApp" ng-controller="RoundListingController" ng-init="init(@Model.TotalNumberofPages, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.SortOrder), '@Model.UsersDefaultState', @Model.DefaultRoundsPerPage, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.RoundsPerPage))">
+    @Html.Partial("_AngularTokenSet", Model.TokenSet)
+
+    <div class="wp-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="wp-block default product-list-filters light-gray">
+                        <ul class="pagination pagination pull-left" ng-hide="TotalNumberOfPages == 1">
+                            <li><a ng-click="PagerClick(0)" hidefocus="true">«</a></li>
+
+                            <li ng-class="pageId == CurrentPageId ?'active':''" ng-repeat="pageId in PagerElements track by pageId">
+                                <a hidefocus="true" ng-click="PagerClick($index)">{{pageId + 1}}</a>
+                            </li>
+
+                            <li><a ng-click="PagerClick(TotalNumberOfPages - 1)" hidefocus="true">»</a></li>
+                        </ul>
+
+                        <div class="filter sort-filter">
+                            <div class="form-inline form-light">
+                                <label>Courses Per Page</label>
+                                <select class="form-control" ng-change="FetchAPageOfData(true)" ng-model="CoursesPerPage" ng-options="perPage as perPage for perPage in CoursesPerPageLookup"></select>
+                            </div>
+                        </div>
+
+
+                        <div class="form-inline form-light filter sort-filter pull-right">
+                            <label>Sort by</label>
+                            <select class="form-control" ng-model="SortBy" ng-change="FetchAPageOfData(true)" ng-options="option.Value as option.Description for option in SortByLookup"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+
+                <div class="col-md-9">
+                    <ul class="list-listings-2" ng-repeat="course in PagedData track by course.CourseData.Name">
+                        <li class="featured">
+                            <div class="listing-header bg-base">
+                                {{course.CourseData.Name}}
+                            </div>
+                            <div class="listing-image">
+                                <img ng-src="data:image/png;base64,{{course.CourseImage.CourseImage}}" class="img-responsive CourseListingImage CourseListingHeight" alt="">
+                                <a href="#" class="btn btn-lg btn-square btn-base btn-block-bm btn-icon btn-icon-go">See more</a>
+                            </div>
+                            <div class="cell">
+                                <div class="listing-body clearfix CourseListingHeight">
+                                    <h3><a href="#">{{course.CourseData.Name}}</a></h3>
+                                    <h4>{{course.CourseData.City}}, {{course.StateDescription}}</h4>
+                                    <p>
+                                        {{course.CourseData.Description}}
+                                    </p>
+                                    <p>
+                                        Tee Locations: {{course.TeeLocationCount}}
+                                    </p>
+                                </div>
+                                <div class="listing-footer">
+                                    <ul class="aux-info">
+                                        <li><i class="fa fa-bar-chart-o"></i><strong>Rounds: </strong>30</li>
+                                        <li><i class="fa fa-smile-o"></i><strong>Top Score: </strong>85</li>
+                                        <li><i class="fa fa-frown-o"></i><strong>Worse Score: </strong>98</li>
+                                        <li><i class="fa fa-calculator"></i><strong>Avg Score: </strong>93.35</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <div class="col-md-3">
+                    <div class="sidebar">
+                        @*<ul class="categories mb-20">
+                                <li><a href="#">Web design (23)</a></li>
+                                <li><a href="#">Online business (100)</a></li>
+                                <li><a href="#">Marketing strategy (7)</a></li>
+                                <li><a href="#">Technology (33)</a></li>
+                                <li><a href="#">About finance (123)</a></li>
+                            </ul>*@
+                        <div class="panel panel-default panel-sidebar-1">
+                            <div class="panel-heading"><h2>Filter by</h2></div>
+                            <div class="panel-body">
+                                <form class="form-light" role="form">
+                                    <div class="form-group">
+                                        <label>Search For Course</label>
+                                        <input type="text" ng-model="SearchByCourseName" class="form-control" placeholder="I want to find...">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>State</label>
+                                        <select class="form-control" ng-model="StateFilter" ng-change="FetchAPageOfData(true)">
+                                            @foreach (var stateToAdd in Model.StateListing)
+                                            {
+                                                <option value="@stateToAdd.Value">@stateToAdd.Text</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <button type="submit" ng-click="FetchAPageOfData(true)" class="btn btn-base">Search</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

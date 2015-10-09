@@ -14,6 +14,7 @@ using ToracGolf.Constants;
 using ToracGolf.Filters;
 using ToracGolf.MiddleLayer.Courses;
 using ToracGolf.MiddleLayer.EFModel;
+using ToracGolf.MiddleLayer.GridCommon;
 using ToracGolf.Settings;
 using ToracGolf.ViewModels.Courses;
 using ToracGolf.ViewModels.Navigation;
@@ -181,12 +182,12 @@ namespace ToracGolf.Controllers
               await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
               breadCrumb,
               BuildTokenSet(Antiforgery),
-              await CourseDataProvider.TotalNumberOfCourses(DbContext, null, null, Configuration.Options.CourseListingRecordsPerPage),
-              CacheFactory.GetCacheItem<IList<CourseListingSortOrderModel>>(CacheKeyNames.CourseListingSortOrder, Cache),
+              await CourseDataProvider.TotalNumberOfCourses(DbContext, null, null, Configuration.Options.DefaultListingRecordsPerPage),
+              CacheFactory.GetCacheItem<IList<SortOrderViewModel>>(CacheKeyNames.CourseListingSortOrder, Cache),
               stateListing,
-              Context.User.Claims.First(x => x.Type == ClaimTypes.StateOrProvince).Value,
-              Configuration.Options.CourseListingRecordsPerPage,
-              CacheFactory.GetCacheItem<IEnumerable<int>>(CacheKeyNames.CourseListingCoursesPerPage, Cache)));
+              GetUserDefaultState(),
+              Configuration.Options.DefaultListingRecordsPerPage,
+              CacheFactory.GetCacheItem<IEnumerable<int>>(CacheKeyNames.NumberOfListingsPerPage, Cache)));
         }
 
         [HttpPost]

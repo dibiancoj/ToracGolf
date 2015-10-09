@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.MiddleLayer.Courses;
+using ToracGolf.MiddleLayer.GridCommon;
 using ToracGolf.ViewModels.Handicap;
 
 namespace ToracGolf.ViewModels.Courses
@@ -16,7 +17,7 @@ namespace ToracGolf.ViewModels.Courses
                                       IList<Navigation.BreadcrumbNavItem> breadcrumb,
                                       AntiforgeryTokenSet tokenSet,
                                       int totalPagesOfCourses,
-                                      IEnumerable<CourseListingSortOrderModel> sortOrder,
+                                      IEnumerable<SortOrderViewModel> sortOrder,
                                       IEnumerable<SelectListItem> stateListing,
                                       string userStatePreference,
                                       int defaultCoursesPerPage,
@@ -41,7 +42,7 @@ namespace ToracGolf.ViewModels.Courses
 
         public int TotalPagesOfCourses { get; }
 
-        public IEnumerable<CourseListingSortOrderModel> SortOrder { get; }
+        public IEnumerable<SortOrderViewModel> SortOrder { get; }
 
         public IEnumerable<SelectListItem> StateListing { get; }
 

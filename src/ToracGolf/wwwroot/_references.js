@@ -11,6 +11,7 @@
 /// <reference path="js/Angular/Courses/CourseListingController.js" />
 /// <reference path="js/angular/rounds/roundaddcontroller.js" />
 /// <reference path="js/angular/rounds/RoundHttp.js" />
+/// <reference path="js/angular/rounds/roundlistingcontroller.js" />
 /// <reference path="js/angular/toracgolfapp.js" />
 /// <reference path="js/site.js" />
 /// <reference path="js/toracgolfcore.min.js" />
