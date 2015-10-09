@@ -5,13 +5,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.MiddleLayer.Courses;
+using ToracGolf.ViewModels.Handicap;
 
 namespace ToracGolf.ViewModels.Courses
 {
     public class CourseListingViewModel
     {
 
-        public CourseListingViewModel(IList<Navigation.BreadcrumbNavItem> breadcrumb,
+        public CourseListingViewModel(HandicapStatusViewModel handicapStatus,
+                                      IList<Navigation.BreadcrumbNavItem> breadcrumb,
                                       AntiforgeryTokenSet tokenSet,
                                       int totalPagesOfCourses,
                                       IEnumerable<CourseListingSortOrderModel> sortOrder,
@@ -20,6 +22,7 @@ namespace ToracGolf.ViewModels.Courses
                                       int defaultCoursesPerPage,
                                       IEnumerable<int> coursesPerPage)
         {
+            HandicapStatus = handicapStatus;
             Breadcrumb = breadcrumb;
             TokenSet = tokenSet;
             TotalPagesOfCourses = totalPagesOfCourses;
@@ -29,6 +32,8 @@ namespace ToracGolf.ViewModels.Courses
             DefaultCoursesPerPage = defaultCoursesPerPage;
             CoursesPerPage = coursesPerPage;
         }
+
+        public HandicapStatusViewModel HandicapStatus { get; }
 
         public IList<Navigation.BreadcrumbNavItem> Breadcrumb { get; }
 

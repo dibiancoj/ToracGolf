@@ -84,6 +84,7 @@ namespace ToracGolf.Controllers
 
             //go return the view
             return View(new RoundAddViewModel(
+                HandicapStatusBuilder(DbContext),
                 breadCrumb,
                 CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
                 BuildTokenSet(Antiforgery),

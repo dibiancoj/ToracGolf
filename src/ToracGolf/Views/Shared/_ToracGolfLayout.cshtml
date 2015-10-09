@@ -82,8 +82,11 @@
         <div class="pg-opt">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <h2> @RenderSection("PageDescription", true)</h2>
+                    </div>
+                    <div class="col-md-3">
+                        @RenderSection("HandicapStatus", false)
                     </div>
                     <div class="col-md-6">
                         <ol class="breadcrumb">

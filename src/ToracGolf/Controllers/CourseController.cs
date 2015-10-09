@@ -83,6 +83,7 @@ namespace ToracGolf.Controllers
             var usersDefaultState = Context.User.Claims.First(x => x.Type == ClaimTypes.StateOrProvince).Value;
 
             return View(new CourseAddViewModel(
+                HandicapStatusBuilder(DbContext),
                 breadCrumb,
                 CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
                 new CourseAddEnteredData { StateListing = usersDefaultState, TeeLocations = new List<CourseAddEnteredDataTeeLocations>() },
@@ -174,6 +175,7 @@ namespace ToracGolf.Controllers
 
             //return the view
             return View(new CourseListingViewModel(
+              HandicapStatusBuilder(DbContext),
               breadCrumb,
               BuildTokenSet(Antiforgery),
               await CourseDataProvider.TotalNumberOfCourses(DbContext, null, null, Configuration.Options.CourseListingRecordsPerPage),
