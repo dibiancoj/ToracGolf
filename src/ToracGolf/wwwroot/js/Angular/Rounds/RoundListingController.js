@@ -74,6 +74,9 @@
                     //set the paged data
                     $scope.PagedData = result.data.PagedData.ListingData;
 
+                    //set the course image lookup
+                    $scope.CourseImageLookup = result.data.PagedData.CourseImages;
+
                     //do we need to rebuild the pager?
                     if (result.data.TotalNumberOfPages != null) {
                         $scope.BuildPager(result.data.TotalNumberOfPages)
@@ -82,6 +85,10 @@
                 }, function (errResponse) {
                     alert('Error: ' + JSON.stringify(errResponse));
                 });
+        },
+
+        $scope.FindCourseImageFromLookup = function (courseId) {
+            return $scope.CourseImageLookup[courseId];
         }
 
     }]);

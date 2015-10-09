@@ -17,17 +17,23 @@ namespace ToracGolf.MiddleLayer.Rounds.Models
         public enum RoundListingSortEnum
         {
 
-            [Description("Round Date Ascending")]
-            RoundDateAscending = 0,
-
             [Description("Round Date Descending")]
-            RoundDateDescending = 1,
+            RoundDateDescending = 0,
 
-            [Description("Course Name Ascending")]
-            CourseNameAscending = 2,
+            [Description("Round Date Ascending")]
+            RoundDateAscending = 1,
 
             [Description("Course Name Descending")]
-            CourseNameDescending = 3
+            CourseNameDescending = 2,
+
+            [Description("Course Name Ascending")]
+            CourseNameAscending = 3,
+
+            [Description("Best Score")]
+            BestScores = 4,
+
+            [Description("Worse Score")]
+            WorseScores= 5,
 
         }
 

@@ -2,6 +2,7 @@
 /// <reference path="../gulpfile.js" />
 /// <reference path="js/angular/common/datepickerdirective.js" />
 /// <reference path="js/angular/common/filereaderfactory.js" />
+/// <reference path="js/angular/common/httprequestinterceptor.js" />
 /// <reference path="js/angular/common/modaldirective.js" />
 /// <reference path="js/angular/common/numberonlydirective.js" />
 /// <reference path="js/angular/common/select2directive.js" />

@@ -28,6 +28,7 @@
     <script src="~/lib/angular/angular-animate.js"></script>
     <script src="~/lib/select2/js/select2.js"></script>
     <script src="~/js/angular/toracgolfapp.js"></script>
+    <script src="~/js/angular/common/httprequestinterceptor.js"></script>
     <script src="~/js/angular/common/modaldirective.js"></script>
     <script src="~/js/angular/common/numberonlydirective.js"></script>
     <script src="~/js/angular/common/datepickerdirective.js"></script>
@@ -57,7 +58,7 @@
 
                         <div class="filter sort-filter">
                             <div class="form-inline form-light">
-                                <label>Courses Per Page</label>
+                                <label>Rounds Per Page</label>
                                 <select class="form-control" ng-change="FetchAPageOfData(true)" ng-model="RoundsPerPage" ng-options="perPage as perPage for perPage in RoundsPerPageLookup"></select>
                             </div>
                         </div>
@@ -77,15 +78,23 @@
                     <ul class="list-listings-2" ng-repeat="round in PagedData track by round.RoundId">
                         <li class="featured">
                             <div class="listing-header bg-base">
-                                {{round.CourseName}}
+                                {{round.RoundDate | date:'MM/dd/yyyy'}}: {{round.Score}} at {{round.CourseName}} ({{round.TeeBoxLocation.Description}} Tee Box)
+
+                                <span class="star-rating">
+                                    <i ng-class="round.RoundPerformance > 0 ? 'fa fa-star': 'fa fa-star-o'"></i>
+                                    <i ng-class="round.RoundPerformance >= 1 ? 'fa fa-star': 'fa fa-star-o'"></i>
+                                    <i ng-class="round.RoundPerformance >= 2 ? 'fa fa-star': 'fa fa-star-o'"></i>
+                                    <i ng-class="round.RoundPerformance >= 3 ? 'fa fa-star': 'fa fa-star-o'"></i>
+                                    <i ng-class="round.RoundPerformance >= 4 ? 'fa fa-star': 'fa fa-star-o'"></i>
+                                </span>
                             </div>
-                            @*<div class="listing-image">
-                                <img ng-src="data:image/png;base64,{{course.CourseImage.CourseImage}}" class="img-responsive CourseListingImage CourseListingHeight" alt="">
+                            <div class="listing-image">
+                                <img ng-src="data:image/png;base64,{{FindCourseImageFromLookup(round.CourseId)}}" class="img-responsive RoundListingImage RoundListingHeight" alt="">
                                 <a href="#" class="btn btn-lg btn-square btn-base btn-block-bm btn-icon btn-icon-go">See more</a>
                             </div>
                             <div class="cell">
-                                <div class="listing-body clearfix CourseListingHeight">
-                                    <h3><a href="#">{{course.CourseData.Name}}</a></h3>
+                                <div class="listing-body clearfix RoundListingHeight">
+                                    <h3><a href="#">{{round.CourseName}}</a></h3>
                                     <h4>{{course.CourseData.City}}, {{course.StateDescription}}</h4>
                                     <p>
                                         {{course.CourseData.Description}}
@@ -102,7 +111,7 @@
                                         <li><i class="fa fa-calculator"></i><strong>Avg Score: </strong>93.35</li>
                                     </ul>
                                 </div>
-                            </div>*@
+                            </div>
                         </li>
                     </ul>
                 </div>

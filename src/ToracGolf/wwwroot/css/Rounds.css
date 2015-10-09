@@ -12,6 +12,19 @@
     padding-top: 0px !important;
 }
 
-.Select2DropDown{
+.Select2DropDown {
     width: 100%;
+}
+
+.star-rating {
+    display: inline-block !important;
+}
+
+.RoundListingHeight{
+     height: 200px !important;
+}
+
+.RoundListingImage {
+    width: 250px !important;
+    /*any element with this class should also use CourseListingHeight*/
 }

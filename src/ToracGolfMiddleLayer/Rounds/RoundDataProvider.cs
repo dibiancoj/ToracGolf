@@ -73,7 +73,9 @@ namespace ToracGolf.MiddleLayer.Rounds
                 RoundId = x.RoundId,
                 CourseId = x.CourseId,
                 CourseName = dbContext.Course.FirstOrDefault(y => y.CourseId == x.CourseId).Name,
-                RoundDate = x.RoundDate
+                RoundDate = x.RoundDate,
+                Score = x.Score,
+                TeeBoxLocation = dbContext.CourseTeeLocations.FirstOrDefault(y => y.CourseId == x.CourseId && y.CourseTeeLocationId == x.CourseTeeLocationId)
             });
 
             //if we have a course name, add it as a filter
@@ -114,9 +116,17 @@ namespace ToracGolf.MiddleLayer.Rounds
             {
                 queryable = queryable.OrderBy(x => x.RoundDate).ThenBy(x => x.RoundId);
             }
-            else if (SortBy == RoundListingSortOrder.RoundListingSortEnum.CourseNameDescending)
+            else if (SortBy == RoundListingSortOrder.RoundListingSortEnum.RoundDateDescending)
             {
                 queryable = queryable.OrderByDescending(x => x.RoundDate).ThenByDescending(x => x.RoundId);
+            }
+            else if (SortBy == RoundListingSortOrder.RoundListingSortEnum.BestScores)
+            {
+                queryable = queryable.OrderBy(x => x.Score).ThenBy(x => x.RoundId);
+            }
+            else if (SortBy == RoundListingSortOrder.RoundListingSortEnum.WorseScores)
+            {
+                queryable = queryable.OrderByDescending(x => x.Score).ThenByDescending(x => x.RoundId);
             }
 
             //go run the query now
@@ -127,6 +137,41 @@ namespace ToracGolf.MiddleLayer.Rounds
 
             //now grab all the course images
             var courseImages = await dbContext.CourseImages.Where(x => distinctCourseIds.Contains(x.CourseId)).ToDictionaryAsync(x => x.CourseId, y => y.CourseImage);
+
+            //let's loop through the rounds and display the stsarts
+            foreach (var round in dataSet)
+            {
+                //performance to set
+                RoundPerformance roundPerformance;
+
+                if (round.Score >= 110)
+                {
+                    roundPerformance = RoundPerformance.Awful;
+                }
+                else if (round.Score >= 100)
+                {
+                    roundPerformance = RoundPerformance.Bad;
+                }
+                else if (round.Score >= 97)
+                {
+                    roundPerformance = RoundPerformance.BadAverage;
+                }
+                else if (round.Score >= 93 && round.Score <= 97)
+                {
+                    roundPerformance = RoundPerformance.Average;
+                }
+                else if (round.Score >= 87 && round.Score <= 93)
+                {
+                    roundPerformance = RoundPerformance.AboveAverage;
+                }
+                else
+                {
+                    roundPerformance = RoundPerformance.AboveAverage;
+                }
+
+                round.RoundPerformance = (int)roundPerformance;
+            }
+
 
             //go return the lookup now
             return new RoundSelectModel(courseImages, dataSet);

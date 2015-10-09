@@ -19,14 +19,14 @@
 
             CourseListing: function (resetPager, pageId, sortBy, courseNameFilter, stateFilter, coursesPerPage) {
                 return $http.post('CourseListingSelectPage',
-                    {
-                        ResetPager: resetPager,
-                        PageIndexId: pageId,
-                        SortBy: sortBy,
-                        CourseNameFilter: courseNameFilter,
-                        StateFilter: stateFilter,
-                        CoursesPerPage: coursesPerPage
-                    });
+                {
+                    ResetPager: resetPager,
+                    PageIndexId: pageId,
+                    SortBy: sortBy,
+                    CourseNameFilter: courseNameFilter,
+                    StateFilter: stateFilter,
+                    CoursesPerPage: coursesPerPage
+                });
             }
         }
 
