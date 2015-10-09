@@ -58,7 +58,7 @@
                         <div class="filter sort-filter">
                             <div class="form-inline form-light">
                                 <label>Courses Per Page</label>
-                                <select class="form-control" ng-change="FetchAPageOfData(true)" ng-model="CoursesPerPage" ng-options="perPage as perPage for perPage in CoursesPerPageLookup"></select>
+                                <select class="form-control" ng-change="FetchAPageOfData(true)" ng-model="RoundsPerPage" ng-options="perPage as perPage for perPage in RoundsPerPageLookup"></select>
                             </div>
                         </div>
 
@@ -74,12 +74,12 @@
 
 
                 <div class="col-md-9">
-                    <ul class="list-listings-2" ng-repeat="course in PagedData track by course.CourseData.Name">
+                    <ul class="list-listings-2" ng-repeat="round in PagedData track by round.RoundId">
                         <li class="featured">
                             <div class="listing-header bg-base">
-                                {{course.CourseData.Name}}
+                                {{round.CourseName}}
                             </div>
-                            <div class="listing-image">
+                            @*<div class="listing-image">
                                 <img ng-src="data:image/png;base64,{{course.CourseImage.CourseImage}}" class="img-responsive CourseListingImage CourseListingHeight" alt="">
                                 <a href="#" class="btn btn-lg btn-square btn-base btn-block-bm btn-icon btn-icon-go">See more</a>
                             </div>
@@ -102,7 +102,7 @@
                                         <li><i class="fa fa-calculator"></i><strong>Avg Score: </strong>93.35</li>
                                     </ul>
                                 </div>
-                            </div>
+                            </div>*@
                         </li>
                     </ul>
                 </div>

@@ -35,7 +35,7 @@ namespace ToracGolf.MiddleLayer.HandicapCalculator
                          join myTeeLocations in dbContext.CourseTeeLocations.AsNoTracking()
                          on new { myRounds.CourseId, myRounds.CourseTeeLocationId } equals new { myTeeLocations.CourseId, myTeeLocations.CourseTeeLocationId }
                          where myRounds.UserId == userId
-                         orderby myRounds.RoundDate descending
+                         orderby myRounds.RoundDate descending, myRounds.RoundId descending
                          select new
                          {
                              myRounds.RoundId,

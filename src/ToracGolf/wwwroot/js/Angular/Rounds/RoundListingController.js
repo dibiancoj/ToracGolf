@@ -2,25 +2,25 @@
 
     appToracGolf.controller('RoundListingController', ['$scope', 'ValidationService', 'RoundHttp', function ($scope, ValidationService, RoundHttp) {
 
-        $scope.init = function (totalNumberOfPages, courseSortOrder, userStatePreference, defaultCoursesPerPage, coursesPerPageLookup) {
+        $scope.init = function (totalNumberOfPages, roundSortOrder, userStatePreference, defaultRoundsPerPage, roundsPerPageLookup) {
 
             //set the drop down items
-            $scope.SortByLookup = courseSortOrder;
+            $scope.SortByLookup = roundSortOrder;
 
-            //set the courses per page lookup
-            $scope.CoursesPerPageLookup = coursesPerPageLookup;
+            //set the rounds per page lookup
+            $scope.RoundsPerPageLookup = roundsPerPageLookup;
 
             //add a sort by model (to sort the grid)
-            $scope.SortBy = courseSortOrder[0].Value;
+            $scope.SortBy = roundSortOrder[0].Value;
 
             //set the default courses per page
-            $scope.CoursesPerPage = defaultCoursesPerPage;
+            $scope.RoundsPerPage = defaultRoundsPerPage;
 
             //state filter
             $scope.StateFilter = userStatePreference;
 
             //set the seach by course
-            $scope.SearchByCourseName = '';
+            $scope.SearchByRoundName = '';
 
             //set the initial page
             $scope.CurrentPageId = 0;
@@ -68,11 +68,11 @@
             }
 
             //go grab the records to display
-            CourseHttp.CourseListing(resetPagerToPage1, $scope.CurrentPageId, $scope.SortBy, $scope.SearchByCourseName, $scope.StateFilter, $scope.CoursesPerPage)
+            RoundHttp.RoundListing(resetPagerToPage1, $scope.CurrentPageId, $scope.SortBy, $scope.SearchByRoundName, $scope.StateFilter, $scope.RoundsPerPage)
                 .then(function (result) {
 
                     //set the paged data
-                    $scope.PagedData = result.data.PagedData;
+                    $scope.PagedData = result.data.PagedData.ListingData;
 
                     //do we need to rebuild the pager?
                     if (result.data.TotalNumberOfPages != null) {

@@ -170,10 +170,28 @@ namespace ToracGolf.Controllers
                 CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
                 BuildTokenSet(Antiforgery),
                 GetUserDefaultState(),
-                await RoundDataProvider.TotalNumberOfRounds(DbContext, null, null, Configuration.Options.DefaultListingRecordsPerPage),
+                await RoundDataProvider.TotalNumberOfRounds(DbContext, userId, null, null, Configuration.Options.DefaultListingRecordsPerPage),
                 CacheFactory.GetCacheItem<IList<SortOrderViewModel>>(CacheKeyNames.RoundListingSortOrder, Cache),
                 Configuration.Options.DefaultListingRecordsPerPage,
                 CacheFactory.GetCacheItem<IEnumerable<int>>(CacheKeyNames.NumberOfListingsPerPage, Cache)));
+        }
+
+        [HttpPost]
+        [Route("RoundListingSelectPage", Name = "RoundListingSelectPage")]
+        [ValidateCustomAntiForgeryToken()]
+        public async Task<IActionResult> RoundListingSelect([FromBody] RoundListPageNavigation listNav)
+        {
+            //state filter to use
+            int? stateFilter = string.IsNullOrEmpty(listNav.StateFilter) ? new int?() : Convert.ToInt32(listNav.StateFilter);
+
+            //grab the userid
+            var userId = GetUserId();
+
+            return Json(new
+            {
+                PagedData = await RoundDataProvider.RoundSelect(DbContext, userId, listNav.PageIndexId, listNav.SortBy, listNav.RoundNameFilter, stateFilter, listNav.RoundsPerPage),
+                TotalNumberOfPages = listNav.ResetPager ? new int?(await RoundDataProvider.TotalNumberOfRounds(DbContext, userId, listNav.RoundNameFilter, stateFilter, listNav.RoundsPerPage)) : null
+            });
         }
 
         #endregion

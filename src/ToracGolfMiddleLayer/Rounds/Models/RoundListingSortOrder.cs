@@ -23,20 +23,11 @@ namespace ToracGolf.MiddleLayer.Rounds.Models
             [Description("Round Date Descending")]
             RoundDateDescending = 1,
 
-            [Description("Most Times Played")]
-            MostTimesPlayed = 2,
-
             [Description("Course Name Ascending")]
-            CourseNameAscending = 3,
+            CourseNameAscending = 2,
 
             [Description("Course Name Descending")]
-            CourseNameDescending = 4,
-
-            [Description("Hardest Courses")]
-            HardestCourses = 5,
-
-            [Description("Easiest Courses")]
-            EasiestCourses = 6
+            CourseNameDescending = 3
 
         }
 

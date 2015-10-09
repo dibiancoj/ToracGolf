@@ -19,6 +19,18 @@
 
             FetchTeeBoxForCourseId: function (courseId) {
                 return $http.post('TeeLocationSelectForCourseId', { CourseId: courseId });
+            },
+
+            RoundListing: function (resetPager, pageId, sortBy, roundNameFilter, stateFilter, roundsPerPage) {
+                return $http.post('RoundListingSelectPage',
+                    {
+                        ResetPager: resetPager,
+                        PageIndexId: pageId,
+                        SortBy: sortBy,
+                        RoundNameFilter: roundNameFilter,
+                        StateFilter: stateFilter,
+                        RoundsPerPage: roundsPerPage
+                    });
             }
         }
 

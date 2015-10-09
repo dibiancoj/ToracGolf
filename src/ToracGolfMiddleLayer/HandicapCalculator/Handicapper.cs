@@ -44,8 +44,6 @@ namespace ToracGolf.MiddleLayer.HandicapCalculator
             //how many rounds are we using to calculate this thing with?
             int howManyRoundToUse = HowManyRoundsToUseInFormula(Last20RoundsToCalculate.Count);
 
-
-
             //now sum the differential for x amount of rounds that we have above
             double sumOfDifferential = sortedDifferential.Take(howManyRoundToUse).Sum(x => x.Differential);
 
