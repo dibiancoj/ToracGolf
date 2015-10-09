@@ -10,7 +10,7 @@ namespace ToracGolf.ViewModels.Handicap
 
         #region Constructor
 
-        public HandicapStatusViewModel(float seasonHandicap, float careerHandicap)
+        public HandicapStatusViewModel(double? seasonHandicap, double? careerHandicap)
         {
             SeasonHandicap = seasonHandicap;
             CareerHandicap = careerHandicap;
@@ -20,8 +20,8 @@ namespace ToracGolf.ViewModels.Handicap
 
         #region Properties
 
-        public float SeasonHandicap { get; }
-        public float CareerHandicap { get; }
+        public double? SeasonHandicap { get; }
+        public double? CareerHandicap { get; }
 
         #endregion
 

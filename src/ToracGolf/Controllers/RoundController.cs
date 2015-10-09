@@ -13,7 +13,6 @@ using ToracGolf.Constants;
 using ToracGolf.Filters;
 using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.Rounds;
-using ToracGolf.MiddleLayer.Season;
 using ToracGolf.Settings;
 using ToracGolf.ViewModels.Navigation;
 using ToracGolf.ViewModels.Rounds;
@@ -71,7 +70,7 @@ namespace ToracGolf.Controllers
 
         [HttpGet]
         [Route("AddARound", Name = "AddARound")]
-        public IActionResult RoundAdd()
+        public async Task<IActionResult> RoundAdd()
         {
             //go build the breadcrumb
             var breadCrumb = BaseBreadCrumb();
@@ -82,13 +81,16 @@ namespace ToracGolf.Controllers
             //get the user's preference, so we can the state he will most likely add
             var usersDefaultState = Context.User.Claims.First(x => x.Type == ClaimTypes.StateOrProvince).Value;
 
+            //grab the user id and store it
+            var userId = GetUserId();
+
             //go return the view
             return View(new RoundAddViewModel(
-                HandicapStatusBuilder(DbContext),
+                await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
                 breadCrumb,
                 CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
                 BuildTokenSet(Antiforgery),
-                new RoundAddEnteredData() { RoundDate = DateTime.Now, StateId = Context.User.Claims.First(x => x.Type == ClaimTypes.StateOrProvince).Value }));
+                new RoundAddEnteredData { RoundDate = DateTime.Now, StateId = Context.User.Claims.First(x => x.Type == ClaimTypes.StateOrProvince).Value }));
         }
 
         [HttpPost]
@@ -103,7 +105,10 @@ namespace ToracGolf.Controllers
                 var userId = GetUserId();
 
                 //let's try to add this user to the system
-                var roundAddAttempt = await RoundDataProvider.SaveRound(DbContext, userId, await SeasonDataProvider.CurrentSeasonForUser(DbContext, userId), model);
+                var roundAddAttempt = await RoundDataProvider.SaveRound(DbContext, userId, await UserCurrentSeason(DbContext, userId), model);
+
+                //if we saved the round, we want to clear out the session so the next call which go calculate the handicap now
+                Context.Session.Remove(HandicapStatusSessionName);
 
                 //we saved it successfully
                 return Json(new { result = true });

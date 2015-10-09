@@ -37,7 +37,7 @@ namespace ToracGolf.MiddleLayer.HandicapCalculator
             var sortedDifferential = (from myData in Last20RoundsToCalculate
                                       select new
                                       {
-                                          Differential = CalculateDifferential(myData.RoundScore, myData.Rating, myData.Scope),
+                                          Differential = CalculateDifferential(myData.RoundScore, myData.Rating, myData.Slope),
                                           RoundRecord = myData
                                       }).OrderBy(x => x.Differential).ToArray();
 
@@ -47,21 +47,20 @@ namespace ToracGolf.MiddleLayer.HandicapCalculator
 
 
             //now sum the differential for x amount of rounds that we have above
-            float sumOfDifferential = sortedDifferential.Take(howManyRoundToUse).Sum(x => x.Differential);
+            double sumOfDifferential = sortedDifferential.Take(howManyRoundToUse).Sum(x => x.Differential);
 
             //now grab the avg
-            float averageDifferential = sumOfDifferential / howManyRoundToUse;
+            double averageDifferential = sumOfDifferential / howManyRoundToUse;
 
             //add the special clause
             return Math.Round(averageDifferential * .96, 1);
-
         }
 
         #endregion
 
         #region Helper Methods
 
-        private static float CalculateDifferential(int score, float teeBoxRating, float teeBoxScope)
+        private static double CalculateDifferential(int score, double teeBoxRating, double teeBoxScope)
         {
             return ((score - teeBoxRating) * 113 / teeBoxScope);
         }

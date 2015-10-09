@@ -9,24 +9,12 @@ namespace ToracGolf.MiddleLayer.HandicapCalculator.Models
     public class Last20Rounds
     {
 
-        #region Constructor
-
-        public Last20Rounds(int roundId,float scope, float rating, int roundScore)
-        {
-            RoundId = roundId;
-            Scope = scope;
-            Rating = rating;
-            RoundScore = roundScore;
-        }
-
-        #endregion
-
         #region Properties
 
-        public int RoundId { get; }
-        public float Scope { get; }
-        public float Rating { get; }
-        public int RoundScore { get; }
+        public int RoundId { get; set; }
+        public double Slope { get; set; }
+        public double Rating { get; set; }
+        public int RoundScore { get; set; }
 
         #endregion
 

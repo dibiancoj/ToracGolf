@@ -9,6 +9,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using ToracGolf.Constants;
 using ToracGolf.MiddleLayer.EFModel;
+using ToracGolf.MiddleLayer.HandicapCalculator;
+using ToracGolf.MiddleLayer.Season;
 using ToracGolf.ViewModels.Handicap;
 
 namespace ToracGolf.Controllers
@@ -20,11 +22,14 @@ namespace ToracGolf.Controllers
         #region Constants
 
         protected const int UniqueConstraintId = 2627;
-        private const string HandicapStatusSessionName = "HandicapStatusSession";
+        protected const string HandicapStatusSessionName = "HandicapStatusSession";
+        private const string UserCurrentSeasonSessionName = "CurrentSeasonSession";
 
         #endregion
 
         #region Methods
+
+        #region User Information
 
         public bool IsUserAuthenticated()
         {
@@ -33,12 +38,38 @@ namespace ToracGolf.Controllers
                Context.User.Identity.IsAuthenticated;
         }
 
+        public async Task<int> UserCurrentSeason(ToracGolfContext dbContext, int userId)
+        {
+            //we will store this in session for performance
+            var attemptToGetCurrentSeasonId = Context.Session.GetInt32(UserCurrentSeasonSessionName);
+
+            //do we have a value?
+            if (attemptToGetCurrentSeasonId.HasValue)
+            {
+                //we have a current season, return it
+                return attemptToGetCurrentSeasonId.Value;
+            }
+
+            //we don't have it in session, go to the database to grab it
+            var currentSeasonId = await SeasonDataProvider.CurrentSeasonForUser(dbContext, userId);
+
+            //now put it in session
+            Context.Session.SetInt32(UserCurrentSeasonSessionName, currentSeasonId);
+
+            //now return the current season id
+            return currentSeasonId;
+        }
+
         public int GetUserId()
         {
             return Convert.ToInt32(Context.User.Claims.First(x => x.Type == ClaimTypes.Hash.ToString()).Value);
         }
 
-        public HandicapStatusViewModel HandicapStatusBuilder(ToracGolfContext dbContext)
+        #endregion
+
+        #region Handicap
+
+        public async Task<HandicapStatusViewModel> HandicapStatusBuilder(ToracGolfContext dbContext, int userId, int userCurrentSeason)
         {
             //if we have the object in session then use it!
             var attemptToGetHandicap = Context.Session.GetString(HandicapStatusSessionName);
@@ -52,9 +83,21 @@ namespace ToracGolf.Controllers
 
             //we need to go get the handicap... put his in business log
             //first thing we need to is go get the last 20 rounds (for season and career)
-            var handicap = new HandicapStatusViewModel(10, 20);
 
-           /finish logic for this...store this in the claim / Session, or quick lookup table maybe in user table? most likely in claim on user
+            //let's go grab the season data
+            var tskSeasonRounds = await HandicapDataProvider.HandicapCalculatorRoundSelectorSeason(dbContext, userId, userCurrentSeason).ContinueWith(tsk =>
+            {
+                return Handicapper.CalculateHandicap(tsk.Result);
+            });
+
+            //go grab the career
+            var tskCareerRounds = await HandicapDataProvider.HandicapCalculatorRoundSelectorCareer(dbContext, userId).ContinueWith(tsk =>
+             {
+                 return Handicapper.CalculateHandicap(tsk.Result);
+             });
+
+            //go wait for both of them and build up our handicap model
+            var handicap = new HandicapStatusViewModel(tskSeasonRounds, tskCareerRounds);
 
             //set the session so we have it
             Context.Session.SetString(HandicapStatusSessionName, JsonConvert.SerializeObject(handicap));
@@ -62,6 +105,10 @@ namespace ToracGolf.Controllers
             //return the handicap object
             return handicap;
         }
+
+        #endregion
+
+        #region Security
 
         public AntiforgeryTokenSet BuildTokenSet(IAntiforgery forgery)
         {
@@ -80,6 +127,8 @@ namespace ToracGolf.Controllers
             //else just return whatever we got back
             return token;
         }
+
+        #endregion
 
         #endregion
 

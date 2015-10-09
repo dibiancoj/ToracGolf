@@ -71,7 +71,7 @@ namespace ToracGolf.Controllers
 
         [HttpGet]
         [Route("AddACourse", Name = "AddACourse")]
-        public IActionResult CourseAdd()
+        public async Task<IActionResult> CourseAdd()
         {
             //build the breadcrumb
             var breadCrumb = BaseBreadCrumb();
@@ -82,8 +82,11 @@ namespace ToracGolf.Controllers
             //get the user's preference, so we can the state he will most likely add
             var usersDefaultState = Context.User.Claims.First(x => x.Type == ClaimTypes.StateOrProvince).Value;
 
+            //grab the user id
+            var userId = GetUserId();
+
             return View(new CourseAddViewModel(
-                HandicapStatusBuilder(DbContext),
+                await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
                 breadCrumb,
                 CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
                 new CourseAddEnteredData { StateListing = usersDefaultState, TeeLocations = new List<CourseAddEnteredDataTeeLocations>() },
@@ -173,9 +176,12 @@ namespace ToracGolf.Controllers
             //add the "all"
             stateListing.Insert(0, new SelectListItem { Text = "All", Value = "" });
 
+            //grab the user id
+            var userId = GetUserId();
+
             //return the view
             return View(new CourseListingViewModel(
-              HandicapStatusBuilder(DbContext),
+              await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
               breadCrumb,
               BuildTokenSet(Antiforgery),
               await CourseDataProvider.TotalNumberOfCourses(DbContext, null, null, Configuration.Options.CourseListingRecordsPerPage),
