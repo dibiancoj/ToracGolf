@@ -1,0 +1,38 @@
+﻿@{
+    Layout = "_ToracGolfLayout";
+    ViewBag.Title = "Round Listing";
+}
+@model  ToracGolf.ViewModels.Rounds.RoundListingViewModel
+
+    @section Breadcrumb{
+        @Html.Partial("_Breadcrumb", Model.Breadcrumb)
+    }
+
+    @section TopNav{
+        @Html.Partial("_TopNav", new ToracGolf.ViewModels.Navigation.TopNavViewModel(true))
+    }
+
+    @section HandicapStatus{
+        @Html.Partial("_HandicapStatus", Model.HandicapStatus)
+    }
+
+    @section Styles{
+        <link href="~/lib/select2/assets/select2.css" rel="stylesheet" />
+        <link href="~/lib/select2/assets/select2-bootstrap.css" rel="stylesheet" />
+        <link href="~/css/Rounds.css" rel="stylesheet" />
+    }
+
+    @section Scripts{
+        <script src="~/lib/jlinq/jlinq.js"></script>
+        <script src="~/lib/angular/angular.js"></script>
+        <script src="~/lib/angular/angular-animate.js"></script>
+        <script src="~/lib/select2/js/select2.js"></script>
+        <script src="~/js/angular/toracgolfapp.js"></script>
+        <script src="~/js/angular/common/modaldirective.js"></script>
+        <script src="~/js/angular/common/numberonlydirective.js"></script>
+        <script src="~/js/angular/common/datepickerdirective.js"></script>
+        <script src="~/js/angular/common/ValidationService.js"></script>
+        <script src="~/js/angular/rounds/roundhttp.js"></script>
+        <script src="~/js/angular/common/select2directive.js"></script>
+        <script src="~/js/angular/rounds/roundaddcontroller.js"></script>
+    }

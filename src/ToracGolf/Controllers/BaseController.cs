@@ -65,6 +65,11 @@ namespace ToracGolf.Controllers
             return Convert.ToInt32(Context.User.Claims.First(x => x.Type == ClaimTypes.Hash.ToString()).Value);
         }
 
+        public string GetUserDefaultState()
+        {
+            return Context.User.Claims.First(x => x.Type == ClaimTypes.StateOrProvince).Value;
+        }
+
         #endregion
 
         #region Handicap

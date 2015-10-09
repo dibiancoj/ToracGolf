@@ -78,9 +78,6 @@ namespace ToracGolf.Controllers
             //add the current screen
             breadCrumb.Add(new BreadcrumbNavItem("Add A Round", "#"));
 
-            //get the user's preference, so we can the state he will most likely add
-            var usersDefaultState = Context.User.Claims.First(x => x.Type == ClaimTypes.StateOrProvince).Value;
-
             //grab the user id and store it
             var userId = GetUserId();
 
@@ -90,7 +87,7 @@ namespace ToracGolf.Controllers
                 breadCrumb,
                 CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
                 BuildTokenSet(Antiforgery),
-                new RoundAddEnteredData { RoundDate = DateTime.Now, StateId = Context.User.Claims.First(x => x.Type == ClaimTypes.StateOrProvince).Value }));
+                new RoundAddEnteredData { RoundDate = DateTime.Now, StateId = GetUserDefaultState() }));
         }
 
         [HttpPost]
@@ -146,6 +143,32 @@ namespace ToracGolf.Controllers
             {
                 TeeBoxData = await RoundDataProvider.TeeBoxSelectForCourse(DbContext, model.CourseId)
             });
+        }
+
+        #endregion
+
+        #region Round Listing
+
+        [HttpGet]
+        [Route("ViewRounds", Name = "ViewRounds")]
+        public async Task<IActionResult> RoundListing()
+        {
+            //go build the breadcrumb
+            var breadCrumb = BaseBreadCrumb();
+
+            //add the current screen
+            breadCrumb.Add(new BreadcrumbNavItem("Round Listing", "#"));
+
+            //grab the user id and store it
+            var userId = GetUserId();
+
+            //go return the view
+            return View(new RoundListingViewModel(
+                await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
+                breadCrumb,
+                CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
+                BuildTokenSet(Antiforgery),
+                GetUserDefaultState()));
         }
 
         #endregion

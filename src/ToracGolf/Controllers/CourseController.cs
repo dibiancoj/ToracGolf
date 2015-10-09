@@ -79,9 +79,6 @@ namespace ToracGolf.Controllers
             //add the current screen
             breadCrumb.Add(new BreadcrumbNavItem("Add A Course", "#"));
 
-            //get the user's preference, so we can the state he will most likely add
-            var usersDefaultState = Context.User.Claims.First(x => x.Type == ClaimTypes.StateOrProvince).Value;
-
             //grab the user id
             var userId = GetUserId();
 
@@ -89,7 +86,7 @@ namespace ToracGolf.Controllers
                 await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
                 breadCrumb,
                 CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
-                new CourseAddEnteredData { StateListing = usersDefaultState, TeeLocations = new List<CourseAddEnteredDataTeeLocations>() },
+                new CourseAddEnteredData { StateListing = GetUserDefaultState(), TeeLocations = new List<CourseAddEnteredDataTeeLocations>() },
                 BuildTokenSet(Antiforgery)));
         }
 

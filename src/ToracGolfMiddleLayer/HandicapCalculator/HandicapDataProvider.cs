@@ -31,7 +31,19 @@ namespace ToracGolf.MiddleLayer.HandicapCalculator
         private static Task<Last20Rounds[]> HandicapCalculatorRoundSelectorHelper(ToracGolfContext dbContext, int userId, int? seasonId)
         {
             //go build the base query
-            var query = dbContext.Rounds.AsNoTracking().Where(x => x.UserId == userId);
+            var query = (from myRounds in dbContext.Rounds.AsNoTracking()
+                         join myTeeLocations in dbContext.CourseTeeLocations.AsNoTracking()
+                         on new { myRounds.CourseId, myRounds.CourseTeeLocationId } equals new { myTeeLocations.CourseId, myTeeLocations.CourseTeeLocationId }
+                         where myRounds.UserId == userId
+                         orderby myRounds.RoundDate descending
+                         select new
+                         {
+                             myRounds.RoundId,
+                             myRounds.Score,
+                             myRounds.SeasonId,
+                             myTeeLocations.Rating,
+                             myTeeLocations.Slope
+                         }).Take(20).AsQueryable();
 
             //do we need to add the season?
             if (seasonId.HasValue)
@@ -40,22 +52,14 @@ namespace ToracGolf.MiddleLayer.HandicapCalculator
                 query = query.Where(x => x.SeasonId == seasonId.Value);
             }
 
-            //now let's grab the last 20 rounds
-            query = query.OrderByDescending(x => x.RoundDate);
-
-            //let's build a temp query so we can grab the scope and rating in 1 query
-            return query.Select(x => new
-            {
-                x.RoundId,
-                x.Score,
-                TeeLocation = dbContext.CourseTeeLocations.FirstOrDefault(y => y.CourseId == x.CourseId && y.CourseTeeLocationId == x.CourseTeeLocationId)
-            }).Select(x => new Last20Rounds
+            //go grab the last 20 rounds class and return the task
+            return query.Select(x => new Last20Rounds
             {
                 RoundId = x.RoundId,
                 RoundScore = x.Score,
-                Rating = x.TeeLocation.Rating,
-                Slope = x.TeeLocation.Slope
-            }).Take(20).ToArrayAsync();
+                Rating = x.Rating,
+                Slope = x.Slope
+            }).ToArrayAsync();
         }
 
         #endregion
