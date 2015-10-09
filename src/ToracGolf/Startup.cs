@@ -98,8 +98,21 @@ namespace ToracGolf
             // You will also need to add the Microsoft.AspNet.Mvc.WebApiCompatShim package to the 'dependencies' section of project.json.
             // services.AddWebApiConventions();
 
+
             //add the IMemory cache so we can add this now
             services.AddSingleton<IMemoryCache, MemoryCache>();
+
+            //for session we need to add caching
+            services.AddCaching();
+
+            //now we can add session
+            services.AddSession();
+
+            //configure session to only be 5 minutes
+            services.ConfigureSession(options =>
+            {
+                options.IdleTimeout = new TimeSpan(0, 5, 0);
+            });
 
 #if DNX451
             // utilize resource only available with .NET Framework
@@ -115,7 +128,7 @@ namespace ToracGolf
             //add the course list sort oder
             cacheFactory.AddConfiguration(CacheKeyNames.CourseListingSortOrder,
                 () => MiddleLayer.Courses.CourseListingSortOrder.BuildDropDownValues().ToImmutableList());
-            
+
             //add the courses per page options (this way we don't have to keep creating arrays)
             cacheFactory.AddConfiguration(CacheKeyNames.CourseListingCoursesPerPage,
                 () => new int[] { 10, 25, 50, 75, 100 }.ToImmutableList());
@@ -172,6 +185,9 @@ namespace ToracGolf
                 options.AutomaticAuthentication = true;
                 options.AuthenticationScheme = "Cookies";
             });
+
+            //add session state
+            app.UseSession();
 
             // Add MVC to the request pipeline.
             app.UseMvc(routes =>

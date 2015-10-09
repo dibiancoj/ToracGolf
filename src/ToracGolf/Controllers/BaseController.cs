@@ -40,24 +40,24 @@ namespace ToracGolf.Controllers
 
         public HandicapStatusViewModel HandicapStatusBuilder(ToracGolfContext dbContext)
         {
-            ////if we have the object in session then use it!
-            //var attemptToGetHandicap = Context.Session.GetString(HandicapStatusSessionName);
+            //if we have the object in session then use it!
+            var attemptToGetHandicap = Context.Session.GetString(HandicapStatusSessionName);
 
-            ////did we find it?
-            //if (!string.IsNullOrEmpty(attemptToGetHandicap))
-            //{
-            //    //we have it
-            //    return JsonConvert.DeserializeObject<HandicapStatusViewModel>(attemptToGetHandicap);
-            //}
+            //did we find it?
+            if (!string.IsNullOrEmpty(attemptToGetHandicap))
+            {
+                //we have it
+                return JsonConvert.DeserializeObject<HandicapStatusViewModel>(attemptToGetHandicap);
+            }
 
             //we need to go get the handicap... put his in business log
             //first thing we need to is go get the last 20 rounds (for season and career)
             var handicap = new HandicapStatusViewModel(10, 20);
 
-            finish logic for this...store this in the claim / Session, or quick lookup table maybe in user table? most likely in claim on user
+           /finish logic for this...store this in the claim / Session, or quick lookup table maybe in user table? most likely in claim on user
 
             //set the session so we have it
-            //Context.Session.SetString(HandicapStatusSessionName, JsonConvert.SerializeObject(handicap));
+            Context.Session.SetString(HandicapStatusSessionName, JsonConvert.SerializeObject(handicap));
 
             //return the handicap object
             return handicap;
