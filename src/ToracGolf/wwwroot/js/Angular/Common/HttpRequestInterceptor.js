@@ -1,6 +1,6 @@
 ﻿
 //factory will add the http request interceptor to the $httpProvider
-appToracGolf.factory('httpRequestInterceptor', ['$q', '$location', function ($q, $location) {
+appToracGolf.factory('httpRequestInterceptor', ['$q', function ($q) {
     return {
         request: function (config) {
 
