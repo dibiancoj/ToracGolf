@@ -1,49 +1,53 @@
-﻿
-//factory will add the http request interceptor to the $httpProvider
-appToracGolf.factory('httpRequestInterceptor', ['$q', function ($q) {
-    return {
-        request: function (config) {
+﻿(function () {
+    'use strict';
 
-            //since all ajax post should have the verification token, we add the header.
-            config.headers.RequestVerificationToken = $('#__RequestVerificationToken').val();
+    //factory will add the http request interceptor to the $httpProvider
+    appToracGolf.factory('httpRequestInterceptor', ['$q', function ($q) {
+        return {
+            request: function (config) {
 
-            //show the spinner
-            $("#loadingDiv").show();
+                //since all ajax post should have the verification token, we add the header.
+                config.headers.RequestVerificationToken = $('#__RequestVerificationToken').val();
 
-            //return the config
-            return config;
-        },
+                //show the spinner
+                $("#loadingDiv").show();
 
-        requestError: function (rejection) {
+                //return the config
+                return config;
+            },
 
-            //hide the spinner
-            $("#loadingDiv").hide();
+            requestError: function (rejection) {
 
-            //return the rejected promise
-            return $q.reject(rejection);
-        },
+                //hide the spinner
+                $("#loadingDiv").hide();
 
-        response: function (response) {
+                //return the rejected promise
+                return $q.reject(rejection);
+            },
 
-            //hide the spinner
-            $("#loadingDiv").hide();
+            response: function (response) {
 
-            //return the response
-            return response;
-        },
+                //hide the spinner
+                $("#loadingDiv").hide();
 
-        responseError: function (rejection) {
-            
-            //hide the spinner
-            $("#loadingDiv").hide();
+                //return the response
+                return response;
+            },
 
-            //return the rejected promise
-            return $q.reject(rejection);
+            responseError: function (rejection) {
+
+                //hide the spinner
+                $("#loadingDiv").hide();
+
+                //return the rejected promise
+                return $q.reject(rejection);
+            }
         }
-    }
-}]);
+    }]);
 
-//Http Intercpetor to check auth failures for xhr requests
-appToracGolf.config(['$httpProvider', function ($httpProvider) {
-    $httpProvider.interceptors.push('httpRequestInterceptor');
-}]);
+    //Http Intercpetor to check auth failures for xhr requests
+    appToracGolf.config(['$httpProvider', function ($httpProvider) {
+        $httpProvider.interceptors.push('httpRequestInterceptor');
+    }]);
+
+})();
