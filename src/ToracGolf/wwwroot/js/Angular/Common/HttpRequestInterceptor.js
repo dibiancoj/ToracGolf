@@ -4,6 +4,9 @@ appToracGolf.factory('httpRequestInterceptor', ['$q', '$location', function ($q,
     return {
         request: function (config) {
 
+            //since all ajax post should have the verification token, we add the header.
+            config.headers.RequestVerificationToken = $('#__RequestVerificationToken').val();
+
             //show the spinner
             $("#loadingDiv").show();
 
