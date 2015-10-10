@@ -1,6 +1,6 @@
 ﻿(function () {
 
-    appToracGolf.controller('CourseListingController', ['$scope', 'ValidationService', 'CourseHttp', function ($scope, ValidationService, CourseHttp) {
+    appToracGolf.controller('CourseListingController', ['$scope', 'ValidationService', 'CourseHttp', 'PagerFactory', function ($scope, ValidationService, CourseHttp, PagerFactory) {
 
         $scope.init = function (totalNumberOfPages, courseSortOrder, userStatePreference, defaultCoursesPerPage, coursesPerPageLookup) {
 
@@ -37,16 +37,8 @@
             //total number of pages (set the scope)
             $scope.TotalNumberOfPages = totalNumberOfPages;
 
-            //go add the pager
-            var pagerElements = [];
-
-            //loop through the pages and add the specific page
-            for (var i = 0; i < totalNumberOfPages; i++) {
-                pagerElements.push(i);
-            }
-
             //set the pager elements
-            $scope.PagerElements = pagerElements;
+            $scope.PagerElements = PagerFactory.BuildPagerModel(totalNumberOfPages);
         },
 
         $scope.PagerClick = function (index) {

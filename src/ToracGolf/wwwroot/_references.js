@@ -5,6 +5,7 @@
 /// <reference path="js/angular/common/httprequestinterceptor.js" />
 /// <reference path="js/angular/common/modaldirective.js" />
 /// <reference path="js/angular/common/numberonlydirective.js" />
+/// <reference path="js/angular/common/pagerfactory.js" />
 /// <reference path="js/angular/common/select2directive.js" />
 /// <reference path="js/angular/common/validationservice.js" />
 /// <reference path="js/angular/courses/courseaddcontroller.js" />

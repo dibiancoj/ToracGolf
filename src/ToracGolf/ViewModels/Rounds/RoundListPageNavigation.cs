@@ -20,7 +20,7 @@ namespace ToracGolf.ViewModels.Rounds
 
         public string RoundNameFilter { get; set; }
 
-        public string StateFilter { get; set; }
+        public string SeasonFilter { get; set; }
 
         public int RoundsPerPage { get; set; }
 

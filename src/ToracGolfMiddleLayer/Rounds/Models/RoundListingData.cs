@@ -29,6 +29,7 @@ namespace ToracGolf.MiddleLayer.Rounds.Models
         public CourseTeeLocations TeeBoxLocation { get; set; }
         public DateTime RoundDate { get; set; }
         public int RoundPerformance { get; set; }
+        public int SeasonId { get; set; }
     }
 
     public enum RoundPerformance

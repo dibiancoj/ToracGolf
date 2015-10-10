@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ToracGolf.MiddleLayer.EFModel.Tables;
 using ToracGolf.MiddleLayer.GridCommon;
 using ToracGolf.ViewModels.Handicap;
 
@@ -15,34 +16,36 @@ namespace ToracGolf.ViewModels.Rounds
 
         public RoundListingViewModel(HandicapStatusViewModel handicapStatus,
                                      IList<Navigation.BreadcrumbNavItem> breadcrumb,
-                                     IEnumerable<SelectListItem> stateListing,
+                                     //IEnumerable<SelectListItem> stateListing,
                                      AntiforgeryTokenSet tokenSet,
-                                     string usersDefaultState,
+                                     //string usersDefaultState,
                                      int totalNumberofPages,
                                      IList<SortOrderViewModel> sortOrder,
                                      int defaultRoundsPerPage,
-                                     IEnumerable<int> roundsPerPage)
+                                     IEnumerable<int> roundsPerPage,
+                                     IEnumerable<SelectListItem> userSeasons)
         {
             HandicapStatus = handicapStatus;
             Breadcrumb = breadcrumb;
-            StateListing = stateListing;
+            //StateListing = stateListing;
             TokenSet = tokenSet;
-            UsersDefaultState = usersDefaultState;
+            //UsersDefaultState = usersDefaultState;
             TotalNumberofPages = totalNumberofPages;
             SortOrder = sortOrder;
             DefaultRoundsPerPage = defaultRoundsPerPage;
             RoundsPerPage = roundsPerPage;
+            UserSeasons = userSeasons;
         }
 
         public HandicapStatusViewModel HandicapStatus { get; }
 
-        public IList<Navigation.BreadcrumbNavItem> Breadcrumb { get; set; }
+        public IList<Navigation.BreadcrumbNavItem> Breadcrumb { get; }
 
-        public IEnumerable<SelectListItem> StateListing { get; }
+        //public IEnumerable<SelectListItem> StateListing { get; }
 
         public AntiforgeryTokenSet TokenSet { get; }
 
-        public string UsersDefaultState { get; }
+       // public string UsersDefaultState { get; }
 
         public int TotalNumberofPages { get; }
 
@@ -50,7 +53,9 @@ namespace ToracGolf.ViewModels.Rounds
 
         public int DefaultRoundsPerPage { get; }
 
-        public IEnumerable<int> RoundsPerPage { get; set; }
+        public IEnumerable<int> RoundsPerPage { get; }
+
+        public IEnumerable<SelectListItem> UserSeasons { get; }
 
     }
 

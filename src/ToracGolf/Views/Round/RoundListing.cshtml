@@ -30,6 +30,7 @@
     <script src="~/js/angular/toracgolfapp.js"></script>
     <script src="~/js/angular/common/httprequestinterceptor.js"></script>
     <script src="~/js/angular/common/modaldirective.js"></script>
+    <script src="~/js/angular/common/pagerfactory.js"></script>
     <script src="~/js/angular/common/numberonlydirective.js"></script>
     <script src="~/js/angular/common/datepickerdirective.js"></script>
     <script src="~/js/angular/common/ValidationService.js"></script>
@@ -38,7 +39,7 @@
     <script src="~/js/angular/rounds/roundlistingcontroller.js"></script>
 }
 
-<section ng-cloak class="slice bg-white" ng-app="toracApp" ng-controller="RoundListingController" ng-init="init(@Model.TotalNumberofPages, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.SortOrder), '@Model.UsersDefaultState', @Model.DefaultRoundsPerPage, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.RoundsPerPage))">
+<section ng-cloak class="slice bg-white" ng-app="toracApp" ng-controller="RoundListingController" ng-init="init(@Model.TotalNumberofPages, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.SortOrder), @Model.DefaultRoundsPerPage, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.RoundsPerPage))">
     @Html.Partial("_AngularTokenSet", Model.TokenSet)
 
     <div class="wp-section">
@@ -135,9 +136,9 @@
                                         <input type="text" ng-model="SearchByCourseName" class="form-control" placeholder="I want to find...">
                                     </div>
                                     <div class="form-group">
-                                        <label>State</label>
-                                        <select class="form-control" ng-model="StateFilter" ng-change="FetchAPageOfData(true)">
-                                            @foreach (var stateToAdd in Model.StateListing)
+                                        <label>Season</label>
+                                        <select class="form-control" ng-model="SeasonFilter" ng-change="FetchAPageOfData(true)">
+                                            @foreach (var stateToAdd in Model.UserSeasons)
                                             {
                                                 <option value="@stateToAdd.Value">@stateToAdd.Text</option>
                                             }

@@ -86,32 +86,32 @@ namespace ToracGolf.MiddleLayer.Courses
         }
 
         /// <param name="pageId">0 base index that holds what page we are on</param>
-        public static async Task<IEnumerable<CourseListingData>> CourseSelect(ToracGolfContext dbContext, int pageId, CourseListingSortOrder.CourseListingSortEnum SortBy, string courseNameFilter, int? StateFilter, int RecordsPerPage)
+        public static async Task<IEnumerable<CourseListingData>> CourseSelect(ToracGolfContext dbContext, int pageId, CourseListingSortOrder.CourseListingSortEnum sortBy, string courseNameFilter, int? stateFilter, int recordsPerPage)
         {
             //how many items to skip
-            int skipAmount = pageId * RecordsPerPage;
+            int skipAmount = pageId * recordsPerPage;
 
             //go grab the query
-            var queryable = CourseSelectQueryBuilder(dbContext, courseNameFilter, StateFilter);
+            var queryable = CourseSelectQueryBuilder(dbContext, courseNameFilter, stateFilter);
 
             //figure out what you want to order by
-            if (SortBy == CourseListingSortOrder.CourseListingSortEnum.CourseNameAscending)
+            if (sortBy == CourseListingSortOrder.CourseListingSortEnum.CourseNameAscending)
             {
                 queryable = queryable.OrderBy(x => x.Name);
             }
-            else if (SortBy == CourseListingSortOrder.CourseListingSortEnum.CourseNameDescending)
+            else if (sortBy == CourseListingSortOrder.CourseListingSortEnum.CourseNameDescending)
             {
                 queryable = queryable.OrderByDescending(x => x.Name);
             }
-            else if (SortBy == CourseListingSortOrder.CourseListingSortEnum.EasiestCourses)
+            else if (sortBy == CourseListingSortOrder.CourseListingSortEnum.EasiestCourses)
             {
                 queryable = queryable.OrderBy(x => x.CourseTeeLocations.Min(y => y.Slope));
             }
-            else if (SortBy == CourseListingSortOrder.CourseListingSortEnum.HardestCourses)
+            else if (sortBy == CourseListingSortOrder.CourseListingSortEnum.HardestCourses)
             {
                 queryable = queryable.OrderByDescending(x => x.CourseTeeLocations.Max(y => y.Slope));
             }
-            else if (SortBy == CourseListingSortOrder.CourseListingSortEnum.MostTimesPlayed)
+            else if (sortBy == CourseListingSortOrder.CourseListingSortEnum.MostTimesPlayed)
             {
                 //todo: need to fix when we get the rounds table going
                 queryable = queryable.OrderBy(x => x.Name);
@@ -124,7 +124,7 @@ namespace ToracGolf.MiddleLayer.Courses
                 StateDescription = dbContext.Ref_State.FirstOrDefault(y => y.StateId == x.StateId).Description,
                 TeeLocationCount = dbContext.CourseTeeLocations.Count(y => y.CourseId == x.CourseId),
                 CourseImage = dbContext.CourseImages.FirstOrDefault(y => y.CourseId == x.CourseId)
-            }).Skip(skipAmount).Take(RecordsPerPage).ToArrayAsync();
+            }).Skip(skipAmount).Take(recordsPerPage).ToArrayAsync();
         }
 
         public static async Task<int> TotalNumberOfCourses(ToracGolfContext dbContext, string courseNameFilter, int? StateFilter, int RecordsPerPage)

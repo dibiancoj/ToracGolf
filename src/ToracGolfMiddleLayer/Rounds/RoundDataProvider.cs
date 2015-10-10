@@ -65,18 +65,10 @@ namespace ToracGolf.MiddleLayer.Rounds
 
         #region Round Listing
 
-        public static IQueryable<RoundListingData> RoundSelectQueryBuilder(ToracGolfContext dbContext, int userId, string roundNameFilter, int? StateFilter)
+        public static IQueryable<RoundListingData> RoundSelectQueryBuilder(ToracGolfContext dbContext, int userId, string roundNameFilter, int? seasonFilter)
         {
             //build the queryable
-            var queryable = dbContext.Rounds.AsNoTracking().Where(x => x.UserId == userId).Select(x => new RoundListingData
-            {
-                RoundId = x.RoundId,
-                CourseId = x.CourseId,
-                CourseName = dbContext.Course.FirstOrDefault(y => y.CourseId == x.CourseId).Name,
-                RoundDate = x.RoundDate,
-                Score = x.Score,
-                TeeBoxLocation = dbContext.CourseTeeLocations.FirstOrDefault(y => y.CourseId == x.CourseId && y.CourseTeeLocationId == x.CourseTeeLocationId)
-            });
+            var queryable = dbContext.Rounds.AsNoTracking().Where(x => x.UserId == userId).AsQueryable();
 
             //if we have a course name, add it as a filter
             if (!string.IsNullOrEmpty(roundNameFilter))
@@ -85,52 +77,61 @@ namespace ToracGolf.MiddleLayer.Rounds
             }
 
             //do we have a state filter?
-            if (StateFilter.HasValue)
+            if (seasonFilter.HasValue)
             {
-                // queryable = queryable.Where(x => x.StateId == StateFilter.Value);
+                queryable = queryable.Where(x => x.SeasonId == seasonFilter.Value);
             }
 
-            //return the queryable
-            return queryable;
+            //go return the queryable
+            return queryable.Select(x => new RoundListingData
+            {
+                RoundId = x.RoundId,
+                CourseId = x.CourseId,
+                CourseName = dbContext.Course.FirstOrDefault(y => y.CourseId == x.CourseId).Name,
+                RoundDate = x.RoundDate,
+                Score = x.Score,
+                SeasonId = x.SeasonId,
+                TeeBoxLocation = dbContext.CourseTeeLocations.FirstOrDefault(y => y.CourseId == x.CourseId && y.CourseTeeLocationId == x.CourseTeeLocationId)
+            });
         }
 
         /// <param name="pageId">0 base index that holds what page we are on</param>
-        public static async Task<RoundSelectModel> RoundSelect(ToracGolfContext dbContext, int userId, int pageId, RoundListingSortOrder.RoundListingSortEnum SortBy, string roundNameFilter, int? StateFilter, int RecordsPerPage)
+        public static async Task<RoundSelectModel> RoundSelect(ToracGolfContext dbContext, int userId, int pageId, RoundListingSortOrder.RoundListingSortEnum sortBy, string roundNameFilter, int? seasonFilter, int recordsPerPage)
         {
             //how many items to skip
-            int skipAmount = pageId * RecordsPerPage;
+            int skipAmount = pageId * recordsPerPage;
 
             //go grab the query
-            var queryable = RoundSelectQueryBuilder(dbContext, userId, roundNameFilter, StateFilter);
+            var queryable = RoundSelectQueryBuilder(dbContext, userId, roundNameFilter, seasonFilter);
 
             //figure out what you want to order by
-            if (SortBy == RoundListingSortOrder.RoundListingSortEnum.CourseNameAscending)
+            if (sortBy == RoundListingSortOrder.RoundListingSortEnum.CourseNameAscending)
             {
                 queryable = queryable.OrderBy(x => x.CourseName);
             }
-            else if (SortBy == RoundListingSortOrder.RoundListingSortEnum.CourseNameDescending)
+            else if (sortBy == RoundListingSortOrder.RoundListingSortEnum.CourseNameDescending)
             {
                 queryable = queryable.OrderByDescending(x => x.CourseName);
             }
-            else if (SortBy == RoundListingSortOrder.RoundListingSortEnum.RoundDateAscending)
+            else if (sortBy == RoundListingSortOrder.RoundListingSortEnum.RoundDateAscending)
             {
                 queryable = queryable.OrderBy(x => x.RoundDate).ThenBy(x => x.RoundId);
             }
-            else if (SortBy == RoundListingSortOrder.RoundListingSortEnum.RoundDateDescending)
+            else if (sortBy == RoundListingSortOrder.RoundListingSortEnum.RoundDateDescending)
             {
                 queryable = queryable.OrderByDescending(x => x.RoundDate).ThenByDescending(x => x.RoundId);
             }
-            else if (SortBy == RoundListingSortOrder.RoundListingSortEnum.BestScores)
+            else if (sortBy == RoundListingSortOrder.RoundListingSortEnum.BestScores)
             {
                 queryable = queryable.OrderBy(x => x.Score).ThenBy(x => x.RoundId);
             }
-            else if (SortBy == RoundListingSortOrder.RoundListingSortEnum.WorseScores)
+            else if (sortBy == RoundListingSortOrder.RoundListingSortEnum.WorseScores)
             {
                 queryable = queryable.OrderByDescending(x => x.Score).ThenByDescending(x => x.RoundId);
             }
 
             //go run the query now
-            var dataSet = await queryable.Skip(skipAmount).Take(RecordsPerPage).ToArrayAsync();
+            var dataSet = await queryable.Skip(skipAmount).Take(recordsPerPage).ToArrayAsync();
 
             //now grab the distinct course id's so we can get the images
             var distinctCourseIds = dataSet.Select(x => x.CourseId).Distinct();

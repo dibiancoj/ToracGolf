@@ -1,8 +1,8 @@
 ﻿(function () {
 
-    appToracGolf.controller('RoundListingController', ['$scope', 'ValidationService', 'RoundHttp', function ($scope, ValidationService, RoundHttp) {
+    appToracGolf.controller('RoundListingController', ['$scope', 'ValidationService', 'RoundHttp', 'PagerFactory', function ($scope, ValidationService, RoundHttp, PagerFactory) {
 
-        $scope.init = function (totalNumberOfPages, roundSortOrder, userStatePreference, defaultRoundsPerPage, roundsPerPageLookup) {
+        $scope.init = function (totalNumberOfPages, roundSortOrder, defaultRoundsPerPage, roundsPerPageLookup) {
 
             //set the drop down items
             $scope.SortByLookup = roundSortOrder;
@@ -15,9 +15,6 @@
 
             //set the default courses per page
             $scope.RoundsPerPage = defaultRoundsPerPage;
-
-            //state filter
-            $scope.StateFilter = userStatePreference;
 
             //set the seach by course
             $scope.SearchByRoundName = '';
@@ -37,16 +34,8 @@
             //total number of pages (set the scope)
             $scope.TotalNumberOfPages = totalNumberOfPages;
 
-            //go add the pager
-            var pagerElements = [];
-
-            //loop through the pages and add the specific page
-            for (var i = 0; i < totalNumberOfPages; i++) {
-                pagerElements.push(i);
-            }
-
             //set the pager elements
-            $scope.PagerElements = pagerElements;
+            $scope.PagerElements = PagerFactory.BuildPagerModel(totalNumberOfPages);
         },
 
         $scope.PagerClick = function (index) {
@@ -68,7 +57,7 @@
             }
 
             //go grab the records to display
-            RoundHttp.RoundListing(resetPagerToPage1, $scope.CurrentPageId, $scope.SortBy, $scope.SearchByRoundName, $scope.StateFilter, $scope.RoundsPerPage)
+            RoundHttp.RoundListing(resetPagerToPage1, $scope.CurrentPageId, $scope.SortBy, $scope.SearchByRoundName, $scope.SeasonFilter, $scope.RoundsPerPage)
                 .then(function (result) {
 
                     //set the paged data

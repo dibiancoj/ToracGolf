@@ -14,6 +14,7 @@ using ToracGolf.Filters;
 using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.GridCommon;
 using ToracGolf.MiddleLayer.Rounds;
+using ToracGolf.MiddleLayer.Season;
 using ToracGolf.Settings;
 using ToracGolf.ViewModels.Navigation;
 using ToracGolf.ViewModels.Rounds;
@@ -163,17 +164,24 @@ namespace ToracGolf.Controllers
             //grab the user id and store it
             var userId = GetUserId();
 
+            //let's grab the users season
+            var userSeasons = (await SeasonDataProvider.SeasonSelectForUser(DbContext, userId)).Select(x => new SelectListItem { Value = x.Key.ToString(), Text = x.Value }).ToList();
+
+            //add the "all seasons"
+            userSeasons.Insert(0, new SelectListItem { Value = string.Empty, Text = "All Seasons" });
+
             //go return the view
             return View(new RoundListingViewModel(
                 await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
                 breadCrumb,
-                CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
+                //CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
                 BuildTokenSet(Antiforgery),
-                GetUserDefaultState(),
+                //GetUserDefaultState(),
                 await RoundDataProvider.TotalNumberOfRounds(DbContext, userId, null, null, Configuration.Options.DefaultListingRecordsPerPage),
                 CacheFactory.GetCacheItem<IList<SortOrderViewModel>>(CacheKeyNames.RoundListingSortOrder, Cache),
                 Configuration.Options.DefaultListingRecordsPerPage,
-                CacheFactory.GetCacheItem<IEnumerable<int>>(CacheKeyNames.NumberOfListingsPerPage, Cache)));
+                CacheFactory.GetCacheItem<IEnumerable<int>>(CacheKeyNames.NumberOfListingsPerPage, Cache),
+                userSeasons));
         }
 
         [HttpPost]
@@ -182,15 +190,15 @@ namespace ToracGolf.Controllers
         public async Task<IActionResult> RoundListingSelect([FromBody] RoundListPageNavigation listNav)
         {
             //state filter to use
-            int? stateFilter = string.IsNullOrEmpty(listNav.StateFilter) ? new int?() : Convert.ToInt32(listNav.StateFilter);
+            int? seasonFilter = string.IsNullOrEmpty(listNav.SeasonFilter) ? new int?() : Convert.ToInt32(listNav.SeasonFilter);
 
             //grab the userid
             var userId = GetUserId();
 
             return Json(new
             {
-                PagedData = await RoundDataProvider.RoundSelect(DbContext, userId, listNav.PageIndexId, listNav.SortBy, listNav.RoundNameFilter, stateFilter, listNav.RoundsPerPage),
-                TotalNumberOfPages = listNav.ResetPager ? new int?(await RoundDataProvider.TotalNumberOfRounds(DbContext, userId, listNav.RoundNameFilter, stateFilter, listNav.RoundsPerPage)) : null
+                PagedData = await RoundDataProvider.RoundSelect(DbContext, userId, listNav.PageIndexId, listNav.SortBy, listNav.RoundNameFilter, seasonFilter, listNav.RoundsPerPage),
+                TotalNumberOfPages = listNav.ResetPager ? new int?(await RoundDataProvider.TotalNumberOfRounds(DbContext, userId, listNav.RoundNameFilter, seasonFilter, listNav.RoundsPerPage)) : null
             });
         }
 
