@@ -170,6 +170,8 @@ namespace ToracGolf.MiddleLayer.Rounds
             //now grab all the course images
             var courseImages = await dbContext.CourseImages.Where(x => distinctCourseIds.Contains(x.CourseId)).ToDictionaryAsync(x => x.CourseId, y => y.CourseImage);
 
+            we need to store the handicap so we can grab it here and pass it into the adjusted score stuff.
+
             //make sure we have a handicap first
             if (currentHandicap.HasValue)
             {
@@ -179,35 +181,11 @@ namespace ToracGolf.MiddleLayer.Rounds
                     //calculate the round handicap
                     round.RoundHandicap = Handicapper.RoundHandicap(round.Score, round.TeeBoxLocation.Rating, round.TeeBoxLocation.Slope);
 
-                    //performance to set
-                    RoundPerformance roundPerformance = RoundPerformance.Average;
+                    //go calculate the round performance
+                    round.RoundPerformance = (int)RoundPerformance.CalculateRoundPerformance(currentHandicap, round.RoundHandicap);
 
-                    //calculate my handicap minus my round handicap
-                    var differenceInHandicaps = currentHandicap - round.RoundHandicap;
-
-                    //what level are we at?
-                    if (differenceInHandicaps > 10)
-                    {
-                        roundPerformance = RoundPerformance.Awesome;
-                    }
-                    else if (differenceInHandicaps > 5)
-                    {
-                        roundPerformance = RoundPerformance.AboveAverage;
-                    }
-                    else if (differenceInHandicaps >= -5 && differenceInHandicaps <= 5)
-                    {
-                        roundPerformance = RoundPerformance.Average;
-                    }
-                    else if (differenceInHandicaps< -10)
-                    {
-                        roundPerformance = RoundPerformance.Awful;
-                    }
-                    else if (differenceInHandicaps < -5)
-                    {
-                        roundPerformance = RoundPerformance.BadAverage;
-                    }                 
-
-                    round.RoundPerformance = (int)roundPerformance;
+                    //calculate the adjusted score
+                    round.AdjustedScore = Convert.ToInt32(Math.Round(round.Score - currentHandicap.Value, 0));
                 }
             }
 

@@ -96,12 +96,15 @@
                             <div class="cell">
                                 <div class="listing-body clearfix RoundListingHeight">
                                     <h3><a href="#">{{round.CourseName}}</a></h3>
-                                    <h4>{{course.CourseData.City}}, {{course.StateDescription}}</h4>
+                                    <h4>{{round.RoundDate | date:'MM/dd/yyyy'}}</h4>
                                     <p>
-                                        {{course.CourseData.Description}}
+                                        Raw Score = {{round.Score}}
                                     </p>
                                     <p>
-                                        Tee Locations: {{course.TeeLocationCount}}
+                                        Adjusted Score = {{round.AdjustedScore}}
+                                    </p>
+                                    <p>
+                                        Tee Box: {{round.TeeBoxLocation.Description}}
                                     </p>
                                 </div>
                                 <div class="listing-footer">

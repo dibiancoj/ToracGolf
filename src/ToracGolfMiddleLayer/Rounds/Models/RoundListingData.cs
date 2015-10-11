@@ -31,16 +31,58 @@ namespace ToracGolf.MiddleLayer.Rounds.Models
         public int RoundPerformance { get; set; }
         public int SeasonId { get; set; }
         public double RoundHandicap { get; set; }
+        public int AdjustedScore { get; set; }
     }
 
-    public enum RoundPerformance
+    public class RoundPerformance
     {
-        Awful = 0,
-        Bad = 1,
-        BadAverage = 2,
-        Average = 3,
-        AboveAverage = 4,
-        Awesome = 5
+
+        public static RoundPerformanceEnum CalculateRoundPerformance(double? currentHandicap, double roundHandicap)
+        {
+            if (!currentHandicap.HasValue)
+            {
+                return RoundPerformanceEnum.Average;
+            }
+
+            //calculate my handicap minus my round handicap
+            var differenceInHandicaps = currentHandicap - roundHandicap;
+
+            //what level are we at?
+            if (differenceInHandicaps > 10)
+            {
+                return RoundPerformanceEnum.Awesome;
+            }
+            else if (differenceInHandicaps > 5)
+            {
+                return RoundPerformanceEnum.AboveAverage;
+            }
+            else if (differenceInHandicaps >= -5 && differenceInHandicaps <= 5)
+            {
+                return RoundPerformanceEnum.Average;
+            }
+            else if (differenceInHandicaps < -10)
+            {
+                return RoundPerformanceEnum.Awful;
+            }
+            else if (differenceInHandicaps < -5)
+            {
+                return RoundPerformanceEnum.BadAverage;
+            }
+            else
+            {
+                return RoundPerformanceEnum.Average;
+            }
+        }
+
+        public enum RoundPerformanceEnum
+        {
+            Awful = 0,
+            Bad = 1,
+            BadAverage = 2,
+            Average = 3,
+            AboveAverage = 4,
+            Awesome = 5
+        }
     }
 
 }
