@@ -170,8 +170,6 @@ namespace ToracGolf.MiddleLayer.Rounds
             //now grab all the course images
             var courseImages = await dbContext.CourseImages.Where(x => distinctCourseIds.Contains(x.CourseId)).ToDictionaryAsync(x => x.CourseId, y => y.CourseImage);
 
-            we need to store the handicap so we can grab it here and pass it into the adjusted score stuff.
-
             //make sure we have a handicap first
             if (currentHandicap.HasValue)
             {
@@ -182,9 +180,11 @@ namespace ToracGolf.MiddleLayer.Rounds
                     round.RoundHandicap = Handicapper.RoundHandicap(round.Score, round.TeeBoxLocation.Rating, round.TeeBoxLocation.Slope);
 
                     //go calculate the round performance
+                    current handicap needs to be a static handicap that is the handicap at the time of the round
                     round.RoundPerformance = (int)RoundPerformance.CalculateRoundPerformance(currentHandicap, round.RoundHandicap);
 
                     //calculate the adjusted score
+                    current handicap needs to be a static handicap that is the handicap at the time of the round
                     round.AdjustedScore = Convert.ToInt32(Math.Round(round.Score - currentHandicap.Value, 0));
                 }
             }
