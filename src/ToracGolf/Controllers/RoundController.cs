@@ -201,12 +201,9 @@ namespace ToracGolf.Controllers
             //state filter to use
             int? seasonFilter = string.IsNullOrEmpty(listNav.SeasonFilter) ? new int?() : Convert.ToInt32(listNav.SeasonFilter);
 
-            //let's go grab the users handicap
-            var usersHandicap = await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId));
-
             return Json(new
             {
-                PagedData = await RoundDataProvider.RoundSelect(DbContext, userId, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, seasonFilter, listNav.RoundsPerPage, usersHandicap.CareerHandicap),
+                PagedData = await RoundDataProvider.RoundSelect(DbContext, userId, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, seasonFilter, listNav.RoundsPerPage),
                 TotalNumberOfPages = listNav.ResetPager ? new int?(await RoundDataProvider.TotalNumberOfRounds(DbContext, userId, listNav.CourseNameFilter, seasonFilter, listNav.RoundsPerPage)) : null
             });
         }

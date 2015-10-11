@@ -127,7 +127,7 @@ namespace ToracGolf.MiddleLayer.Rounds
         }
 
         /// <param name="pageId">0 base index that holds what page we are on</param>
-        public static async Task<RoundSelectModel> RoundSelect(ToracGolfContext dbContext, int userId, int pageId, RoundListingSortOrder.RoundListingSortEnum sortBy, string courseNameFilter, int? seasonFilter, int recordsPerPage, double? currentHandicap)
+        public static async Task<RoundSelectModel> RoundSelect(ToracGolfContext dbContext, int userId, int pageId, RoundListingSortOrder.RoundListingSortEnum sortBy, string courseNameFilter, int? seasonFilter, int recordsPerPage)
         {
             //how many items to skip
             int skipAmount = pageId * recordsPerPage;
@@ -170,23 +170,19 @@ namespace ToracGolf.MiddleLayer.Rounds
             //now grab all the course images
             var courseImages = await dbContext.CourseImages.Where(x => distinctCourseIds.Contains(x.CourseId)).ToDictionaryAsync(x => x.CourseId, y => y.CourseImage);
 
-            //make sure we have a handicap first
-            if (currentHandicap.HasValue)
+            //let's loop through the rounds and display the stsarts
+            foreach (var round in dataSet)
             {
-                //let's loop through the rounds and display the stsarts
-                foreach (var round in dataSet)
-                {
-                    //calculate the round handicap
-                    round.RoundHandicap = Handicapper.RoundHandicap(round.Score, round.TeeBoxLocation.Rating, round.TeeBoxLocation.Slope);
+                //calculate the round handicap
+                round.RoundHandicap = Handicapper.RoundHandicap(round.Score, round.TeeBoxLocation.Rating, round.TeeBoxLocation.Slope);
 
-                    //go calculate the round performance
-                    current handicap needs to be a static handicap that is the handicap at the time of the round
+                //go calculate the round performance
+                current handicap needs to be a static handicap that is the handicap at the time of the round
                     round.RoundPerformance = (int)RoundPerformance.CalculateRoundPerformance(currentHandicap, round.RoundHandicap);
 
-                    //calculate the adjusted score
-                    current handicap needs to be a static handicap that is the handicap at the time of the round
+                //calculate the adjusted score
+                current handicap needs to be a static handicap that is the handicap at the time of the round
                     round.AdjustedScore = Convert.ToInt32(Math.Round(round.Score - currentHandicap.Value, 0));
-                }
             }
 
             //go return the lookup now
