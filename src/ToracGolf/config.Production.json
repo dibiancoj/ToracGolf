@@ -5,6 +5,5 @@
     }
 
   },
-  "DefaultCourseListingRecordsPerPage": 10,
-  "DefaultRoundListingRecordsPerPage":  10
+  "DefaultListingRecordsPerPage": 10
 }
