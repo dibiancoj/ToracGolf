@@ -42,7 +42,8 @@
                 Par: selectedTeeBox == null ? null : selectedTeeBox.Front9Par + selectedTeeBox.Back9Par,
                 Slope: selector(selectedTeeBox, 'Slope'),
                 Rating: selector(selectedTeeBox, 'Rating'),
-                MaxScorePerHole: 16
+                MaxScorePerHole: selector(selectedTeeBox, 'MaxScorePerHole'),
+                CourseTeeBoxHandicap: selector(selectedTeeBox, 'CourseTeeBoxHandicap')
             };
         });
 

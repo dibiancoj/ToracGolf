@@ -17,7 +17,7 @@
             $scope.RoundsPerPage = defaultRoundsPerPage;
 
             //set the seach by course
-            $scope.SearchByRoundName = '';
+            $scope.SearchByCourseName = '';
 
             //set the initial page
             $scope.CurrentPageId = 0;
@@ -57,7 +57,7 @@
             }
 
             //go grab the records to display
-            RoundHttp.RoundListing(resetPagerToPage1, $scope.CurrentPageId, $scope.SortBy, $scope.SearchByRoundName, $scope.SeasonFilter, $scope.RoundsPerPage)
+            RoundHttp.RoundListing(resetPagerToPage1, $scope.CurrentPageId, $scope.SortBy, $scope.SearchByCourseName, $scope.SeasonFilter, $scope.RoundsPerPage)
                 .then(function (result) {
 
                     //set the paged data

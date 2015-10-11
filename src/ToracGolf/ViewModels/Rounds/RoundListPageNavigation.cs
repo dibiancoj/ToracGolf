@@ -18,7 +18,7 @@ namespace ToracGolf.ViewModels.Rounds
 
         public RoundListingSortOrder.RoundListingSortEnum SortBy { get; set; }
 
-        public string RoundNameFilter { get; set; }
+        public string CourseNameFilter { get; set; }
 
         public string SeasonFilter { get; set; }
 

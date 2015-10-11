@@ -159,7 +159,7 @@ namespace ToracGolf
             // Add the following to the request pipeline only in development environment.
             if (env.IsDevelopment())
             {
-               app.UseBrowserLink();
+                app.UseBrowserLink();
                 app.UseErrorPage();
                 app.UseDatabaseErrorPage(DatabaseErrorPageOptions.ShowAll);
             }

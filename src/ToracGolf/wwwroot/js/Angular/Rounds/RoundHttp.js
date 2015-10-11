@@ -21,13 +21,13 @@
                 return $http.post('TeeLocationSelectForCourseId', { CourseId: courseId });
             },
 
-            RoundListing: function (resetPager, pageId, sortBy, roundNameFilter, seasonFilter, roundsPerPage) {
+            RoundListing: function (resetPager, pageId, sortBy, courseNameFilter, seasonFilter, roundsPerPage) {
                 return $http.post('RoundListingSelectPage',
                     {
                         ResetPager: resetPager,
                         PageIndexId: pageId,
                         SortBy: sortBy,
-                        RoundNameFilter: roundNameFilter,
+                        CourseNameFilter: courseNameFilter,
                         SeasonFilter: seasonFilter,
                         RoundsPerPage: roundsPerPage
                     });

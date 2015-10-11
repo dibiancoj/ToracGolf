@@ -10,6 +10,12 @@ namespace ToracGolf.MiddleLayer.HandicapCalculator
     public static class Handicapper
     {
 
+        #region Constants
+
+        private const int CourseHandicapFactor = 113;
+
+        #endregion
+
         #region Public Methods
 
         /// <summary>
@@ -54,13 +60,72 @@ namespace ToracGolf.MiddleLayer.HandicapCalculator
             return Math.Round(averageDifferential * .96, 1);
         }
 
+        /// <summary>
+        /// Calculate a course handicap. This way you can grab the max score on a hole
+        /// </summary>
+        /// <returns>course handicap</returns>
+        public static double? CalculateCourseHandicap(double? currentHandicap, double slopeOfTeeBox)
+        {
+            //make sure we have a handicap first
+            if (!currentHandicap.HasValue)
+            {
+                return null;
+            }
+
+            //else let's run the formula
+            return Math.Round((currentHandicap.Value * slopeOfTeeBox) / CourseHandicapFactor, 1);
+        }
+
+        /// <summary>
+        /// Calculate the max hold per hold
+        /// </summary>
+        public static string MaxScorePerHole(double? courseHandicap)
+        {
+            //if we don't have a course handicap (because we don't have a handicap)
+            if (!courseHandicap.HasValue || courseHandicap.Value > 39)
+            {
+                return "10";
+            }
+
+            if (courseHandicap.Value >0 && courseHandicap.Value <= 9)
+            {
+                return "Double Bogey";
+            }
+
+            if (courseHandicap.Value > 9 && courseHandicap.Value < 19)
+            {
+                return "7";
+            }
+
+            if (courseHandicap.Value > 19 && courseHandicap.Value < 29)
+            {
+                return "8";
+            }
+
+            if (courseHandicap.Value > 29 && courseHandicap.Value < 39)
+            {
+                return "9";
+            }
+
+            throw new NotImplementedException();
+        }
+
+        public static double RoundHandicap(int score, double teeBoxRating, double teeBoxSlope)
+        {
+            //go calc the diff
+            var differential = CalculateDifferential(score, teeBoxRating, teeBoxSlope);
+
+            //now add the factory
+            return Math.Round(differential * .96, 1);
+        }
+
         #endregion
 
         #region Helper Methods
 
-        private static double CalculateDifferential(int score, double teeBoxRating, double teeBoxScope)
+        private static double CalculateDifferential(int score, double teeBoxRating, double teeBoxSlope)
         {
-            return ((score - teeBoxRating) * 113 / teeBoxScope);
+            return ((score - teeBoxRating) * CourseHandicapFactor / teeBoxSlope);
         }
 
         private static int HowManyRoundsToUseInFormula(int howManyRoundsToCalculateWith)

@@ -30,6 +30,7 @@ namespace ToracGolf.MiddleLayer.Rounds.Models
         public DateTime RoundDate { get; set; }
         public int RoundPerformance { get; set; }
         public int SeasonId { get; set; }
+        public double RoundHandicap { get; set; }
     }
 
     public enum RoundPerformance

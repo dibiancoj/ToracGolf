@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.EFModel.Tables;
+using ToracGolf.MiddleLayer.HandicapCalculator;
 using ToracGolf.MiddleLayer.Rounds.Models;
 using ToracLibrary.AspNet.Paging;
 
@@ -26,11 +27,41 @@ namespace ToracGolf.MiddleLayer.Rounds
                        }).ToArrayAsync();
         }
 
-        public static async Task<IEnumerable<CourseTeeLocations>> TeeBoxSelectForCourse(ToracGolfContext dbContext, int courseId)
+        public static async Task<IEnumerable<TeeBoxSelectForCourseSelect>> TeeBoxSelectForCourse(ToracGolfContext dbContext, int courseId, double? currentHandicap)
         {
-            return await dbContext.CourseTeeLocations.AsNoTracking()
-                         .Where(x => x.CourseId == courseId).ToArrayAsync();
+            var dbResults = await dbContext.CourseTeeLocations.AsNoTracking()
+                                   .Where(x => x.CourseId == courseId).ToArrayAsync();
 
+
+            var lst = new List<TeeBoxSelectForCourseSelect>();
+
+            foreach (var teeBox in dbResults)
+            {
+                var teeBoxModel = new TeeBoxSelectForCourseSelect
+                {
+                    Back9Par = teeBox.Back9Par,
+                    Front9Par = teeBox.Front9Par,
+                    CourseId = teeBox.CourseId,
+                    CourseTeeLocationId = teeBox.CourseTeeLocationId,
+                    Description = teeBox.Description,
+                    Rating = teeBox.Rating,
+                    Slope = teeBox.Slope,
+                    Yardage = teeBox.Yardage,
+                    TeeLocationSortOrderId = teeBox.TeeLocationSortOrderId,
+                };
+
+                //now add the course handicap and the max score
+                teeBoxModel.CourseTeeBoxHandicap = HandicapCalculator.Handicapper.CalculateCourseHandicap(currentHandicap, teeBoxModel.Slope);
+
+                //now calculate the score
+                teeBoxModel.MaxScorePerHole = HandicapCalculator.Handicapper.MaxScorePerHole(teeBoxModel.CourseTeeBoxHandicap);
+
+                //add the tee box score
+                lst.Add(teeBoxModel);
+            }
+
+            //return the list
+            return lst;
         }
 
         #endregion
@@ -65,15 +96,15 @@ namespace ToracGolf.MiddleLayer.Rounds
 
         #region Round Listing
 
-        public static IQueryable<RoundListingData> RoundSelectQueryBuilder(ToracGolfContext dbContext, int userId, string roundNameFilter, int? seasonFilter)
+        public static IQueryable<RoundListingData> RoundSelectQueryBuilder(ToracGolfContext dbContext, int userId, string courseNameFilter, int? seasonFilter)
         {
             //build the queryable
             var queryable = dbContext.Rounds.AsNoTracking().Where(x => x.UserId == userId).AsQueryable();
 
             //if we have a course name, add it as a filter
-            if (!string.IsNullOrEmpty(roundNameFilter))
+            if (!string.IsNullOrEmpty(courseNameFilter))
             {
-                // queryable = queryable.Where(x => x.Name.Contains(roundNameFilter));
+                queryable = queryable.Where(x => x.Course.Name.Contains(courseNameFilter));
             }
 
             //do we have a state filter?
@@ -87,7 +118,7 @@ namespace ToracGolf.MiddleLayer.Rounds
             {
                 RoundId = x.RoundId,
                 CourseId = x.CourseId,
-                CourseName = dbContext.Course.FirstOrDefault(y => y.CourseId == x.CourseId).Name,
+                CourseName = x.Course.Name,
                 RoundDate = x.RoundDate,
                 Score = x.Score,
                 SeasonId = x.SeasonId,
@@ -96,13 +127,13 @@ namespace ToracGolf.MiddleLayer.Rounds
         }
 
         /// <param name="pageId">0 base index that holds what page we are on</param>
-        public static async Task<RoundSelectModel> RoundSelect(ToracGolfContext dbContext, int userId, int pageId, RoundListingSortOrder.RoundListingSortEnum sortBy, string roundNameFilter, int? seasonFilter, int recordsPerPage)
+        public static async Task<RoundSelectModel> RoundSelect(ToracGolfContext dbContext, int userId, int pageId, RoundListingSortOrder.RoundListingSortEnum sortBy, string courseNameFilter, int? seasonFilter, int recordsPerPage, double? currentHandicap)
         {
             //how many items to skip
             int skipAmount = pageId * recordsPerPage;
 
             //go grab the query
-            var queryable = RoundSelectQueryBuilder(dbContext, userId, roundNameFilter, seasonFilter);
+            var queryable = RoundSelectQueryBuilder(dbContext, userId, courseNameFilter, seasonFilter);
 
             //figure out what you want to order by
             if (sortBy == RoundListingSortOrder.RoundListingSortEnum.CourseNameAscending)
@@ -139,40 +170,48 @@ namespace ToracGolf.MiddleLayer.Rounds
             //now grab all the course images
             var courseImages = await dbContext.CourseImages.Where(x => distinctCourseIds.Contains(x.CourseId)).ToDictionaryAsync(x => x.CourseId, y => y.CourseImage);
 
-            //let's loop through the rounds and display the stsarts
-            foreach (var round in dataSet)
+            //make sure we have a handicap first
+            if (currentHandicap.HasValue)
             {
-                //performance to set
-                RoundPerformance roundPerformance;
+                //let's loop through the rounds and display the stsarts
+                foreach (var round in dataSet)
+                {
+                    //calculate the round handicap
+                    round.RoundHandicap = Handicapper.RoundHandicap(round.Score, round.TeeBoxLocation.Rating, round.TeeBoxLocation.Slope);
 
-                if (round.Score >= 110)
-                {
-                    roundPerformance = RoundPerformance.Awful;
-                }
-                else if (round.Score >= 100)
-                {
-                    roundPerformance = RoundPerformance.Bad;
-                }
-                else if (round.Score >= 97)
-                {
-                    roundPerformance = RoundPerformance.BadAverage;
-                }
-                else if (round.Score >= 93 && round.Score <= 97)
-                {
-                    roundPerformance = RoundPerformance.Average;
-                }
-                else if (round.Score >= 87 && round.Score <= 93)
-                {
-                    roundPerformance = RoundPerformance.AboveAverage;
-                }
-                else
-                {
-                    roundPerformance = RoundPerformance.AboveAverage;
-                }
+                    //performance to set
+                    RoundPerformance roundPerformance = RoundPerformance.Average;
 
-                round.RoundPerformance = (int)roundPerformance;
+                    //calculate my handicap minus my round handicap
+                    var differenceInHandicaps = currentHandicap - round.RoundHandicap;
+
+                    THIS NEEDS WORK...NEED TO FIGURE OUT HOW I WANT TO DO THIS
+
+                    if (differenceInHandicaps == 0)
+                    {
+                        roundPerformance = RoundPerformance.Average;
+                    }
+                    else if (differenceInHandicaps > 5)
+                    {
+                        roundPerformance = RoundPerformance.BadAverage;
+                    }
+                    else if (differenceInHandicaps > 10)
+                    {
+                        roundPerformance = RoundPerformance.Bad;
+                    }
+                    else if (differenceInHandicaps > 15)
+                    {
+                        roundPerformance = RoundPerformance.Awful;
+                    }
+                    else if (differenceInHandicaps < -5)
+                    {
+                        roundPerformance = RoundPerformance.AboveAverage;
+                    }
+
+
+                    round.RoundPerformance = (int)roundPerformance;
+                }
             }
-
 
             //go return the lookup now
             return new RoundSelectModel(courseImages, dataSet);

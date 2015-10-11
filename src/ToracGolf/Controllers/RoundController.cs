@@ -140,10 +140,16 @@ namespace ToracGolf.Controllers
         [ValidateCustomAntiForgeryToken()]
         public async Task<IActionResult> SelectTeeBoxForCourseId([FromBody]TeeBoxSelectByCourseId model)
         {
+            //grab the user id
+            var userId = GetUserId();
+
+            //let's go grab the users handicap
+            var usersHandicap = await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId));
+
             //go grab the course listing
             return Json(new
             {
-                TeeBoxData = await RoundDataProvider.TeeBoxSelectForCourse(DbContext, model.CourseId)
+                TeeBoxData = await RoundDataProvider.TeeBoxSelectForCourse(DbContext, model.CourseId, usersHandicap.CareerHandicap)
             });
         }
 
@@ -189,16 +195,19 @@ namespace ToracGolf.Controllers
         [ValidateCustomAntiForgeryToken()]
         public async Task<IActionResult> RoundListingSelect([FromBody] RoundListPageNavigation listNav)
         {
-            //state filter to use
-            int? seasonFilter = string.IsNullOrEmpty(listNav.SeasonFilter) ? new int?() : Convert.ToInt32(listNav.SeasonFilter);
-
             //grab the userid
             var userId = GetUserId();
 
+            //state filter to use
+            int? seasonFilter = string.IsNullOrEmpty(listNav.SeasonFilter) ? new int?() : Convert.ToInt32(listNav.SeasonFilter);
+
+            //let's go grab the users handicap
+            var usersHandicap = await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId));
+
             return Json(new
             {
-                PagedData = await RoundDataProvider.RoundSelect(DbContext, userId, listNav.PageIndexId, listNav.SortBy, listNav.RoundNameFilter, seasonFilter, listNav.RoundsPerPage),
-                TotalNumberOfPages = listNav.ResetPager ? new int?(await RoundDataProvider.TotalNumberOfRounds(DbContext, userId, listNav.RoundNameFilter, seasonFilter, listNav.RoundsPerPage)) : null
+                PagedData = await RoundDataProvider.RoundSelect(DbContext, userId, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, seasonFilter, listNav.RoundsPerPage, usersHandicap.CareerHandicap),
+                TotalNumberOfPages = listNav.ResetPager ? new int?(await RoundDataProvider.TotalNumberOfRounds(DbContext, userId, listNav.CourseNameFilter, seasonFilter, listNav.RoundsPerPage)) : null
             });
         }
 

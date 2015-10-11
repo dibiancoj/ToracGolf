@@ -34,5 +34,7 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
         [Required]
         public bool Is9HoleScore { get; set; }
 
+        public virtual Course Course { get; set; }
+
     }
 }
