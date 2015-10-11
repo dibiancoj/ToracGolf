@@ -185,29 +185,27 @@ namespace ToracGolf.MiddleLayer.Rounds
                     //calculate my handicap minus my round handicap
                     var differenceInHandicaps = currentHandicap - round.RoundHandicap;
 
-                    THIS NEEDS WORK...NEED TO FIGURE OUT HOW I WANT TO DO THIS
-
-                    if (differenceInHandicaps == 0)
+                    //what level are we at?
+                    if (differenceInHandicaps > 10)
                     {
-                        roundPerformance = RoundPerformance.Average;
+                        roundPerformance = RoundPerformance.Awesome;
                     }
                     else if (differenceInHandicaps > 5)
                     {
-                        roundPerformance = RoundPerformance.BadAverage;
+                        roundPerformance = RoundPerformance.AboveAverage;
                     }
-                    else if (differenceInHandicaps > 10)
+                    else if (differenceInHandicaps >= -5 && differenceInHandicaps <= 5)
                     {
-                        roundPerformance = RoundPerformance.Bad;
+                        roundPerformance = RoundPerformance.Average;
                     }
-                    else if (differenceInHandicaps > 15)
+                    else if (differenceInHandicaps< -10)
                     {
                         roundPerformance = RoundPerformance.Awful;
                     }
                     else if (differenceInHandicaps < -5)
                     {
-                        roundPerformance = RoundPerformance.AboveAverage;
-                    }
-
+                        roundPerformance = RoundPerformance.BadAverage;
+                    }                 
 
                     round.RoundPerformance = (int)roundPerformance;
                 }
