@@ -103,8 +103,11 @@ namespace ToracGolf.Controllers
                 //grab the user id
                 var userId = GetUserId();
 
+                //grab the users current season
+                var usersCurrentSeason = await UserCurrentSeason(DbContext, userId);
+
                 //let's try to add this user to the system
-                var roundAddAttempt = await RoundDataProvider.SaveRound(DbContext, userId, await UserCurrentSeason(DbContext, userId), model);
+                var roundAddAttempt = await RoundDataProvider.SaveRound(DbContext, userId, usersCurrentSeason, model, (await HandicapStatusBuilder(DbContext, userId, usersCurrentSeason)).CareerHandicap);
 
                 //if we saved the round, we want to clear out the session so the next call which go calculate the handicap now
                 Context.Session.Remove(HandicapStatusSessionName);

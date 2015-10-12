@@ -58,12 +58,17 @@ namespace ToracGolf.MiddleLayer.Rounds.Models
                 return RoundPerformanceEnum.Average;
             }
 
+            if (difference < -12)
+            {
+                return RoundPerformanceEnum.Awful;
+            }
+
             if (difference < -7)
             {
                 return RoundPerformanceEnum.BadAverage;
             }
 
-            return RoundPerformanceEnum.Awful;
+            throw new NotImplementedException();
         }
 
         public enum RoundPerformanceEnum
