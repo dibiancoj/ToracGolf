@@ -199,7 +199,7 @@ namespace ToracGolf.Controllers
         public async Task<IActionResult> RoundListingSelect([FromBody] RoundListPageNavigation listNav)
         {
             //grab the userid
-            var userId = GetUserId();
+           var userId = GetUserId();
 
             //state filter to use
             int? seasonFilter = string.IsNullOrEmpty(listNav.SeasonFilter) ? new int?() : Convert.ToInt32(listNav.SeasonFilter);

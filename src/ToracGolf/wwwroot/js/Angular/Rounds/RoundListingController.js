@@ -2,15 +2,24 @@
 
     appToracGolf.controller('RoundListingController', ['$scope', 'ValidationService', 'RoundHttp', 'PagerFactory', function ($scope, ValidationService, RoundHttp, PagerFactory) {
 
-        $scope.$watch('SearchByRoundDateStart', function (newValue) {
+        $scope.$watch('SearchByRoundDateEnd', function (newValue, oldValue) {
             //we need the date picker to run first, now we can go fetch the data
-            $scope.FetchAPageOfData(true);
+            $scope.WatchRoundDateFilter(newValue, oldValue);
         });
 
-        $scope.$watch('SearchByRoundDateEnd', function (newValue) {
+        $scope.$watch('SearchByRoundDateStart', function (newValue, oldValue) {
             //we need the date picker to run first, now we can go fetch the data
-            $scope.FetchAPageOfData(true);
+            $scope.WatchRoundDateFilter(newValue, oldValue);
         });
+
+        $scope.WatchRoundDateFilter = function (newValue, oldValue) {
+
+            //if we have different values then run the method
+            if (newValue != oldValue) {
+                //go refresh the data
+                $scope.FetchAPageOfData(true);
+            }
+        },
 
         $scope.init = function (totalNumberOfPages, roundSortOrder, defaultRoundsPerPage, roundsPerPageLookup) {
 

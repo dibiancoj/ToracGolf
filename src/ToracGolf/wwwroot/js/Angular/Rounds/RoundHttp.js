@@ -30,8 +30,8 @@
                         CourseNameFilter: courseNameFilter,
                         SeasonFilter: seasonFilter,
                         RoundsPerPage: roundsPerPage,
-                        RoundDateStartFilter: roundDateEndFilter,
-                        RoundDateEndFilter: roundDateEndFilter
+                        RoundDateStartFilter: isNaN(Date.parse(roundDateStartFilter)) ? null : roundDateStartFilter,
+                        RoundDateEndFilter: isNaN(Date.parse(roundDateEndFilter)) ? null : roundDateEndFilter
                     });
             }
         }
