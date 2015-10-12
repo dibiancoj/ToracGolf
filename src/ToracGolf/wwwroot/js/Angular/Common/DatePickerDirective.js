@@ -9,9 +9,9 @@
         return {
             require: '?ngModel', //this way we can push stuff to the model
             restrict: 'A',
-            //scope: {
-            //    ngModel: '=' // set up bi-directional binding between a local scope property and the parent scope property 
-            //},
+            scope: {
+                ngModel: '=' // set up bi-directional binding between a local scope property and the parent scope property 
+            },
             link: function (scope, element, attrs, ngModelCtrl) {
 
                 element.datepicker({
@@ -20,7 +20,8 @@
 
                         scope.$apply(function () {
 
-                            scope.model.RoundDate = dateText;
+                            //set the model
+                            scope.ngModel = dateText;
 
                         });
                     }

@@ -24,6 +24,10 @@ namespace ToracGolf.ViewModels.Rounds
 
         public int RoundsPerPage { get; set; }
 
+        public DateTime? RoundDateStartFilter { get; set; }
+
+        public DateTime? RoundDateEndFilter { get; set; }
+
         #endregion
 
     }

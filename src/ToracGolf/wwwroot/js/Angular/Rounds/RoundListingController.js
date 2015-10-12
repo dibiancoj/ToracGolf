@@ -2,6 +2,16 @@
 
     appToracGolf.controller('RoundListingController', ['$scope', 'ValidationService', 'RoundHttp', 'PagerFactory', function ($scope, ValidationService, RoundHttp, PagerFactory) {
 
+        $scope.$watch('SearchByRoundDateStart', function (newValue) {
+            //we need the date picker to run first, now we can go fetch the data
+            $scope.FetchAPageOfData(true);
+        });
+
+        $scope.$watch('SearchByRoundDateEnd', function (newValue) {
+            //we need the date picker to run first, now we can go fetch the data
+            $scope.FetchAPageOfData(true);
+        });
+
         $scope.init = function (totalNumberOfPages, roundSortOrder, defaultRoundsPerPage, roundsPerPageLookup) {
 
             //set the drop down items
@@ -18,6 +28,10 @@
 
             //set the seach by course
             $scope.SearchByCourseName = '';
+
+            //set the search by date
+            $scope.SearchByRoundDateStart = '';
+            $scope.SearchByRoundDateEnd = '';
 
             //set the initial page
             $scope.CurrentPageId = 0;
@@ -57,7 +71,7 @@
             }
 
             //go grab the records to display
-            RoundHttp.RoundListing(resetPagerToPage1, $scope.CurrentPageId, $scope.SortBy, $scope.SearchByCourseName, $scope.SeasonFilter, $scope.RoundsPerPage)
+            RoundHttp.RoundListing(resetPagerToPage1, $scope.CurrentPageId, $scope.SortBy, $scope.SearchByCourseName, $scope.SeasonFilter, $scope.RoundsPerPage, $scope.SearchByRoundDateStart, $scope.SearchByRoundDateEnd)
                 .then(function (result) {
 
                     //set the paged data

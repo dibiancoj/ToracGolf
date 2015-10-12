@@ -123,13 +123,6 @@
 
                 <div class="col-md-3">
                     <div class="sidebar">
-                        @*<ul class="categories mb-20">
-                                <li><a href="#">Web design (23)</a></li>
-                                <li><a href="#">Online business (100)</a></li>
-                                <li><a href="#">Marketing strategy (7)</a></li>
-                                <li><a href="#">Technology (33)</a></li>
-                                <li><a href="#">About finance (123)</a></li>
-                            </ul>*@
                         <div class="panel panel-default panel-sidebar-1">
                             <div class="panel-heading"><h2>Filter by</h2></div>
                             <div class="panel-body">
@@ -146,6 +139,15 @@
                                                 <option value="@stateToAdd.Value">@stateToAdd.Text</option>
                                             }
                                         </select>
+                                    </div>
+                                    <div class="form-group" style="padding-bottom: 30px;">
+                                        <label>Round Date</label><br />
+                                        <div class="col-md-6 pull-left RoundDateFilterDiv">
+                                            <input class="form-control RoundDateFilter" placeholder="Start Date" date-picker maxDate="0" maxlength="100" ng-model="SearchByRoundDateStart" />
+                                        </div>
+                                        <div class="col-md-6 pull-right RoundDateFilterDiv" style="padding-right:0px;">
+                                            <input class="form-control RoundDateFilter" placeholder="End Date" date-picker maxDate="0" maxlength="100" ng-model="SearchByRoundDateEnd" />
+                                        </div>
                                     </div>
                                     <button type="submit" ng-click="FetchAPageOfData(true)" class="btn btn-base">Search</button>
                                 </form>

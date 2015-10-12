@@ -52,10 +52,10 @@ namespace ToracGolf.MiddleLayer.Rounds
                 };
 
                 //now add the course handicap and the max score
-                teeBoxModel.CourseTeeBoxHandicap = HandicapCalculator.Handicapper.CalculateCourseHandicap(currentHandicap, teeBoxModel.Slope);
+                teeBoxModel.CourseTeeBoxHandicap = Handicapper.CalculateCourseHandicap(currentHandicap, teeBoxModel.Slope);
 
                 //now calculate the score
-                teeBoxModel.MaxScorePerHole = HandicapCalculator.Handicapper.MaxScorePerHole(teeBoxModel.CourseTeeBoxHandicap);
+                teeBoxModel.MaxScorePerHole = Handicapper.MaxScorePerHole(teeBoxModel.CourseTeeBoxHandicap);
 
                 //add the tee box score
                 lst.Add(teeBoxModel);
@@ -190,7 +190,7 @@ namespace ToracGolf.MiddleLayer.Rounds
 
         #region Round Listing
 
-        public static IQueryable<RoundListingData> RoundSelectQueryBuilder(ToracGolfContext dbContext, int userId, string courseNameFilter, int? seasonFilter)
+        public static IQueryable<RoundListingData> RoundSelectQueryBuilder(ToracGolfContext dbContext, int userId, string courseNameFilter, int? seasonFilter, DateTime? roundDateStartFilter, DateTime? roundDateEndFilter)
         {
             //build the queryable
             var queryable = dbContext.Rounds.AsNoTracking().Where(x => x.UserId == userId).AsQueryable();
@@ -205,6 +205,18 @@ namespace ToracGolf.MiddleLayer.Rounds
             if (seasonFilter.HasValue)
             {
                 queryable = queryable.Where(x => x.SeasonId == seasonFilter.Value);
+            }
+
+            //do we have start date filter?
+            if (roundDateStartFilter.HasValue)
+            {
+                queryable = queryable.Where(x => x.RoundDate >= roundDateStartFilter.Value);
+            }
+
+            //end date filter?
+            if (roundDateEndFilter.HasValue)
+            {
+                queryable = queryable.Where(x => x.RoundDate <= roundDateEndFilter.Value);
             }
 
             //go return the queryable
@@ -222,13 +234,21 @@ namespace ToracGolf.MiddleLayer.Rounds
         }
 
         /// <param name="pageId">0 base index that holds what page we are on</param>
-        public static async Task<RoundSelectModel> RoundSelect(ToracGolfContext dbContext, int userId, int pageId, RoundListingSortOrder.RoundListingSortEnum sortBy, string courseNameFilter, int? seasonFilter, int recordsPerPage)
+        public static async Task<RoundSelectModel> RoundSelect(ToracGolfContext dbContext,
+                                                               int userId,
+                                                               int pageId,
+                                                               RoundListingSortOrder.RoundListingSortEnum sortBy,
+                                                               string courseNameFilter,
+                                                               int? seasonFilter,
+                                                               int recordsPerPage,
+                                                               DateTime? roundDateStartFilter,
+                                                               DateTime? roundDateEndFilter)
         {
             //how many items to skip
             int skipAmount = pageId * recordsPerPage;
 
             //go grab the query
-            var queryable = RoundSelectQueryBuilder(dbContext, userId, courseNameFilter, seasonFilter);
+            var queryable = RoundSelectQueryBuilder(dbContext, userId, courseNameFilter, seasonFilter, roundDateStartFilter, roundDateEndFilter);
 
             //figure out what you want to order by
             if (sortBy == RoundListingSortOrder.RoundListingSortEnum.CourseNameAscending)
@@ -247,11 +267,11 @@ namespace ToracGolf.MiddleLayer.Rounds
             {
                 queryable = queryable.OrderByDescending(x => x.RoundDate).ThenByDescending(x => x.RoundId);
             }
-            else if (sortBy == RoundListingSortOrder.RoundListingSortEnum.BestScores)
+            else if (sortBy == RoundListingSortOrder.RoundListingSortEnum.BestRawScore)
             {
                 queryable = queryable.OrderBy(x => x.Score).ThenBy(x => x.RoundId);
             }
-            else if (sortBy == RoundListingSortOrder.RoundListingSortEnum.WorseScores)
+            else if (sortBy == RoundListingSortOrder.RoundListingSortEnum.WorseRawScore)
             {
                 queryable = queryable.OrderByDescending(x => x.Score).ThenByDescending(x => x.RoundId);
             }
@@ -282,9 +302,9 @@ namespace ToracGolf.MiddleLayer.Rounds
             return new RoundSelectModel(courseImages, dataSet);
         }
 
-        public static async Task<int> TotalNumberOfRounds(ToracGolfContext dbContext, int userId, string roundNameFilter, int? StateFilter, int RecordsPerPage)
+        public static async Task<int> TotalNumberOfRounds(ToracGolfContext dbContext, int userId, string roundNameFilter, int? StateFilter, int RecordsPerPage, DateTime? roundDateStartFilter, DateTime? roundDateEndFilter)
         {
-            return DataSetPaging.CalculateTotalPages(await RoundSelectQueryBuilder(dbContext, userId, roundNameFilter, StateFilter).CountAsync(), RecordsPerPage);
+            return DataSetPaging.CalculateTotalPages(await RoundSelectQueryBuilder(dbContext, userId, roundNameFilter, StateFilter, roundDateStartFilter, roundDateEndFilter).CountAsync(), RecordsPerPage);
         }
 
         #endregion

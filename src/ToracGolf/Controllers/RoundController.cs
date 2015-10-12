@@ -186,7 +186,7 @@ namespace ToracGolf.Controllers
                 //CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
                 BuildTokenSet(Antiforgery),
                 //GetUserDefaultState(),
-                await RoundDataProvider.TotalNumberOfRounds(DbContext, userId, null, null, Configuration.Options.DefaultListingRecordsPerPage),
+                await RoundDataProvider.TotalNumberOfRounds(DbContext, userId, null, null, Configuration.Options.DefaultListingRecordsPerPage, null, null),
                 CacheFactory.GetCacheItem<IList<SortOrderViewModel>>(CacheKeyNames.RoundListingSortOrder, Cache),
                 Configuration.Options.DefaultListingRecordsPerPage,
                 CacheFactory.GetCacheItem<IEnumerable<int>>(CacheKeyNames.NumberOfListingsPerPage, Cache),
@@ -206,8 +206,8 @@ namespace ToracGolf.Controllers
 
             return Json(new
             {
-                PagedData = await RoundDataProvider.RoundSelect(DbContext, userId, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, seasonFilter, listNav.RoundsPerPage),
-                TotalNumberOfPages = listNav.ResetPager ? new int?(await RoundDataProvider.TotalNumberOfRounds(DbContext, userId, listNav.CourseNameFilter, seasonFilter, listNav.RoundsPerPage)) : null
+                PagedData = await RoundDataProvider.RoundSelect(DbContext, userId, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, seasonFilter, listNav.RoundsPerPage, listNav.RoundDateStartFilter, listNav.RoundDateEndFilter),
+                TotalNumberOfPages = listNav.ResetPager ? new int?(await RoundDataProvider.TotalNumberOfRounds(DbContext, userId, listNav.CourseNameFilter, seasonFilter, listNav.RoundsPerPage, listNav.RoundDateStartFilter, listNav.RoundDateEndFilter)) : null
             });
         }
 

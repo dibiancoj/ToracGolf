@@ -21,7 +21,7 @@
                 return $http.post('TeeLocationSelectForCourseId', { CourseId: courseId });
             },
 
-            RoundListing: function (resetPager, pageId, sortBy, courseNameFilter, seasonFilter, roundsPerPage) {
+            RoundListing: function (resetPager, pageId, sortBy, courseNameFilter, seasonFilter, roundsPerPage, roundDateStartFilter, roundDateEndFilter) {
                 return $http.post('RoundListingSelectPage',
                     {
                         ResetPager: resetPager,
@@ -29,7 +29,9 @@
                         SortBy: sortBy,
                         CourseNameFilter: courseNameFilter,
                         SeasonFilter: seasonFilter,
-                        RoundsPerPage: roundsPerPage
+                        RoundsPerPage: roundsPerPage,
+                        RoundDateStartFilter: roundDateEndFilter,
+                        RoundDateEndFilter: roundDateEndFilter
                     });
             }
         }

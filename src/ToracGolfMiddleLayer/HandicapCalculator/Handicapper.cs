@@ -87,7 +87,7 @@ namespace ToracGolf.MiddleLayer.HandicapCalculator
                 return "10";
             }
 
-            if (courseHandicap.Value >0 && courseHandicap.Value <= 9)
+            if (courseHandicap.Value > 0 && courseHandicap.Value <= 9)
             {
                 return "Double Bogey";
             }
@@ -112,11 +112,13 @@ namespace ToracGolf.MiddleLayer.HandicapCalculator
 
         public static double RoundHandicap(int score, double teeBoxRating, double teeBoxSlope)
         {
-            //go calc the diff
-            var differential = CalculateDifferential(score, teeBoxRating, teeBoxSlope);
+            return CalculateDifferential(score, teeBoxRating, teeBoxSlope);
 
-            //now add the factory
-            return Math.Round(differential * .96, 1);
+            //go calc the diff
+            //var differential = CalculateDifferential(score, teeBoxRating, teeBoxSlope);
+
+            ////now add the factory
+            //return Math.Round(differential * .96, 1);
         }
 
         #endregion

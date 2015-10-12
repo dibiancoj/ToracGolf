@@ -48,22 +48,22 @@ namespace ToracGolf.MiddleLayer.Rounds.Models
                 return RoundPerformanceEnum.Awesome;
             }
 
-            if (difference > 7)
+            if (difference > 4)
             {
                 return RoundPerformanceEnum.AboveAverage;
             }
 
-            if (difference < 3 && difference > -3)
+            if (difference <= 3 && difference >= -3)
             {
                 return RoundPerformanceEnum.Average;
             }
 
-            if (difference < -12)
+            if (difference < -10)
             {
                 return RoundPerformanceEnum.Awful;
             }
 
-            if (difference < -7)
+            if (difference < -4)
             {
                 return RoundPerformanceEnum.BadAverage;
             }

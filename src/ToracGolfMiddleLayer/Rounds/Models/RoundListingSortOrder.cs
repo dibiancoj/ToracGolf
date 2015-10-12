@@ -29,11 +29,11 @@ namespace ToracGolf.MiddleLayer.Rounds.Models
             [Description("Course Name Ascending")]
             CourseNameAscending = 3,
 
-            [Description("Best Score")]
-            BestScores = 4,
+            [Description("Best Raw Score")]
+            BestRawScore = 4,
 
-            [Description("Worse Score")]
-            WorseScores= 5,
+            [Description("Worse Raw Score")]
+            WorseRawScore= 5
 
         }
 
