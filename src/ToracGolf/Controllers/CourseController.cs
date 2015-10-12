@@ -160,8 +160,15 @@ namespace ToracGolf.Controllers
         #region Course Listing
 
         [HttpGet]
+        [Route("CourseSelect/{CourseId}", Name = "CourseSelect")]
+        public IActionResult CourseListing(int courseId)
+        {
+            return RedirectToRoute(ApplicationConstants.CourseListingRouteName, new { CourseId = courseId });
+        }
+
+        [HttpGet]
         [Route(ApplicationConstants.CourseListingRouteName, Name = ApplicationConstants.CourseListingRouteName)]
-        public async Task<IActionResult> CourseListing()
+        public async Task<IActionResult> CourseListing(int? CourseId)
         {
             //build the breadcrumb
             var breadCrumb = BaseBreadCrumb();
@@ -177,6 +184,21 @@ namespace ToracGolf.Controllers
             //grab the user id
             var userId = GetUserId();
 
+            //filters
+            string courseNameFilter = string.Empty;
+            string defaultState = GetUserDefaultState();
+
+            //if we have a course id, go grab the name and state and set it
+            if (CourseId.HasValue)
+            {
+                //go grab the course info
+                var courseInfo = await CourseDataProvider.CourseNameAndState(DbContext, CourseId.Value);
+
+                //set the course name and filter
+                courseNameFilter = courseInfo.Item1;
+                defaultState = courseInfo.Item2;
+            }
+
             //return the view
             return View(new CourseListingViewModel(
               await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
@@ -185,9 +207,10 @@ namespace ToracGolf.Controllers
               await CourseDataProvider.TotalNumberOfCourses(DbContext, null, null, Configuration.Options.DefaultListingRecordsPerPage),
               CacheFactory.GetCacheItem<IList<SortOrderViewModel>>(CacheKeyNames.CourseListingSortOrder, Cache),
               stateListing,
-              GetUserDefaultState(),
+              defaultState,
               Configuration.Options.DefaultListingRecordsPerPage,
-              CacheFactory.GetCacheItem<IEnumerable<int>>(CacheKeyNames.NumberOfListingsPerPage, Cache)));
+              CacheFactory.GetCacheItem<IEnumerable<int>>(CacheKeyNames.NumberOfListingsPerPage, Cache),
+              courseNameFilter));
         }
 
         [HttpPost]

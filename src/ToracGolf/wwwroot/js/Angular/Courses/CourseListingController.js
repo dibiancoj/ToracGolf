@@ -2,7 +2,7 @@
 
     appToracGolf.controller('CourseListingController', ['$scope', 'ValidationService', 'CourseHttp', 'PagerFactory', function ($scope, ValidationService, CourseHttp, PagerFactory) {
 
-        $scope.init = function (totalNumberOfPages, courseSortOrder, userStatePreference, defaultCoursesPerPage, coursesPerPageLookup) {
+        $scope.init = function (totalNumberOfPages, courseSortOrder, userStatePreference, defaultCoursesPerPage, coursesPerPageLookup, courseNameFilter) {
 
             //set the drop down items
             $scope.SortByLookup = courseSortOrder;
@@ -20,7 +20,7 @@
             $scope.StateFilter = userStatePreference;
 
             //set the seach by course
-            $scope.SearchByCourseName = '';
+            $scope.SearchByCourseName = courseNameFilter;
 
             //set the initial page
             $scope.CurrentPageId = 0;

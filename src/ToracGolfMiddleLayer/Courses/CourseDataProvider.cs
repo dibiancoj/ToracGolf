@@ -12,6 +12,8 @@ namespace ToracGolf.MiddleLayer.Courses
     public static class CourseDataProvider
     {
 
+        #region Course Add
+
         public static async Task<int> CourseAdd(ToracGolfContext dbContext, int userId, CourseAddEnteredData CourseData)
         {
             //course record to add
@@ -61,6 +63,8 @@ namespace ToracGolf.MiddleLayer.Courses
             //return the course id
             return courseToAdd.CourseId;
         }
+
+        #endregion
 
         #region Course Listing
 
@@ -123,13 +127,27 @@ namespace ToracGolf.MiddleLayer.Courses
                 CourseData = x,
                 StateDescription = dbContext.Ref_State.FirstOrDefault(y => y.StateId == x.StateId).Description,
                 TeeLocationCount = dbContext.CourseTeeLocations.Count(y => y.CourseId == x.CourseId),
-                CourseImage = dbContext.CourseImages.FirstOrDefault(y => y.CourseId == x.CourseId)
+                CourseImage = dbContext.CourseImages.FirstOrDefault(y => y.CourseId == x.CourseId),
+
+                NumberOfRounds = dbContext.Rounds.Count(y => y.CourseId == x.CourseId),
+                TopScore = dbContext.Rounds.Where(y => y.CourseId == x.CourseId).Select(y => y.Score).Min(),
+                WorseScore = dbContext.Rounds.Where(y => y.CourseId == x.CourseId).Select(y => y.Score).Max(),
+                AverageScore = dbContext.Rounds.Where(y => y.CourseId == x.CourseId).Select(y => y.Score).Average()
             }).Skip(skipAmount).Take(recordsPerPage).ToArrayAsync();
         }
 
         public static async Task<int> TotalNumberOfCourses(ToracGolfContext dbContext, string courseNameFilter, int? StateFilter, int RecordsPerPage)
         {
             return DataSetPaging.CalculateTotalPages(await CourseSelectQueryBuilder(dbContext, courseNameFilter, StateFilter).CountAsync(), RecordsPerPage);
+        }
+
+        public static async Task<Tuple<string,string>> CourseNameAndState(ToracGolfContext dbContext, int courseId)
+        {
+            //grab the course
+            var course = await dbContext.Course.AsNoTracking().Where(x => x.CourseId == courseId).Select(x => new { x.Name, x.StateId }).FirstAsync();
+
+            //return the tuple
+            return new Tuple<string, string>(course.Name, course.StateId.ToString());
         }
 
         #endregion

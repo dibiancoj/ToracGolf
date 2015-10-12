@@ -19,6 +19,11 @@ namespace ToracGolf.MiddleLayer.Courses
 
         public CourseImages CourseImage { get; set; }
 
+        public int NumberOfRounds { get; set; }
+        public int? TopScore { get; set; }
+        public int? WorseScore { get; set; }
+        public double? AverageScore { get; set; }
+
         #endregion
 
     }

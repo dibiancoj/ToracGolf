@@ -32,7 +32,6 @@ namespace ToracGolf.MiddleLayer.Rounds.Models
         public int SeasonId { get; set; }
         public double RoundHandicap { get; set; }
         public int AdjustedScore { get; set; }
-        public int CoursePar { get; set; }
         public double HandicapBeforeRound { get; set; }
     }
 

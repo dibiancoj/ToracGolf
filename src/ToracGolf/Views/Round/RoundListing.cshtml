@@ -95,8 +95,11 @@
                             </div>
                             <div class="cell">
                                 <div class="listing-body clearfix RoundListingHeight">
-                                    <h3><a href="#">{{round.CourseName}}</a></h3>
+                                    <h3><a href="/CourseSelect/{{round.CourseId}}">{{round.CourseName}}</a></h3>
                                     <h4>{{round.RoundDate | date:'MM/dd/yyyy'}}</h4>
+                                    <p>
+                                        Par: {{round.TeeBoxLocation.Front9Par + round.TeeBoxLocation.Back9Par}} - Yardage: {{round.TeeBoxLocation.Yardage | number:0}}
+                                    </p>
                                     <p>
                                         Raw Score = {{round.Score}}
                                     </p>

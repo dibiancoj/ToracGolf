@@ -32,7 +32,7 @@
     <script src="~/js/angular/courses/courselistingcontroller.js"></script>
 }
 
-<section ng-cloak class="slice bg-white" ng-app="toracApp" ng-controller="CourseListingController" ng-init="init(@Model.TotalPagesOfCourses, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.SortOrder), '@Model.UserStatePreference', @Model.DefaultCoursesPerPage, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.CoursesPerPage))">
+<section ng-cloak class="slice bg-white" ng-app="toracApp" ng-controller="CourseListingController" ng-init="init(@Model.TotalPagesOfCourses, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.SortOrder), '@Model.UserStatePreference', @Model.DefaultCoursesPerPage, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.CoursesPerPage), '@Model.CourseNameFilter')">
     @Html.Partial("_AngularTokenSet", Model.TokenSet)
 
     <div class="wp-section">
@@ -91,10 +91,10 @@
                                 </div>
                                 <div class="listing-footer">
                                     <ul class="aux-info">
-                                        <li><i class="fa fa-bar-chart-o"></i><strong>Rounds: </strong>30</li>
-                                        <li><i class="fa fa-smile-o"></i><strong>Top Score: </strong>85</li>
-                                        <li><i class="fa fa-frown-o"></i><strong>Worse Score: </strong>98</li>
-                                        <li><i class="fa fa-calculator"></i><strong>Avg Score: </strong>93.35</li>
+                                        <li><i class="fa fa-bar-chart-o"></i><strong>Rounds: </strong>{{course.NumberOfRounds | number:0}}</li>
+                                        <li><i class="fa fa-smile-o"></i><strong>Top Score: </strong>{{course.TopScore | number:0}}</li>
+                                        <li><i class="fa fa-frown-o"></i><strong>Worse Score: </strong>{{course.WorseScore | number:0}}</li>
+                                        <li><i class="fa fa-calculator"></i><strong>Avg Score: </strong>{{course.AverageScore | number:1}}</li>
                                     </ul>
                                 </div>
                             </div>

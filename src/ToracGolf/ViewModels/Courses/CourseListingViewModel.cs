@@ -21,7 +21,8 @@ namespace ToracGolf.ViewModels.Courses
                                       IEnumerable<SelectListItem> stateListing,
                                       string userStatePreference,
                                       int defaultCoursesPerPage,
-                                      IEnumerable<int> coursesPerPage)
+                                      IEnumerable<int> coursesPerPage,
+                                      string courseNameFilter)
         {
             HandicapStatus = handicapStatus;
             Breadcrumb = breadcrumb;
@@ -32,6 +33,7 @@ namespace ToracGolf.ViewModels.Courses
             UserStatePreference = userStatePreference;
             DefaultCoursesPerPage = defaultCoursesPerPage;
             CoursesPerPage = coursesPerPage;
+            CourseNameFilter = courseNameFilter;
         }
 
         public HandicapStatusViewModel HandicapStatus { get; }
@@ -51,6 +53,8 @@ namespace ToracGolf.ViewModels.Courses
         public int DefaultCoursesPerPage { get; }
 
         public IEnumerable<int> CoursesPerPage { get; }
+
+        public string CourseNameFilter { get; }
 
     }
 
