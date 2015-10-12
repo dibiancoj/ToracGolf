@@ -32,12 +32,13 @@ namespace ToracGolf.MiddleLayer.Rounds.Models
         public int SeasonId { get; set; }
         public double RoundHandicap { get; set; }
         public int AdjustedScore { get; set; }
+        public int CoursePar { get; set; }
     }
 
     public class RoundPerformance
     {
 
-        public static RoundPerformanceEnum CalculateRoundPerformance(double? currentHandicap, double roundHandicap)
+        public static RoundPerformanceEnum CalculateRoundPerformance(int coursePar, int roundAdjustedScore)
         {
             if (!currentHandicap.HasValue)
             {

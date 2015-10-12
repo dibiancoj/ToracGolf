@@ -47,7 +47,7 @@ namespace ToracGolf.MiddleLayer.Rounds
                     Rating = teeBox.Rating,
                     Slope = teeBox.Slope,
                     Yardage = teeBox.Yardage,
-                    TeeLocationSortOrderId = teeBox.TeeLocationSortOrderId,
+                    TeeLocationSortOrderId = teeBox.TeeLocationSortOrderId
                 };
 
                 //now add the course handicap and the max score
@@ -176,13 +176,13 @@ namespace ToracGolf.MiddleLayer.Rounds
                 //calculate the round handicap
                 round.RoundHandicap = Handicapper.RoundHandicap(round.Score, round.TeeBoxLocation.Rating, round.TeeBoxLocation.Slope);
 
-                //go calculate the round performance
-                current handicap needs to be a static handicap that is the handicap at the time of the round
-                    round.RoundPerformance = (int)RoundPerformance.CalculateRoundPerformance(currentHandicap, round.RoundHandicap);
-
                 //calculate the adjusted score
                 current handicap needs to be a static handicap that is the handicap at the time of the round
                     round.AdjustedScore = Convert.ToInt32(Math.Round(round.Score - currentHandicap.Value, 0));
+
+                //go calculate the round performance
+                current handicap needs to be a static handicap that is the handicap at the time of the round
+                    round.RoundPerformance = (int)RoundPerformance.CalculateRoundPerformance(tee box par, round.AdjustedScore);
             }
 
             //go return the lookup now
