@@ -42,6 +42,9 @@
 <section ng-cloak class="slice bg-white" ng-app="toracApp" ng-controller="RoundListingController" ng-init="init(@Model.TotalNumberofPages, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.SortOrder), @Model.DefaultRoundsPerPage, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.RoundsPerPage))">
     @Html.Partial("_AngularTokenSet", Model.TokenSet)
 
+    <modal title="Delete Round?" showdialog="DeleteRoundModalShow" primarybuttonclass="btn-danger" bodyhtml="Are You Sure You Want To Delete Your Round?" closebuttontext="Delete" onmodalcloseevent="DeleteARoundConfirm()">
+    </modal>
+
     <div class="wp-section">
         <div class="container">
             <div class="row">
@@ -88,6 +91,8 @@
                                     <i ng-class="round.RoundPerformance > 3 ? 'fa fa-star': 'fa fa-star-o'"></i>
                                     <i ng-class="round.RoundPerformance > 4 ? 'fa fa-star': 'fa fa-star-o'"></i>
                                 </span>
+
+                                <div class="btn-icon btn-icon-right fa-close pull-right RoundDelete" title="Delete This Round" ng-click="DeleteARound(round.RoundId)"></div>
                             </div>
                             <div class="listing-image">
                                 <img ng-src="data:image/png;base64,{{FindCourseImageFromLookup(round.CourseId)}}" class="img-responsive RoundListingImage RoundListingHeight" alt="">

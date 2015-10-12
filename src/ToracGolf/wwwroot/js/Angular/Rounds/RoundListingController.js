@@ -101,6 +101,23 @@
 
         $scope.FindCourseImageFromLookup = function (courseId) {
             return $scope.CourseImageLookup[courseId];
+        },
+
+        $scope.DeleteARound = function (roundId) {
+
+            //set the round id to delete
+            $scope.RoundIdToDelete = roundId;
+
+            //show the dialog
+            $scope.DeleteRoundModalShow = true;
+        },
+
+        $scope.DeleteARoundConfirm = function () {
+
+            alert('Finish DeleteARoundConfirm');
+
+            //flip the variable so the modal will popup again
+            $scope.DeleteRoundModalShow = false;
         }
 
     }]);

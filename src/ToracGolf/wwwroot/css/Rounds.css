@@ -36,3 +36,9 @@
 .RoundDateFilterDiv {
     padding-left: 0px !important;
 }
+
+.RoundDelete {
+    margin-top: -10px;
+    text-align: right;
+    cursor: pointer;
+}

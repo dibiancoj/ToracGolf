@@ -1,11 +1,10 @@
 ﻿(function () {
     'use strict';
 
-
     appToracGolf.directive('modal', function () {
 
         //sample html
-        //<modal title="Saved Succesfully" showdialog="ShowSavedSuccessfulModal" bodyhtml="Your Course Has Been Saved Successfully." closebuttontext="Ok" onmodalcloseevent="SaveACourseDialogOkEvent()">
+        //<modal title="Saved Succesfully" showdialog="ShowSavedSuccessfulModal" primarybuttonclass="btn-primary" bodyhtml="Your Course Has Been Saved Successfully." closebuttontext="Ok" onmodalcloseevent="SaveACourseDialogOkEvent()">
         //</modal>
 
         return {
@@ -18,7 +17,7 @@
                            '</div>' +
                            '<div class="modal-body">{{bodyhtml}}</div>' +
                            '<div class="modal-footer">' +
-                                '<button type="button" class="btn btn-default btn-primary" data-dismiss="modal">{{closebuttontext}}</button>' +
+                                '<button type="button" class="btn btn-default {{primarybuttonclass}}" data-dismiss="modal">{{closebuttontext}}</button>' +
                            '</div>' +
                          '</div>' +
                        '</div>' +
@@ -35,13 +34,16 @@
                 scope.title = attrs.title;
                 scope.bodyhtml = attrs.bodyhtml;
                 scope.closebuttontext = attrs.closebuttontext;
+                scope.primarybuttonclass = attrs.primarybuttonclass;
 
                 //since this directive has it's own scope (it doesn't share the parent's). we need to add the watch to the parent which has our variable
                 scope.$parent.$watch(attrs.showdialog, function (value) {
-                    if (value)
+                    if (value) {
                         $(element).modal('show');
-                    else
+                    }
+                    else {
                         $(element).modal('hide');
+                    }
                 });
 
                 $(element).on('shown.bs.modal', function () {
