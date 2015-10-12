@@ -36,5 +36,7 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
 
         public virtual Course Course { get; set; }
 
+       // public virtual RoundHandicap RoundHandicap { get; set; }
+
     }
 }
