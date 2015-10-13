@@ -217,14 +217,18 @@ namespace ToracGolf.Controllers
 
         [HttpPost]
         [Route("RoundDelete", Name = "RoundDelete")]
-        public async Task<IActionResult> RoundListing([FromBody]int roundIdToDelete)
+        public async Task<IActionResult> DeleteARound([FromBody]int roundIdToDelete)
         {
-            throw new NotImplementedException("need to abstract refresh handicap...and refresh any scores after this handicap");
+            //go delete the round
+            var result = await RoundDataProvider.DeleteARound(DbContext, roundIdToDelete);
+
+            //we want to clear the handicap session data, so we calc it on the next call. We deleted a round so things could shift around
+            Context.Session.Remove(HandicapStatusSessionName);
 
             //go delete the record and return the result
             return Json(new
             {
-                Result = await RoundDataProvider.DeleteARound(DbContext, roundIdToDelete)
+                Result = result
             });
         }
 

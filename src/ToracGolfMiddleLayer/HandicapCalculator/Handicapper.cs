@@ -87,7 +87,7 @@ namespace ToracGolf.MiddleLayer.HandicapCalculator
                 return "10";
             }
 
-            if (courseHandicap.Value > 0 && courseHandicap.Value <= 9)
+            if (courseHandicap.Value <= 9)
             {
                 return "Double Bogey";
             }

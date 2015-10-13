@@ -123,6 +123,12 @@
 
                     //flip the variable so the modal will popup again
                     $scope.DeleteRoundModalShow = false;
+
+                    //we want to reload the page now we can refresh everything
+
+                    alert('do we want to do a fresh of the handicap header, and the grid?. or just do a page reload');
+
+                    window.location.reload();
                 },
                 function (errResponse) {
                     alert('Error: ' + JSON.stringify(errResponse));
