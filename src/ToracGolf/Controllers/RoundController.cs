@@ -129,19 +129,19 @@ namespace ToracGolf.Controllers
         [HttpPost]
         [Route("CourseSelectByState", Name = "CourseSelectByState")]
         [ValidateCustomAntiForgeryToken()]
-        public async Task<IActionResult> SelectCoursesForState([FromBody]CourseSelectByStateId model)
+        public async Task<IActionResult> SelectCoursesForState([FromBody]int stateId)
         {
             //go grab the course listing
             return Json(new
             {
-                CourseData = await RoundDataProvider.CoursesSelectForState(DbContext, model.StateId)
+                CourseData = await RoundDataProvider.CoursesSelectForState(DbContext, stateId)
             });
         }
 
         [HttpPost]
         [Route("TeeLocationSelectForCourseId", Name = "TeeLocationSelectForCourseId")]
         [ValidateCustomAntiForgeryToken()]
-        public async Task<IActionResult> SelectTeeBoxForCourseId([FromBody]TeeBoxSelectByCourseId model)
+        public async Task<IActionResult> SelectTeeBoxForCourseId([FromBody]int courseId)
         {
             //grab the user id
             var userId = GetUserId();
@@ -152,7 +152,7 @@ namespace ToracGolf.Controllers
             //go grab the course listing
             return Json(new
             {
-                TeeBoxData = await RoundDataProvider.TeeBoxSelectForCourse(DbContext, model.CourseId, usersHandicap.CareerHandicap)
+                TeeBoxData = await RoundDataProvider.TeeBoxSelectForCourse(DbContext, courseId, usersHandicap.CareerHandicap)
             });
         }
 
@@ -199,7 +199,7 @@ namespace ToracGolf.Controllers
         public async Task<IActionResult> RoundListingSelect([FromBody] RoundListPageNavigation listNav)
         {
             //grab the userid
-           var userId = GetUserId();
+            var userId = GetUserId();
 
             //state filter to use
             int? seasonFilter = string.IsNullOrEmpty(listNav.SeasonFilter) ? new int?() : Convert.ToInt32(listNav.SeasonFilter);
@@ -209,6 +209,23 @@ namespace ToracGolf.Controllers
                 PagedData = await RoundDataProvider.RoundSelect(DbContext, userId, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, seasonFilter, listNav.RoundsPerPage, listNav.RoundDateStartFilter, listNav.RoundDateEndFilter),
                 TotalNumberOfPages = listNav.ResetPager ? new int?(await RoundDataProvider.TotalNumberOfRounds(DbContext, userId, listNav.CourseNameFilter, seasonFilter, listNav.RoundsPerPage, listNav.RoundDateStartFilter, listNav.RoundDateEndFilter)) : null
             });
+        }
+
+        #endregion
+
+        #region Delete A Round
+
+        [HttpPost]
+        [Route("RoundDelete", Name = "RoundDelete")]
+        public async Task<IActionResult> RoundListing([FromBody]int roundIdToDelete)
+        {
+            throw new NotImplementedException("need to abstract refresh handicap...and refresh any scores after this handicap");
+
+            //go delete the round
+            var result = await RoundDataProvider.DeleteARound(DbContext, roundIdToDelete);
+
+            //return a positive result
+            return Json(new { Result = result });
         }
 
         #endregion

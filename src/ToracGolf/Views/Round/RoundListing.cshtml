@@ -29,7 +29,7 @@
     <script src="~/lib/select2/js/select2.js"></script>
     <script src="~/js/angular/toracgolfapp.js"></script>
     <script src="~/js/angular/common/httprequestinterceptor.js"></script>
-    <script src="~/js/angular/common/modaldirective.js"></script>
+    <script src="~/js/angular/common/modaleventdirective.js"></script>
     <script src="~/js/angular/common/pagerfactory.js"></script>
     <script src="~/js/angular/common/numberonlydirective.js"></script>
     <script src="~/js/angular/common/datepickerdirective.js"></script>
@@ -42,8 +42,21 @@
 <section ng-cloak class="slice bg-white" ng-app="toracApp" ng-controller="RoundListingController" ng-init="init(@Model.TotalNumberofPages, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.SortOrder), @Model.DefaultRoundsPerPage, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.RoundsPerPage))">
     @Html.Partial("_AngularTokenSet", Model.TokenSet)
 
-    <modal title="Delete Round?" showdialog="DeleteRoundModalShow" primarybuttonclass="btn-danger" bodyhtml="Are You Sure You Want To Delete Your Round?" closebuttontext="Delete" onmodalcloseevent="DeleteARoundConfirm()">
-    </modal>
+    <div class="modal fade" modalevent showdialog="DeleteRoundModalShow">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Delete Round?</h4>
+                </div>
+                <div class="modal-body">Are You Sure You Want To Delete Your Round?</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-primary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-default btn-danger" ng-click="DeleteARoundConfirm()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="wp-section">
         <div class="container">
@@ -92,7 +105,7 @@
                                     <i ng-class="round.RoundPerformance > 4 ? 'fa fa-star': 'fa fa-star-o'"></i>
                                 </span>
 
-                                <div class="btn-icon btn-icon-right fa-close pull-right RoundDelete" title="Delete This Round" ng-click="DeleteARound(round.RoundId)"></div>
+                                <div class="btn btn-icon btn-icon-right fa-close pull-right RoundDelete" title="Delete This Round" ng-click="DeleteARound(round.RoundId)"></div>
                             </div>
                             <div class="listing-image">
                                 <img ng-src="data:image/png;base64,{{FindCourseImageFromLookup(round.CourseId)}}" class="img-responsive RoundListingImage RoundListingHeight" alt="">

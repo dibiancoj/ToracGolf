@@ -14,11 +14,11 @@
             },
 
             FetchCoursesForState: function (stateId) {
-                return $http.post('CourseSelectByState', { StateId: stateId });
+                return $http.post('CourseSelectByState', stateId);
             },
 
             FetchTeeBoxForCourseId: function (courseId) {
-                return $http.post('TeeLocationSelectForCourseId', { CourseId: courseId });
+                return $http.post('TeeLocationSelectForCourseId', courseId);
             },
 
             RoundListing: function (resetPager, pageId, sortBy, courseNameFilter, seasonFilter, roundsPerPage, roundDateStartFilter, roundDateEndFilter) {
@@ -33,6 +33,10 @@
                         RoundDateStartFilter: isNaN(Date.parse(roundDateStartFilter)) ? null : roundDateStartFilter,
                         RoundDateEndFilter: isNaN(Date.parse(roundDateEndFilter)) ? null : roundDateEndFilter
                     });
+            },
+
+            RoundDelete: function (roundId) {
+                return $http.post('RoundDelete', roundId);
             }
         }
 

@@ -309,6 +309,25 @@ namespace ToracGolf.MiddleLayer.Rounds
 
         #endregion
 
+        #region Delete A Round
+
+        public static async Task<bool> DeleteARound(ToracGolfContext dbContext, int roundIdToDelete)
+        {
+            //grab the round
+            var roundToDelete = await dbContext.Rounds.FirstOrDefaultAsync(x => x.RoundId == roundIdToDelete);
+
+            //remove the round
+            dbContext.Rounds.Remove(roundToDelete);
+
+            //save the changes
+            await dbContext.SaveChangesAsync();
+
+            //return a true result
+            return true;
+        }
+
+        #endregion
+
     }
 }
 

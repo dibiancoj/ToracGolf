@@ -114,10 +114,19 @@
 
         $scope.DeleteARoundConfirm = function () {
 
-            alert('Finish DeleteARoundConfirm');
+            //grab the round to delete
+            var roundToDelete = $scope.RoundIdToDelete;
 
-            //flip the variable so the modal will popup again
-            $scope.DeleteRoundModalShow = false;
+            //let's go delete that round
+            RoundHttp.RoundDelete($scope.RoundIdToDelete)
+                .then(function (result) {
+
+                    //flip the variable so the modal will popup again
+                    $scope.DeleteRoundModalShow = false;
+                },
+                function (errResponse) {
+                    alert('Error: ' + JSON.stringify(errResponse));
+                });
         }
 
     }]);
