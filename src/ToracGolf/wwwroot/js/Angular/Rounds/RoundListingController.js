@@ -125,10 +125,13 @@
                     $scope.DeleteRoundModalShow = false;
 
                     //we want to reload the page now we can refresh everything
+                    $scope.FetchAPageOfData(true);
 
-                    alert('do we want to do a fresh of the handicap header, and the grid?. or just do a page reload');
+                    //let's go reset the handicap stuff
+                    $('#SeasonHandicap').text(result.data.NewHandicap.SeasonHandicap == null ? '' : result.data.NewHandicap.SeasonHandicap);
+                    $('#CareerHandicap').text(result.data.NewHandicap.CareerHandicap == null ? '' : result.data.NewHandicap.CareerHandicap);
 
-                    window.location.reload();
+                    //window.location.reload();
                 },
                 function (errResponse) {
                     alert('Error: ' + JSON.stringify(errResponse));

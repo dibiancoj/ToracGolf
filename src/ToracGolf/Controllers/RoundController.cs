@@ -7,7 +7,6 @@ using Microsoft.Framework.OptionsModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using ToracGolf.Constants;
 using ToracGolf.Filters;
@@ -225,10 +224,14 @@ namespace ToracGolf.Controllers
             //we want to clear the handicap session data, so we calc it on the next call. We deleted a round so things could shift around
             Context.Session.Remove(HandicapStatusSessionName);
 
+            //grab the user id
+            var userId = GetUserId();
+
             //go delete the record and return the result
             return Json(new
             {
-                Result = result
+                Result = result,
+                NewHandicap = await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId))
             });
         }
 
