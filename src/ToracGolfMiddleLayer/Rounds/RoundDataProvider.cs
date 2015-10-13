@@ -69,7 +69,7 @@ namespace ToracGolf.MiddleLayer.Rounds
 
         #region Round Add
 
-        public static async Task<int> SaveRound(ToracGolfContext dbContext, int userId, int seasonId, RoundAddEnteredData roundData, double? currentHandicap)
+        public static async Task<int> SaveRound(ToracGolfContext dbContext, int userId, int seasonId, RoundAddEnteredData roundData)
         {
             //build the round record
             var round = new Round
@@ -91,99 +91,77 @@ namespace ToracGolf.MiddleLayer.Rounds
             dbContext.SaveChanges();
 
             //we need to go add the handicap records
+            await RefreshHandicapRecords(dbContext, userId);
 
-            //1. grab all the rounds after to this round (we need to delete them and recalculate them)
-            var roundsAfterNewRound = await dbContext.Rounds
-                                                       .Where(x => x.RoundDate > round.RoundDate)
-                                                       .OrderBy(x => x.RoundDate).ThenBy(x => x.RoundId)
-                                                       .Select(x => x.RoundId).ToArrayAsync();
+            //return the round id
+            return round.RoundId;
+        }
 
-            //2. if we have 0 rows, then just add a blank one with the current row
-            if (!roundsAfterNewRound.Any())
+        #endregion
+
+        #region Handicap Refresh
+
+        public static async Task<bool> RefreshHandicapRecords(ToracGolfContext dbContext, int userId)
+        {
+            //let's go delete all the handicap records
+            var roundsToDelete = await (from myData in dbContext.Rounds
+                                        join myHandicaps in dbContext.RoundHandicap
+                                        on myData.RoundId equals myHandicaps.RoundId
+                                        where myData.UserId == userId
+                                        select myHandicaps).ToArrayAsync();
+
+            //delete all handicap records
+            dbContext.RoundHandicap.RemoveRange(roundsToDelete);
+
+            //save the deletions
+            await dbContext.SaveChangesAsync();
+
+            //5. let's go rebuild all the handicap records
+            var roundsForUser = await dbContext.Rounds.Where(x => x.UserId == userId)
+                                .OrderBy(x => x.RoundDate).ThenBy(x => x.RoundId)
+                                .Select(x => new
+                                {
+                                    RoundRecord = x,
+                                    TeeLocation = dbContext.CourseTeeLocations.FirstOrDefault(y => y.CourseTeeLocationId == x.CourseTeeLocationId && y.CourseId == x.CourseId)
+                                }).ToArrayAsync();
+
+            //lets loop through those rounds for the user
+            foreach (var roundToCalculate in roundsForUser)
             {
-                //handicap to use to insert
-                double handicapToUse;
-
-                //do we have a handicap?
-                if (currentHandicap.HasValue)
-                {
-                    //we already have a handicap, use it!
-                    handicapToUse = currentHandicap.Value;
-                }
-                else
-                {
-                    //we don't have a handicap, we will use the inserted value for the handicap. 
-                    //grab this tee box
-                    var teeBox = await dbContext.CourseTeeLocations.FirstAsync(x => x.CourseId == round.CourseId && x.CourseTeeLocationId == round.CourseTeeLocationId);
-
-                    //calculate the handicap for just this round
-                    handicapToUse = Handicapper.CalculateHandicap(new Last20Rounds[]
+                //grab the 20 rounds before this round
+                var roundsToUse = roundsForUser.Where(x => x.RoundRecord.RoundDate < roundToCalculate.RoundRecord.RoundDate)
+                    .OrderByDescending(x => x.RoundRecord.RoundDate).ThenByDescending(x => x.RoundRecord.RoundId).Take(20).Select(x => new Last20Rounds
                     {
-                        new Last20Rounds { RoundId = round.RoundId, Rating = teeBox.Rating, Slope = teeBox.Slope, RoundScore = round.Score }
-                    }).Value;
-                }
+                        RoundId = x.RoundRecord.RoundId,
+                        RoundScore = x.RoundRecord.Score,
+                        Rating = x.TeeLocation.Rating,
+                        Slope = x.TeeLocation.Slope
+                    }).ToArray();
 
-                //add the record to the context
-                dbContext.RoundHandicap.Add(new RoundHandicap { RoundId = round.RoundId, HandicapBeforeRound = handicapToUse });
-            }
-            else
-            {
-                //3. if we have rounds before the one we just inserted, we will go and delete everything and recalc. we can probably make this more eff.
-                //but this is ok for now
-
-                //4. go grab allt he
-                dbContext.RoundHandicap.RemoveRange(await dbContext.RoundHandicap.Where(x => roundsAfterNewRound.Contains(x.RoundId)).ToArrayAsync());
-
-                //save the changes
-                await dbContext.SaveChangesAsync();
-
-                //5. let's go rebuild all the handicap records
-                var roundsForUser = await dbContext.Rounds.Where(x => x.UserId == userId)
-                                    .OrderBy(x => x.RoundDate).ThenBy(x => x.RoundId)
-                                    .Select(x => new
-                                    {
-                                        RoundRecord = x,
-                                        TeeLocation = dbContext.CourseTeeLocations.FirstOrDefault(y => y.CourseTeeLocationId == x.CourseTeeLocationId && y.CourseId == x.CourseId)
-                                    }).ToArrayAsync();
-
-                //lets loop through those rounds for the user
-                foreach (var roundToCalculate in roundsForUser)
+                //if we have 0 rounds, then use the round we are looking through
+                if (!roundsToUse.Any())
                 {
-                    //grab the 20 rounds before this round
-                    var roundsToUse = roundsForUser.Where(x => x.RoundRecord.RoundDate < roundToCalculate.RoundRecord.RoundDate)
-                        .OrderByDescending(x => x.RoundRecord.RoundDate).ThenByDescending(x => x.RoundRecord.RoundId).Take(20).Select(x => new Last20Rounds
-                        {
-                            RoundId = x.RoundRecord.RoundId,
-                            RoundScore = x.RoundRecord.Score,
-                            Rating = x.TeeLocation.Rating,
-                            Slope = x.TeeLocation.Slope
-                        }).ToArray();
-
-                    //if we have 0 rounds, then use the round we are looking through
-                    if (!roundsToUse.Any())
-                    {
-                        roundsToUse = new Last20Rounds[] { new Last20Rounds
+                    roundsToUse = new Last20Rounds[] { new Last20Rounds
                         {
                             RoundId = roundToCalculate.RoundRecord.RoundId,
                             RoundScore = roundToCalculate.RoundRecord.Score,
                             Rating = roundToCalculate.TeeLocation.Rating,
                             Slope = roundToCalculate.TeeLocation.Slope
                         }};
-                    }
-
-                    //go calculate the handicap for this round (using the last 20 rounds)
-                    var calculatedHandicap = Handicapper.CalculateHandicap(roundsToUse);
-
-                    //add the record to the context
-                    dbContext.RoundHandicap.Add(new RoundHandicap { RoundId = roundToCalculate.RoundRecord.RoundId, HandicapBeforeRound = calculatedHandicap.Value });
                 }
+
+                //go calculate the handicap for this round (using the last 20 rounds)
+                var calculatedHandicap = Handicapper.CalculateHandicap(roundsToUse);
+
+                //add the record to the context
+                dbContext.RoundHandicap.Add(new RoundHandicap { RoundId = roundToCalculate.RoundRecord.RoundId, HandicapBeforeRound = calculatedHandicap.Value });
             }
 
             //go save the changes for the course handicap
             await dbContext.SaveChangesAsync();
 
-            //return the round id
-            return round.RoundId;
+            //return a postive result
+            return true;
         }
 
         #endregion

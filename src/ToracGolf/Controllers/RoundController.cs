@@ -107,7 +107,7 @@ namespace ToracGolf.Controllers
                 var usersCurrentSeason = await UserCurrentSeason(DbContext, userId);
 
                 //let's try to add this user to the system
-                var roundAddAttempt = await RoundDataProvider.SaveRound(DbContext, userId, usersCurrentSeason, model, (await HandicapStatusBuilder(DbContext, userId, usersCurrentSeason)).CareerHandicap);
+                var roundAddAttempt = await RoundDataProvider.SaveRound(DbContext, userId, usersCurrentSeason, model);
 
                 //if we saved the round, we want to clear out the session so the next call which go calculate the handicap now
                 Context.Session.Remove(HandicapStatusSessionName);
@@ -221,11 +221,11 @@ namespace ToracGolf.Controllers
         {
             throw new NotImplementedException("need to abstract refresh handicap...and refresh any scores after this handicap");
 
-            //go delete the round
-            var result = await RoundDataProvider.DeleteARound(DbContext, roundIdToDelete);
-
-            //return a positive result
-            return Json(new { Result = result });
+            //go delete the record and return the result
+            return Json(new
+            {
+                Result = await RoundDataProvider.DeleteARound(DbContext, roundIdToDelete)
+            });
         }
 
         #endregion
