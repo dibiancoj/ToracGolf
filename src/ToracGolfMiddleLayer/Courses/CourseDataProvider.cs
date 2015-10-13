@@ -90,7 +90,13 @@ namespace ToracGolf.MiddleLayer.Courses
         }
 
         /// <param name="pageId">0 base index that holds what page we are on</param>
-        public static async Task<IEnumerable<CourseListingData>> CourseSelect(ToracGolfContext dbContext, int pageId, CourseListingSortOrder.CourseListingSortEnum sortBy, string courseNameFilter, int? stateFilter, int recordsPerPage)
+        public static async Task<IEnumerable<CourseListingData>> CourseSelect(ToracGolfContext dbContext, 
+                                                                              int pageId, 
+                                                                              CourseListingSortOrder.CourseListingSortEnum sortBy, 
+                                                                              string courseNameFilter, 
+                                                                              int? stateFilter, 
+                                                                              int recordsPerPage,
+                                                                              int userId)
         {
             //how many items to skip
             int skipAmount = pageId * recordsPerPage;
@@ -129,10 +135,10 @@ namespace ToracGolf.MiddleLayer.Courses
                 TeeLocationCount = dbContext.CourseTeeLocations.Count(y => y.CourseId == x.CourseId),
                 CourseImage = dbContext.CourseImages.FirstOrDefault(y => y.CourseId == x.CourseId),
 
-                NumberOfRounds = dbContext.Rounds.Count(y => y.CourseId == x.CourseId),
-                TopScore = dbContext.Rounds.Where(y => y.CourseId == x.CourseId).Select(y => y.Score).Min(),
-                WorseScore = dbContext.Rounds.Where(y => y.CourseId == x.CourseId).Select(y => y.Score).Max(),
-                AverageScore = dbContext.Rounds.Where(y => y.CourseId == x.CourseId).Select(y => y.Score).Average()
+                NumberOfRounds = dbContext.Rounds.Count(y => y.CourseId == x.CourseId && y.UserId == userId),
+                TopScore = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.Score).Min(),
+                WorseScore = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.Score).Max(),
+                AverageScore = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.Score).Average()
             }).Skip(skipAmount).Take(recordsPerPage).ToArrayAsync();
         }
 
