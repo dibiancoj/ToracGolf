@@ -76,7 +76,7 @@
                 });
         },
 
-        $scope.DeleteACourse= function (courseId) {
+        $scope.ArchiveACourse = function (courseId) {
 
             //set the course id to delete
             $scope.CourseIdToDelete = courseId;
@@ -87,13 +87,8 @@
 
         $scope.DeleteACourseConfirm = function () {
 
-            //grab the round to delete
-            var courseToDelete = $scope.CourseIdToDelete;
-
-            alert('go finish this');
-
             //let's go delete that round
-            CourseHttp.CourseDelete($scope.courseToDelete)
+            CourseHttp.CourseDelete($scope.CourseIdToDelete)
                 .then(function (result) {
 
                     //flip the variable so the modal will popup again
@@ -101,12 +96,6 @@
 
                     //we want to reload the page now we can refresh everything
                     $scope.FetchAPageOfData(true);
-
-                    //let's go reset the handicap stuff
-                    $('#SeasonHandicap').text(result.data.NewHandicap.SeasonHandicap == null ? '' : result.data.NewHandicap.SeasonHandicap);
-                    $('#CareerHandicap').text(result.data.NewHandicap.CareerHandicap == null ? '' : result.data.NewHandicap.CareerHandicap);
-
-                    //window.location.reload();
                 },
                 function (errResponse) {
                     alert('Error: ' + JSON.stringify(errResponse));

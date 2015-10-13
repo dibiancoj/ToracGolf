@@ -114,9 +114,6 @@
 
         $scope.DeleteARoundConfirm = function () {
 
-            //grab the round to delete
-            var roundToDelete = $scope.RoundIdToDelete;
-
             //let's go delete that round
             RoundHttp.RoundDelete($scope.RoundIdToDelete)
                 .then(function (result) {

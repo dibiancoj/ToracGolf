@@ -71,7 +71,7 @@ namespace ToracGolf.MiddleLayer.Courses
         public static IQueryable<Course> CourseSelectQueryBuilder(ToracGolfContext dbContext, string courseNameFilter, int? StateFilter)
         {
             //build the queryable
-            var queryable = dbContext.Course.AsNoTracking().AsQueryable();
+            var queryable = dbContext.Course.AsNoTracking().Where(x => x.IsActive).AsQueryable();
 
             //if we have a course name, add it as a filter
             if (!string.IsNullOrEmpty(courseNameFilter))
@@ -90,11 +90,11 @@ namespace ToracGolf.MiddleLayer.Courses
         }
 
         /// <param name="pageId">0 base index that holds what page we are on</param>
-        public static async Task<IEnumerable<CourseListingData>> CourseSelect(ToracGolfContext dbContext, 
-                                                                              int pageId, 
-                                                                              CourseListingSortOrder.CourseListingSortEnum sortBy, 
-                                                                              string courseNameFilter, 
-                                                                              int? stateFilter, 
+        public static async Task<IEnumerable<CourseListingData>> CourseSelect(ToracGolfContext dbContext,
+                                                                              int pageId,
+                                                                              CourseListingSortOrder.CourseListingSortEnum sortBy,
+                                                                              string courseNameFilter,
+                                                                              int? stateFilter,
                                                                               int recordsPerPage,
                                                                               int userId)
         {
@@ -147,13 +147,28 @@ namespace ToracGolf.MiddleLayer.Courses
             return DataSetPaging.CalculateTotalPages(await CourseSelectQueryBuilder(dbContext, courseNameFilter, StateFilter).CountAsync(), RecordsPerPage);
         }
 
-        public static async Task<Tuple<string,string>> CourseNameAndState(ToracGolfContext dbContext, int courseId)
+        public static async Task<Tuple<string, string>> CourseNameAndState(ToracGolfContext dbContext, int courseId)
         {
             //grab the course
             var course = await dbContext.Course.AsNoTracking().Where(x => x.CourseId == courseId).Select(x => new { x.Name, x.StateId }).FirstAsync();
 
             //return the tuple
             return new Tuple<string, string>(course.Name, course.StateId.ToString());
+        }
+
+        public static async Task<bool> DeleteACourse(ToracGolfContext dbContext, int courseId)
+        {
+            //grab the course
+            var courseToDelete = await dbContext.Course.FirstAsync(x => x.CourseId == courseId);
+
+            //now flip the flag on the course
+            courseToDelete.IsActive = false;
+
+            //save the changes
+            await dbContext.SaveChangesAsync();
+
+            //return a positive result
+            return true;
         }
 
         #endregion

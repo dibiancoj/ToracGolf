@@ -30,7 +30,7 @@
             },
 
             CourseDelete: function (courseIdToDelete) {
-
+                return $http.post('CourseDelete', courseIdToDelete);
             }
         }
 

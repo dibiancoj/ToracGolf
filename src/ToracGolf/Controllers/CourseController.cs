@@ -230,5 +230,21 @@ namespace ToracGolf.Controllers
 
         #endregion
 
+        #region Course Delete
+
+        [HttpPost]
+        [Route("CourseDelete", Name = "CourseDelete")]
+        [ValidateCustomAntiForgeryToken()]
+        public async Task<IActionResult> DeleteACourse([FromBody] int courseId)
+        {
+            //go delete the course
+            return Json(new
+            {
+                Result = await CourseDataProvider.DeleteACourse(DbContext, courseId)
+            });
+        }
+
+        #endregion
+
     }
 }
