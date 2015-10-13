@@ -27,6 +27,10 @@
                     StateFilter: stateFilter,
                     CoursesPerPage: coursesPerPage
                 });
+            },
+
+            CourseDelete: function (courseIdToDelete) {
+
             }
         }
 

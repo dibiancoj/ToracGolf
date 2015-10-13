@@ -19,3 +19,9 @@
     width: 250px !important;
     /*any element with this class should also use CourseListingHeight*/
 }
+
+.CourseDelete {
+    margin-top: -10px;
+    text-align: right;
+    cursor: pointer;
+}
