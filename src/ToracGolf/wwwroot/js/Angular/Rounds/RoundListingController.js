@@ -133,6 +133,10 @@
                 function (errResponse) {
                     alert('Error: ' + JSON.stringify(errResponse));
                 });
+        },
+
+        $scope.RootPath = function () {
+            return _rootDir;
         }
 
     }]);
