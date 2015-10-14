@@ -90,20 +90,20 @@
                                     </section>
                                     <section class="RoundAddSection">
                                         <div class="row">
-                                            <div class="col-md-6 col-xs-12">
+                                            <div class="col-xs-6">
                                                 Yardage:  {{TeeBoxSelectedInfo.Yardage | number:0}}
                                             </div>
-                                            <div class="col-md-6 col-xs-12">
+                                            <div class="col-xs-6">
                                                 Par: {{TeeBoxSelectedInfo.Par}}
                                             </div>
                                         </div>
                                     </section>
                                     <section class="RoundAddSection">
                                         <div class="row">
-                                            <div class="col-md-6 col-xs-12">
+                                            <div class="col-xs-6">
                                                 Rating: {{TeeBoxSelectedInfo.Rating}}
                                             </div>
-                                            <div class="col-md-6 col-xs-12">
+                                            <div class="col-xs-6">
                                                 Slope: {{TeeBoxSelectedInfo.Slope}}
                                             </div>
                                         </div>
@@ -111,14 +111,14 @@
                                     <hr />
                                     <section class="RoundAddSection">
                                         <div class="row">
-                                            <div class="col-md-6 col-xs-12">
+                                            <div class="col-xs-6">
                                                 <label asp-for="RoundEnteredData.Score" class="label"></label>
                                                 <label class="input">
                                                     <i class="icon-append fa fa-folder-o"></i>
                                                     <input type="text" name="Score" numbers-only numbers-only-allowOnlyInts="true" maxlength="3" ng-model="model.Score" />
                                                 </label>
                                             </div>
-                                            <div class="col-md-6 col-xs-12">
+                                            <div class="col-xs-6">
                                                 <label asp-for="RoundEnteredData.NineHoleScore" class="label"></label>
                                                 <input type="checkbox" name="NineHoleScore" ng-model="model.NineHoleScore" />
                                             </div>
