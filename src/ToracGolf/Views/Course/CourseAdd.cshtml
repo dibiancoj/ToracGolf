@@ -128,7 +128,7 @@
                             <h2>Add A New Course</h2>
                         </div>
                         <div class="form-body">
-                            <form id="frmAddACourse" method="post" ng-submit="SaveACourse()" class="sky-form">
+                            <form class="sky-form">
                                 @Html.Partial("_AngularTokenSet", Model.TokenSet)
                                 <fieldset>
                                     <section>
@@ -204,7 +204,7 @@
                                         @Html.Partial("_ValidationSummaryAngular")
                                     </section>
                                     <section>
-                                        <button class="btn btn-base btn-icon btn-icon-right btn-sign-in pull-right" type="submit">
+                                        <button ng-click="SaveACourse()" class="btn btn-base btn-icon btn-icon-right btn-sign-in pull-right">
                                             <span>Save</span>
                                         </button>
 

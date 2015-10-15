@@ -23,7 +23,7 @@
         },
 
         $scope.SaveASeasonDialogOkEvent = function () {
-            alert('finish');
+            alert('send them somwhere after the save was successful');
         }
 
     }]);
