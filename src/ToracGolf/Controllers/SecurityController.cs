@@ -98,7 +98,7 @@ namespace ToracGolf.Controllers
             if (ModelState.IsValid)
             {
                 //let's try to log this user in
-                var userLogInAttempt = await Security.UserLogIn(DbContext, model.Email, model.Password);
+                var userLogInAttempt = await SecurityDataProvider.UserLogIn(DbContext, model.Email, model.Password);
 
                 //did we find a user?
                 if (userLogInAttempt == null)
@@ -160,7 +160,7 @@ namespace ToracGolf.Controllers
                 try
                 {
                     //let's try to add this user to the system
-                    userRegisterAttempt = await Security.RegisterUser(DbContext, model);
+                    userRegisterAttempt = await SecurityDataProvider.RegisterUser(DbContext, model);
                 }
                 catch (Exception ex)
                 {

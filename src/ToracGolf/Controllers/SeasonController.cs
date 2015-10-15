@@ -99,10 +99,21 @@ namespace ToracGolf.Controllers
                 //grab the user id
                 var userId = GetUserId();
 
-            
+                //let's try to add this season to the system
+                var refSeasonRecord = await SeasonDataProvider.RefSeasonAddOrGet(DbContext, model.SeasonDescription);
 
-                //let's try to add this user to the system
-                //var roundAddAttempt = await SeasonDataProvider..SaveRound(DbContext, userId, usersCurrentSeason, model);
+                //add the user season now
+                var userSeason = await SeasonDataProvider.UserSeasonAdd(DbContext, userId, refSeasonRecord);
+
+                //do we want to make this our current season
+                if (model.MakeCurrentSeason)
+                {
+                    //go save the current season
+                    await SeasonDataProvider.MakeSeasonAsCurrent(DbContext, userId, userSeason.SeasonId);
+                }
+
+                //we have a new current season, so we need to clear out the session
+                Context.Session.Remove(HandicapStatusSessionName);
 
                 //we saved it successfully
                 return Json(new { result = true });

@@ -28,6 +28,63 @@ namespace ToracGolf.MiddleLayer.Season
 
         }
 
+        public static async Task<Ref_Season> RefSeasonAddOrGet(ToracGolfContext dbContext, string seasonText)
+        {
+            //let's first try to find the season with the same name
+            var seasonToAdd = await dbContext.Ref_Season.AsNoTracking().FirstOrDefaultAsync(x => x.SeasonText == seasonText);
+
+            //didn't find a season with this name
+            if (seasonToAdd == null)
+            {
+                //create the new season
+                seasonToAdd = new Ref_Season { SeasonText = seasonText, CreatedDate = DateTime.Now };
+
+                //add the record
+                dbContext.Ref_Season.Add(seasonToAdd);
+
+                //we need to save it for foreign key 
+                await dbContext.SaveChangesAsync();
+            }
+
+            //return the record
+            return seasonToAdd;
+        }
+
+        public static async Task<UserSeason> UserSeasonAdd(ToracGolfContext dbContext, int userId, Ref_Season refSeasonRecord)
+        {
+            //record to add
+            var recordToAdd = new UserSeason
+            {
+                UserId = userId,
+                SeasonId = refSeasonRecord.SeasonId,
+                CreatedDate = DateTime.Now
+            };
+
+            //add the record
+            dbContext.UserSeason.Add(recordToAdd);
+
+            //go save the changes
+            await dbContext.SaveChangesAsync();
+
+            //return the record now
+            return recordToAdd;
+        }
+
+        public static async Task<bool> MakeSeasonAsCurrent(ToracGolfContext dbContext, int userId, int currentSeasonId)
+        {
+            //grab the user record
+            var user = await dbContext.Users.FirstAsync(x => x.UserId == userId);
+
+            //set the current season now
+            user.CurrentSeasonId = currentSeasonId;
+
+            //save the changes
+            await dbContext.SaveChangesAsync();
+
+            //return a postive result
+            return true;
+        }
+
     }
 
 }
