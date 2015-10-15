@@ -131,6 +131,44 @@ namespace ToracGolf.Controllers
 
         #endregion
 
+        #region Season Listing
+
+        [HttpGet]
+        [Route("SeasonListing", Name = "SeasonListing")]
+        public async Task<IActionResult> SeasonListing()
+        {
+            //go build the breadcrumb
+            var breadCrumb = BaseBreadCrumb();
+
+            //add the current screen
+            breadCrumb.Add(new BreadcrumbNavItem("Season Listing", "#"));
+
+            //grab the user id and store it
+            var userId = GetUserId();
+
+            //go return the view
+            return View(new SeasonListingViewModel(
+                await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
+                breadCrumb,
+                BuildTokenSet(Antiforgery)));
+        }
+
+        [HttpPost]
+        [Route("SeasonListing", Name = "SeasonListing")]
+        [ValidateCustomAntiForgeryToken()]
+        public async Task<IActionResult> SeasonListingGrid()
+        {
+            //grab the userid
+            var userId = GetUserId();
+
+            return Json(new
+            {
+                PagedData = (await SeasonDataProvider.SeasonSelectForUser(DbContext, userId)).Select(x => new { SeasonId = x.Key, Description = x.Value })
+            });
+        }
+
+        #endregion
+
     }
 
 }

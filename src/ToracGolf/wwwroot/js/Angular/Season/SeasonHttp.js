@@ -11,6 +11,10 @@
 
             AddSeason: function (model, validationService) {
                 return $http.post('AddASeason', model, validationService);
+            },
+
+            ArchiveASeason: function (seasonId) {
+                alert('need to implement');
             }
 
         }
