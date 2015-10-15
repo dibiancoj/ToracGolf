@@ -7,3 +7,9 @@
     display: inline-block !important;
     margin-right: 5px;
 }
+
+.SeasonDelete {
+    margin-top: -10px;
+    text-align: right;
+    cursor: pointer;
+}

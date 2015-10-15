@@ -13,8 +13,12 @@
                 return $http.post('AddASeason', model, validationService);
             },
 
+            SeasonListingFetchData: function () {
+                return $http.post('SeasonListing', {});
+            },
+
             ArchiveASeason: function (seasonId) {
-                alert('need to implement');
+                return $http.post('SeasonDelete', seasonId);
             }
 
         }

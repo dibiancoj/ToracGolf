@@ -1,6 +1,6 @@
 ﻿(function () {
 
-    appToracGolf.controller('SeasonListingController', ['$scope', 'ValidationService', 'RoundHttp', function ($scope, ValidationService, SeasonHttp) {
+    appToracGolf.controller('SeasonListingController', ['$scope', 'ValidationService', 'SeasonHttp', function ($scope, ValidationService, SeasonHttp) {
 
         $scope.init = function () {
 
@@ -11,7 +11,7 @@
         $scope.FetchAPageOfData = function () {
 
             //go grab the records to display
-            SeasonHttp.CourseListing()
+            SeasonHttp.SeasonListingFetchData()
                 .then(function (result) {
 
                     //set the paged data
@@ -23,7 +23,17 @@
         },
 
         $scope.ArchiveASeason = function (seasonId) {
-            alert('need to implement');
+            SeasonHttp.ArchiveASeason(seasonId)
+             .then(function(result){
+
+                 alert('season is archived');
+
+                 //go fetch the new data
+                 $scope.FetchAPageOfData();
+             },
+              function (errResponse) {
+                  alert('Error: ' + JSON.stringify(errResponse));
+              });
         }
 
     }]);

@@ -158,13 +158,31 @@ namespace ToracGolf.Controllers
         [ValidateCustomAntiForgeryToken()]
         public async Task<IActionResult> SeasonListingGrid()
         {
-            //grab the userid
-            var userId = GetUserId();
-
+            //go grab the data
             return Json(new
             {
-                PagedData = (await SeasonDataProvider.SeasonSelectForUser(DbContext, userId)).Select(x => new { SeasonId = x.Key, Description = x.Value })
+                PagedData = (await SeasonDataProvider.SeasonSelectForUser(DbContext, GetUserId())).Select(x => new { SeasonId = x.Key, Description = x.Value })
             });
+        }
+
+        #endregion
+
+        #region Delete A Season
+
+        [HttpPost]
+        [Route("SeasonDelete", Name = "SeasonDelete")]
+        [ValidateCustomAntiForgeryToken()]
+        public async Task<IActionResult> SeasonDelete(int seasonId)
+        {
+            throw new NotImplementedException();
+
+            //grab the userid
+            //var userId = GetUserId();
+
+            //return Json(new
+            //{
+            //    PagedData = (await SeasonDataProvider.SeasonSelectForUser(DbContext, userId)).Select(x => new { SeasonId = x.Key, Description = x.Value })
+            //});
         }
 
         #endregion
