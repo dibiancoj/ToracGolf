@@ -1,0 +1,9 @@
+﻿.SeasonAddSection {
+    /*trying to smoosh the form (removing the default spacing for just round add)*/
+    margin-bottom: 5px !important;
+}
+
+#MakeCurrentSeason {
+    display: inline-block !important;
+    margin-right: 5px;
+}

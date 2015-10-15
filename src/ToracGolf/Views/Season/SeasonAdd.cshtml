@@ -1,0 +1,83 @@
+﻿@{
+    Layout = "_ToracGolfLayout";
+    ViewBag.Title = "Add A Season";
+}
+@model ToracGolf.ViewModels.Season.SeasonAddViewModel
+
+@section Breadcrumb{
+    @Html.Partial("_Breadcrumb", Model.Breadcrumb)
+}
+
+@section TopNav{
+    @Html.Partial("_TopNav", new ToracGolf.ViewModels.Navigation.TopNavViewModel(true))
+}
+
+@section HandicapStatus{
+    @Html.Partial("_HandicapStatus", Model.HandicapStatus)
+}
+
+@section Styles{
+    <link href="~/lib/select2/assets/select2.css" rel="stylesheet" />
+    <link href="~/lib/select2/assets/select2-bootstrap.css" rel="stylesheet" />
+    <link href="~/css/Seasons.css" rel="stylesheet" />
+}
+
+@section Scripts{
+    <script src="~/lib/jlinq/jlinq.js"></script>
+    <script src="~/lib/angular/angular.js"></script>
+    <script src="~/lib/angular/angular-animate.js"></script>
+    <script src="~/lib/select2/js/select2.js"></script>
+    <script src="~/js/angular/toracgolfapp.js"></script>
+    <script src="~/js/angular/common/httprequestinterceptor.js"></script>
+    <script src="~/js/angular/common/modaldirective.js"></script>
+    <script src="~/js/angular/common/ValidationService.js"></script>
+    <script src="~/js/angular/season/seasonhttp.js"></script>
+    <script src="~/js/angular/season/seasonaddcontroller.js"></script>
+}
+
+@*so init is a method in my angular controller. we serialize the model and pass it into that method which set's the scope*@
+<section ng-app="toracApp" ng-cloak ng-controller="SeasonAddController" ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model.EnteredData))" class="slice slice-lg bg-image" style="background-image:url(images/backgrounds/RoundAdd.jpg);">
+
+    @*<modal title="Saved Succesfully" showdialog="ShowSavedSuccessfulModal" primarybuttonclass="btn-primary" bodyhtml="Your Round Has Been Saved Successfully." closebuttontext="Ok" onmodalcloseevent="SaveARoundDialogOkEvent()">
+        </modal>*@
+
+    <div id="AddASeason" class="wp-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+                    <div class="wp-block default user-form user-form-alpha no-margin">
+                        <div class="form-header">
+                            <h2>Add A New Season</h2>
+                        </div>
+                        <div class="form-body">
+                            <form id="frmAddASeason" method="post" ng-submit="SaveASeason()" class="sky-form">
+                                @Html.Partial("_AngularTokenSet", Model.TokenSet)
+                                <fieldset id="SeasonAddFieldSet">
+                                    <section class="RoundAddSection">
+                                        <label asp-for="EnteredData.SeasonDescription" class="label"></label>
+                                        <label class="input">
+                                            <i class="icon-append fa fa-edit"></i>
+                                            <input type="text" name="SeasonText" maxlength="50" ng-model="model.SeasonDescription" />
+                                        </label>
+                                    </section>
+                                    <section class="RoundAddSection">
+                                        <label id="MakeCurrentSeason" asp-for="EnteredData.MakeCurrentSeason" class="label"></label>
+                                        <input type="checkbox" name="MakeCurrentSeason" ng-model="model.MakeCurrentSeason" />
+                                    </section>
+                                    <section class="SeasonAddSection">
+                                        @Html.Partial("_ValidationSummaryAngular")
+                                    </section>
+                                    <section class="SeasonAddSection">
+                                        <button ng-click="SaveASeason()" class="btn btn-base btn-icon btn-icon-right btn-sign-in pull-right" type="submit">
+                                            <span>Save</span>
+                                        </button>
+                                    </section>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
