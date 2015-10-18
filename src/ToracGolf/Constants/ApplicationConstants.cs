@@ -10,5 +10,7 @@ namespace ToracGolf.Constants
         public const string CourseListingRouteName = "ViewCourses";
         public const string RoundListingRouteName = "ViewRounds";
         public const string SeasonListingRouteName = "ViewSeasons";
+
+        public const string MainLandingPage = "Home/Index";
     }
 }

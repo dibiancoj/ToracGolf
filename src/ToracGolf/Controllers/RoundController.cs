@@ -59,7 +59,7 @@ namespace ToracGolf.Controllers
         {
             var breadCrumb = new List<BreadcrumbNavItem>();
 
-            breadCrumb.Add(new BreadcrumbNavItem("Home", "/"));
+            breadCrumb.Add(new BreadcrumbNavItem("Home", ApplicationConstants.MainLandingPage));
             breadCrumb.Add(new BreadcrumbNavItem("Rounds", ApplicationConstants.RoundListingRouteName));
 
             return breadCrumb;
