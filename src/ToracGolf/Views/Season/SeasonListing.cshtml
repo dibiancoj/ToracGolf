@@ -58,35 +58,27 @@
                     <ul class="list-listings-2" ng-repeat="season in PagedData">
                         <li class="featured">
                             <div class="listing-header bg-base">
-                                {{season.Description}}
+                                {{season.Description}} Season
 
                                 <div class="btn btn-icon btn-icon-right fa-close pull-right SeasonDelete" title="Archive This Season" ng-click="ArchiveASeason(season.SeasonId)"></div>
                             </div>
-                            @*
-                                <div class="listing-image">
-                                    <img ng-src="data:image/png;base64,{{course.CourseImage.CourseImage}}" class="img-responsive CourseListingImage CourseListingHeight" alt="">
-                                    <a href="#" class="btn btn-lg btn-square btn-base btn-block-bm btn-icon btn-icon-go">See more</a>
+
+                            <div class="listing-image">
+                                <a href="#" class="btn btn-lg btn-square btn-base btn-block-bm btn-icon btn-icon-go">See more</a>
+                            </div>
+                            <div class="cell">
+                                <div class="listing-body clearfix">
+                                    <h3><a href="#">{{season.Description}} Season</a></h3>
                                 </div>
-                                <div class="cell">
-                                    <div class="listing-body clearfix CourseListingHeight">
-                                        <h3><a href="#">{{course.CourseData.Name}}</a></h3>
-                                        <h4>{{course.CourseData.City}}, {{course.StateDescription}}</h4>
-                                        <p>
-                                            {{course.CourseData.Description}}
-                                        </p>
-                                        <p>
-                                            Tee Locations: {{course.TeeLocationCount}}
-                                        </p>
-                                    </div>
-                                    <div class="listing-footer">
-                                        <ul class="aux-info">
-                                            <li><i class="fa fa-bar-chart-o"></i><strong>Rounds: </strong>{{course.NumberOfRounds | number:0}}</li>
-                                            <li><i class="fa fa-smile-o"></i><strong>Top Score: </strong>{{course.TopScore | number:0}}</li>
-                                            <li><i class="fa fa-frown-o"></i><strong>Worse Score: </strong>{{course.WorseScore | number:0}}</li>
-                                            <li><i class="fa fa-calculator"></i><strong>Avg Score: </strong>{{course.AverageScore | number:1}}</li>
-                                        </ul>
-                                    </div>
-                                </div>*@
+                                <div class="listing-footer">
+                                    <ul class="aux-info">
+                                        <li><i class="fa fa-bar-chart-o"></i><strong>Rounds: </strong>{{season.NumberOfRounds | number:0}}</li>
+                                        <li><i class="fa fa-smile-o"></i><strong>Top Score: </strong>{{season.TopScore | number:0}}</li>
+                                        <li><i class="fa fa-frown-o"></i><strong>Worse Score: </strong>{{season.WorseScore | number:0}}</li>
+                                        <li><i class="fa fa-calculator"></i><strong>Avg Score: </strong>{{season.AverageScore | number:1}}</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </li>
                     </ul>
                 </div>

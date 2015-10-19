@@ -161,7 +161,7 @@ namespace ToracGolf.Controllers
             //go grab the data
             return Json(new
             {
-                PagedData = (await SeasonDataProvider.SeasonSelectForUser(DbContext, GetUserId())).Select(x => new { SeasonId = x.Key, Description = x.Value })
+                PagedData = (await SeasonDataProvider.SeasonListingForGrid(DbContext, GetUserId()))
             });
         }
 

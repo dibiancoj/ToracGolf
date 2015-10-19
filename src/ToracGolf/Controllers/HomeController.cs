@@ -33,7 +33,7 @@ namespace ToracGolf.Controllers
             //sign the user in
             Context.Authentication.SignInAsync(SecuritySettings.SecurityType, new ClaimsPrincipal(new ClaimsIdentity(claims, SecuritySettings.SecurityType))).Wait();
 
-            return RedirectToRoute("ViewRounds");
+            return RedirectToRoute("SeasonListing");
 
 
 
