@@ -72,17 +72,17 @@ namespace ToracGolf
             // Configure the options for the authentication middleware.
             // You can add options for Google, Twitter and other middleware as shown below.
             // For more information see http://go.microsoft.com/fwlink/?LinkID=532715
-            services.Configure<FacebookAuthenticationOptions>(options =>
-            {
-                options.AppId = Configuration["Authentication:Facebook:AppId"];
-                options.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-            });
+            //services.Configure<FacebookAuthenticationOptions>(options =>
+            //{
+            //    options.AppId = Configuration["Authentication:Facebook:AppId"];
+            //    options.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            //});
 
-            services.Configure<MicrosoftAccountAuthenticationOptions>(options =>
-            {
-                options.ClientId = Configuration["Authentication:MicrosoftAccount:ClientId"];
-                options.ClientSecret = Configuration["Authentication:MicrosoftAccount:ClientSecret"];
-            });
+            //services.Configure<MicrosoftAccountAuthenticationOptions>(options =>
+            //{
+            //    options.ClientId = Configuration["Authentication:MicrosoftAccount:ClientId"];
+            //    options.ClientSecret = Configuration["Authentication:MicrosoftAccount:ClientSecret"];
+            //});
 
             // Add MVC services to the services container.
             services.AddMvc();
@@ -143,8 +143,8 @@ namespace ToracGolf
 #endif
 
             // Register application services.
-            services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();
+            //services.AddTransient<IEmailSender, AuthMessageSender>();
+            //services.AddTransient<ISmsSender, AuthMessageSender>();
         }
 
         // Configure is called after ConfigureServices is called.
