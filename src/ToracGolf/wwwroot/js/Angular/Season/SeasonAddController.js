@@ -23,7 +23,7 @@
         },
 
         $scope.SaveASeasonDialogOkEvent = function () {
-            alert('send them somwhere after the save was successful');
+            window.location.href = 'SeasonListing';
         }
 
     }]);

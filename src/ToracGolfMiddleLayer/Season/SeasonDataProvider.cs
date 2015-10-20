@@ -104,6 +104,21 @@ namespace ToracGolf.MiddleLayer.Season
             return true;
         }
 
+        public static async Task<bool> DeleteSeason(ToracGolfContext dbContext, int userId, int seasonIdToDelete)
+        {
+            //go grab the season to delete
+            var seasonToDelete = await dbContext.UserSeason.FirstAsync(x => x.UserId == userId && x.SeasonId == seasonIdToDelete);
+
+            //remove it from the context
+            dbContext.UserSeason.Remove(seasonToDelete);
+
+            //save it now
+            await dbContext.SaveChangesAsync();
+
+            //return a postive result
+            return true;
+        }
+
     }
 
 }
