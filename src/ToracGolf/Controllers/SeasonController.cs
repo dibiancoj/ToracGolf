@@ -110,6 +110,9 @@ namespace ToracGolf.Controllers
                 {
                     //go save the current season
                     await SeasonDataProvider.MakeSeasonAsCurrent(DbContext, userId, userSeason.SeasonId);
+
+                    //remove the current season for the default season, because we just changed the users current season
+                    Context.Session.Remove(UserCurrentSeasonSessionName);
                 }
 
                 //we have a new current season, so we need to clear out the session
@@ -150,7 +153,8 @@ namespace ToracGolf.Controllers
             return View(new SeasonListingViewModel(
                 await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
                 breadCrumb,
-                BuildTokenSet(Antiforgery)));
+                BuildTokenSet(Antiforgery),
+                await UserCurrentSeason(DbContext, userId)));
         }
 
         [HttpPost]
@@ -179,6 +183,34 @@ namespace ToracGolf.Controllers
 
             //go delete the season
             await SeasonDataProvider.DeleteSeason(DbContext, userId, seasonId);
+
+            //we will return the paged data so we don't have to come back to the controller
+            return Json(new
+            {
+                PagedData = await SeasonDataProvider.SeasonListingForGrid(DbContext, userId)
+            });
+        }
+
+        #endregion
+
+        #region Change Current Season
+
+        [HttpPost]
+        [Route("ChangeCurrentSeason", Name = "ChangeCurrentSeason")]
+        [ValidateCustomAntiForgeryToken()]
+        public async Task<IActionResult> ChangeSeason([FromBody] int newCurrentSeasonId)
+        {
+            //finish the front end
+            throw new NotImplementedException();
+
+            //grab the user id
+            var userId = GetUserId();
+
+            //go save the current season
+            await SeasonDataProvider.MakeSeasonAsCurrent(DbContext, userId, newCurrentSeasonId);
+
+            //remove the current season for the default season, because we just changed the users current season
+            Context.Session.Remove(UserCurrentSeasonSessionName);
 
             //we will return the paged data so we don't have to come back to the controller
             return Json(new

@@ -13,3 +13,7 @@
     text-align: right;
     cursor: pointer;
 }
+
+.CurrentSeason {
+    display: inline-block;
+}

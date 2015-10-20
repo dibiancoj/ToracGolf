@@ -2,14 +2,13 @@
 
     appToracGolf.controller('SeasonListingController', ['$scope', 'ValidationService', 'SeasonHttp', function ($scope, ValidationService, SeasonHttp) {
 
-        $scope.init = function () {
+        $scope.init = function (currentSeasonId) {
 
             alert('need to finish');
             alert('Let them switch season to current season');
-            alert('Dont let them delete there current season');
 
-            //init the dialog
-            $scope.DeleteSeasonModalShow = false;
+            //grab the current season id
+            $scope.CurrentSeasonId = currentSeasonId;
 
             //go fetch the page now
             $scope.FetchAPageOfData(false);

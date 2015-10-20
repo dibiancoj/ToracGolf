@@ -13,11 +13,13 @@ namespace ToracGolf.ViewModels.Season
 
         public SeasonListingViewModel(HandicapStatusViewModel handicapStatus,
                                       IList<Navigation.BreadcrumbNavItem> breadcrumb,
-                                      AntiforgeryTokenSet tokenSet)
+                                      AntiforgeryTokenSet tokenSet,
+                                      int currentSeasonId)
         {
             HandicapStatus = handicapStatus;
             Breadcrumb = breadcrumb;
             TokenSet = tokenSet;
+            CurrentSeasonId = currentSeasonId;
         }
 
         public HandicapStatusViewModel HandicapStatus { get; }
@@ -25,6 +27,8 @@ namespace ToracGolf.ViewModels.Season
         public IList<Navigation.BreadcrumbNavItem> Breadcrumb { get; }
 
         public AntiforgeryTokenSet TokenSet { get; }
+
+        public int CurrentSeasonId { get; }
 
     }
 

@@ -32,7 +32,7 @@
     <script src="~/js/angular/Season/SeasonListingController.js"></script>
 }
 
-<section ng-cloak class="slice bg-white" ng-app="toracApp" ng-controller="SeasonListingController" ng-init="init()">
+<section ng-cloak class="slice bg-white" ng-app="toracApp" ng-controller="SeasonListingController" ng-init="init(@Model.CurrentSeasonId)">
     @Html.Partial("_AngularTokenSet", Model.TokenSet)
 
     <div class="modal fade" modalevent showdialog="DeleteSeasonModalShow">
@@ -64,13 +64,10 @@
                             <div class="listing-header bg-base">
                                 {{season.Description}} Season
 
-                                <div class="btn btn-icon btn-icon-right fa-close pull-right SeasonDelete" title="Archive This Season" ng-click="ArchiveASeason(season.SeasonId, season.NumberOfRounds)"></div>
+                                <div ng-if="season.SeasonId === CurrentSeasonId" class="pull-right currentseason">Current Season</div>
+                                <div ng-if="season.SeasonId !== CurrentSeasonId" class="btn btn-icon btn-icon-right fa-close pull-right SeasonDelete" title="Archive This Season" ng-click="ArchiveASeason(season.SeasonId, season.NumberOfRounds)"></div>
                             </div>
-
-                            <div class="listing-image">
-                                <a href="#" class="btn btn-lg btn-square btn-base btn-block-bm btn-icon btn-icon-go">See more</a>
-                            </div>
-                            <div class="cell">
+                            <div class="cell col-xs-12">
                                 <div class="listing-body clearfix">
                                     <h3><a href="#">{{season.Description}} Season</a></h3>
                                 </div>

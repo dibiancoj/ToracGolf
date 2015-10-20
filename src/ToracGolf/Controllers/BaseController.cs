@@ -23,7 +23,7 @@ namespace ToracGolf.Controllers
 
         protected const int UniqueConstraintId = 2627;
         protected const string HandicapStatusSessionName = "HandicapStatusSession";
-        private const string UserCurrentSeasonSessionName = "CurrentSeasonSession";
+        protected const string UserCurrentSeasonSessionName = "CurrentSeasonSession";
 
         #endregion
 
