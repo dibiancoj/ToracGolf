@@ -8,12 +8,16 @@
     margin-right: 5px;
 }
 
-.SeasonDelete {
-    margin-top: -10px;
+.SeasonHeaderMenuItem {
+    margin-top: -5px;
     text-align: right;
     cursor: pointer;
 }
 
 .CurrentSeason {
     display: inline-block;
+}
+
+.MakeCurrentSeason{
+    margin-top: -20px !important;
 }

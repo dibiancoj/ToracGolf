@@ -4,9 +4,6 @@
 
         $scope.init = function (currentSeasonId) {
 
-            alert('need to finish');
-            alert('Let them switch season to current season');
-
             //grab the current season id
             $scope.CurrentSeasonId = currentSeasonId;
 
@@ -55,6 +52,22 @@
              function (errResponse) {
                  alert('Error: ' + JSON.stringify(errResponse));
              });
+        },
+
+        $scope.MakeCurrentSeason = function (seasonId) {
+
+            SeasonHttp.SeasonMakeCurrent(seasonId)
+            .then(function (result) {
+
+                //if it completed successfully, then just reload the page so we can adjust the header and everything. This is a rare call, so we don't need to optimize it.
+                if (result.data.Result) {
+                    window.location.reload();
+                }
+
+            },
+           function (errResponse) {
+               alert('Error: ' + JSON.stringify(errResponse));
+           });
         }
 
     }]);

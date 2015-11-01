@@ -19,6 +19,10 @@
 
             ArchiveASeason: function (seasonId) {
                 return $http.post('SeasonDelete', seasonId);
+            },
+
+            SeasonMakeCurrent: function (seasonId){
+                return $http.post('ChangeCurrentSeason', seasonId);
             }
 
         }

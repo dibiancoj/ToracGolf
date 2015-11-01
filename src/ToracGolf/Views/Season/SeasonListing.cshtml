@@ -63,9 +63,10 @@
                         <li class="featured">
                             <div class="listing-header bg-base">
                                 {{season.Description}} Season
+                                <div ng-if="season.SeasonId !== CurrentSeasonId" class="btn btn-icon btn-icon-right fa fa-gear MakeCurrentSeason SeasonHeaderMenuItem" title="Make Current Season" ng-click="MakeCurrentSeason(season.SeasonId)"></div>
 
                                 <div ng-if="season.SeasonId === CurrentSeasonId" class="pull-right currentseason">Current Season</div>
-                                <div ng-if="season.SeasonId !== CurrentSeasonId" class="btn btn-icon btn-icon-right fa-close pull-right SeasonDelete" title="Archive This Season" ng-click="ArchiveASeason(season.SeasonId, season.NumberOfRounds)"></div>
+                                <div ng-if="season.SeasonId !== CurrentSeasonId" class="btn btn-icon btn-icon-right fa-close pull-right SeasonHeaderMenuItem" title="Archive This Season" ng-click="ArchiveASeason(season.SeasonId, season.NumberOfRounds)"></div>
                             </div>
                             <div class="cell col-xs-12">
                                 <div class="listing-body clearfix">

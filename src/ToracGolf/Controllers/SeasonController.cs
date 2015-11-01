@@ -200,9 +200,6 @@ namespace ToracGolf.Controllers
         [ValidateCustomAntiForgeryToken()]
         public async Task<IActionResult> ChangeSeason([FromBody] int newCurrentSeasonId)
         {
-            //finish the front end
-            throw new NotImplementedException();
-
             //grab the user id
             var userId = GetUserId();
 
@@ -212,10 +209,13 @@ namespace ToracGolf.Controllers
             //remove the current season for the default season, because we just changed the users current season
             Context.Session.Remove(UserCurrentSeasonSessionName);
 
-            //we will return the paged data so we don't have to come back to the controller
+            //remove the handicap data as well, current season handicap will change
+            Context.Session.Remove(HandicapStatusSessionName);
+
+            //we will just have them reload the page to see the changes. this way the header changes
             return Json(new
             {
-                PagedData = await SeasonDataProvider.SeasonListingForGrid(DbContext, userId)
+                Result = true
             });
         }
 
