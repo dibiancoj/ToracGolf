@@ -59,7 +59,7 @@ namespace ToracGolf.Controllers
             //now return the current season id
             return currentSeasonId;
         }
-
+        
         public int GetUserId()
         {
             return Convert.ToInt32(Context.User.Claims.First(x => x.Type == ClaimTypes.Hash.ToString()).Value);
