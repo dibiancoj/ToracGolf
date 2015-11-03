@@ -67,7 +67,7 @@ namespace ToracGolf
             //grab the ef connection string
             var connectionString = Configuration["Data:DefaultConnection:ConnectionString"];
 
-            services.AddTransient(x => new ToracGolfContext(connectionString));
+            services.AddTransient(x => new Lazy<ToracGolfContext>(() => new ToracGolfContext(connectionString), true));
 
             // Configure the options for the authentication middleware.
             // You can add options for Google, Twitter and other middleware as shown below.
@@ -121,7 +121,7 @@ namespace ToracGolf
 
             //add the state listing factory configuration
             cacheFactory.AddConfiguration(CacheKeyNames.StateListing,
-                 () => MiddleLayer.States.StateListing.StateSelect(services.BuildServiceProvider().GetService<ToracGolfContext>())
+                 () => MiddleLayer.States.StateListing.StateSelect(services.BuildServiceProvider().GetService<Lazy<ToracGolfContext>>().Value)
                 .Select(y => new SelectListItem { Text = y.Description, Value = y.StateId.ToString() })
                 .ToImmutableList());
 

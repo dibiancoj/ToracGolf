@@ -26,7 +26,7 @@ namespace ToracGolf.Controllers
 
         #region Constructor
 
-        public SecurityController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, ToracGolfContext dbContext)
+        public SecurityController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, Lazy<ToracGolfContext> dbContext)
         {
             DbContext = dbContext;
             Cache = cache;
@@ -37,7 +37,7 @@ namespace ToracGolf.Controllers
 
         #region Properties
 
-        private ToracGolfContext DbContext { get; }
+        private Lazy<ToracGolfContext> DbContext { get; }
 
         private IMemoryCache Cache { get; }
 
@@ -98,7 +98,7 @@ namespace ToracGolf.Controllers
             if (ModelState.IsValid)
             {
                 //let's try to log this user in
-                var userLogInAttempt = await SecurityDataProvider.UserLogIn(DbContext, model.Email, model.Password);
+                var userLogInAttempt = await SecurityDataProvider.UserLogIn(DbContext.Value, model.Email, model.Password);
 
                 //did we find a user?
                 if (userLogInAttempt == null)
@@ -160,7 +160,7 @@ namespace ToracGolf.Controllers
                 try
                 {
                     //let's try to add this user to the system
-                    userRegisterAttempt = await SecurityDataProvider.RegisterUser(DbContext, model);
+                    userRegisterAttempt = await SecurityDataProvider.RegisterUser(DbContext.Value, model);
                 }
                 catch (Exception ex)
                 {

@@ -26,7 +26,7 @@ namespace ToracGolf.Controllers
 
         #region Constructor
 
-        public SeasonController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, ToracGolfContext dbContext, IAntiforgery antiforgery, IOptions<AppSettings> configuration)
+        public SeasonController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, Lazy<ToracGolfContext> dbContext, IAntiforgery antiforgery, IOptions<AppSettings> configuration)
         {
             DbContext = dbContext;
             Cache = cache;
@@ -39,7 +39,7 @@ namespace ToracGolf.Controllers
 
         #region Properties
 
-        private ToracGolfContext DbContext { get; }
+        private Lazy<ToracGolfContext> DbContext { get; }
 
         private IMemoryCache Cache { get; }
 
@@ -82,7 +82,7 @@ namespace ToracGolf.Controllers
 
             //go return the view
             return View(new SeasonAddViewModel(
-                await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
+                await HandicapStatusBuilder(DbContext.Value, userId, await UserCurrentSeason(DbContext.Value, userId)),
                 breadCrumb,
                 BuildTokenSet(Antiforgery),
                 new SeasonAddEnteredData()));
@@ -100,16 +100,16 @@ namespace ToracGolf.Controllers
                 var userId = GetUserId();
 
                 //let's try to add this season to the system
-                var refSeasonRecord = await SeasonDataProvider.RefSeasonAddOrGet(DbContext, model.SeasonDescription);
+                var refSeasonRecord = await SeasonDataProvider.RefSeasonAddOrGet(DbContext.Value, model.SeasonDescription);
 
                 //add the user season now
-                var userSeason = await SeasonDataProvider.UserSeasonAdd(DbContext, userId, refSeasonRecord);
+                var userSeason = await SeasonDataProvider.UserSeasonAdd(DbContext.Value, userId, refSeasonRecord);
 
                 //do we want to make this our current season
                 if (model.MakeCurrentSeason)
                 {
                     //go save the current season
-                    await SeasonDataProvider.MakeSeasonAsCurrent(DbContext, userId, userSeason.SeasonId);
+                    await SeasonDataProvider.MakeSeasonAsCurrent(DbContext.Value, userId, userSeason.SeasonId);
 
                     //remove the current season for the default season, because we just changed the users current season
                     Context.Session.Remove(UserCurrentSeasonSessionName);
@@ -151,10 +151,10 @@ namespace ToracGolf.Controllers
 
             //go return the view
             return View(new SeasonListingViewModel(
-                await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
+                await HandicapStatusBuilder(DbContext.Value, userId, await UserCurrentSeason(DbContext.Value, userId)),
                 breadCrumb,
                 BuildTokenSet(Antiforgery),
-                await UserCurrentSeason(DbContext, userId)));
+                await UserCurrentSeason(DbContext.Value, userId)));
         }
 
         [HttpPost]
@@ -165,7 +165,7 @@ namespace ToracGolf.Controllers
             //go grab the data
             return Json(new
             {
-                PagedData = (await SeasonDataProvider.SeasonListingForGrid(DbContext, GetUserId()))
+                PagedData = (await SeasonDataProvider.SeasonListingForGrid(DbContext.Value, GetUserId()))
             });
         }
 
@@ -182,12 +182,12 @@ namespace ToracGolf.Controllers
             var userId = GetUserId();
 
             //go delete the season
-            await SeasonDataProvider.DeleteSeason(DbContext, userId, seasonId);
+            await SeasonDataProvider.DeleteSeason(DbContext.Value, userId, seasonId);
 
             //we will return the paged data so we don't have to come back to the controller
             return Json(new
             {
-                PagedData = await SeasonDataProvider.SeasonListingForGrid(DbContext, userId)
+                PagedData = await SeasonDataProvider.SeasonListingForGrid(DbContext.Value, userId)
             });
         }
 
@@ -204,7 +204,7 @@ namespace ToracGolf.Controllers
             var userId = GetUserId();
 
             //go save the current season
-            await SeasonDataProvider.MakeSeasonAsCurrent(DbContext, userId, newCurrentSeasonId);
+            await SeasonDataProvider.MakeSeasonAsCurrent(DbContext.Value, userId, newCurrentSeasonId);
 
             //remove the current season for the default season, because we just changed the users current season
             Context.Session.Remove(UserCurrentSeasonSessionName);

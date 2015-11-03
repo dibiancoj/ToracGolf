@@ -29,7 +29,7 @@ namespace ToracGolf.Controllers
 
         #region Constructor
 
-        public CourseController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, ToracGolfContext dbContext, IAntiforgery antiforgery, IOptions<AppSettings> configuration)
+        public CourseController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, Lazy<ToracGolfContext> dbContext, IAntiforgery antiforgery, IOptions<AppSettings> configuration)
         {
             DbContext = dbContext;
             Cache = cache;
@@ -42,7 +42,7 @@ namespace ToracGolf.Controllers
 
         #region Properties
 
-        private ToracGolfContext DbContext { get; }
+        private Lazy<ToracGolfContext> DbContext { get; }
 
         private IMemoryCache Cache { get; }
 
@@ -84,7 +84,7 @@ namespace ToracGolf.Controllers
             var userId = GetUserId();
 
             return View(new CourseAddViewModel(
-                await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
+                await HandicapStatusBuilder(DbContext.Value, userId, await UserCurrentSeason(DbContext.Value, userId)),
                 breadCrumb,
                 CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
                 new CourseAddEnteredData { StateListing = GetUserDefaultState(), TeeLocations = new List<CourseAddEnteredDataTeeLocations>() },
@@ -102,7 +102,7 @@ namespace ToracGolf.Controllers
                 try
                 {
                     //let's try to add this user to the system
-                    var courseAddAttempt = await CourseDataProvider.CourseAdd(DbContext, GetUserId(), model);
+                    var courseAddAttempt = await CourseDataProvider.CourseAdd(DbContext.Value, GetUserId(), model);
 
                     //we saved it successfully
                     return Json(new { result = true });
@@ -192,7 +192,7 @@ namespace ToracGolf.Controllers
             if (CourseId.HasValue)
             {
                 //go grab the course info
-                var courseInfo = await CourseDataProvider.CourseNameAndState(DbContext, CourseId.Value);
+                var courseInfo = await CourseDataProvider.CourseNameAndState(DbContext.Value, CourseId.Value);
 
                 //set the course name and filter
                 courseNameFilter = courseInfo.Item1;
@@ -201,10 +201,10 @@ namespace ToracGolf.Controllers
 
             //return the view
             return View(new CourseListingViewModel(
-              await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
+              await HandicapStatusBuilder(DbContext.Value, userId, await UserCurrentSeason(DbContext.Value, userId)),
               breadCrumb,
               BuildTokenSet(Antiforgery),
-              await CourseDataProvider.TotalNumberOfCourses(DbContext, null, null, Configuration.Options.DefaultListingRecordsPerPage),
+              await CourseDataProvider.TotalNumberOfCourses(DbContext.Value, null, null, Configuration.Options.DefaultListingRecordsPerPage),
               CacheFactory.GetCacheItem<IList<SortOrderViewModel>>(CacheKeyNames.CourseListingSortOrder, Cache),
               stateListing,
               defaultState,
@@ -223,8 +223,8 @@ namespace ToracGolf.Controllers
 
             return Json(new
             {
-                PagedData = await CourseDataProvider.CourseSelect(DbContext, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, stateFilter, listNav.CoursesPerPage, GetUserId()),
-                TotalNumberOfPages = listNav.ResetPager ? new int?(await CourseDataProvider.TotalNumberOfCourses(DbContext, listNav.CourseNameFilter, stateFilter, listNav.CoursesPerPage)) : null
+                PagedData = await CourseDataProvider.CourseSelect(DbContext.Value, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, stateFilter, listNav.CoursesPerPage, GetUserId()),
+                TotalNumberOfPages = listNav.ResetPager ? new int?(await CourseDataProvider.TotalNumberOfCourses(DbContext.Value, listNav.CourseNameFilter, stateFilter, listNav.CoursesPerPage)) : null
             });
         }
 
@@ -240,7 +240,7 @@ namespace ToracGolf.Controllers
             //go delete the course
             return Json(new
             {
-                Result = await CourseDataProvider.DeleteACourse(DbContext, courseId)
+                Result = await CourseDataProvider.DeleteACourse(DbContext.Value, courseId)
             });
         }
 
