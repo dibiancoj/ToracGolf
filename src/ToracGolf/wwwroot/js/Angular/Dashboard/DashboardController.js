@@ -10,71 +10,119 @@
             //add a watch on the dashboard view
             $scope.$watch(function (scope) { return scope.DashboardView; },
                           function () {
+
+                              //go load the data
                               $scope.LoadDashboardView($scope.DashboardView)
                           });
-
-            //load the handicapgrid
-            $scope.LoadHandicapGrid();
-
-            //resize the window so highcharts adjust correcty
-            $(window).trigger('resize');
         },
 
         $scope.LoadDashboardView = function (viewToLoad) {
+
             DashboardHttp.ViewTypeHasChanged(viewToLoad)
             .then(function (result) {
+
+                //load the last 5 rounds
                 $scope.Last5Rounds = result.data.Last5Rounds;
+
+                //load the top 5 rounds
+                $scope.Top5Rounds = result.data.Top5Rounds;
+
+                //load the handicapgrid
+                $scope.LoadHandicapGrid(viewToLoad, result.data.HandicapScoreSplitGrid);
+
+                //resize the window so highcharts adjust correcty
+                $(window).trigger('resize');
             });
         },
 
-        $scope.LoadHandicapGrid = function () {
+        $scope.LoadHandicapGrid = function (viewToLoad, dataSet) {
+
+            //format as follows
+            //[Date.UTC(1970, 9, 21), 70],
+
+            var rounds = [];
+            var handicap = [];
+
+            for (var i = 0; i < dataSet.length; i++) {
+
+                var item = dataSet[i];
+
+                //subtract for month because javascript uses a 0 base index. .net is 1 base index ie. jan = 1
+                rounds.push([Date.UTC(item.Year, item.Month - 1, item.Day), item.Score])
+                handicap.push([Date.UTC(item.Year, item.Month - 1, item.Day), item.Handicap])
+            }
 
             $('#HandicapProgression').highcharts({
-                title: {
-                    text: 'Monthly Average Temperature',
-                    x: -20 //center
+                credits: {
+                    enabled: false
                 },
-                subtitle: {
-                    text: 'Source: WorldClimate.com',
-                    x: -20
+                chart: {
+                    type: 'spline',
+                    zoomType: 'x'
+                },
+                title: {
+                    text: viewToLoad + ' Progression'
                 },
                 xAxis: {
-                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-                },
-                yAxis: {
-                    title: {
-                        text: 'Temperature (°C)'
+                    type: 'datetime',
+                    dateTimeLabelFormats: { // don't display the dummy year
+                        month: '%e. %b',
+                        year: '%b'
                     },
-                    plotLines: [{
-                        value: 0,
-                        width: 1,
-                        color: '#808080'
-                    }]
+                    title: {
+                        text: 'Date'
+                    }
                 },
-                tooltip: {
-                    valueSuffix: '°C'
+                yAxis: [{ // primary yaxis
+                    title: {
+                        text: 'Round Score',
+                        style: {
+                            color: Highcharts.getOptions().colors[0]
+                        }
+                    },
+                    labels: {
+                        format: '{value}',
+                        style: {
+                            color: Highcharts.getOptions().colors[0]
+                        }
+                    },
+                    opposite: false
                 },
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'middle',
-                    borderWidth: 0
-                },
-                series: [{
-                    name: 'Tokyo',
-                    data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
-                }, {
-                    name: 'New York',
-                    data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
-                }, {
-                    name: 'Berlin',
-                    data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
-                }, {
-                    name: 'London',
-                    data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
-                }]
+                { // secondary yAxis
+                    labels: {
+                        format: '{value}',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    title: {
+                        text: 'Handicap',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    }
+                }],
 
+                plotOptions: {
+                    spline: {
+                        marker: {
+                            enabled: true
+                        }
+                    }
+                },
+
+                series: [{
+                    name: 'Round',
+                    yAxis: 0,
+                    // Define the data points. All series have a dummy year
+                    // of 1970/71 in order to be compared on the same x axis. Note
+                    // that in JavaScript, months start at 0 for January, 1 for February etc.
+                    data: rounds
+                }, {
+                    name: 'Handicap',
+                    yAxis: 1,
+                    data: handicap
+                }]
             });
         }
 

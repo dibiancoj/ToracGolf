@@ -97,7 +97,7 @@ namespace ToracGolf.Controllers
 
         [HttpPost]
         [Route("DashboardViewTypeChange", Name = "DashboardViewTypeChange")]
-       // [ValidateCustomAntiForgeryToken()]
+        // [ValidateCustomAntiForgeryToken()]
         public async Task<IActionResult> DashboardViewTypeChange([FromBody]ViewTypeChangeViewModel Model)
         {
             //grab the user id
@@ -109,7 +109,9 @@ namespace ToracGolf.Controllers
             //go grab the data
             return Json(new
             {
-                Last5Rounds = await DashboardDataProvider.Last5RoundsSelect(DbContext.Value, userId, seasonId)
+                Last5Rounds = await DashboardDataProvider.Last5RoundsSelect(DbContext.Value, userId, seasonId),
+                Top5Rounds = await DashboardDataProvider.Top5RoundsSelect(DbContext.Value, userId, seasonId),
+                HandicapScoreSplitGrid = await DashboardDataProvider.ScoreHandicapGraph(DbContext.Value, userId, seasonId)
             });
         }
 

@@ -65,21 +65,15 @@
                     </div>
 
                     <div class="panel panel-default panel-sidebar-1">
-                        <div class="panel-heading"><h2>Best Rounds</h2></div>
+                        <div class="panel-heading"><h2>Best 5 Rounds</h2></div>
                         <div class="panel-body">
                             <div class="form-light" role="form">
                                 <table class="table table-hover">
-                                    <tr>
-                                        <td>Beekman</td>
-                                        <td>9/30/2015</td>
-                                        <td>Middle</td>
-                                        <td>90</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Links</td>
-                                        <td>10/30/2015</td>
-                                        <td>Middle</td>
-                                        <td>90</td>
+                                    <tr ng-repeat="roundToOutput in Top5Rounds">
+                                        <td>{{roundToOutput.CourseName}}</td>
+                                        <td>{{roundToOutput.RoundDate | date:'MM/dd/yyyy'}}</td>
+                                        <td>{{roundToOutput.TeeBoxLocation}}</td>
+                                        <td>{{roundToOutput.Score}}</td>
                                     </tr>
                                 </table>
                             </div>
