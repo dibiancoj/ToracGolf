@@ -133,7 +133,7 @@ namespace ToracGolf.Controllers
             //go grab the course listing
             return Json(new
             {
-                CourseData = await RoundDataProvider.CoursesSelectForState(DbContext.Value, stateId)
+                CourseData = await RoundDataProvider.ActiveCoursesSelectForState(DbContext.Value, stateId)
             });
         }
 

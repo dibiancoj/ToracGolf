@@ -111,7 +111,8 @@ namespace ToracGolf.Controllers
             {
                 Last5Rounds = await DashboardDataProvider.Last5RoundsSelect(DbContext.Value, userId, seasonId),
                 Top5Rounds = await DashboardDataProvider.Top5RoundsSelect(DbContext.Value, userId, seasonId),
-                HandicapScoreSplitGrid = await DashboardDataProvider.ScoreHandicapGraph(DbContext.Value, userId, seasonId)
+                HandicapScoreSplitGrid = await DashboardDataProvider.ScoreHandicapGraph(DbContext.Value, userId, seasonId),
+                RoundPieChart = (await DashboardDataProvider.RoundPieChart(DbContext.Value, userId, seasonId)).Select(x => new object[] { x.Key, x.Value })
             });
         }
 

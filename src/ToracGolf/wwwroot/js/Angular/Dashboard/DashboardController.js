@@ -17,8 +17,7 @@
         },
 
         $scope.LoadDashboardView = function (viewToLoad) {
-            alert('need to finish pie chart. need to make it look better as well....what should hte screen look like? not liking where its goin');
-            alert('need to finish needs feed....need data structure for that');
+
             DashboardHttp.ViewTypeHasChanged(viewToLoad)
             .then(function (result) {
 
@@ -131,8 +130,9 @@
         },
 
         $scope.RoundPieChart = function (dataSet) {
-          
+
             $('#ScorePieChart').highcharts({
+                credits: false,
                 chart: {
                     type: 'pie',
                     options3d: {
@@ -145,7 +145,7 @@
                     text: 'Round Scores'
                 },
                 tooltip: {
-                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}% [{point.y} Rounds]</b>'
                 },
                 plotOptions: {
                     pie: {
@@ -161,19 +161,7 @@
                 series: [{
                     type: 'pie',
                     name: 'Round Breakdown',
-                    data: [
-                        ['70s', 45.0],
-                        ['80s', 26.8],
-                        //{
-                        //    name: 'Chrome',
-                        //    y: 12.8,
-                        //    sliced: true,
-                        //    selected: true
-                        //},
-                        ['90s', 8.5],
-                        ['100s', 6.2],
-                        ['Greater Than 110', 0.7]
-                    ]
+                    data: dataSet
                 }]
             });
         }

@@ -45,14 +45,14 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 col-sm-6">
+                    <div class="col-md-6 col-sm-12">
                         <div class="panel panel-default panel-sidebar-1">
                             <div class="panel-heading"><h2>Best 5 Rounds</h2></div>
                             <div class="panel-body">
                                 <div class="form-light" role="form">
                                     <table class="table table-hover">
                                         <tr ng-repeat="roundToOutput in Top5Rounds">
-                                            <td>{{roundToOutput.CourseName}}</td>
+                                            <td><a href="ViewCourses?CourseId={{roundToOutput.CourseId}}">{{roundToOutput.CourseName}}</a></td>
                                             <td>{{roundToOutput.RoundDate | date:'MM/dd/yyyy'}}</td>
                                             <td>{{roundToOutput.TeeBoxLocation}}</td>
                                             <td>{{roundToOutput.Score}}</td>
@@ -85,7 +85,7 @@
                             <div class="form-light" role="form">
                                 <table class="table table-hover">
                                     <tr ng-repeat="roundToOutput in Last5Rounds">
-                                        <td>{{roundToOutput.CourseName}}</td>
+                                        <td><a href="ViewCourses?CourseId={{roundToOutput.CourseId}}">{{roundToOutput.CourseName}}</a></td>
                                         <td>{{roundToOutput.RoundDate | date:'MM/dd/yyyy'}}</td>
                                         <td>{{roundToOutput.TeeBoxLocation}}</td>
                                         <td>{{roundToOutput.Score}}</td>
@@ -106,10 +106,13 @@
                                         <td>Mike Ciamp Score A 79 At Beekman.</td>
                                     </tr>
                                     <tr>
-                                        <td><a href="Coursesid=123">West Point Golf Course Has Been Entered In The System.</a></td>
+                                        <td><a href="ViewCourses?CourseId=8">West Point Golf Course Has Been Entered In The system</a></td>
                                     </tr>
                                     <tr>
                                         <td>What else can we have...do we have like email will you mark as read? or have them page?</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bla bla handicap is now -1 lower. Currently 16.2</td>
                                     </tr>
                                 </table>
                             </div>

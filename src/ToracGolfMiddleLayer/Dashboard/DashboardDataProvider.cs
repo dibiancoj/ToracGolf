@@ -12,8 +12,6 @@ namespace ToracGolf.MiddleLayer.Dashboard
     public static class DashboardDataProvider
     {
 
-        #region Dashboard
-
         #region Top 5 Queries
 
         public static async Task<IEnumerable<DashboardRoundDisplay>> Last5RoundsSelect(ToracGolfContext dbContext, int userId, int? seasonId)
@@ -42,6 +40,7 @@ namespace ToracGolf.MiddleLayer.Dashboard
         {
             return sortedQuery.Take(5).Select(x => new DashboardRoundDisplay
             {
+                CourseId = x.Course.CourseId,
                 RoundDate = x.RoundDate,
                 Score = x.Score,
                 CourseName = x.Course.Name,
@@ -70,6 +69,23 @@ namespace ToracGolf.MiddleLayer.Dashboard
         }
 
         #endregion
+
+        #region Pie Chart By Round
+
+        public static async Task<IEnumerable<KeyValuePair<string, int>>> RoundPieChart(ToracGolfContext dbContext, int userId, int? seasonId)
+        {
+            var baseQuery = BuildBaseQuery(dbContext, userId, seasonId);
+
+            var lst = new List<KeyValuePair<string, int>>();
+
+            lst.Add(new KeyValuePair<string, int>("70's", await baseQuery.CountAsync(x => x.Score < 80)));
+            lst.Add(new KeyValuePair<string, int>("80's", await baseQuery.CountAsync(x => x.Score >= 80 && x.Score <= 89)));
+            lst.Add(new KeyValuePair<string, int>("90's", await baseQuery.CountAsync(x => x.Score >= 90 && x.Score <= 99)));
+            lst.Add(new KeyValuePair<string, int>("100's", await baseQuery.CountAsync(x => x.Score >= 100 && x.Score <= 109)));
+            lst.Add(new KeyValuePair<string, int>("> 110", await baseQuery.CountAsync(x => x.Score >= 110)));
+
+            return lst.Where(x => x.Value > 0).ToArray();
+        }
 
         #endregion
 

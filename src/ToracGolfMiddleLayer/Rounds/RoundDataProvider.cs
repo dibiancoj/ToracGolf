@@ -17,10 +17,10 @@ namespace ToracGolf.MiddleLayer.Rounds
 
         #region General Lookups
 
-        public static async Task<IEnumerable<CourseForRoundAddScreen>> CoursesSelectForState(ToracGolfContext dbContext, int stateId)
+        public static async Task<IEnumerable<CourseForRoundAddScreen>> ActiveCoursesSelectForState(ToracGolfContext dbContext, int stateId)
         {
             return await dbContext.Course.AsNoTracking()
-                         .Where(x => x.StateId == stateId)
+                         .Where(x => x.StateId == stateId && x.IsActive)
                        .Select(x => new CourseForRoundAddScreen
                        {
                            CourseId = x.CourseId,
