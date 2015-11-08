@@ -17,7 +17,7 @@
         },
 
         $scope.LoadDashboardView = function (viewToLoad) {
-
+            alert('need to finish pie chart. need to make it look better as well....what should hte screen look like? not liking where its goin')
             DashboardHttp.ViewTypeHasChanged(viewToLoad)
             .then(function (result) {
 
@@ -29,6 +29,9 @@
 
                 //load the handicapgrid
                 $scope.LoadHandicapGrid(viewToLoad, result.data.HandicapScoreSplitGrid);
+
+                //load the round pie chart
+                $scope.RoundPieChart(result.data.RoundPieChart);
 
                 //resize the window so highcharts adjust correcty
                 $(window).trigger('resize');
@@ -122,6 +125,54 @@
                     name: 'Handicap',
                     yAxis: 1,
                     data: handicap
+                }]
+            });
+        },
+
+        $scope.RoundPieChart = function (dataSet) {
+          
+            $('#ScorePieChart').highcharts({
+                chart: {
+                    type: 'pie',
+                    options3d: {
+                        enabled: true,
+                        alpha: 45,
+                        beta: 0
+                    }
+                },
+                title: {
+                    text: 'Round Scores'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        depth: 35,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.name}'
+                        }
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                    name: 'Round Breakdown',
+                    data: [
+                        ['70s', 45.0],
+                        ['80s', 26.8],
+                        //{
+                        //    name: 'Chrome',
+                        //    y: 12.8,
+                        //    sliced: true,
+                        //    selected: true
+                        //},
+                        ['90s', 8.5],
+                        ['100s', 6.2],
+                        ['Greater Than 110', 0.7]
+                    ]
                 }]
             });
         }
