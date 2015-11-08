@@ -17,7 +17,8 @@
         },
 
         $scope.LoadDashboardView = function (viewToLoad) {
-            alert('need to finish pie chart. need to make it look better as well....what should hte screen look like? not liking where its goin')
+            alert('need to finish pie chart. need to make it look better as well....what should hte screen look like? not liking where its goin');
+            alert('need to finish needs feed....need data structure for that');
             DashboardHttp.ViewTypeHasChanged(viewToLoad)
             .then(function (result) {
 

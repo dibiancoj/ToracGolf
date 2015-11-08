@@ -39,16 +39,34 @@
 
         <div class="row">
             <div class="col-md-8">
-                <div class="row row col-sm-12" style="margin-bottom: 15px;">
-                    <div id="HandicapProgression" style="height: 400px; margin: 0 auto"></div>
-                </div>
-
                 <div class="row">
+                    <div class="col-sm-12" style="margin-bottom: 15px;">
+                        <div id="HandicapProgression" style="height: 400px; margin: 0 auto"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-sm-6">
+                        <div class="panel panel-default panel-sidebar-1">
+                            <div class="panel-heading"><h2>Best 5 Rounds</h2></div>
+                            <div class="panel-body">
+                                <div class="form-light" role="form">
+                                    <table class="table table-hover">
+                                        <tr ng-repeat="roundToOutput in Top5Rounds">
+                                            <td>{{roundToOutput.CourseName}}</td>
+                                            <td>{{roundToOutput.RoundDate | date:'MM/dd/yyyy'}}</td>
+                                            <td>{{roundToOutput.TeeBoxLocation}}</td>
+                                            <td>{{roundToOutput.Score}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="col-md-6 col-sm-12">
                         <div id="ScorePieChart" style="height: 200px; margin: 0 auto"></div>
                     </div>
-                    
-                   
+
                 </div>
             </div>
 
@@ -77,16 +95,15 @@
                         </div>
                     </div>
 
+
+
                     <div class="panel panel-default panel-sidebar-1">
-                        <div class="panel-heading"><h2>Best 5 Rounds</h2></div>
+                        <div class="panel-heading"><h2>News Feed</h2></div>
                         <div class="panel-body">
                             <div class="form-light" role="form">
                                 <table class="table table-hover">
-                                    <tr ng-repeat="roundToOutput in Top5Rounds">
-                                        <td>{{roundToOutput.CourseName}}</td>
-                                        <td>{{roundToOutput.RoundDate | date:'MM/dd/yyyy'}}</td>
-                                        <td>{{roundToOutput.TeeBoxLocation}}</td>
-                                        <td>{{roundToOutput.Score}}</td>
+                                    <tr>
+                                        <td>Mike Ciamp Score A 79 At Beekman.</td>
                                     </tr>
                                 </table>
                             </div>
