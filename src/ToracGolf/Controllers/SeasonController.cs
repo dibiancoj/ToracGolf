@@ -137,7 +137,7 @@ namespace ToracGolf.Controllers
         #region Season Listing
 
         [HttpGet]
-        [Route("SeasonListing", Name = "SeasonListing")]
+        [Route("ViewSeasons", Name = "ViewSeasons")]
         public async Task<IActionResult> SeasonListing()
         {
             //go build the breadcrumb
