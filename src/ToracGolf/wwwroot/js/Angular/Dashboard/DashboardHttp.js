@@ -9,8 +9,10 @@
 
         return {
 
-            ViewTypeHasChanged: function (viewType) {
-                return $http.post('DashboardViewTypeChange', { ViewType: viewType });
+            //for some reason the home controll because of default path is having issues with background image and http path...so we will put the root path in. (only when publishing its an issue)
+            //background image is put into css.
+            ViewTypeHasChanged: function (viewType, rootPath) {
+                return $http.post(rootPath + 'DashboardViewTypeChange', { ViewType: viewType });
             }
 
         }

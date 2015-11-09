@@ -16,9 +16,14 @@
                           });
         },
 
+        //for some reason the home controll because of default path is having issues with background and http path...so we will put the root path in. (only when publishing its an issue)
+        $scope.RootPath = function () {
+           return _rootDir;
+        },
+
         $scope.LoadDashboardView = function (viewToLoad) {
 
-            DashboardHttp.ViewTypeHasChanged(viewToLoad)
+            DashboardHttp.ViewTypeHasChanged(viewToLoad, $scope.RootPath())
             .then(function (result) {
 
                 //load the last 5 rounds

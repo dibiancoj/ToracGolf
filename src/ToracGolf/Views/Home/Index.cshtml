@@ -33,25 +33,58 @@
     <script src="~/js/angular/Dashboard/DashboardController.js"></script>
 }
 
-<section id="DashboardSection" ng-app="toracApp" ng-cloak ng-controller="DashboardController" ng-init="init('@Model.ViewType')" class="slice slice-lg bg-image" style="background-image:url(../images/backgrounds/barclays-pga-tour-fedex-cup-1st-round-1.jpg);">
-    @Html.Partial("_AngularTokenSet", Model.TokenSet)
-    <div class="container">
+<section id="DashboardSection" ng-app="toracApp" ng-cloak ng-controller="DashboardController" ng-init="init('@Model.ViewType')" class="slice slice-lg bg-image">
+        @Html.Partial("_AngularTokenSet", Model.TokenSet)
+        <div class="container">
 
-        <div class="row">
-            <div class="col-md-8">
-                <div class="row">
-                    <div class="col-sm-12" style="margin-bottom: 15px;">
-                        <div id="HandicapProgression" style="height: 400px; margin: 0 auto"></div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-sm-12" style="margin-bottom: 15px;">
+                            <div id="HandicapProgression" style="height: 400px; margin: 0 auto"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="panel panel-default panel-sidebar-1">
+                                <div class="panel-heading"><h2>Best 5 Rounds</h2></div>
+                                <div class="panel-body">
+                                    <div class="form-light" role="form">
+                                        <table class="table table-hover">
+                                            <tr ng-repeat="roundToOutput in Top5Rounds">
+                                                <td><a href="ViewCourses?CourseId={{roundToOutput.CourseId}}">{{roundToOutput.CourseName}}</a></td>
+                                                <td>{{roundToOutput.RoundDate | date:'MM/dd/yyyy'}}</td>
+                                                <td>{{roundToOutput.TeeBoxLocation}}</td>
+                                                <td>{{roundToOutput.Score}}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12">
+                            <div id="ScorePieChart" style="height: 200px; margin: 0 auto"></div>
+                        </div>
+
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6 col-sm-12">
+
+
+
+                <div class="col-md-4">
+                    <div class="sidebar">
+                        <ul class="categories mb-20">
+                            <li><a href="#" ng-click="DashboardView = 'Career'" ng-class="DashboardView == 'Career' ? 'DashboardViewActive':''">Career View</a></li>
+                            <li><a href="#" ng-click="DashboardView = 'Season'" ng-class="DashboardView == 'Season' ? 'DashboardViewActive':''">Season View</a></li>
+                        </ul>
+
                         <div class="panel panel-default panel-sidebar-1">
-                            <div class="panel-heading"><h2>Best 5 Rounds</h2></div>
+                            <div class="panel-heading"><h2>Last 5 Rounds</h2></div>
                             <div class="panel-body">
                                 <div class="form-light" role="form">
                                     <table class="table table-hover">
-                                        <tr ng-repeat="roundToOutput in Top5Rounds">
+                                        <tr ng-repeat="roundToOutput in Last5Rounds">
                                             <td><a href="ViewCourses?CourseId={{roundToOutput.CourseId}}">{{roundToOutput.CourseName}}</a></td>
                                             <td>{{roundToOutput.RoundDate | date:'MM/dd/yyyy'}}</td>
                                             <td>{{roundToOutput.TeeBoxLocation}}</td>
@@ -61,67 +94,34 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="col-md-6 col-sm-12">
-                        <div id="ScorePieChart" style="height: 200px; margin: 0 auto"></div>
-                    </div>
-
-                </div>
-            </div>
 
 
 
-            <div class="col-md-4">
-                <div class="sidebar">
-                    <ul class="categories mb-20">
-                        <li><a href="#" ng-click="DashboardView = 'Career'" ng-class="DashboardView == 'Career' ? 'DashboardViewActive':''">Career View</a></li>
-                        <li><a href="#" ng-click="DashboardView = 'Season'" ng-class="DashboardView == 'Season' ? 'DashboardViewActive':''">Season View</a></li>
-                    </ul>
-
-                    <div class="panel panel-default panel-sidebar-1">
-                        <div class="panel-heading"><h2>Last 5 Rounds</h2></div>
-                        <div class="panel-body">
-                            <div class="form-light" role="form">
-                                <table class="table table-hover">
-                                    <tr ng-repeat="roundToOutput in Last5Rounds">
-                                        <td><a href="ViewCourses?CourseId={{roundToOutput.CourseId}}">{{roundToOutput.CourseName}}</a></td>
-                                        <td>{{roundToOutput.RoundDate | date:'MM/dd/yyyy'}}</td>
-                                        <td>{{roundToOutput.TeeBoxLocation}}</td>
-                                        <td>{{roundToOutput.Score}}</td>
-                                    </tr>
-                                </table>
+                        <div class="panel panel-default panel-sidebar-1">
+                            <div class="panel-heading"><h2>News Feed</h2></div>
+                            <div class="panel-body">
+                                <div class="form-light" role="form">
+                                    <table class="table table-hover">
+                                        <tr>
+                                            <td>Mike Ciamp Score A 79 At Beekman.</td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="ViewCourses?CourseId=8">West Point Golf Course Has Been Entered In The system</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>What else can we have...do we have like email will you mark as read? or have them page?</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Bla bla handicap is now -1 lower. Currently 16.2</td>
+                                        </tr>
+                                    </table>
+                                </div>
                             </div>
                         </div>
+
+
                     </div>
-
-
-
-                    <div class="panel panel-default panel-sidebar-1">
-                        <div class="panel-heading"><h2>News Feed</h2></div>
-                        <div class="panel-body">
-                            <div class="form-light" role="form">
-                                <table class="table table-hover">
-                                    <tr>
-                                        <td>Mike Ciamp Score A 79 At Beekman.</td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href="ViewCourses?CourseId=8">West Point Golf Course Has Been Entered In The system</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>What else can we have...do we have like email will you mark as read? or have them page?</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Bla bla handicap is now -1 lower. Currently 16.2</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>

@@ -22,7 +22,7 @@ using ToracGolf.Filters;
 namespace ToracGolf.Controllers
 {
 
-    //[Authorize]
+    [Authorize]
     public class HomeController : BaseController
     {
 
@@ -59,30 +59,8 @@ namespace ToracGolf.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            //let's try to log this user in
-            var userLogInAttempt = (new UserAccounts { UserId = 21, EmailAddress = "dibiancoj@gmail.com", Password = "0", StateId = 35 });// await Security.UserLogIn(DbContext, model.Email, model.Password);
-
-            var claims = new List<Claim>();
-
-            claims.Add(new Claim(ClaimTypes.Hash, userLogInAttempt.UserId.ToString()));
-            claims.Add(new Claim(ClaimTypes.Name, userLogInAttempt.FirstName + " " + userLogInAttempt.LastName));
-            claims.Add(new Claim(ClaimTypes.Email, userLogInAttempt.EmailAddress));
-            claims.Add(new Claim(ClaimTypes.StateOrProvince, userLogInAttempt.StateId.ToString()));
-
-            //sign the user in
-            await Context.Authentication.SignInAsync(SecuritySettings.SecurityType, new ClaimsPrincipal(new ClaimsIdentity(claims, SecuritySettings.SecurityType)));
-
-            //return RedirectToRoute("SeasonListing");
-
-
-            const int userId = 21;
-
-
-
-
-
             //grab the user id
-            //var userId = GetUserId();
+            var userId = GetUserId();
 
             var breadCrumb = new List<BreadcrumbNavItem>();
 
@@ -97,8 +75,8 @@ namespace ToracGolf.Controllers
 
         [HttpPost]
         [Route("DashboardViewTypeChange", Name = "DashboardViewTypeChange")]
-        // [ValidateCustomAntiForgeryToken()]
-        public async Task<IActionResult> DashboardViewTypeChange([FromBody]ViewTypeChangeViewModel Model)
+        [ValidateCustomAntiForgeryToken()]
+        public async Task<IActionResult> DashboardChangeViewType([FromBody]ViewTypeChangeViewModel Model)
         {
             //grab the user id
             var userId = GetUserId();

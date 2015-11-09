@@ -2,6 +2,7 @@
     background-color: lightblue;
 }
 
-#DashboardSection{
-    padding-top:20px !important;
+#DashboardSection {
+    padding-top: 20px !important;
+    background-image: url(../images/backgrounds/Dashboard.jpg);
 }
