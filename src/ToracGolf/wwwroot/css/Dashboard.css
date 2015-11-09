@@ -2,6 +2,10 @@
     background-color: lightblue;
 }
 
+.DashboardViewNoActive {
+    background-color: white;
+}
+
 #DashboardSection {
     padding-top: 20px !important;
     background-image: url(../images/backgrounds/Dashboard.jpg);
