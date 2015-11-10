@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using ToracGolf.MiddleLayer.CustomValidators;
 
 namespace ToracGolf.MiddleLayer.Rounds
 {
@@ -37,6 +38,19 @@ namespace ToracGolf.MiddleLayer.Rounds
         /// Just need this for asp.net binding when building the drop down
         /// </summary>
         public string StateId { get; set; }
+
+        [Display(Name = "Greens In Regulation")]
+        public int? GreensInRegulation { get; set; }
+
+        [Display(Name = "Fairways Hit")]
+        [FairwaysHitRequired(nameof(FairwaysHitPossible), ErrorMessage = "Number Of Fairways Is Required When Fairways Hit Is Filled Out")]
+        public int? FairwaysHit { get; set; }
+
+        [Display(Name = "Number Of Fairways")]
+        public int? FairwaysHitPossible { get; set; }
+
+        [Display(Name = "Number Of Putts")]
+        public int? Putts { get; set; }
 
         #endregion
 

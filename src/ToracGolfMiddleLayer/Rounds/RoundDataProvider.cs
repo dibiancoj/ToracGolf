@@ -80,7 +80,11 @@ namespace ToracGolf.MiddleLayer.Rounds
                 Is9HoleScore = roundData.NineHoleScore,
                 Score = roundData.Score.Value,
                 UserId = userId,
-                SeasonId = seasonId
+                SeasonId = seasonId,
+                FairwaysHit = roundData.FairwaysHit,
+                FairwaysHitPossible = roundData.FairwaysHitPossible,
+                GreensInRegulation = roundData.GreensInRegulation,
+                Putts = roundData.Putts
             };
 
             //add the round

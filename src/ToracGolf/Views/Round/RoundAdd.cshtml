@@ -131,32 +131,48 @@
                                         </div>
                                     </section>
                                     <hr />
-                                    <section class="RoundAddSection">
-                                        <span ng-show="model.TeeLocations.length == 0">
-                                            No Tee Boxes Specified
-                                        </span>
-
-                                        <table ng-show="model.TeeLocations.length > 0" ng-cloak class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>Description</th>
-                                                    <th>Par</th>
-                                                    <th>Slope</th>
-                                                    <th>Rating</th>
-                                                    <th>Delete</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr ng-repeat="teeBox in model.TeeLocations track by teeBox.Description">
-                                                    <td ng-click="EditTeeLocation($index)" class="IsFakeLink">{{teeBox.Description}}</td>
-                                                    <td ng-click="EditTeeLocation($index)" class="IsFakeLink">{{teeBox.Par()}}</td>
-                                                    <td ng-click="EditTeeLocation($index)" class="IsFakeLink">{{teeBox.Slope}}</td>
-                                                    <td ng-click="EditTeeLocation($index)" class="IsFakeLink">{{teeBox.Rating}}</td>
-                                                    <td ng-click="DeleteTeeLocation($index)"><span class="glyphicon glyphicon-trash IsFakeLink DeleteTeeLocation" aria-hidden="true"></span></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                    <section id="OptionalStats" class="RoundAddSection">
+                                        <div class="AlertDiv alert alert-warning">
+                                            <span>*** Optional Stats To Track***</span>
+                                        </div>
                                     </section>
+                                    <section>
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <label asp-for="RoundEnteredData.Putts" class="label"></label>
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-folder-o"></i>
+                                                    <input type="text" name="Putts" numbers-only numbers-only-allowOnlyInts="true" maxlength="2" ng-model="model.Putts" />
+                                                </label>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <label asp-for="RoundEnteredData.GreensInRegulation" class="label"></label>
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-folder-o"></i>
+                                                    <input type="text" name="GreensInRegulation" numbers-only numbers-only-allowOnlyInts="true" maxlength="2" ng-model="model.GreensInRegulation" />
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <section>
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <label asp-for="RoundEnteredData.FairwaysHit" class="label"></label>
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-folder-o"></i>
+                                                    <input type="text" name="FairwaysHit" numbers-only numbers-only-allowOnlyInts="true" maxlength="2" ng-model="model.FairwaysHit" />
+                                                </label>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <label asp-for="RoundEnteredData.FairwaysHitPossible" class="label"></label>
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-folder-o"></i>
+                                                    <input type="text" name="FairwaysHitPossible" numbers-only numbers-only-allowOnlyInts="true" maxlength="2" ng-model="model.FairwaysHitPossible" />
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <hr />
                                     <section class="RoundAddSection">
                                         @Html.Partial("_ValidationSummaryAngular")
                                     </section>

@@ -42,3 +42,8 @@
     text-align: right;
     cursor: pointer;
 }
+
+#OptionalStats {
+    margin-top: 10px;
+    text-align: center;
+}
