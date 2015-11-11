@@ -146,13 +146,24 @@ namespace ToracGolf.MiddleLayer.Rounds
                     .Take(20)
                     .Select(roundToLast20).ToArray();
 
-                //convert the round we are looping through so we have it
-                var roundToCalcConverted = new Last20Rounds[] { roundToLast20(roundToCalculate) };
+                //current round we are up too
+                var currentRoundInArrayFormat = new Last20Rounds[] { roundToLast20(roundToCalculate) }; 
+
+                //rounds for the "After round handicap"
+                ICollection<Last20Rounds> roundsToCalculateAfterRoundHandicap;
 
                 //if we have 0 rounds, then use the round we are looking through
                 if (!roundsToUse.Any())
                 {
-                    roundsToUse = roundToCalcConverted;
+                    //set the current rounds to just this one guy
+                    roundsToUse = currentRoundInArrayFormat;
+
+                    //set it to just this round
+                    roundsToCalculateAfterRoundHandicap = roundsToUse;
+                }
+                else
+                {
+                    roundsToCalculateAfterRoundHandicap = roundsToUse.Concat(currentRoundInArrayFormat).ToArray();
                 }
 
                 //add the record to the context
@@ -160,7 +171,7 @@ namespace ToracGolf.MiddleLayer.Rounds
                 {
                     RoundId = roundToCalculate.RoundId,
                     HandicapBeforeRound = Handicapper.CalculateHandicap(roundsToUse).Value,
-                    HandicapAfterRound = Handicapper.CalculateHandicap(roundsToUse.Concat(roundToCalcConverted).ToArray()).Value
+                    HandicapAfterRound = Handicapper.CalculateHandicap(roundsToCalculateAfterRoundHandicap).Value
                 });
             }
 
