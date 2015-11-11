@@ -27,9 +27,11 @@ namespace ToracGolf.MiddleLayer.EFModel
         {
             modelBuilder.Entity<UserSeason>().ToTable("UserSeason");
             modelBuilder.Entity<Course>().ToTable("Course");
-            modelBuilder.Entity<Round>().ToTable("Round");
             modelBuilder.Entity<RoundHandicap>().ToTable("RoundHandicap");
-            //modelBuilder.Entity<CourseImages>().ToTable("CourseImages");
+
+            modelBuilder.Entity<Round>().ToTable("Round");//.HasRequired(x => x.CourseTeeLocationId);
+
+            //modelBuilder.Entity<CourseTeeLocations>().HasKey(e => e.CourseTeeLocationId);
         }
 
     }

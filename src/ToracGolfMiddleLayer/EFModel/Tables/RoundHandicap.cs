@@ -16,6 +16,8 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
 
         public double HandicapBeforeRound { get; set; }
 
+        public double HandicapAfterRound { get; set; }
+
     }
 
 }

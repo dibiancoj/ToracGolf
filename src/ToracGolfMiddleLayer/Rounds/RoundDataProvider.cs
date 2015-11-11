@@ -121,44 +121,47 @@ namespace ToracGolf.MiddleLayer.Rounds
             await dbContext.SaveChangesAsync();
 
             //5. let's go rebuild all the handicap records
-            var roundsForUser = await dbContext.Rounds.Where(x => x.UserId == userId)
+            var roundsForUser = await dbContext.Rounds.Include(x => x.CourseTeeLocation).Where(x => x.UserId == userId)
                                 .OrderBy(x => x.RoundDate).ThenBy(x => x.RoundId)
-                                .Select(x => new
-                                {
-                                    RoundRecord = x,
-                                    TeeLocation = dbContext.CourseTeeLocations.FirstOrDefault(y => y.CourseTeeLocationId == x.CourseTeeLocationId && y.CourseId == x.CourseId)
-                                }).ToArrayAsync();
+                                .Select(x => x).ToArrayAsync();
+
+            //func to go from rounds to last 20 rounds
+            Func<Round, Last20Rounds> roundToLast20 = x => new Last20Rounds
+            {
+                RoundId = x.RoundId,
+                RoundScore = x.Score,
+                Rating = x.CourseTeeLocation.Rating,
+                Slope = x.CourseTeeLocation.Slope
+            };
+
 
             //lets loop through those rounds for the user
             foreach (var roundToCalculate in roundsForUser)
             {
                 //grab the 20 rounds before this round
-                var roundsToUse = roundsForUser.Where(x => x.RoundRecord.RoundDate < roundToCalculate.RoundRecord.RoundDate)
-                    .OrderByDescending(x => x.RoundRecord.RoundDate).ThenByDescending(x => x.RoundRecord.RoundId).Take(20).Select(x => new Last20Rounds
-                    {
-                        RoundId = x.RoundRecord.RoundId,
-                        RoundScore = x.RoundRecord.Score,
-                        Rating = x.TeeLocation.Rating,
-                        Slope = x.TeeLocation.Slope
-                    }).ToArray();
+                var roundsToUse = roundsForUser
+                    .Where(x => x.RoundDate < roundToCalculate.RoundDate)
+                    .OrderByDescending(x => x.RoundDate)
+                    .ThenByDescending(x => x.RoundId)
+                    .Take(20)
+                    .Select(roundToLast20).ToArray();
+
+                //convert the round we are looping through so we have it
+                var roundToCalcConverted = new Last20Rounds[] { roundToLast20(roundToCalculate) };
 
                 //if we have 0 rounds, then use the round we are looking through
                 if (!roundsToUse.Any())
                 {
-                    roundsToUse = new Last20Rounds[] { new Last20Rounds
-                        {
-                            RoundId = roundToCalculate.RoundRecord.RoundId,
-                            RoundScore = roundToCalculate.RoundRecord.Score,
-                            Rating = roundToCalculate.TeeLocation.Rating,
-                            Slope = roundToCalculate.TeeLocation.Slope
-                        }};
+                    roundsToUse = roundToCalcConverted;
                 }
 
-                //go calculate the handicap for this round (using the last 20 rounds)
-                var calculatedHandicap = Handicapper.CalculateHandicap(roundsToUse);
-
                 //add the record to the context
-                dbContext.RoundHandicap.Add(new RoundHandicap { RoundId = roundToCalculate.RoundRecord.RoundId, HandicapBeforeRound = calculatedHandicap.Value });
+                dbContext.RoundHandicap.Add(new RoundHandicap
+                {
+                    RoundId = roundToCalculate.RoundId,
+                    HandicapBeforeRound = Handicapper.CalculateHandicap(roundsToUse).Value,
+                    HandicapAfterRound = Handicapper.CalculateHandicap(roundsToUse.Concat(roundToCalcConverted).ToArray()).Value
+                });
             }
 
             //go save the changes for the course handicap
