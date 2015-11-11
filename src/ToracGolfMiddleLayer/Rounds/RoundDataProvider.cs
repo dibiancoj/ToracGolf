@@ -211,7 +211,12 @@ namespace ToracGolf.MiddleLayer.Rounds
                 Score = x.Score,
                 SeasonId = x.SeasonId,
                 TeeBoxLocation = dbContext.CourseTeeLocations.FirstOrDefault(y => y.CourseId == x.CourseId && y.CourseTeeLocationId == x.CourseTeeLocationId),
-                HandicapBeforeRound = dbContext.RoundHandicap.FirstOrDefault(y => y.RoundId == x.RoundId).HandicapBeforeRound
+                HandicapBeforeRound = dbContext.RoundHandicap.FirstOrDefault(y => y.RoundId == x.RoundId).HandicapBeforeRound,
+
+                Putts = x.Putts,
+                FairwaysHit = x.FairwaysHit,
+                FairwaysHitAttempted = x.FairwaysHitPossible,
+                GreensInRegulation = x.GreensInRegulation
             });
         }
 

@@ -33,6 +33,11 @@ namespace ToracGolf.MiddleLayer.Rounds.Models
         public double RoundHandicap { get; set; }
         public int AdjustedScore { get; set; }
         public double HandicapBeforeRound { get; set; }
+
+        public int? Putts { get; set; }
+        public int? GreensInRegulation { get; set; }
+        public int? FairwaysHit { get; set; }
+        public int? FairwaysHitAttempted { get; set; }
     }
 
     public class RoundPerformance

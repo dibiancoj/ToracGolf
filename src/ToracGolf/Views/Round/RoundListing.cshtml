@@ -23,11 +23,11 @@
 }
 
 @section Scripts{
-    <script src="~/lib/jlinq/jlinq.js"></script>
     <script src="~/lib/angular/angular.js"></script>
     <script src="~/lib/angular/angular-animate.js"></script>
     <script src="~/lib/select2/js/select2.js"></script>
     <script src="~/js/angular/toracgolfapp.js"></script>
+    <script src="~/js/angular/common/percentfilter.js"></script>
     <script src="~/js/angular/common/httprequestinterceptor.js"></script>
     <script src="~/js/angular/common/modaleventdirective.js"></script>
     <script src="~/js/angular/common/pagerfactory.js"></script>
@@ -130,10 +130,22 @@
                                 </div>
                                 <div class="listing-footer">
                                     <ul class="aux-info">
-                                        <li><i class="fa fa-bar-chart-o"></i><strong>Rounds: </strong>30</li>
-                                        <li><i class="fa fa-smile-o"></i><strong>Top Score: </strong>85</li>
-                                        <li><i class="fa fa-frown-o"></i><strong>Worse Score: </strong>98</li>
-                                        <li><i class="fa fa-calculator"></i><strong>Avg Score: </strong>93.35</li>
+                                        <li title="Total Putts In Round"><i class="fa fa-bar-chart-o"></i><strong>Putts: </strong>{{(round.Putts) || 'N/A'}}</li>
+                                        <li title="Greens In Regulation"><i class="fa fa-smile-o"></i><strong>GIR: </strong>{{(round.GreensInRegulation) || 'N/A'}}</li>
+                                        <li title="Total Fairways Hit In The Round">
+                                            <i class="fa fa-calculator"></i><strong>Fairways Hit: </strong>
+
+                                            <span class="InlineSpan" ng-if="round.FairwaysHit != null && round.FairwaysHitAttempted != null">
+                                                {{round.FairwaysHit}}
+                                                of
+                                                {{round.FairwaysHitAttempted}}
+
+                                                <b> ({{((round.FairwaysHit / round.FairwaysHitAttempted) | percent: 0)}})</b>
+                                            </span>
+                                            <span class="InlineSpan" ng-if="round.FairwaysHit == null || round.FairwaysHitAttempted == null">
+                                                N/A
+                                            </span>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
