@@ -1,18 +1,19 @@
-﻿var validationApplication = React.createClass({
-    render: function () {
-
-         return React.DOM.li(null, this.props.ErrorMessage);
-    }
+﻿var ValidationApplication = React.createClass({
+    render: function() {
+        return (
+          <div className="commentBox">
+            Hello, world! I am a CommentBox.
+          </div>
+         );}
 });
-
-var validateFactory = React.createFactory(validationApplication);
-
-
 
 
 $(document).ready(function () {
     $('#ChangePassword').click(function () {
-        //go save something
-        ReactDOM.render(validateFactory({ ErrorMessage: 'Invalid Jason' }), document.getElementById('ValidationError'));
+        
+        ReactDOM.render(
+              <ValidationApplication />,
+              document.getElementById('ValidationError'));
+
     });
 });
