@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Antiforgery;
+using Microsoft.AspNet.Mvc.Filters;
+using Microsoft.Extensions.Primitives;
 
 namespace ToracGolf.Filters
 {
@@ -69,7 +71,7 @@ namespace ToracGolf.Filters
 
             var cookieToken = string.Empty;
             var formToken = string.Empty;
-            string[] tokenHeaders = null;
+            StringValues tokenHeaders;
             string[] tokens = null;
 
             //go grab this token

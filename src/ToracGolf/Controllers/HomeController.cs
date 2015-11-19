@@ -1,23 +1,20 @@
-﻿using System;
+﻿using Microsoft.AspNet.Antiforgery;
+using Microsoft.AspNet.Authorization;
+using Microsoft.AspNet.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.OptionsModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
-using ToracGolf.ViewModels.Home;
-using ToracGolf.ViewModels.Navigation;
-using ToracGolf.MiddleLayer.EFModel.Tables;
-using System.Security.Claims;
-using ToracGolf.Constants;
-using Microsoft.Framework.Caching.Memory;
-using ToracLibrary.AspNet.Caching.FactoryStore;
-using ToracGolf.MiddleLayer.EFModel;
-using Microsoft.AspNet.Antiforgery;
-using Microsoft.Framework.OptionsModel;
-using ToracGolf.Settings;
-using Microsoft.AspNet.Authorization;
+using ToracGolf.Filters;
 using ToracGolf.MiddleLayer.Dashboard;
 using ToracGolf.MiddleLayer.Dashboard.Models;
-using ToracGolf.Filters;
+using ToracGolf.MiddleLayer.EFModel;
+using ToracGolf.Settings;
+using ToracGolf.ViewModels.Home;
+using ToracGolf.ViewModels.Navigation;
+using ToracLibrary.AspNet.Caching.FactoryStore;
 
 namespace ToracGolf.Controllers
 {

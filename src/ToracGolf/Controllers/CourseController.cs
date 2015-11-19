@@ -2,13 +2,12 @@
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
-using Microsoft.Framework.Caching.Memory;
-using Microsoft.Framework.OptionsModel;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.OptionsModel;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using ToracGolf.Constants;
 using ToracGolf.Filters;
@@ -204,11 +203,11 @@ namespace ToracGolf.Controllers
               await HandicapStatusBuilder(DbContext.Value, userId, await UserCurrentSeason(DbContext.Value, userId)),
               breadCrumb,
               BuildTokenSet(Antiforgery),
-              await CourseDataProvider.TotalNumberOfCourses(DbContext.Value, null, null, Configuration.Options.DefaultListingRecordsPerPage),
+              await CourseDataProvider.TotalNumberOfCourses(DbContext.Value, null, null, Configuration.Value.DefaultListingRecordsPerPage),
               CacheFactory.GetCacheItem<IList<SortOrderViewModel>>(CacheKeyNames.CourseListingSortOrder, Cache),
               stateListing,
               defaultState,
-              Configuration.Options.DefaultListingRecordsPerPage,
+              Configuration.Value.DefaultListingRecordsPerPage,
               CacheFactory.GetCacheItem<IEnumerable<int>>(CacheKeyNames.NumberOfListingsPerPage, Cache),
               courseNameFilter));
         }

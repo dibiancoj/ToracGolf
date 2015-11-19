@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
-using Microsoft.Framework.Caching.Memory;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -69,7 +69,7 @@ namespace ToracGolf.Controllers
             claims.Add(new Claim(ClaimTypes.StateOrProvince, userLogInAttempt.StateId.ToString()));
 
             //sign the user in
-            await Context.Authentication.SignInAsync(SecuritySettings.SecurityType, new ClaimsPrincipal(new ClaimsIdentity(claims, SecuritySettings.SecurityType)));
+            await HttpContext.Authentication.SignInAsync(SecuritySettings.SecurityType, new ClaimsPrincipal(new ClaimsIdentity(claims, SecuritySettings.SecurityType)));
         }
 
         [HttpGet]

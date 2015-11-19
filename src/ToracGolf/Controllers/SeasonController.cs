@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNet.Antiforgery;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
-using Microsoft.AspNet.Mvc.Rendering;
-using Microsoft.Framework.Caching.Memory;
-using Microsoft.Framework.OptionsModel;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.OptionsModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -112,11 +111,11 @@ namespace ToracGolf.Controllers
                     await SeasonDataProvider.MakeSeasonAsCurrent(DbContext.Value, userId, userSeason.SeasonId);
 
                     //remove the current season for the default season, because we just changed the users current season
-                    Context.Session.Remove(UserCurrentSeasonSessionName);
+                    HttpContext.Session.Remove(UserCurrentSeasonSessionName);
                 }
 
                 //we have a new current season, so we need to clear out the session
-                Context.Session.Remove(HandicapStatusSessionName);
+                HttpContext.Session.Remove(HandicapStatusSessionName);
 
                 //we saved it successfully
                 return Json(new { result = true });
@@ -207,10 +206,10 @@ namespace ToracGolf.Controllers
             await SeasonDataProvider.MakeSeasonAsCurrent(DbContext.Value, userId, newCurrentSeasonId);
 
             //remove the current season for the default season, because we just changed the users current season
-            Context.Session.Remove(UserCurrentSeasonSessionName);
+            HttpContext.Session.Remove(UserCurrentSeasonSessionName);
 
             //remove the handicap data as well, current season handicap will change
-            Context.Session.Remove(HandicapStatusSessionName);
+            HttpContext.Session.Remove(HandicapStatusSessionName);
 
             //we will just have them reload the page to see the changes. this way the header changes
             return Json(new

@@ -3,14 +3,12 @@ using Microsoft.AspNet.Authentication.Google;
 using Microsoft.AspNet.Authentication.MicrosoftAccount;
 using Microsoft.AspNet.Authentication.Twitter;
 using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Diagnostics.Entity;
 using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Mvc.Rendering;
-using Microsoft.Dnx.Runtime;
-using Microsoft.Framework.Caching.Memory;
-using Microsoft.Framework.Configuration;
-using Microsoft.Framework.DependencyInjection;
-using Microsoft.Framework.Logging;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.PlatformAbstractions;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -26,11 +24,13 @@ namespace ToracGolf
 {
     public class Startup
     {
+
         public Startup(IHostingEnvironment env, IApplicationEnvironment appEnv)
         {
             // Setup configuration sources.
 
-            var builder = new ConfigurationBuilder(appEnv.ApplicationBasePath)
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(appEnv.ApplicationBasePath)
                //.AddJsonFile("config.json")
                .AddJsonFile($"config.{env.EnvironmentName}.json", optional: true);
 
@@ -109,33 +109,33 @@ namespace ToracGolf
             services.AddSession();
 
             //configure session to only be 5 minutes
-            services.ConfigureSession(options =>
-            {
-                options.IdleTimeout = new TimeSpan(0, 5, 0);
-            });
+            //services.ConfigureSession(options =>
+            //{
+            //    options.IdleTimeout = new TimeSpan(0, 5, 0);
+            //});
 
 #if DNX451
             // utilize resource only available with .NET Framework
             //add my cached items
             var cacheFactory = new CacheFactoryStore();
 
-            //add the state listing factory configuration
-            cacheFactory.AddConfiguration(CacheKeyNames.StateListing,
-                 () => MiddleLayer.States.StateListing.StateSelect(services.BuildServiceProvider().GetService<Lazy<ToracGolfContext>>().Value)
-                .Select(y => new SelectListItem { Text = y.Description, Value = y.StateId.ToString() })
-                .ToImmutableList());
+            ////add the state listing factory configuration
+            //cacheFactory.AddConfiguration(CacheKeyNames.StateListing,
+            //     () => MiddleLayer.States.StateListing.StateSelect(services.BuildServiceProvider().GetService<Lazy<ToracGolfContext>>().Value)
+            //    .Select(y => new SelectListItem { Text = y.Description, Value = y.StateId.ToString() })
+            //    .ToImmutableList());
 
-            //add the course list sort order
-            cacheFactory.AddConfiguration(CacheKeyNames.CourseListingSortOrder,
-                () => MiddleLayer.Courses.CourseListingSortOrder.BuildDropDownValues().ToImmutableList());
+            ////add the course list sort order
+            //cacheFactory.AddConfiguration(CacheKeyNames.CourseListingSortOrder,
+            //    () => MiddleLayer.Courses.CourseListingSortOrder.BuildDropDownValues().ToImmutableList());
 
-            //add the round list sort order
-            cacheFactory.AddConfiguration(CacheKeyNames.RoundListingSortOrder,
-                () => MiddleLayer.Rounds.Models.RoundListingSortOrder.BuildDropDownValues().ToImmutableList());
+            ////add the round list sort order
+            //cacheFactory.AddConfiguration(CacheKeyNames.RoundListingSortOrder,
+            //    () => MiddleLayer.Rounds.Models.RoundListingSortOrder.BuildDropDownValues().ToImmutableList());
 
-            //add the courses per page options (this way we don't have to keep creating arrays)
-            cacheFactory.AddConfiguration(CacheKeyNames.NumberOfListingsPerPage,
-                () => new int[] { 10, 25, 50, 75, 100 }.ToImmutableList());
+            ////add the courses per page options (this way we don't have to keep creating arrays)
+            //cacheFactory.AddConfiguration(CacheKeyNames.NumberOfListingsPerPage,
+            //    () => new int[] { 10, 25, 50, 75, 100 }.ToImmutableList());
 
             services.AddSingleton<ICacheFactoryStore, CacheFactoryStore>((x) => cacheFactory);
 #else
@@ -150,6 +150,9 @@ namespace ToracGolf
         // Configure is called after ConfigureServices is called.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            //app.UseIISPlatformHandler();
+            app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
+
             loggerFactory.MinimumLevel = LogLevel.Information;
             loggerFactory.AddConsole();
             loggerFactory.AddDebug();
@@ -160,14 +163,17 @@ namespace ToracGolf
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
-                app.UseErrorPage();
-                app.UseDatabaseErrorPage(DatabaseErrorPageOptions.ShowAll);
+                app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage(options =>
+                {
+                    options.EnableAll();
+                });
             }
             else
             {
                 // Add Error handling middleware which catches all application specific errors and
                 // sends the request to the following path or controller action.
-                app.UseErrorHandler("/Home/Error");
+                app.UseExceptionHandler("/Home/Error");
             }
 
             // Add static files to the request pipeline.
@@ -185,8 +191,8 @@ namespace ToracGolf
 
             app.UseCookieAuthentication(options =>
             {
-                options.LoginPath = new Microsoft.AspNet.Http.PathString("/LogIn");
-                options.AutomaticAuthentication = true;
+                options.LoginPath = new Microsoft.AspNet.Http.PathString("/Security/LogIn");
+                options.AutomaticAuthenticate = true;
                 options.AuthenticationScheme = "Cookies";
             });
 
@@ -204,5 +210,7 @@ namespace ToracGolf
                 // routes.MapWebApiRoute("DefaultApi", "api/{controller}/{id?}");
             });
         }
+
+        public static void Main(string[] args) => WebApplication.Run<Startup>(args);
     }
 }

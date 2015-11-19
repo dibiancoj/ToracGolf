@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.Extensions.Caching.Memory;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Framework.Caching.Memory;
 using ToracLibrary.AspNet.Caching.Configuration;
 
 namespace ToracLibrary.AspNet.Caching.FactoryStore

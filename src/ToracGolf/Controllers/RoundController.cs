@@ -2,8 +2,8 @@
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
-using Microsoft.Framework.Caching.Memory;
-using Microsoft.Framework.OptionsModel;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.OptionsModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -109,7 +109,7 @@ namespace ToracGolf.Controllers
                 var roundAddAttempt = await RoundDataProvider.SaveRound(DbContext.Value, userId, usersCurrentSeason, model);
 
                 //if we saved the round, we want to clear out the session so the next call which go calculate the handicap now
-                Context.Session.Remove(HandicapStatusSessionName);
+                HttpContext.Session.Remove(HandicapStatusSessionName);
 
                 //we saved it successfully
                 return Json(new { result = true });
@@ -185,9 +185,9 @@ namespace ToracGolf.Controllers
                 //CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
                 BuildTokenSet(Antiforgery),
                 //GetUserDefaultState(),
-                await RoundDataProvider.TotalNumberOfRounds(DbContext.Value, userId, null, null, Configuration.Options.DefaultListingRecordsPerPage, null, null),
+                await RoundDataProvider.TotalNumberOfRounds(DbContext.Value, userId, null, null, Configuration.Value.DefaultListingRecordsPerPage, null, null),
                 CacheFactory.GetCacheItem<IList<SortOrderViewModel>>(CacheKeyNames.RoundListingSortOrder, Cache),
-                Configuration.Options.DefaultListingRecordsPerPage,
+                Configuration.Value.DefaultListingRecordsPerPage,
                 CacheFactory.GetCacheItem<IEnumerable<int>>(CacheKeyNames.NumberOfListingsPerPage, Cache),
                 userSeasons));
         }
@@ -222,7 +222,7 @@ namespace ToracGolf.Controllers
             var result = await RoundDataProvider.DeleteARound(DbContext.Value, roundIdToDelete);
 
             //we want to clear the handicap session data, so we calc it on the next call. We deleted a round so things could shift around
-            Context.Session.Remove(HandicapStatusSessionName);
+            HttpContext.Session.Remove(HandicapStatusSessionName);
 
             //grab the user id
             var userId = GetUserId();

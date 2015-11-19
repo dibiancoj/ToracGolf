@@ -33,15 +33,15 @@ namespace ToracGolf.Controllers
 
         public bool IsUserAuthenticated()
         {
-            return Context.User != null &&
-               Context.User.Identity != null &&
-               Context.User.Identity.IsAuthenticated;
+            return HttpContext.User != null &&
+               HttpContext.User.Identity != null &&
+               HttpContext.User.Identity.IsAuthenticated;
         }
 
         public async Task<int> UserCurrentSeason(ToracGolfContext dbContext, int userId)
         {
             //we will store this in session for performance
-            var attemptToGetCurrentSeasonId = Context.Session.GetInt32(UserCurrentSeasonSessionName);
+            var attemptToGetCurrentSeasonId = HttpContext.Session.GetInt32(UserCurrentSeasonSessionName);
 
             //do we have a value?
             if (attemptToGetCurrentSeasonId.HasValue)
@@ -54,7 +54,7 @@ namespace ToracGolf.Controllers
             var currentSeasonId = await SeasonDataProvider.CurrentSeasonForUser(dbContext, userId);
 
             //now put it in session
-            Context.Session.SetInt32(UserCurrentSeasonSessionName, currentSeasonId);
+            HttpContext.Session.SetInt32(UserCurrentSeasonSessionName, currentSeasonId);
 
             //now return the current season id
             return currentSeasonId;
@@ -62,12 +62,12 @@ namespace ToracGolf.Controllers
         
         public int GetUserId()
         {
-            return Convert.ToInt32(Context.User.Claims.First(x => x.Type == ClaimTypes.Hash.ToString()).Value);
+            return Convert.ToInt32(HttpContext.User.Claims.First(x => x.Type == ClaimTypes.Hash.ToString()).Value);
         }
 
         public string GetUserDefaultState()
         {
-            return Context.User.Claims.First(x => x.Type == ClaimTypes.StateOrProvince).Value;
+            return HttpContext.User.Claims.First(x => x.Type == ClaimTypes.StateOrProvince).Value;
         }
 
         #endregion
@@ -77,7 +77,7 @@ namespace ToracGolf.Controllers
         public async Task<HandicapStatusViewModel> HandicapStatusBuilder(ToracGolfContext dbContext, int userId, int userCurrentSeason)
         {
             //if we have the object in session then use it!
-            var attemptToGetHandicap = Context.Session.GetString(HandicapStatusSessionName);
+            var attemptToGetHandicap = HttpContext.Session.GetString(HandicapStatusSessionName);
 
             //did we find it?
             if (!string.IsNullOrEmpty(attemptToGetHandicap))
@@ -105,7 +105,7 @@ namespace ToracGolf.Controllers
             var handicap = new HandicapStatusViewModel(tskSeasonRounds, tskCareerRounds);
 
             //set the session so we have it
-            Context.Session.SetString(HandicapStatusSessionName, JsonConvert.SerializeObject(handicap));
+            HttpContext.Session.SetString(HandicapStatusSessionName, JsonConvert.SerializeObject(handicap));
 
             //return the handicap object
             return handicap;
@@ -118,10 +118,10 @@ namespace ToracGolf.Controllers
         public AntiforgeryTokenSet BuildTokenSet(IAntiforgery forgery)
         {
             //grab the token
-            var token = forgery.GetAndStoreTokens(Context);
+            var token = forgery.GetAndStoreTokens(HttpContext);
 
             //grab the cookie now
-            var cookie = Context.Request.Cookies[SecuritySettings.AntiforgeryCookieName];
+            var cookie = HttpContext.Request.Cookies[SecuritySettings.AntiforgeryCookieName];
 
             //if the cookie is not blank and the token cookie is blank, then set it
             if (string.IsNullOrEmpty(token.CookieToken) && !string.IsNullOrEmpty(cookie))
