@@ -12,16 +12,6 @@ namespace ToracGolf.MiddleLayer.Dashboard
     public static class DashboardDataProvider
     {
 
-        public class DashboardRoundDisplay
-        {
-            public int CourseId { get; set; }
-            public DateTime RoundDate { get; set; }
-            public int Score { get; set; }
-            public string CourseName { get; set; }
-            public string TeeBoxLocation { get; set; }
-        }
-
-
         #region Top 5 Queries
 
         public static async Task<IEnumerable<DashboardRoundDisplay>> Last5RoundsSelect(ToracGolfContext dbContext, int userId, int? seasonId)

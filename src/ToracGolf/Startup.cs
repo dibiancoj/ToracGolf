@@ -120,22 +120,22 @@ namespace ToracGolf
             var cacheFactory = new CacheFactoryStore();
 
             ////add the state listing factory configuration
-            //cacheFactory.AddConfiguration(CacheKeyNames.StateListing,
-            //     () => MiddleLayer.States.StateListing.StateSelect(services.BuildServiceProvider().GetService<Lazy<ToracGolfContext>>().Value)
-            //    .Select(y => new SelectListItem { Text = y.Description, Value = y.StateId.ToString() })
-            //    .ToImmutableList());
+            cacheFactory.AddConfiguration(CacheKeyNames.StateListing,
+                 () => MiddleLayer.States.StateListing.StateSelect(services.BuildServiceProvider().GetService<Lazy<ToracGolfContext>>().Value)
+                .Select(y => new SelectListItem { Text = y.Description, Value = y.StateId.ToString() })
+                .ToImmutableList());
 
-            ////add the course list sort order
-            //cacheFactory.AddConfiguration(CacheKeyNames.CourseListingSortOrder,
-            //    () => MiddleLayer.Courses.CourseListingSortOrder.BuildDropDownValues().ToImmutableList());
+            //add the course list sort order
+            cacheFactory.AddConfiguration(CacheKeyNames.CourseListingSortOrder,
+                () => MiddleLayer.Courses.CourseListingSortOrder.BuildDropDownValues().ToImmutableList());
 
-            ////add the round list sort order
-            //cacheFactory.AddConfiguration(CacheKeyNames.RoundListingSortOrder,
-            //    () => MiddleLayer.Rounds.Models.RoundListingSortOrder.BuildDropDownValues().ToImmutableList());
+            //add the round list sort order
+            cacheFactory.AddConfiguration(CacheKeyNames.RoundListingSortOrder,
+                () => MiddleLayer.Rounds.Models.RoundListingSortOrder.BuildDropDownValues().ToImmutableList());
 
-            ////add the courses per page options (this way we don't have to keep creating arrays)
-            //cacheFactory.AddConfiguration(CacheKeyNames.NumberOfListingsPerPage,
-            //    () => new int[] { 10, 25, 50, 75, 100 }.ToImmutableList());
+            //add the courses per page options (this way we don't have to keep creating arrays)
+            cacheFactory.AddConfiguration(CacheKeyNames.NumberOfListingsPerPage,
+                () => new int[] { 10, 25, 50, 75, 100 }.ToImmutableList());
 
             services.AddSingleton<ICacheFactoryStore, CacheFactoryStore>((x) => cacheFactory);
 #else
