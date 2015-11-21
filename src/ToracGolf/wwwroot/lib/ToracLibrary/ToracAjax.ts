@@ -5,6 +5,24 @@ module ToracTechnologies {
     //holds specific functionality to make ajax calls using jquery and promises
     export module Ajax {
 
+        /*
+        ToracTechnologies.Ajax.RunAjaxCall('ChangePassword', { oldPw: form.CurrentPW, newPw: form.NewPw1 }, true)
+            .done(function (result) {
+                debugger;
+                alert('done');
+
+                //go make ajax call here
+                this.setState({ Errors: ['controller error on mvc side after ajax call'] });
+            })
+            .fail(function (err) {
+                debugger;
+                alert('err');
+
+                //go make ajax call here
+                this.setState({ Errors: ['Error Trying To Change New Password'] });
+            });
+      */
+
         //Make an ajax call. 
         //Url: Url to call.
         //AjaxParameters: The parameters that will be passed into the server side method. This should be in object form (not JSON.stringify)
@@ -18,15 +36,10 @@ module ToracTechnologies {
                 alert('RunAjaxCall: Url Is Mandatory');
             }
 
-            //this will handle blank strings or nulls. Null will get built saying "null" and the controller will ignore that param if its not what its expecting
-            var json = JSON.stringify(AjaxParameters);
-
             return $.ajax({
                 type: "POST",
                 url: Url,
-                data: json,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
+                data: AjaxParameters,
                 async: RunAsynchronously
             });
         }

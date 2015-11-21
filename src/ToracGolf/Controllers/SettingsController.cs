@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.Constants;
 using ToracGolf.MiddleLayer.EFModel;
+using ToracGolf.MiddleLayer.SecurityManager;
 using ToracGolf.Settings;
 using ToracGolf.ViewModels.Navigation;
 using ToracGolf.ViewModels.Settings;
@@ -47,11 +48,11 @@ namespace ToracGolf.Controllers
         private IOptions<AppSettings> Configuration { get; }
 
         #endregion
-        
+
         #region Methods
 
         [HttpGet]
-        [Route("ChangeMySettings", Name = "ChangeMySettings")]      
+        [Route("ChangeMySettings", Name = "ChangeMySettings")]
         public IActionResult Index()
         {
             return View();
@@ -73,6 +74,36 @@ namespace ToracGolf.Controllers
                 await HandicapStatusBuilder(DbContext.Value, userId, await UserCurrentSeason(DbContext.Value, userId)),
                 breadCrumb,
                 BuildTokenSet(Antiforgery)));
+        }
+
+        [HttpPost]
+        [Route("ChangePassword", Name = "ChangePassword")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordAttemptViewModel changePasswordViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = GetUserId();
+
+                //need to add validation to check the old password is valid.
+                var oldPassword = await SecurityDataProvider.Password(DbContext.Value, userId);
+
+                //check the old vs current password
+                if (!string.Equals(oldPassword, changePasswordViewModel.CurrentPW, StringComparison.OrdinalIgnoreCase))
+                {
+                    ModelState.AddModelError(string.Empty, "Current Password Does Not Match");
+
+                    return new BadRequestObjectResult(ModelState);
+                }
+
+                //go change the password now
+                await SecurityDataProvider.ChangePassword(DbContext.Value, userId, changePasswordViewModel.NewPw1);
+
+                //return the result
+                return Json(new { result = true });
+            }
+
+            //return the error here
+            return new BadRequestObjectResult(ModelState);
         }
 
         #endregion

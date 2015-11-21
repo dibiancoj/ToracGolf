@@ -49,6 +49,20 @@ namespace ToracGolf.MiddleLayer.SecurityManager
             return await dbContext.Users.AsNoTracking().FirstAsync(x => x.UserId == userToAdd.UserId);
         }
 
+        public static async Task<string> Password(ToracGolfContext dbContext, int userId)
+        {
+            return (await dbContext.Users.AsNoTracking().FirstAsync(x => x.UserId == userId)).Password;
+        }
+
+        public static async Task ChangePassword(ToracGolfContext dbContext, int userId, string password)
+        {
+            var user = await dbContext.Users.FirstAsync(x => x.UserId == userId);
+
+            user.Password = password;
+
+            await dbContext.SaveChangesAsync();
+        }
+
     }
 
 }

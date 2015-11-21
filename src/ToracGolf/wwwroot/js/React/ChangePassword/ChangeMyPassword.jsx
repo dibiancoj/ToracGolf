@@ -27,21 +27,23 @@ var ChangePasswordForm = React.createClass({
         //go run validation with submit clicked
         var result = this.validation(true);
 
+        var _this = this;
+
         //go make an ajax call if we have 0 errors
         if (result.length == 0) {
 
-            alert('test');
+            debugger;
+            alert('need to add antiforgery token and await spinner');
 
-            ToracTechnologies.Ajax.RunAjaxCall('ChangePw', this.getFormData().NewPw1, true)
+            ToracTechnologies.Ajax.RunAjaxCall('ChangePassword', this.getFormData(), true)
             .done(function (result) {
-                alert('done');
+                debugger;
+                alert('need to add modeal and redirect them or something');
             })
             .fail(function (err) {
-                alert('err');
+                //go make ajax call here
+                _this.setState({ Errors: err.responseJSON[''] });
             });
-
-            //go make ajax call here
-            this.setState({ Errors: ['controller error on mvc side after ajax call'] });
         }
     },
     handleChange: function (e) {
