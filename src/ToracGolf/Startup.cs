@@ -151,6 +151,19 @@ namespace ToracGolf
         // Configure is called after ConfigureServices is called.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            if (env.IsDevelopment())
+            {
+                ConfigureWithVirtualDirectory(app, env, loggerFactory);
+            }
+            else
+            {
+                app.Map("/ToracGolfV2", (app1) => ConfigureWithVirtualDirectory(app1, env, loggerFactory));
+            }
+        }
+
+        public void ConfigureWithVirtualDirectory(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        {
+            //when we go to publish because we have a virtual directory (app) within the default web site we need to set the map value
             //app.UseIISPlatformHandler();
             app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
 

@@ -1,27 +1,18 @@
 ﻿/// <binding Clean='clean' />
+"use strict";
 
 var gulp = require("gulp"),
     rimraf = require("rimraf"),
     concat = require("gulp-concat"),
     cssmin = require("gulp-cssmin"),
-    uglify = require("gulp-uglify"),
-    project = require("./project.json");
+    uglify = require("gulp-uglify");
 
 var paths = {
-    webroot: "./" + project.webroot + "/"
+    webroot: "./wwwroot/"
 };
 
 paths.js = paths.webroot + "js/**/*.js";
 paths.minJs = paths.webroot + "js/**/*.min.js";
-
-paths.JLinqjs = paths.webroot + "lib/JLinq/**/*.js";
-paths.JLinqminJs = paths.webroot + "lib/JLinq/**/*.min.js";
-
-paths.Ajaxjs = paths.webroot + "lib/Ajax/**/*.js";
-paths.AjaxjsminJs = paths.webroot + "lib/Ajax/**/*.min.js";
-
-paths.concatToracGolfCoreJsDest = paths.webroot + "js/ToracGolfCore.min.js";
-
 paths.css = paths.webroot + "css/**/*.css";
 paths.minCss = paths.webroot + "css/**/*.min.css";
 paths.concatJsDest = paths.webroot + "js/site.min.js";
@@ -38,26 +29,16 @@ gulp.task("clean:css", function (cb) {
 gulp.task("clean", ["clean:js", "clean:css"]);
 
 gulp.task("min:js", function () {
-    gulp.src([paths.js, "!" + paths.minJs], { base: "." })
+    return gulp.src([paths.js, "!" + paths.minJs], { base: "." })
         .pipe(concat(paths.concatJsDest))
         .pipe(uglify())
         .pipe(gulp.dest("."));
 });
 
 gulp.task("min:css", function () {
-    gulp.src([paths.css, "!" + paths.minCss])
+    return gulp.src([paths.css, "!" + paths.minCss])
         .pipe(concat(paths.concatCssDest))
         .pipe(cssmin())
-        .pipe(gulp.dest("."));
-});
-
-gulp.task("BundleAndMin:ToracGolfCore", function () {
-    gulp.src([paths.JLinqjs, "!" + paths.JLinqminJs,
-              paths.Ajaxjs, "!" + paths.AjaxjsminJs],
-
-         { base: "." })
-        .pipe(concat(paths.concatToracGolfCoreJsDest))
-        .pipe(uglify())
         .pipe(gulp.dest("."));
 });
 

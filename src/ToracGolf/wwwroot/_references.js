@@ -25,7 +25,6 @@
 /// <reference path="js/login.js" />
 /// <reference path="js/react/changepassword/changemypassword.js" />
 /// <reference path="js/site.js" />
-/// <reference path="js/toracgolfcore.min.js" />
 /// <reference path="lib/bootstrap/dist/js/bootstrap.js" />
 /// <reference path="lib/bootstrap-touch-carousel/dist/js/bootstrap-touch-carousel.js" />
 /// <reference path="lib/hammer.js/hammer.js" />
