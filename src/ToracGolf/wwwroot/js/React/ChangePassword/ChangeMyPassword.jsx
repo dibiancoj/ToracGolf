@@ -14,7 +14,7 @@ var ErrorList = React.createClass({
 
 var PasswordInput = React.createClass({
     render: function () {
-        return <input id={this.props.IdToUse} onChange={this.props.onChangeEvent} type="password" maxLength="100"></input>
+        return <input onChange={this.props.onChangeEvent} type="password" maxLength="100"></input>
     }
 });
 
@@ -53,9 +53,9 @@ var ChangePasswordForm = React.createClass({
     },
     getFormData: function () {
         return {
-            CurrentPW: $('#CurrentPassword').val(),
-            NewPw1: $('#NewPassword1').val(),
-            NewPw2: $('#NewPassword2').val(),
+            CurrentPW: this.refs.CurrentPassword.getDOMNode().value,
+            NewPw1: this.refs.NewPassword1.getDOMNode().value,
+            NewPw2: this.refs.NewPassword2.getDOMNode().value
         };
     },
     validation: function (onFormSubmit) {
@@ -85,21 +85,21 @@ var ChangePasswordForm = React.createClass({
                                         <label className="label">Current Password</label>
                                         <label className="input">
                                             <i className="icon-append fa fa-edit"></i>
-                                           <PasswordInput IdToUse="CurrentPassword" onChangeEvent={this.handleChange}></PasswordInput>
+                                           <PasswordInput ref="CurrentPassword" onChangeEvent={this.handleChange}></PasswordInput>
                                         </label>
                                     </section>
                                     <section>
                                         <label className="label">New Password</label>
                                         <label className="input">
                                             <i className="icon-append fa fa-edit"></i>
-                                             <PasswordInput IdToUse="NewPassword1" onChangeEvent={this.handleChange}></PasswordInput>
+                                             <PasswordInput ref="NewPassword1" onChangeEvent={this.handleChange}></PasswordInput>
                                         </label>
                                     </section>
                                     <section>
                                         <label className="label">Retype New Password</label>
                                         <label className="input">
                                             <i className="icon-append fa fa-edit"></i>
-                                            <PasswordInput IdToUse="NewPassword2" onChangeEvent={this.handleChange}></PasswordInput>
+                                            <PasswordInput ref="NewPassword2" onChangeEvent={this.handleChange}></PasswordInput>
                                         </label>
                                     </section>
                                     <section>
