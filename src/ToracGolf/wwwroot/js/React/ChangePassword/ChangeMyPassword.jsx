@@ -88,7 +88,7 @@ var ChangePasswordForm = React.createClass({
                                         </label>
                                     </section>
                                     <section>
-                                        <div className="ValidationSummary form-group">
+                                        <div className="ValidationSummary form-group ValidationMinHeight">
                                             <div id="ValidationError" className="text-danger validationErrors">
                                                 <ErrorList ErrorItems={this.state.Errors} />
                                             </div>
