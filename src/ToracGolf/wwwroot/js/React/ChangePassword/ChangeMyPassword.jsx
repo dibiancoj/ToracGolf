@@ -29,6 +29,17 @@ var ChangePasswordForm = React.createClass({
 
         //go make an ajax call if we have 0 errors
         if (result.length == 0) {
+
+            alert('test');
+
+            ToracTechnologies.Ajax.RunAjaxCall('ChangePw', this.getFormData().NewPw1, true)
+            .done(function (result) {
+                alert('done');
+            })
+            .fail(function (err) {
+                alert('err');
+            });
+
             //go make ajax call here
             this.setState({ Errors: ['controller error on mvc side after ajax call'] });
         }
@@ -106,11 +117,11 @@ var ChangePasswordForm = React.createClass({
 });
 
 
-$(document).ready(function () {
+        $(document).ready(function () {
 
-    //go render the form
-    ReactDOM.render(
+            //go render the form
+            ReactDOM.render(
           <ChangePasswordForm />,
           document.getElementById('ChangePwForm'));
 
-})
+        })
