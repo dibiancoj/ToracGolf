@@ -72,21 +72,21 @@ var ChangePasswordForm = React.createClass({
                                         <label className="label">Current Password</label>
                                         <label className="input">
                                             <i className="icon-append fa fa-edit"></i>
-                                           <PasswordInput IdToUse="CurrentPassword" onChangeEvent={this.handleChange.bind(this)}></PasswordInput>
+                                           <PasswordInput IdToUse="CurrentPassword" onChangeEvent={this.handleChange}></PasswordInput>
                                         </label>
                                     </section>
                                     <section>
                                         <label className="label">New Password</label>
                                         <label className="input">
                                             <i className="icon-append fa fa-edit"></i>
-                                             <PasswordInput IdToUse="NewPassword1" onChangeEvent={this.handleChange.bind(this)}></PasswordInput>
+                                             <PasswordInput IdToUse="NewPassword1" onChangeEvent={this.handleChange}></PasswordInput>
                                         </label>
                                     </section>
                                     <section>
                                         <label className="label">Retype New Password</label>
                                         <label className="input">
                                             <i className="icon-append fa fa-edit"></i>
-                                            <PasswordInput IdToUse="NewPassword2" onChangeEvent={this.handleChange.bind(this)}></PasswordInput>
+                                            <PasswordInput IdToUse="NewPassword2" onChangeEvent={this.handleChange}></PasswordInput>
                                         </label>
                                     </section>
                                     <section>
