@@ -14,7 +14,7 @@ var ErrorList = React.createClass({
 
 var PasswordInput = React.createClass({
     render: function () {
-        return <input onChange={this.props.onChangeEvent} type="password" maxLength="100"></input>
+        return <input onKeyPress={this.props.onKeyPressEvent} onChange={this.props.onChangeEvent} type="password" maxLength="100"></input>
     }
 });
 
@@ -53,10 +53,16 @@ var ChangePasswordForm = React.createClass({
     },
     getFormData: function () {
         return {
-            CurrentPW: this.refs.CurrentPassword.getDOMNode().value,
-            NewPw1: this.refs.NewPassword1.getDOMNode().value,
-            NewPw2: this.refs.NewPassword2.getDOMNode().value
+            CurrentPW: React.findDOMNode(this.refs.CurrentPassword).value,
+            NewPw1: React.findDOMNode(this.refs.NewPassword1).value,
+            NewPw2: React.findDOMNode(this.refs.NewPassword2).value
         };
+    },
+    enterKeyCheck: function (evt) {
+
+        if (evt.key == 'Enter') {
+            $('#ChangePassword').trigger('click');
+        }
     },
     validation: function (onFormSubmit) {
         var errors = [];
@@ -99,7 +105,7 @@ var ChangePasswordForm = React.createClass({
                                         <label className="label">Retype New Password</label>
                                         <label className="input">
                                             <i className="icon-append fa fa-edit"></i>
-                                            <PasswordInput ref="NewPassword2" onChangeEvent={this.handleChange}></PasswordInput>
+                                            <PasswordInput ref="NewPassword2" onKeyPressEvent={this.enterKeyCheck} onChangeEvent={this.handleChange}></PasswordInput>
                                         </label>
                                     </section>
                                     <section>
