@@ -32,13 +32,20 @@ var ChangePasswordForm = React.createClass({
         //go make an ajax call if we have 0 errors
         if (result.length == 0) {
 
-            debugger;
+     
             alert('need to add antiforgery token and await spinner');
 
             ToracTechnologies.Ajax.RunAjaxCall('ChangePassword', this.getFormData(), true)
-            .done(function (result) {
-                debugger;
-                alert('need to add modeal and redirect them or something');
+            .done(function (response) {
+            
+                if (response.result) {
+                    $('#SaveSuccessfulDialog').modal('show');
+
+                    //reset the fields
+                    React.findDOMNode(_this.refs.CurrentPassword).value = '';
+                    React.findDOMNode(_this.refs.NewPassword1).value = '';
+                    React.findDOMNode(_this.refs.NewPassword2).value = '';
+                }
             })
             .fail(function (err) {
                 //go make ajax call here
