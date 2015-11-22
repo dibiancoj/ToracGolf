@@ -1,5 +1,3 @@
-alert('test');
-
 var PasswordInput = React.createClass({displayName: "PasswordInput",
     render: function () {
         return React.createElement("input", {onKeyPress: this.props.onKeyPressEvent, onChange: this.props.onChangeEvent, type: "password", maxLength: "100"})
