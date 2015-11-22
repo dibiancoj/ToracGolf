@@ -1,4 +1,4 @@
-﻿/// <binding BeforeBuild='reactChangePassword' Clean='clean' />
+/// <binding BeforeBuild='reactValidation, reactTransformChangePw' Clean='clean' />
 "use strict";
 
 var gulp = require("gulp"),
@@ -18,8 +18,13 @@ paths.css = paths.webroot + "css/**/*.css";
 paths.minCss = paths.webroot + "css/**/*.min.css";
 paths.concatJsDest = paths.webroot + "js/site.min.js";
 paths.concatCssDest = paths.webroot + "css/site.min.css";
+
+//react
 paths.reactChangePassword = paths.webroot + "js/**/ChangeMyPassword.jsx";
 paths.minreactChangePassword = paths.webroot + "js/**/ChangeMyPassword.js";
+
+paths.reactValidation = paths.webroot + "js/**/ReactValidation.jsx";
+paths.minReactValidation = paths.webroot + "js/**/ReactValidation.js";
 
 gulp.task("clean:js", function (cb) {
     rimraf(paths.concatJsDest, cb);
@@ -45,8 +50,16 @@ gulp.task("min:css", function () {
         .pipe(gulp.dest("."));
 });
 
+//react transforms
+
 gulp.task("reactTransformChangePw", function () {
     return gulp.src([paths.reactChangePassword, "!" + paths.minreactChangePassword], { base: "." })
+        .pipe(react({ harmony: false }))
+        .pipe(gulp.dest('.'))
+});
+
+gulp.task("reactValidation", function () {
+    return gulp.src([paths.reactValidation, "!" + paths.minReactValidation], { base: "." })
         .pipe(react({ harmony: false }))
         .pipe(gulp.dest('.'))
 });
