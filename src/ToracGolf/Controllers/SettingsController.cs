@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.Constants;
+using ToracGolf.Filters;
 using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.SecurityManager;
 using ToracGolf.Settings;
@@ -78,6 +79,7 @@ namespace ToracGolf.Controllers
 
         [HttpPost]
         [Route("ChangePassword", Name = "ChangePassword")]
+        [ValidateCustomAntiForgeryToken()]
         public async Task<IActionResult> ChangePassword(ChangePasswordAttemptViewModel changePasswordViewModel)
         {
             if (ModelState.IsValid)

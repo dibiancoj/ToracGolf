@@ -10,16 +10,11 @@ var ChangePasswordForm = React.createClass({displayName: "ChangePasswordForm",
     },
     handleSubmit: function () {
 
-        //go run validation with submit clicked
-        var result = this.validation(true);
-
-        var _this = this;
-
         //go make an ajax call if we have 0 errors
-        if (result.length == 0) {
+        if (this.validation(true).length == 0) {
 
-     
-            alert('need to add antiforgery token and await spinner');
+            //grab this for closure
+            var _this = this;
 
             RunAjax('ChangePassword', this.getFormData())
             .done(function (response) {

@@ -21,6 +21,10 @@ var ToracTechnologies;
                 this.setState({ Errors: ['Error Trying To Change New Password'] });
             });
       */
+        //if you want to add a custom header on every ajax request using the following (ie: custom antiforgergy token)
+        //$.ajaxSetup({
+        //    headers: { 'x-my-custom-header': 'some value' }
+        //});
         //to add a waiting div
         //  ToracTechnologies.Ajax.SetupAjaxWaitSpinner($('#loadingDiv'), ToracTechnologies.Ajax.FadeInOutSpeedEnum.fast);
         //#region Enums
