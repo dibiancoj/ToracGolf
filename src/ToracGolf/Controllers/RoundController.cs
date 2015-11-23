@@ -28,7 +28,7 @@ namespace ToracGolf.Controllers
 
         #region Constructor
 
-        public RoundController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, Lazy<ToracGolfContext> dbContext, IAntiforgery antiforgery, IOptions<AppSettings> configuration)
+        public RoundController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, ToracGolfContext dbContext, IAntiforgery antiforgery, IOptions<AppSettings> configuration)
         {
             DbContext = dbContext;
             Cache = cache;
@@ -41,7 +41,7 @@ namespace ToracGolf.Controllers
 
         #region Properties
 
-        private Lazy<ToracGolfContext> DbContext { get; }
+        private ToracGolfContext DbContext { get; }
 
         private IMemoryCache Cache { get; }
 
@@ -84,7 +84,7 @@ namespace ToracGolf.Controllers
 
             //go return the view
             return View(new RoundAddViewModel(
-                await HandicapStatusBuilder(DbContext.Value, userId, await UserCurrentSeason(DbContext.Value, userId)),
+                await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
                 breadCrumb,
                 CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
                 BuildTokenSet(Antiforgery),
@@ -103,10 +103,10 @@ namespace ToracGolf.Controllers
                 var userId = GetUserId();
 
                 //grab the users current season
-                var usersCurrentSeason = await UserCurrentSeason(DbContext.Value, userId);
+                var usersCurrentSeason = await UserCurrentSeason(DbContext, userId);
 
                 //let's try to add this user to the system
-                var roundAddAttempt = await RoundDataProvider.SaveRound(DbContext.Value, userId, usersCurrentSeason, model);
+                var roundAddAttempt = await RoundDataProvider.SaveRound(DbContext, userId, usersCurrentSeason, model);
 
                 //if we saved the round, we want to clear out the session so the next call which go calculate the handicap now
                 HttpContext.Session.Remove(HandicapStatusSessionName);
@@ -133,7 +133,7 @@ namespace ToracGolf.Controllers
             //go grab the course listing
             return Json(new
             {
-                CourseData = await RoundDataProvider.ActiveCoursesSelectForState(DbContext.Value, stateId)
+                CourseData = await RoundDataProvider.ActiveCoursesSelectForState(DbContext, stateId)
             });
         }
 
@@ -146,12 +146,12 @@ namespace ToracGolf.Controllers
             var userId = GetUserId();
 
             //let's go grab the users handicap
-            var usersHandicap = await HandicapStatusBuilder(DbContext.Value, userId, await UserCurrentSeason(DbContext.Value, userId));
+            var usersHandicap = await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId));
 
             //go grab the course listing
             return Json(new
             {
-                TeeBoxData = await RoundDataProvider.TeeBoxSelectForCourse(DbContext.Value, courseId, usersHandicap.CareerHandicap)
+                TeeBoxData = await RoundDataProvider.TeeBoxSelectForCourse(DbContext, courseId, usersHandicap.CareerHandicap)
             });
         }
 
@@ -173,19 +173,19 @@ namespace ToracGolf.Controllers
             var userId = GetUserId();
 
             //let's grab the users season
-            var userSeasons = (await SeasonDataProvider.SeasonSelectForUser(DbContext.Value, userId)).Select(x => new SelectListItem { Value = x.Key.ToString(), Text = x.Value }).ToList();
+            var userSeasons = (await SeasonDataProvider.SeasonSelectForUser(DbContext, userId)).Select(x => new SelectListItem { Value = x.Key.ToString(), Text = x.Value }).ToList();
 
             //add the "all seasons"
             userSeasons.Insert(0, new SelectListItem { Value = string.Empty, Text = "All Seasons" });
 
             //go return the view
             return View(new RoundListingViewModel(
-                await HandicapStatusBuilder(DbContext.Value, userId, await UserCurrentSeason(DbContext.Value, userId)),
+                await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
                 breadCrumb,
                 //CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
                 BuildTokenSet(Antiforgery),
                 //GetUserDefaultState(),
-                await RoundDataProvider.TotalNumberOfRounds(DbContext.Value, userId, null, null, Configuration.Value.DefaultListingRecordsPerPage, null, null),
+                await RoundDataProvider.TotalNumberOfRounds(DbContext, userId, null, null, Configuration.Value.DefaultListingRecordsPerPage, null, null),
                 CacheFactory.GetCacheItem<IList<SortOrderViewModel>>(CacheKeyNames.RoundListingSortOrder, Cache),
                 Configuration.Value.DefaultListingRecordsPerPage,
                 CacheFactory.GetCacheItem<IEnumerable<int>>(CacheKeyNames.NumberOfListingsPerPage, Cache),
@@ -205,8 +205,8 @@ namespace ToracGolf.Controllers
 
             return Json(new
             {
-                PagedData = await RoundDataProvider.RoundSelect(DbContext.Value, userId, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, seasonFilter, listNav.RoundsPerPage, listNav.RoundDateStartFilter, listNav.RoundDateEndFilter),
-                TotalNumberOfPages = listNav.ResetPager ? new int?(await RoundDataProvider.TotalNumberOfRounds(DbContext.Value, userId, listNav.CourseNameFilter, seasonFilter, listNav.RoundsPerPage, listNav.RoundDateStartFilter, listNav.RoundDateEndFilter)) : null
+                PagedData = await RoundDataProvider.RoundSelect(DbContext, userId, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, seasonFilter, listNav.RoundsPerPage, listNav.RoundDateStartFilter, listNav.RoundDateEndFilter),
+                TotalNumberOfPages = listNav.ResetPager ? new int?(await RoundDataProvider.TotalNumberOfRounds(DbContext, userId, listNav.CourseNameFilter, seasonFilter, listNav.RoundsPerPage, listNav.RoundDateStartFilter, listNav.RoundDateEndFilter)) : null
             });
         }
 
@@ -219,7 +219,7 @@ namespace ToracGolf.Controllers
         public async Task<IActionResult> DeleteARound([FromBody]int roundIdToDelete)
         {
             //go delete the round
-            var result = await RoundDataProvider.DeleteARound(DbContext.Value, roundIdToDelete);
+            var result = await RoundDataProvider.DeleteARound(DbContext, roundIdToDelete);
 
             //we want to clear the handicap session data, so we calc it on the next call. We deleted a round so things could shift around
             HttpContext.Session.Remove(HandicapStatusSessionName);
@@ -231,7 +231,7 @@ namespace ToracGolf.Controllers
             return Json(new
             {
                 Result = result,
-                NewHandicap = await HandicapStatusBuilder(DbContext.Value, userId, await UserCurrentSeason(DbContext.Value, userId))
+                NewHandicap = await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId))
             });
         }
 

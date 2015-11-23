@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Microsoft.Data.Entity;
+using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.MiddleLayer.EFModel.Tables;
@@ -9,7 +9,7 @@ namespace ToracGolf.MiddleLayer.EFModel
 {
     public class ToracGolfContext : DbContext
     {
-        public ToracGolfContext(string connectionString) : base(connectionString)
+        public ToracGolfContext() : base()
         {
         }
 
@@ -23,7 +23,7 @@ namespace ToracGolf.MiddleLayer.EFModel
         public virtual DbSet<Round> Rounds { get; set; }
         public virtual DbSet<RoundHandicap> RoundHandicap { get; set; }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserSeason>().ToTable("UserSeason");
             modelBuilder.Entity<Course>().ToTable("Course");
@@ -31,7 +31,7 @@ namespace ToracGolf.MiddleLayer.EFModel
 
             modelBuilder.Entity<Round>().ToTable("Round");//.HasRequired(x => x.CourseTeeLocationId);
 
-            //modelBuilder.Entity<CourseTeeLocations>().HasKey(e => e.CourseTeeLocationId);
+            modelBuilder.Entity<UserSeason>().HasKey(x => new { x.SeasonId, x.UserId });
         }
 
     }

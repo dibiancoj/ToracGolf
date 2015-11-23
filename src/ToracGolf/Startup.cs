@@ -5,6 +5,7 @@ using Microsoft.AspNet.Authentication.Twitter;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Mvc.Rendering;
+using Microsoft.Data.Entity;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -68,7 +69,9 @@ namespace ToracGolf
             //grab the ef connection string
             var connectionString = Configuration["Data:DefaultConnection:ConnectionString"];
 
-            services.AddTransient(x => new Lazy<ToracGolfContext>(() => new ToracGolfContext(connectionString), true));
+            services.AddEntityFramework()
+               .AddSqlServer()
+               .AddDbContext<ToracGolfContext>(options => options.UseSqlServer(connectionString));
 
             // Configure the options for the authentication middleware.
             // You can add options for Google, Twitter and other middleware as shown below.

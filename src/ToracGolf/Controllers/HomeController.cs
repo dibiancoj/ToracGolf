@@ -25,7 +25,7 @@ namespace ToracGolf.Controllers
 
         #region Constructor
 
-        public HomeController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, Lazy<ToracGolfContext> dbContext, IAntiforgery antiforgery, IOptions<AppSettings> configuration)
+        public HomeController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, ToracGolfContext dbContext, IAntiforgery antiforgery, IOptions<AppSettings> configuration)
         {
             DbContext = dbContext;
             Cache = cache;
@@ -38,7 +38,7 @@ namespace ToracGolf.Controllers
 
         #region Properties
 
-        private Lazy<ToracGolfContext> DbContext { get; }
+        private ToracGolfContext DbContext { get; }
 
         private IMemoryCache Cache { get; }
 
@@ -64,7 +64,7 @@ namespace ToracGolf.Controllers
             breadCrumb.Add(new BreadcrumbNavItem("Home", "#"));
 
             return View("Index", new IndexViewModel(
-                await HandicapStatusBuilder(DbContext.Value, userId, await UserCurrentSeason(DbContext.Value, userId)),
+                await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
                 breadCrumb,
                 BuildTokenSet(Antiforgery),
                 DashboardViewType.DashboardViewTypeEnum.Career));
@@ -79,15 +79,15 @@ namespace ToracGolf.Controllers
             var userId = GetUserId();
 
             //get the users default season
-            int? seasonId = Model.ViewType == DashboardViewType.DashboardViewTypeEnum.Career ? await Task.FromResult<Int32?>(null) : await UserCurrentSeason(DbContext.Value, userId);
+            int? seasonId = Model.ViewType == DashboardViewType.DashboardViewTypeEnum.Career ? await Task.FromResult<Int32?>(null) : await UserCurrentSeason(DbContext, userId);
 
             //go grab the data
             return Json(new
             {
-                Last5Rounds = await DashboardDataProvider.Last5RoundsSelect(DbContext.Value, userId, seasonId),
-                Top5Rounds = await DashboardDataProvider.Top5RoundsSelect(DbContext.Value, userId, seasonId),
-                HandicapScoreSplitGrid = await DashboardDataProvider.ScoreHandicapGraph(DbContext.Value, userId, seasonId),
-                RoundPieChart = (await DashboardDataProvider.RoundPieChart(DbContext.Value, userId, seasonId)).Select(x => new object[] { x.Key, x.Value })
+                Last5Rounds = await DashboardDataProvider.Last5RoundsSelect(DbContext, userId, seasonId),
+                Top5Rounds = await DashboardDataProvider.Top5RoundsSelect(DbContext, userId, seasonId),
+                HandicapScoreSplitGrid = await DashboardDataProvider.ScoreHandicapGraph(DbContext, userId, seasonId),
+                RoundPieChart = (await DashboardDataProvider.RoundPieChart(DbContext, userId, seasonId)).Select(x => new object[] { x.Key, x.Value })
             });
         }
 

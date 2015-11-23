@@ -25,7 +25,7 @@ namespace ToracGolf.Controllers
 
         #region Constructor
 
-        public SettingsController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, Lazy<ToracGolfContext> dbContext, IAntiforgery antiforgery, IOptions<AppSettings> configuration)
+        public SettingsController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, ToracGolfContext dbContext, IAntiforgery antiforgery, IOptions<AppSettings> configuration)
         {
             DbContext = dbContext;
             Cache = cache;
@@ -38,7 +38,7 @@ namespace ToracGolf.Controllers
 
         #region Properties
 
-        private Lazy<ToracGolfContext> DbContext { get; }
+        private ToracGolfContext DbContext { get; }
 
         private IMemoryCache Cache { get; }
 
@@ -72,7 +72,7 @@ namespace ToracGolf.Controllers
             breadCrumb.Add(new BreadcrumbNavItem("Change My Password", "#"));
 
             return View("ChangePassword", new ChangePasswordViewModel(
-                await HandicapStatusBuilder(DbContext.Value, userId, await UserCurrentSeason(DbContext.Value, userId)),
+                await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
                 breadCrumb,
                 BuildTokenSet(Antiforgery)));
         }
@@ -87,7 +87,7 @@ namespace ToracGolf.Controllers
                 var userId = GetUserId();
 
                 //need to add validation to check the old password is valid.
-                var oldPassword = await SecurityDataProvider.Password(DbContext.Value, userId);
+                var oldPassword = await SecurityDataProvider.Password(DbContext, userId);
 
                 //check the old vs current password
                 if (!string.Equals(oldPassword, changePasswordViewModel.CurrentPW, StringComparison.OrdinalIgnoreCase))
@@ -98,7 +98,7 @@ namespace ToracGolf.Controllers
                 }
 
                 //go change the password now
-                await SecurityDataProvider.ChangePassword(DbContext.Value, userId, changePasswordViewModel.NewPw1);
+                await SecurityDataProvider.ChangePassword(DbContext, userId, changePasswordViewModel.NewPw1);
 
                 //return the result
                 return Json(new { result = true });
