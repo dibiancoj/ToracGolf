@@ -205,7 +205,8 @@ namespace ToracGolf
 
             app.UseCookieAuthentication(options =>
             {
-                options.LoginPath = new Microsoft.AspNet.Http.PathString("/Security/LogIn");
+                options.LoginPath = new Microsoft.AspNet.Http.PathString("/LogIn");
+                options.AutomaticChallenge = true;
                 options.AutomaticAuthenticate = true;
                 options.AuthenticationScheme = "Cookies";
             });

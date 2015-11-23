@@ -29,7 +29,7 @@ var ChangePasswordForm = React.createClass({displayName: "ChangePasswordForm",
                 }
             })
             .fail(function (err) {
-                //go make ajax call here
+                //go set the validation items and show the error
                 _this.setState({ Errors: err.responseJSON[''] });
             });
         }
