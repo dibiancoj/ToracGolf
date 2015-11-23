@@ -23,6 +23,7 @@
 /// <reference path="js/Angular/Season/SeasonHttp.js" />
 /// <reference path="js/angular/season/seasonlistingcontroller.js" />
 /// <reference path="js/angular/toracgolfapp.js" />
+/// <reference path="js/common/jquerycommon.js" />
 /// <reference path="js/login.js" />
 /// <reference path="js/react/changepassword/changemypassword.js" />
 /// <reference path="js/react/common/reactvalidation.js" />

@@ -19,9 +19,9 @@ var ChangePasswordForm = React.createClass({
         if (result.length == 0) {
 
      
-            alert('need to add antiforgery token and await spinner');
+            alert('need to add antiforgery token');
 
-            ToracTechnologies.Ajax.RunAjaxCall('ChangePassword', this.getFormData(), true)
+            RunAjax('ChangePassword', this.getFormData())
             .done(function (response) {
             
                 if (response.result) {
