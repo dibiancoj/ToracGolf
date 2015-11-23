@@ -37,5 +37,7 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
         [Required]
         public double Slope { get; set; }
 
+        public Course Course { get; set; }
+
     }
 }

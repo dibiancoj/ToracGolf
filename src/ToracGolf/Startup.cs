@@ -125,7 +125,7 @@ namespace ToracGolf
 
             ////add the state listing factory configuration
             cacheFactory.AddConfiguration(CacheKeyNames.StateListing,
-                 () => MiddleLayer.States.StateListing.StateSelect(services.BuildServiceProvider().GetService<Lazy<ToracGolfContext>>().Value)
+                 () => MiddleLayer.States.StateListing.StateSelect(services.BuildServiceProvider().GetService<ToracGolfContext>())
                 .Select(y => new SelectListItem { Text = y.Description, Value = y.StateId.ToString() })
                 .ToImmutableList());
 

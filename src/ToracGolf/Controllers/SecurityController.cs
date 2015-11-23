@@ -79,6 +79,11 @@ namespace ToracGolf.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult LogIn()
         {
+            #region Only Here For Debugging
+            LogUserIn(SecurityDataProvider.UserLogIn(DbContext, "dibiancoj@gmail.com", "0").Result).Wait();
+            return RedirectToAction("Index", "Home");
+            #endregion
+
             if (IsUserAuthenticated())
             {
                 //go send them to the main page

@@ -132,7 +132,7 @@ namespace ToracGolf.MiddleLayer.Courses
             {
                 CourseData = x,
                 StateDescription = dbContext.Ref_State.FirstOrDefault(y => y.StateId == x.StateId).Description,
-                TeeLocationCount = dbContext.CourseTeeLocations.Count(y => y.CourseId == x.CourseId),
+                TeeLocationCount = x.CourseTeeLocations.Count,
                 CourseImage = dbContext.CourseImages.FirstOrDefault(y => y.CourseId == x.CourseId),
 
                 NumberOfRounds = dbContext.Rounds.Count(y => y.CourseId == x.CourseId && y.UserId == userId),

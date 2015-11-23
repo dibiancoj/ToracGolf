@@ -26,7 +26,11 @@ namespace ToracGolf.MiddleLayer.EFModel
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserSeason>().ToTable("UserSeason");
-            modelBuilder.Entity<Course>().ToTable("Course");
+
+            modelBuilder.Entity<Course>().ToTable("Course")
+                .HasMany(x => x.CourseTeeLocations)
+                .WithOne(x => x.Course);
+
             modelBuilder.Entity<RoundHandicap>().ToTable("RoundHandicap");
 
             modelBuilder.Entity<Round>().ToTable("Round");//.HasRequired(x => x.CourseTeeLocationId);
