@@ -18,7 +18,7 @@
 
         //for some reason the home controll because of default path is having issues with background and http path...so we will put the root path in. (only when publishing its an issue)
         $scope.RootPath = function () {
-           return _rootDir;
+            return _rootDir;
         },
 
         $scope.LoadDashboardView = function (viewToLoad) {
@@ -40,6 +40,8 @@
 
                 //resize the window so highcharts adjust correcty
                 $(window).trigger('resize');
+            }, function (errResponse) {
+                alert('Error: ' + JSON.stringify(errResponse));
             });
         },
 
