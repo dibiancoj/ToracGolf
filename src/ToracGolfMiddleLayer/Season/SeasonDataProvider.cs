@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Data.Entity;
+using System.Data.Entity;
 using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.EFModel.Tables;
 using ToracGolf.MiddleLayer.Season.Models;

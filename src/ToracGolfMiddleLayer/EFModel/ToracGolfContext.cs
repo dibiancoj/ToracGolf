@@ -1,6 +1,6 @@
-﻿using Microsoft.Data.Entity;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.MiddleLayer.EFModel.Tables;
@@ -9,7 +9,7 @@ namespace ToracGolf.MiddleLayer.EFModel
 {
     public class ToracGolfContext : DbContext
     {
-        public ToracGolfContext() : base()
+        public ToracGolfContext(string connectionString) : base(connectionString)
         {
         }
 
@@ -23,19 +23,15 @@ namespace ToracGolf.MiddleLayer.EFModel
         public virtual DbSet<Round> Rounds { get; set; }
         public virtual DbSet<RoundHandicap> RoundHandicap { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserSeason>().ToTable("UserSeason");
-
-            modelBuilder.Entity<Course>().ToTable("Course")
-                .HasMany(x => x.CourseTeeLocations)
-                .WithOne(x => x.Course);
-
+            modelBuilder.Entity<Course>().ToTable("Course");
             modelBuilder.Entity<RoundHandicap>().ToTable("RoundHandicap");
 
             modelBuilder.Entity<Round>().ToTable("Round");//.HasRequired(x => x.CourseTeeLocationId);
 
-            modelBuilder.Entity<UserSeason>().HasKey(x => new { x.SeasonId, x.UserId });
+            //modelBuilder.Entity<CourseTeeLocations>().HasKey(e => e.CourseTeeLocationId);
         }
 
     }

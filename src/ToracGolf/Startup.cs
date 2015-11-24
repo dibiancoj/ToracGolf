@@ -69,9 +69,12 @@ namespace ToracGolf
             //grab the ef connection string
             var connectionString = Configuration["Data:DefaultConnection:ConnectionString"];
 
-            services.AddEntityFramework()
-               .AddSqlServer()
-               .AddDbContext<ToracGolfContext>(options => options.UseSqlServer(connectionString));
+            services.AddTransient(x => new ToracGolfContext(connectionString));
+
+            //ef 7
+            //services.AddEntityFramework()
+            //   .AddSqlServer()
+            //   .AddDbContext<ToracGolfContext>(options => options.UseSqlServer(connectionString));
 
             // Configure the options for the authentication middleware.
             // You can add options for Google, Twitter and other middleware as shown below.
