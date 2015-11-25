@@ -32,6 +32,10 @@ namespace ToracGolf.MiddleLayer.EFModel
             modelBuilder.Entity<Round>().ToTable("Round");//.HasRequired(x => x.CourseTeeLocationId);
 
             //modelBuilder.Entity<CourseTeeLocations>().HasKey(e => e.CourseTeeLocationId);
+
+            modelBuilder.Entity<CourseImages>().HasKey(x => x.CourseId);
+            modelBuilder.Entity<Course>().HasOptional(x => x.CourseImage).WithRequired(x => x.Course);
+            
         }
 
     }

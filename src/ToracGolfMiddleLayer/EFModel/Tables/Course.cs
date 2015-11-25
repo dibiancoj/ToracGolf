@@ -42,5 +42,7 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
 
         public ICollection<CourseTeeLocations> CourseTeeLocations { get; set; }
 
+        public CourseImages CourseImage { get; set; }
+
     }
 }

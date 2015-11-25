@@ -18,5 +18,7 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
         //public byte[] CourseImage { get; set; }
         public byte[] CourseImage { get; set; }
 
+        public Course Course { get; set; }
+
     }
 }

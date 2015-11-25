@@ -260,10 +260,14 @@ namespace ToracGolf.Controllers
             //grab the user id
             var userId = GetUserId();
 
+            //grab the course
+            var course = await CourseDataProvider.CourseSelect(DbContext, CourseId);
+
             return View(new CourseStatsViewModel(
                 await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
                 breadCrumb,
-                BuildTokenSet(Antiforgery)));
+                BuildTokenSet(Antiforgery),
+                course));
         }
 
         #endregion

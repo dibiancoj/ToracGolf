@@ -134,7 +134,8 @@ namespace ToracGolf.MiddleLayer.Courses
                 CourseData = x,
                 StateDescription = dbContext.Ref_State.FirstOrDefault(y => y.StateId == x.StateId).Description,
                 TeeLocationCount = x.CourseTeeLocations.Count,
-                CourseImage = dbContext.CourseImages.FirstOrDefault(y => y.CourseId == x.CourseId),
+
+                CourseImage = x.CourseImage.CourseImage,
 
                 NumberOfRounds = dbContext.Rounds.Count(y => y.CourseId == x.CourseId && y.UserId == userId),
                 TopScore = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.Score).Min(),
@@ -188,6 +189,15 @@ namespace ToracGolf.MiddleLayer.Courses
         }
 
         #endregion
+
+        #region Course Select
+
+        public static async Task<Course> CourseSelect(ToracGolfContext dbContext, int courseId)
+        {
+            return await dbContext.Course.AsNoTracking().Include(x => x.CourseImage).FirstAsync(x => x.CourseId == courseId);
+        }
+
+        #endregion  
 
     }
 }
