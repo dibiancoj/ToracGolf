@@ -24,6 +24,7 @@
     <script src="~/lib/angular/angular.js"></script>
     <script src="~/lib/angular/angular-animate.js"></script>
     <script src="~/js/angular/toracgolfapp.js"></script>
+    <script src="~/js/angular/common/percentfilter.js"></script>
     <script src="~/js/angular/common/httprequestinterceptor.js"></script>
     <script src="~/js/angular/common/modaleventdirective.js"></script>
     <script src="~/js/angular/common/pagerfactory.js"></script>
@@ -105,6 +106,20 @@
                                     </p>
                                     <p>
                                         Tee Locations: {{course.TeeLocationCount}}
+                                    </p>
+                                    <p>Greens In Regulation (Avg): {{(course.GreensInRegulation | number:0) || 'N/A' }}</p>
+                                    <p>Number Of Putts (Avg): {{(course.NumberOfPutts | number:0) || 'N/A'}}</p>
+                                    <p>
+                                        Fairways Hit: <span class="InlineSpan" ng-if="course.FairwaysHit != null && course.FairwaysHitAttempted != null">
+                                            {{(course.FairwaysHit | number:0) || 'N/A'}}
+                                            of
+                                            {{(course.FairwaysHitAttempted | number:0) || 'N/A'}}
+
+                                            <b> ({{((course.FairwaysHit / course.FairwaysHitAttempted) | percent: 0)}})</b>
+                                        </span>
+                                        <span class="InlineSpan" ng-if="course.FairwaysHit == null || course.FairwaysHitAttempted == null">
+                                            N/A
+                                        </span>
                                     </p>
                                 </div>
                                 <div class="listing-footer">

@@ -24,6 +24,11 @@ namespace ToracGolf.MiddleLayer.Courses
         public int? WorseScore { get; set; }
         public double? AverageScore { get; set; }
 
+        public double? GreensInRegulation { get; set; }
+        public int? FairwaysHit { get; set; }
+        public int? FairwaysHitAttempted { get; set; }
+        public double? NumberOfPutts { get; set; }
+
         #endregion
 
     }

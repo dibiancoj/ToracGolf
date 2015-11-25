@@ -138,7 +138,13 @@ namespace ToracGolf.MiddleLayer.Courses
                 NumberOfRounds = dbContext.Rounds.Count(y => y.CourseId == x.CourseId && y.UserId == userId),
                 TopScore = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.Score).Min(),
                 WorseScore = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.Score).Max(),
-                AverageScore = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.Score).Average()
+                AverageScore = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.Score).Average(),
+
+                FairwaysHit = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.FairwaysHit).Sum(),
+                FairwaysHitAttempted = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.FairwaysHitPossible).Sum(),
+                GreensInRegulation = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.GreensInRegulation).Average(),
+                NumberOfPutts = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.Putts).Average()
+
             }).Skip(skipAmount).Take(recordsPerPage).ToArrayAsync();
         }
 

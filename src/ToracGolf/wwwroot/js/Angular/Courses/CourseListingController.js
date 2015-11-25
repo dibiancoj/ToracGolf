@@ -62,7 +62,7 @@
             //go grab the records to display
             CourseHttp.CourseListing(resetPagerToPage1, $scope.CurrentPageId, $scope.SortBy, $scope.SearchByCourseName, $scope.StateFilter, $scope.CoursesPerPage)
                 .then(function (result) {
-
+                   
                     //set the paged data
                     $scope.PagedData = result.data.PagedData;
 
