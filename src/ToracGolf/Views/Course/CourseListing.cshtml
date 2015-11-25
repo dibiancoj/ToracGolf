@@ -94,8 +94,8 @@
                                 <div class="btn btn-icon btn-icon-right fa-close pull-right CourseDelete" title="Archive This Course" ng-click="ArchiveACourse(course.CourseData.CourseId)"></div>
                             </div>
                             <div class="listing-image">
-                                <img ng-src="data:image/png;base64,{{course.CourseImage.CourseImage}}" class="img-responsive CourseListingImage CourseListingHeight" alt="">
-                                <a href="#" class="btn btn-lg btn-square btn-base btn-block-bm btn-icon btn-icon-go">See more</a>
+                                <img ng-src="data:image/png;base64,{{course.CourseImage.CourseImage}}" class="img-responsive CourseListingImage CourseListingHeight" alt="Course Image">
+                                <a href="CourseStats/{{::course.CourseData.CourseId}}" target="_blank" class="btn btn-lg btn-square btn-base btn-block-bm btn-icon btn-icon-go">See more</a>
                             </div>
                             <div class="cell">
                                 <div class="listing-body clearfix CourseListingHeight">

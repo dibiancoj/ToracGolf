@@ -245,5 +245,28 @@ namespace ToracGolf.Controllers
 
         #endregion
 
+        #region Course Stats
+
+        [HttpGet]
+        [Route("CourseStats/{CourseId}", Name = "CourseStats")]
+        public async Task<IActionResult> CourseStatSelect(int CourseId)
+        {
+            //build the breadcrumb
+            var breadCrumb = BaseBreadCrumb();
+
+            //add the current screen
+            breadCrumb.Add(new BreadcrumbNavItem("Course Stats", "#"));
+
+            //grab the user id
+            var userId = GetUserId();
+
+            return View(new CourseStatsViewModel(
+                await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
+                breadCrumb,
+                BuildTokenSet(Antiforgery)));
+        }
+
+        #endregion
+
     }
 }
