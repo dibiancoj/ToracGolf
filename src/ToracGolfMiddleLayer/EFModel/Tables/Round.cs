@@ -36,7 +36,6 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
 
         public int? GreensInRegulation { get; set; }
         public int? FairwaysHit { get; set; }
-        public int? FairwaysHitPossible { get; set; }
         public int? Putts { get; set; }
 
         public virtual Course Course { get; set; }

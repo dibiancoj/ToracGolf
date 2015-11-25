@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using ToracGolf.MiddleLayer.CustomValidators;
 
 namespace ToracGolf.MiddleLayer.Rounds
 {
@@ -39,18 +38,16 @@ namespace ToracGolf.MiddleLayer.Rounds
         /// </summary>
         public string StateId { get; set; }
 
+        [Range(0, 18, ErrorMessage = "Greens In Regulation Must Be Between 0 and 18")]
         [Display(Name = "Greens In Regulation")]
         public int? GreensInRegulation { get; set; }
 
-        [Display(Name = "Fairways Hit")]
-        [FairwaysHitRequired(nameof(FairwaysHitPossible), ErrorMessage = "Number Of Fairways Is Required When Fairways Hit Is Filled Out")]
-        public int? FairwaysHit { get; set; }
-
-        [Display(Name = "Number Of Fairways")]
-        public int? FairwaysHitPossible { get; set; }
-
         [Display(Name = "Number Of Putts")]
         public int? Putts { get; set; }
+
+        [Range(0, 18, ErrorMessage = "Fairways Hit Must Be Between 0 and 18")]
+        [Display(Name = "Fairways Hit")]
+        public int? FairwaysHit { get; set; }
 
         #endregion
 

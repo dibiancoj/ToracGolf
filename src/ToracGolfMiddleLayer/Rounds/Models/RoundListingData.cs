@@ -37,7 +37,13 @@ namespace ToracGolf.MiddleLayer.Rounds.Models
         public int? Putts { get; set; }
         public int? GreensInRegulation { get; set; }
         public int? FairwaysHit { get; set; }
-        public int? FairwaysHitAttempted { get; set; }
+        public int? FairwaysHitAttempted
+        {
+            get
+            {
+                return TeeBoxLocation.FairwaysOnCourse;
+            }
+        }
     }
 
     public class RoundPerformance

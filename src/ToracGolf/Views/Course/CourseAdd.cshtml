@@ -102,6 +102,17 @@
                                 </div>
                             </section>
                             <section>
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <label class="label"># Of Par 3's On Course</label>
+                                        <label class="input">
+                                            <i class="icon-append fa fa-calculator"></i>
+                                            <input type="text" name="Par3HoldCount" numbers-only numbers-only-allowOnlyInts="false" ng-model="TempTeeLocation.NumberOfPar3s" ng-keyup="DefaultTeeButton($event)" maxlength="5" />
+                                        </label>
+                                    </div>
+                                </div>
+                            </section>
+                            <section>
                                 @Html.Partial("_ValidationSummaryAngular")
                             </section>
                             <section>

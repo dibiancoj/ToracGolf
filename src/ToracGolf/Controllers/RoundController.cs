@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.Constants;
 using ToracGolf.Filters;
+using ToracGolf.MiddleLayer.Courses;
 using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.GridCommon;
 using ToracGolf.MiddleLayer.Rounds;
@@ -99,20 +100,35 @@ namespace ToracGolf.Controllers
             //do we have a valid model?
             if (ModelState.IsValid)
             {
-                //grab the user id
-                var userId = GetUserId();
+                //make sure they don't have fairways hit more then the course allows
+                if (model.FairwaysHit.HasValue)
+                {
+                    int maxFairwaysHitAllowed = await CourseDataProvider.TeeboxNumberOfFairways(DbContext, model.TeeLocationId);
 
-                //grab the users current season
-                var usersCurrentSeason = await UserCurrentSeason(DbContext, userId);
+                    if (model.FairwaysHit.Value > maxFairwaysHitAllowed)
+                    {
+                        ModelState.AddModelError(string.Empty, "Fairways Hit Must Be Less Than " + maxFairwaysHitAllowed);
+                    }
+                }
 
-                //let's try to add this user to the system
-                var roundAddAttempt = await RoundDataProvider.SaveRound(DbContext, userId, usersCurrentSeason, model);
+                //do we have any errors
+                if (ModelState.ErrorCount == 0)
+                {
+                    //grab the user id
+                    var userId = GetUserId();
 
-                //if we saved the round, we want to clear out the session so the next call which go calculate the handicap now
-                HttpContext.Session.Remove(HandicapStatusSessionName);
+                    //grab the users current season
+                    var usersCurrentSeason = await UserCurrentSeason(DbContext, userId);
 
-                //we saved it successfully
-                return Json(new { result = true });
+                    //let's try to add this user to the system
+                    var roundAddAttempt = await RoundDataProvider.SaveRound(DbContext, userId, usersCurrentSeason, model);
+
+                    //if we saved the round, we want to clear out the session so the next call which go calculate the handicap now
+                    HttpContext.Session.Remove(HandicapStatusSessionName);
+
+                    //we saved it successfully
+                    return Json(new { result = true });
+                }
             }
 
             //add a generic error if we don't have (this way we return something)

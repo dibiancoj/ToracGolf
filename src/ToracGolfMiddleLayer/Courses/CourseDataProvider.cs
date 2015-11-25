@@ -38,7 +38,8 @@ namespace ToracGolf.MiddleLayer.Courses
                 Back9Par = x.Back9Par.Value,
                 Rating = x.Rating.Value,
                 Slope = x.Slope.Value,
-                Yardage = x.Yardage.Value
+                Yardage = x.Yardage.Value,
+                FairwaysOnCourse = 18 - x.NumberOfPar3s.Value
             }).ToArray();
 
             //add the course to the context
@@ -141,7 +142,7 @@ namespace ToracGolf.MiddleLayer.Courses
                 AverageScore = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.Score).Average(),
 
                 FairwaysHit = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.FairwaysHit).Sum(),
-                FairwaysHitAttempted = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.FairwaysHitPossible).Sum(),
+                FairwaysHitAttempted = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.CourseTeeLocation.FairwaysOnCourse).Sum(),
                 GreensInRegulation = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.GreensInRegulation).Average(),
                 NumberOfPutts = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.Putts).Average()
 
@@ -175,6 +176,15 @@ namespace ToracGolf.MiddleLayer.Courses
 
             //return a positive result
             return true;
+        }
+
+        #endregion
+
+        #region Tee Box Selection
+
+        public static async Task<int> TeeboxNumberOfFairways(ToracGolfContext dbContext, int courseTeeLocationId)
+        {
+            return (await dbContext.CourseTeeLocations.FirstAsync(x => x.CourseTeeLocationId == courseTeeLocationId)).CourseTeeLocationId;
         }
 
         #endregion

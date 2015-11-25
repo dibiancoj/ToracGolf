@@ -81,10 +81,9 @@ namespace ToracGolf.MiddleLayer.Rounds
                 Score = roundData.Score.Value,
                 UserId = userId,
                 SeasonId = seasonId,
-                FairwaysHit = roundData.FairwaysHit,
-                FairwaysHitPossible = roundData.FairwaysHitPossible,
                 GreensInRegulation = roundData.GreensInRegulation,
-                Putts = roundData.Putts
+                Putts = roundData.Putts,
+                FairwaysHit = roundData.FairwaysHit
             };
 
             //add the round
@@ -147,7 +146,7 @@ namespace ToracGolf.MiddleLayer.Rounds
                     .Select(roundToLast20).ToArray();
 
                 //current round we are up too
-                var currentRoundInArrayFormat = new Last20Rounds[] { roundToLast20(roundToCalculate) }; 
+                var currentRoundInArrayFormat = new Last20Rounds[] { roundToLast20(roundToCalculate) };
 
                 //rounds for the "After round handicap"
                 ICollection<Last20Rounds> roundsToCalculateAfterRoundHandicap;
@@ -229,7 +228,6 @@ namespace ToracGolf.MiddleLayer.Rounds
 
                 Putts = x.Putts,
                 FairwaysHit = x.FairwaysHit,
-                FairwaysHitAttempted = x.FairwaysHitPossible,
                 GreensInRegulation = x.GreensInRegulation
             });
         }

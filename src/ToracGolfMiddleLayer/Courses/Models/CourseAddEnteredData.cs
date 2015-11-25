@@ -81,6 +81,11 @@ namespace ToracGolf.MiddleLayer.Courses
         [Required(ErrorMessage = "Slope Is A Required Field")]
         public double? Slope { get; set; }
 
+        [Display(Name = "Number Of Par 3's On the Source")]
+        [Range(1, 18, ErrorMessage = "Par 3 Holes Must Be Between 1 and 18")]
+        [Required(ErrorMessage = "{Par 3's Is A Required Field")]
+        public int? NumberOfPar3s { get; set; }
+
     }
 
 }
