@@ -43,7 +43,7 @@
                 </div>
                 <div class="modal-body">
                     Are You Sure You Want To Archive This Season? <br />
-                    There Are <b>{{NumberOfRoundsAssociatedWithThisSeason}}</b> Rounds In This Season That Will Be Deleted.
+                    There Are <b>{{::NumberOfRoundsAssociatedWithThisSeason}}</b> Rounds In This Season That Will Be Deleted.
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default btn-primary" data-dismiss="modal">Cancel</button>
@@ -61,7 +61,7 @@
                     <ul class="list-listings-2" ng-repeat="season in PagedData">
                         <li class="featured">
                             <div class="listing-header bg-base">
-                                {{season.Description}} Season
+                                {{::season.Description}} Season
                                 <div ng-if="season.SeasonId !== CurrentSeasonId" class="btn btn-icon btn-icon-right fa fa-gear MakeCurrentSeason SeasonHeaderMenuItem" title="Make Current Season" ng-click="MakeCurrentSeason(season.SeasonId)"></div>
 
                                 <div ng-if="season.SeasonId === CurrentSeasonId" class="pull-right currentseason">Current Season</div>
@@ -69,14 +69,14 @@
                             </div>
                             <div class="cell col-xs-12">
                                 <div class="listing-body clearfix">
-                                    <h3><a href="#">{{season.Description}} Season</a></h3>
+                                    <h3><a href="#">{{::season.Description}} Season</a></h3>
                                 </div>
                                 <div class="listing-footer">
                                     <ul class="aux-info">
-                                        <li><i class="fa fa-bar-chart-o"></i><strong>Rounds: </strong>{{season.NumberOfRounds | number:0}}</li>
-                                        <li><i class="fa fa-smile-o"></i><strong>Top Score: </strong>{{season.TopScore | number:0}}</li>
-                                        <li><i class="fa fa-frown-o"></i><strong>Worse Score: </strong>{{season.WorseScore | number:0}}</li>
-                                        <li><i class="fa fa-calculator"></i><strong>Avg Score: </strong>{{season.AverageScore | number:1}}</li>
+                                        <li><i class="fa fa-bar-chart-o"></i><strong>Rounds: </strong>{{::season.NumberOfRounds | number:0}}</li>
+                                        <li><i class="fa fa-smile-o"></i><strong>Top Score: </strong>{{::season.TopScore | number:0}}</li>
+                                        <li><i class="fa fa-frown-o"></i><strong>Worse Score: </strong>{{::season.WorseScore | number:0}}</li>
+                                        <li><i class="fa fa-calculator"></i><strong>Avg Score: </strong>{{::season.AverageScore | number:1}}</li>
                                     </ul>
                                 </div>
                             </div>

@@ -95,7 +95,7 @@
                     <ul class="list-listings-2" ng-repeat="round in PagedData track by round.RoundId">
                         <li class="featured">
                             <div class="listing-header bg-base">
-                                {{round.RoundDate | date:'MM/dd/yyyy'}}: {{round.Score}} at {{round.CourseName}} ({{round.TeeBoxLocation.Description}} Tee Box)
+                                {{::round.RoundDate | date:'MM/dd/yyyy'}}: {{::round.Score}} at {{::round.CourseName}} ({{::round.TeeBoxLocation.Description}} Tee Box)
 
                                 <span class="star-rating">
                                     <i ng-class="round.RoundPerformance > 0 ? 'fa fa-star': 'fa fa-star-o'"></i>
@@ -113,19 +113,19 @@
                             </div>
                             <div class="cell">
                                 <div class="listing-body clearfix RoundListingHeight">
-                                    <h3><a href="{{RootPath()}}CourseSelect/{{round.CourseId}}">{{round.CourseName}}</a></h3>
-                                    <h4>{{round.RoundDate | date:'MM/dd/yyyy'}}</h4>
+                                    <h3><a href="{{RootPath()}}CourseSelect/{{::round.CourseId}}">{{::round.CourseName}}</a></h3>
+                                    <h4>{{::round.RoundDate | date:'MM/dd/yyyy'}}</h4>
                                     <p>
-                                        Par: {{round.TeeBoxLocation.Front9Par + round.TeeBoxLocation.Back9Par}} - Yardage: {{round.TeeBoxLocation.Yardage | number:0}}
+                                        Par: {{::round.TeeBoxLocation.Front9Par + round.TeeBoxLocation.Back9Par}} - Yardage: {{::round.TeeBoxLocation.Yardage | number:0}}
                                     </p>
                                     <p>
-                                        Raw Score = {{round.Score}}
+                                        Raw Score = {{::round.Score}}
                                     </p>
                                     <p>
-                                        Adjusted Score = {{round.AdjustedScore}}
+                                        Adjusted Score = {{::round.AdjustedScore}}
                                     </p>
                                     <p>
-                                        Tee Box: {{round.TeeBoxLocation.Description}}
+                                        Tee Box: {{::round.TeeBoxLocation.Description}}
                                     </p>
                                 </div>
                                 <div class="listing-footer">
@@ -136,9 +136,9 @@
                                             <i class="fa fa-calculator"></i><strong>Fairways Hit: </strong>
 
                                             <span class="InlineSpan" ng-if="round.FairwaysHit != null && round.FairwaysHitAttempted != null">
-                                                {{round.FairwaysHit}}
+                                                {{::round.FairwaysHit}}
                                                 of
-                                                {{round.FairwaysHitAttempted}}
+                                                {{::round.FairwaysHitAttempted}}
 
                                                 <b> ({{((round.FairwaysHit / round.FairwaysHitAttempted) | percent: 0)}})</b>
                                             </span>

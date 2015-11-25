@@ -89,7 +89,7 @@
                     <ul class="list-listings-2" ng-repeat="course in PagedData track by course.CourseData.Name">
                         <li class="featured">
                             <div class="listing-header bg-base">
-                                {{course.CourseData.Name}}
+                                {{::course.CourseData.Name}}
 
                                 <div class="btn btn-icon btn-icon-right fa-close pull-right CourseDelete" title="Archive This Course" ng-click="ArchiveACourse(course.CourseData.CourseId)"></div>
                             </div>
@@ -99,21 +99,21 @@
                             </div>
                             <div class="cell">
                                 <div class="listing-body clearfix CourseListingHeight">
-                                    <h3><a href="#">{{course.CourseData.Name}}</a></h3>
-                                    <h4>{{course.CourseData.City}}, {{course.StateDescription}}</h4>
+                                    <h3><a href="#">{{::course.CourseData.Name}}</a></h3>
+                                    <h4>{{::course.CourseData.City}}, {{::course.StateDescription}}</h4>
                                     <p>
-                                        {{course.CourseData.Description}}
+                                        {{::course.CourseData.Description}}
                                     </p>
                                     <p>
-                                        Tee Locations: {{course.TeeLocationCount}}
+                                        Tee Locations: {{::course.TeeLocationCount}}
                                     </p>
-                                    <p>Greens In Regulation (Avg): {{(course.GreensInRegulation | number:0) || 'N/A' }}</p>
-                                    <p>Number Of Putts (Avg): {{(course.NumberOfPutts | number:0) || 'N/A'}}</p>
+                                    <p>Greens In Regulation (Avg): {{::(course.GreensInRegulation | number:0) || 'N/A' }}</p>
+                                    <p>Number Of Putts (Avg): {{::(course.NumberOfPutts | number:0) || 'N/A'}}</p>
                                     <p>
                                         Fairways Hit: <span class="InlineSpan" ng-if="course.FairwaysHit != null && course.FairwaysHitAttempted != null">
-                                            {{(course.FairwaysHit | number:0) || 'N/A'}}
+                                            {{::(course.FairwaysHit | number:0) || 'N/A'}}
                                             of
-                                            {{(course.FairwaysHitAttempted | number:0) || 'N/A'}}
+                                            {{::(course.FairwaysHitAttempted | number:0) || 'N/A'}}
 
                                             <b> ({{((course.FairwaysHit / course.FairwaysHitAttempted) | percent: 0)}})</b>
                                         </span>
@@ -124,10 +124,10 @@
                                 </div>
                                 <div class="listing-footer">
                                     <ul class="aux-info">
-                                        <li><i class="fa fa-bar-chart-o"></i><strong>Rounds: </strong>{{course.NumberOfRounds | number:0}}</li>
-                                        <li><i class="fa fa-smile-o"></i><strong>Top Score: </strong>{{course.TopScore | number:0}}</li>
-                                        <li><i class="fa fa-frown-o"></i><strong>Worse Score: </strong>{{course.WorseScore | number:0}}</li>
-                                        <li><i class="fa fa-calculator"></i><strong>Avg Score: </strong>{{course.AverageScore | number:1}}</li>
+                                        <li><i class="fa fa-bar-chart-o"></i><strong>Rounds: </strong>{{::course.NumberOfRounds | number:0}}</li>
+                                        <li><i class="fa fa-smile-o"></i><strong>Top Score: </strong>{{::course.TopScore | number:0}}</li>
+                                        <li><i class="fa fa-frown-o"></i><strong>Worse Score: </strong>{{::course.WorseScore | number:0}}</li>
+                                        <li><i class="fa fa-calculator"></i><strong>Avg Score: </strong>{{::course.AverageScore | number:1}}</li>
                                     </ul>
                                 </div>
                             </div>

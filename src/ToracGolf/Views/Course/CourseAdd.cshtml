@@ -21,6 +21,7 @@
 }
 
 @section Scripts{
+    <script src="~/lib/jlinq/jlinq.js"></script>
     <script src="~/lib/angular/angular.js"></script>
     <script src="~/lib/angular/angular-animate.js"></script>
     <script src="~/js/angular/toracgolfapp.js"></script>
@@ -190,10 +191,10 @@
                                             </thead>
                                             <tbody>
                                                 <tr ng-repeat="teeBox in model.TeeLocations track by teeBox.Description">
-                                                    <td ng-click="EditTeeLocation($index)" class="IsFakeLink">{{teeBox.Description}}</td>
-                                                    <td ng-click="EditTeeLocation($index)" class="IsFakeLink">{{teeBox.Par()}}</td>
-                                                    <td ng-click="EditTeeLocation($index)" class="IsFakeLink">{{teeBox.Slope}}</td>
-                                                    <td ng-click="EditTeeLocation($index)" class="IsFakeLink">{{teeBox.Rating}}</td>
+                                                    <td ng-click="EditTeeLocation($index)" class="IsFakeLink">{{::teeBox.Description}}</td>
+                                                    <td ng-click="EditTeeLocation($index)" class="IsFakeLink">{{::teeBox.Par()}}</td>
+                                                    <td ng-click="EditTeeLocation($index)" class="IsFakeLink">{{::teeBox.Slope}}</td>
+                                                    <td ng-click="EditTeeLocation($index)" class="IsFakeLink">{{::teeBox.Rating}}</td>
                                                     <td ng-click="DeleteTeeLocation($index)"><span class="glyphicon glyphicon-trash IsFakeLink DeleteTeeLocation" aria-hidden="true"></span></td>
                                                 </tr>
                                             </tbody>
