@@ -6,7 +6,7 @@
 
 var ChangePasswordForm = React.createClass({
     getInitialState: function () {
-        return { Errors: [] }
+        return { Errors: [] };
     },
     handleSubmit: function () {
 
