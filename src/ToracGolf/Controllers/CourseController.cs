@@ -261,7 +261,7 @@ namespace ToracGolf.Controllers
             var userId = GetUserId();
 
             //grab the course
-            var course = await CourseDataProvider.CourseSelect(DbContext, CourseId);
+            var course = await CourseDataProvider.CourseStatsSelect(DbContext, CourseId, userId);
 
             return View(new CourseStatsViewModel(
                 await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),

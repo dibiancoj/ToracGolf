@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.EFModel.Tables;
 using ToracLibrary.AspNet.Paging;
+using ToracGolf.MiddleLayer.Courses.Models;
 
 namespace ToracGolf.MiddleLayer.Courses
 {
@@ -192,9 +193,18 @@ namespace ToracGolf.MiddleLayer.Courses
 
         #region Course Select
 
-        public static async Task<Course> CourseSelect(ToracGolfContext dbContext, int courseId)
+        public static async Task<CourseStatsModel> CourseStatsSelect(ToracGolfContext dbContext, int courseId, int userId)
         {
-            return await dbContext.Course.AsNoTracking().Include(x => x.CourseImage).FirstAsync(x => x.CourseId == courseId);
+            return await dbContext.Course.AsNoTracking().Select(x => new CourseStatsModel
+            {
+                CourseData = x,
+                RoundCount = dbContext.Rounds.Count(y => y.CourseId == courseId && y.UserId == userId ),
+                TeeBoxCount = x.CourseTeeLocations.Count(),
+                CourseState = x.State.Description,
+                CourseImage = x.CourseImage.CourseImage,
+                BestScore = dbContext.Rounds.Where(y => y.CourseId == courseId && y.UserId == userId).Select(y => y.Score).Min(),
+                AverageScore = dbContext.Rounds.Where(y => y.CourseId == courseId && y.UserId == userId).Select(y => y.Score).Average(),
+            }).FirstAsync(x => x.CourseData.CourseId == courseId);
         }
 
         #endregion  

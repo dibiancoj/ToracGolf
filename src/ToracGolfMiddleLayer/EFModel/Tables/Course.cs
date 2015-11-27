@@ -44,5 +44,7 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
 
         public CourseImages CourseImage { get; set; }
 
+        public Ref_State State { get; set; }
+
     }
 }

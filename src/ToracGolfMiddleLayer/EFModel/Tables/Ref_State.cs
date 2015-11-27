@@ -16,5 +16,7 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
         [StringLength(100)]
         public string Description { get; set; }
 
+        public ICollection<Course> Courses { get; set; }
+
     }
 }

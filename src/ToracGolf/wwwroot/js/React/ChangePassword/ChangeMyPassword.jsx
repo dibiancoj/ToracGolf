@@ -18,7 +18,7 @@ var ChangePasswordForm = React.createClass({
 
             RunAjax('ChangePassword', this.getFormData())
             .done(function (response) {
-            
+
                 if (response.result) {
                     $('#SaveSuccessfulDialog').modal('show');
 
@@ -108,16 +108,16 @@ var ChangePasswordForm = React.createClass({
                                             <span>Change Password</span>
                                         </button>
                                     </section>
-                            </fieldset>);
+                        </fieldset>);
     }
 });
 
 
-        $(document).ready(function () {
+$(document).ready(function () {
 
-            //go render the form
-            ReactDOM.render(
+    //go render the form
+    ReactDOM.render(
           <ChangePasswordForm />,
           document.getElementById('ChangePwForm'));
 
-        })
+})

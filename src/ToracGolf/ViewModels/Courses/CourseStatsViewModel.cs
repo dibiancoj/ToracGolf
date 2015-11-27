@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ToracGolf.MiddleLayer.Courses.Models;
 using ToracGolf.MiddleLayer.EFModel.Tables;
 using ToracGolf.ViewModels.Handicap;
 
@@ -14,7 +15,7 @@ namespace ToracGolf.ViewModels.Courses
         public CourseStatsViewModel(HandicapStatusViewModel handicapStatus,
                                     IList<Navigation.BreadcrumbNavItem> breadcrumb,
                                     AntiforgeryTokenSet tokenSet,
-                                    Course course)
+                                    CourseStatsModel course)
         {
             HandicapStatus = handicapStatus;
             Breadcrumb = breadcrumb;
@@ -28,7 +29,7 @@ namespace ToracGolf.ViewModels.Courses
 
         public AntiforgeryTokenSet TokenSet { get; }
 
-        public Course CourseRecord;
+        public CourseStatsModel CourseRecord;
 
     }
 

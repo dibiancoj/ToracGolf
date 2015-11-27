@@ -35,6 +35,9 @@ namespace ToracGolf.MiddleLayer.EFModel
 
             modelBuilder.Entity<CourseImages>().HasKey(x => x.CourseId);
             modelBuilder.Entity<Course>().HasOptional(x => x.CourseImage).WithRequired(x => x.Course);
+
+            modelBuilder.Entity<Ref_State>().HasKey(x => x.StateId);
+            modelBuilder.Entity<Course>().HasRequired(x => x.State).WithMany(x => x.Courses);
             
         }
 

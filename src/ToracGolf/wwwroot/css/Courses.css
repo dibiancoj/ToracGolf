@@ -11,8 +11,8 @@
     padding-right: 35px !important;
 }
 
-.CourseListingHeight{
-     height: 200px !important;
+.CourseListingHeight {
+    height: 200px !important;
 }
 
 .CourseListingImage {
@@ -24,4 +24,13 @@
     margin-top: -10px;
     text-align: right;
     cursor: pointer;
+}
+
+#CourseStatsSection {
+    padding-top: 0px;
+}
+
+.CourseDetailLI {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
 }

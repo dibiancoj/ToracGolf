@@ -28,11 +28,14 @@
     <script src="~/js/react/courses/coursestats.js"></script>
 }
 
-<section class="slice slice-lg bg-image">
+<section id="CourseStatsSection" class="slice slice-lg bg-image">
 
     <section class="slice bg-white bb">
         <div class="wp-section estate">
             <div class="container">
+                <div class="row">
+                    <div class="col-xs-12"><h3>@Model.CourseRecord.CourseData.Name</h3></div>
+                </div>
                 <div class="row">
                     <div class="col-md-9">
                         <div class="row">
@@ -40,19 +43,17 @@
                                 <div class="product-gallery">
                                     <div class="primary-image">
                                         <a href="images/prv/estate/item-1.jpg" class="theater" rel="group" hidefocus="true">
-                                            <img src="data:image/png;base64,@System.Convert.ToBase64String(Model.CourseRecord.CourseImage.CourseImage)" class="img-responsive" alt="Course Image">
+                                            <img src="data:image/png;base64,@Convert.ToBase64String(Model.CourseRecord.CourseImage)" class="img-responsive" alt="Course Image">
                                         </a>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-5">
                                 <div class="product-info">
-                                    <h3>3015 Grand Avenue, CocoWalk</h3>
                                     <div class="wp-block property list no-border">
                                         <div class="wp-block-content clearfix">
-                                            <small>10 days only</small>
-                                            <h4 class="content-title">Special Offer</h4>
-                                            <p class="description mb-15">Lorem ipsum dolor sit amet, consectetur adipisg elitm Ut tincidunt purus iaculis ipsum dctum non dtum quam. Donec id elit non mi porta gravida at eget metus. Lorem ipsum dolor sit amet, consectetur adipisg elitm Ut.</p>
+                                            <h4 class="content-title">@Model.CourseRecord.CourseData.City, @Model.CourseRecord.CourseState</h4>
+                                            <p class="description mb-15">@Model.CourseRecord.CourseData.Description</p>
                                             <span class="pull-left">
                                                 <span class="price">$230</span>
                                                 <span class="period">per month</span>
@@ -66,10 +67,10 @@
                                         </div>
                                         <div class="wp-block-footer style2 mt-15">
                                             <ul class="aux-info">
-                                                <li><i class="fa fa-building"></i>2300 Sq Feet</li>
-                                                <li><i class="fa fa-user"></i> 5 Bedrooms</li>
-                                                <li><i class="fa fa-tint"></i> 2 Bathrooms</li>
-                                                <li><i class="fa fa-car"></i> 3 Garages</li>
+                                                <li><i class="fa fa-building"></i>@Model.CourseRecord.TeeBoxCount Tee @(Model.CourseRecord.TeeBoxCount == 1 ? "Box" : "Boxes")</li>
+                                                <li><i class="fa fa-user"></i> @Model.CourseRecord.RoundCount @(Model.CourseRecord.RoundCount == 1 ? "Round" : "Rounds")</li>
+                                                <li><i class="fa fa-tint"></i> @Model.CourseRecord.BestScore <br/> Best Score</li>
+                                                <li><i class="fa fa-car"></i> @Model.CourseRecord.AverageScore.ToString("n1") <br/> Avg Score</li>
                                             </ul>
                                         </div>
                                     </div>
