@@ -75,8 +75,6 @@ function RunQuery() {
 
 function InitReact(teeBoxData, quickStats) {
 
-    debugger;
-
     condensedStats = ReactDOM.render(
        <CondensedStats InitData={quickStats} />,
        document.getElementById('CondensedStats'));
