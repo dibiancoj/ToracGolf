@@ -1,6 +1,5 @@
 ﻿/// <autosync enabled="true" />
 /// <reference path="../gulpfile.js" />
-/// <reference path="../react/ChangePassword/ChangeMyPassword.js" />
 /// <reference path="js/angular/common/datepickerdirective.js" />
 /// <reference path="js/angular/common/filereaderfactory.js" />
 /// <reference path="js/angular/common/httprequestinterceptor.js" />
