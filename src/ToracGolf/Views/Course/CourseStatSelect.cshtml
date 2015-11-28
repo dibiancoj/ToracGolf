@@ -28,6 +28,12 @@
     <script src="~/js/react/courses/coursestats.js"></script>
 }
 
+<script type="text/javascript">
+    $(document).ready(function () {
+        InitReact(@Html.Raw(Json.Serialize(Model.CourseRecord.TeeBoxLocations)), @Html.Raw(Json.Serialize(Model.CondensedStats.QuickStats)));
+    });
+</script>
+
 <section id="CourseStatsSection" class="slice slice-lg bg-image">
     @Html.Partial("_AngularTokenSet", Model.TokenSet)
     <input id="CourseId" type="hidden" value="@Model.CourseRecord.CourseId" />
@@ -103,52 +109,23 @@
                             <div class="col-md-12">
                                 <div class="tabs-framed boxed">
                                     <ul class="tabs clearfix">
-                                        <li class="active"><a href="#tab-AdditionalStats" data-toggle="tab" aria-expanded="true">Additional Stats</a></li>
-                                        <li class=""><a href="#tab-Scores" data-toggle="tab" aria-expanded="false">Scores</a></li>
-                                        <li class=""><a href="#tab-Putts" data-toggle="tab" aria-expanded="false">Putts</a></li>
-                                        <li class=""><a href="#tab-FairwaysHit" data-toggle="tab" aria-expanded="false">Fairways Hit</a></li>
-                                        <li class=""><a href="#tab-GIR" data-toggle="tab" aria-expanded="false" title="Greens In Regulation">GIR</a></li>
+                                        <li class="active"><a href="#tab-TeeBoxes" data-toggle="tab" aria-expanded="true">Tee Boxes</a></li>
+                                        <li><a href="#tab-Scores" data-toggle="tab" aria-expanded="false">Scores</a></li>
+                                        <li><a href="#tab-Putts" data-toggle="tab" aria-expanded="false">Putts</a></li>
+                                        <li><a href="#tab-FairwaysHit" data-toggle="tab" aria-expanded="false">Fairways Hit</a></li>
+                                        <li><a href="#tab-GIR" data-toggle="tab" aria-expanded="false" title="Greens In Regulation">GIR</a></li>
                                     </ul>
 
                                     <div class="tab-content">
-                                        <div class="tab-pane fade active in" id="tab-AdditionalStats">
+                                        <div class="tab-pane fade active in" id="tab-TeeBoxes">
                                             <div class="tab-body">
                                                 <div class="section-title-wr">
-                                                    <h3 class="section-title left">Property description</h3>
+                                                    <h3 class="section-title left">Tee Box Information</h3>
                                                 </div>
-                                                <p>
-                                                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
-                                                    <br><br>
-                                                    Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas humanitatis per seacula quarta decima et quinta decima. Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.
-                                                </p>
-
-                                                <div class="section-title-wr">
-                                                    <h3 class="section-title left">Additional details</h3>
-                                                </div>
-                                                <table class="table table-bordered table-striped table-hover table-responsive">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td><strong>Property Size:</strong> 2300 Sq Ft</td>
-                                                            <td><strong>Lot size:</strong> 5000 Sq Ft</td>
-                                                            <td><strong>Price:</strong> $23000</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><strong>Rooms:</strong> 5</td>
-                                                            <td><strong>Bedrooms:</strong> 4</td>
-                                                            <td><strong>Bathrooms:</strong> 2</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><strong>Garages:</strong> 2</td>
-                                                            <td><strong>Roofing:</strong> New</td>
-                                                            <td><strong>Structure Type:</strong> Bricks</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><strong>Year built:</strong> 1991</td>
-                                                            <td><strong>Available from:</strong> 1 August 2014</td>
-                                                            <td></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                              
+                                                <div id="TabDataTeeBox"></div>
+                                                   @*this gets rendered by react*@
+                                               
 
                                                 <div class="section-title-wr">
                                                     <h3 class="section-title left">Location details</h3>
@@ -331,5 +308,4 @@
             </div>
         </div>
     </section>
-
 </section>

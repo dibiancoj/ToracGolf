@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.MiddleLayer.Courses.Models;
+using ToracGolf.MiddleLayer.Courses.Models.CourseStats;
 using ToracGolf.ViewModels.Handicap;
 
 namespace ToracGolf.ViewModels.Courses
@@ -17,7 +18,8 @@ namespace ToracGolf.ViewModels.Courses
                                     AntiforgeryTokenSet tokenSet,
                                     CourseStatsModel course,
                                     IEnumerable<SelectListItem> userSeasons,
-                                    IEnumerable<SelectListItem> teeBoxLocations)
+                                    IEnumerable<SelectListItem> teeBoxLocations,
+                                    CourseStatsQueryResponse condensedStats)
         {
             HandicapStatus = handicapStatus;
             Breadcrumb = breadcrumb;
@@ -25,6 +27,7 @@ namespace ToracGolf.ViewModels.Courses
             CourseRecord = course;
             UserSeasons = userSeasons;
             TeeBoxLocations = teeBoxLocations;
+            CondensedStats = condensedStats;
         }
 
         public HandicapStatusViewModel HandicapStatus { get; }
@@ -38,6 +41,8 @@ namespace ToracGolf.ViewModels.Courses
         public IEnumerable<SelectListItem> UserSeasons { get; }
 
         public IEnumerable<SelectListItem> TeeBoxLocations { get; }
+
+        public CourseStatsQueryResponse CondensedStats { get; }
 
     }
 

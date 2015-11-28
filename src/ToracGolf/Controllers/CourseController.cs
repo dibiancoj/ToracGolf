@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using ToracGolf.Constants;
 using ToracGolf.Filters;
 using ToracGolf.MiddleLayer.Courses;
-using ToracGolf.MiddleLayer.Courses.Models;
 using ToracGolf.MiddleLayer.Courses.Models.CourseStats;
 using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.GridCommon;
@@ -272,7 +271,7 @@ namespace ToracGolf.Controllers
             //grab the course
             var courseData = await CourseDataProvider.CourseStatsSelect(DbContext, CourseId, userId);
 
-            var teeBoxes = courseData.TeeBoxLocations.Select(x => new SelectListItem { Text = x.Value, Value = x.Key.ToString() }).ToList();
+            var teeBoxes = courseData.TeeBoxLocations.Select(x => new SelectListItem { Text = x.Name, Value = x.TeeLocationId.ToString() }).ToList();
 
             teeBoxes.Insert(0, new SelectListItem { Value = string.Empty, Text = "All Tee Boxes" });
 
@@ -282,7 +281,8 @@ namespace ToracGolf.Controllers
                 BuildTokenSet(Antiforgery),
                 courseData,
                 userSeasons,
-                teeBoxes));
+                teeBoxes,
+                await CourseDataProvider.CourseStatsQuery(DbContext, new CourseStatsQueryRequest { CourseId = CourseId, SeasonId = 0, TeeBoxLocationId = 0 }, userId)));
         }
 
         [HttpPost]

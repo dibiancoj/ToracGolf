@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.MiddleLayer.Common;
+using ToracGolf.MiddleLayer.Courses.Models.CourseStats;
 using ToracGolf.MiddleLayer.EFModel.Tables;
 
 namespace ToracGolf.MiddleLayer.Courses.Models
@@ -22,7 +23,7 @@ namespace ToracGolf.MiddleLayer.Courses.Models
 
         public string CourseDescription { get; set; }
 
-        public IEnumerable<EFKeyValuePair> TeeBoxLocations { get; set; }
+        public IEnumerable<TeeBoxData> TeeBoxLocations { get; set; }
 
     }
 }

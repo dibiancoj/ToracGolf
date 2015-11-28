@@ -205,8 +205,15 @@ namespace ToracGolf.MiddleLayer.Courses
                 CourseName = x.Name,
                 CourseState = x.State.Description,
                 CourseImage = x.CourseImage.CourseImage,
-                TeeBoxLocations = x.CourseTeeLocations.Select(y => new EFKeyValuePair { Key = y.CourseTeeLocationId.ToString(), Value = y.Description })
-
+                TeeBoxLocations = x.CourseTeeLocations.Select(y => new TeeBoxData
+                {
+                    TeeLocationId = y.CourseTeeLocationId,
+                    Name = y.Description,
+                    Yardage = y.Yardage,
+                    Par = y.Front9Par + y.Back9Par,
+                    Rating = y.Rating,
+                    Slope = y.Slope
+                })
             }).FirstAsync(x => x.CourseId == courseId);
         }
 
@@ -222,6 +229,11 @@ namespace ToracGolf.MiddleLayer.Courses
             if (queryModel.TeeBoxLocationId != 0)
             {
                 query = query.Where(x => x.CourseTeeLocationId == queryModel.TeeBoxLocationId);
+            }
+
+            if (query.Count() == 0)
+            {
+                return new CourseStatsQueryResponse { QuickStats = new CondensedStats() };
             }
 
             //group by should chunk it up to 1 record

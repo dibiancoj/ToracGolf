@@ -6,7 +6,7 @@ ErrorList = React.createClass({displayName: "ErrorList",
     render: function () {
 
         var createItem = function (itemText, index) {
-            return React.createElement("li", {key: index }, itemText);
+            return React.createElement("li", {key: index}, itemText);
         };
 
         //props.ErrorItems comes from the attribute when we specify <ErrorList ErrorItems

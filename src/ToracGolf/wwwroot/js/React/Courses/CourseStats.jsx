@@ -2,12 +2,13 @@
 
     getInitialState: function () {
         return {
-            TeeBoxCount: 'N/A',
-            RoundCount: 'N/A',
-            BestScore: 'N/A',
-            AverageScore: 'N/A'
+            TeeBoxCount: this.props.InitData.TeeBoxCount,
+            RoundCount: this.props.InitData.RoundCount,
+            BestScore: this.props.InitData.BestScore,
+            AverageScore: this.props.InitData.AverageScore
         };
     },
+
     render: function () {
         return  <ul className="aux-info">
                           <li><i className="fa fa-building"></i>Tee Boxes: {this.state.TeeBoxCount}</li>
@@ -18,36 +19,72 @@
     }
 });
 
+var TeeBoxInformation = React.createClass({
+
+    //getInitialState: function () {
+    //    //return { TeeBoxInfo: [{ TeeBoxName: '', Yardage: '', Par: '', Slope: '', Rating: '' }] };
+    //    return { TeeBoxInfo: [] };
+    //},
+
+    render: function () {
+
+        var createRow = function (rowValue, index) {
+
+            return <tr key={rowValue.TeeLocationId}>
+                        <td>{rowValue.Name}</td>
+                        <td>{rowValue.Yardage}</td>
+                        <td>{rowValue.Par}</td>
+                        <td>{rowValue.Slope}</td>
+                        <td>{rowValue.Rating}</td>
+            </tr>
+        };
+
+        return  <table className="table table-bordered table-striped table-hover table-responsive">
+                                                   <tbody>
+                                                       <tr>
+                                                           <td><strong>Tee Box</strong></td>
+                                                           <td><strong>Yardage</strong></td>
+                                                           <td><strong>Par</strong></td>
+                                                           <td><strong>Slope</strong></td>
+                                                           <td><strong>Rating</strong></td>
+                                                       </tr>
+                                                       {this.props.TeeBoxInfo.map(createRow)}
+                                                   </tbody>
+        </table>
+    }
+});
+
 function RunQuery() {
     //ajax call
 
     RunAjax('CourseStatQuery', { CourseId: $('#CourseId').val(), SeasonId: $('#SeasonSelect').val(), TeeBoxLocationId: $('#TeeBoxSelect').val() })
           .done(function (response) {
 
-              var quickStats = response.QuickStats;
-             
+              //go set the quick stats
               condensedStats.setState({
-                  TeeBoxCount: quickStats.TeeBoxCount,
-                  RoundCount: quickStats.RoundCount,
-                  BestScore: quickStats.BestScore,
-                  AverageScore: quickStats.AverageScore
+                  TeeBoxCount: response.QuickStats.TeeBoxCount,
+                  RoundCount: response.QuickStats.RoundCount,
+                  BestScore: response.QuickStats.BestScore,
+                  AverageScore: response.QuickStats.AverageScore
               });
-
           })
           .fail(function (err) {
-              alert('Error Getting Data');
+              alert('Error Getting Data: ' + err);
           });
 }
 
-$(document).ready(function () {
+function InitReact(teeBoxData, quickStats) {
+
+    debugger;
 
     condensedStats = ReactDOM.render(
-          <CondensedStats />,
-          document.getElementById('CondensedStats'));
+       <CondensedStats InitData={quickStats} />,
+       document.getElementById('CondensedStats'));
 
-    //go load the initial data
-    RunQuery();
+    teeBoxTabData = ReactDOM.render(
+        <TeeBoxInformation TeeBoxInfo={teeBoxData} />,
+        document.getElementById('TabDataTeeBox'));
 
     //add hooks into the select combo box to re-run the query
     $('.ReRunQuery').change(RunQuery);
-});
+}
