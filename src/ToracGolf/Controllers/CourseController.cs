@@ -263,26 +263,19 @@ namespace ToracGolf.Controllers
             var userId = GetUserId();
 
             //let's grab the users season
-            var userSeasons = (await SeasonDataProvider.SeasonSelectForUser(DbContext, userId)).Select(x => new SelectListItem { Value = x.Key.ToString(), Text = x.Value }).ToList();
-
-            //add the "all seasons"
-            userSeasons.Insert(0, new SelectListItem { Value = string.Empty, Text = "All Seasons" });
+            var userSeasons = (await SeasonDataProvider.SeasonSelectForUser(DbContext, userId));
 
             //grab the course
             var courseData = await CourseDataProvider.CourseStatsSelect(DbContext, CourseId, userId);
-
-            var teeBoxes = courseData.TeeBoxLocations.Select(x => new SelectListItem { Text = x.Name, Value = x.TeeLocationId.ToString() }).ToList();
-
-            teeBoxes.Insert(0, new SelectListItem { Value = string.Empty, Text = "All Tee Boxes" });
 
             return View(new CourseStatsViewModel(
                 await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
                 breadCrumb,
                 BuildTokenSet(Antiforgery),
                 courseData,
-                userSeasons,
-                teeBoxes,
-                await CourseDataProvider.CourseStatsQuery(DbContext, new CourseStatsQueryRequest { CourseId = CourseId, SeasonId = 0, TeeBoxLocationId = 0 }, userId)));
+                BuildSelectList(userSeasons, x => x.Key.ToString(),x=> x.Value, () => new SelectListItem { Value = string.Empty, Text = "All Seasons" }),
+                BuildSelectList(courseData.TeeBoxLocations, x => x.TeeLocationId.ToString(), x => x.Name, () => new SelectListItem { Value = string.Empty, Text = "All Tee Boxes" }),
+                await CourseDataProvider.CourseStatsQuery(DbContext, new CourseStatsQueryRequest { CourseId = CourseId }, userId)));
         }
 
         [HttpPost]

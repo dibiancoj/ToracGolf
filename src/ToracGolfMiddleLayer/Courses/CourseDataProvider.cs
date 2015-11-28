@@ -221,14 +221,14 @@ namespace ToracGolf.MiddleLayer.Courses
         {
             var query = dbContext.Rounds.AsNoTracking().Where(x => x.UserId == userId && x.CourseId == queryModel.CourseId);
 
-            if (queryModel.SeasonId != 0)
+            if (queryModel.SeasonId.HasValue)
             {
-                query = query.Where(x => x.SeasonId == queryModel.SeasonId);
+                query = query.Where(x => x.SeasonId == queryModel.SeasonId.Value);
             }
 
-            if (queryModel.TeeBoxLocationId != 0)
+            if (queryModel.TeeBoxLocationId.HasValue)
             {
-                query = query.Where(x => x.CourseTeeLocationId == queryModel.TeeBoxLocationId);
+                query = query.Where(x => x.CourseTeeLocationId == queryModel.TeeBoxLocationId.Value);
             }
 
             if (query.Count() == 0)

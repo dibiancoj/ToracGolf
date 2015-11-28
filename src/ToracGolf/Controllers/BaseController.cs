@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Antiforgery;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.Mvc.Rendering;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -59,7 +60,7 @@ namespace ToracGolf.Controllers
             //now return the current season id
             return currentSeasonId;
         }
-        
+
         public int GetUserId()
         {
             return Convert.ToInt32(HttpContext.User.Claims.First(x => x.Type == ClaimTypes.Hash.ToString()).Value);
@@ -131,6 +132,24 @@ namespace ToracGolf.Controllers
 
             //else just return whatever we got back
             return token;
+        }
+
+        #endregion
+
+        #region Select List Items
+
+        public IEnumerable<SelectListItem> BuildSelectList<T>(IEnumerable<T> Collection, Func<T, string> IdSelector, Func<T, string> DescriptionSelector, Func<SelectListItem> BlankSelector)
+        {
+            //build the base list
+            var lst = Collection.Select(x => new SelectListItem { Value = IdSelector(x), Text = DescriptionSelector(x) }).ToList();
+
+            if (BlankSelector != null)
+            {
+                //add the "all seasons"
+                lst.Insert(0, BlankSelector());
+            }
+
+            return lst;
         }
 
         #endregion

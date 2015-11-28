@@ -8,8 +8,7 @@ namespace ToracGolf.MiddleLayer.Courses.Models.CourseStats
     public class CourseStatsQueryRequest
     {
         public int CourseId { get; set; }
-        public int SeasonId { get; set; }
-        public int TeeBoxLocationId { get; set; }
-
+        public int? SeasonId { get; set; }
+        public int? TeeBoxLocationId { get; set; }
     }
 }
