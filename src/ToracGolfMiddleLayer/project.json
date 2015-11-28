@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "EntityFramework": "6.1.3",
+    "Microsoft.AspNet.Mvc.ViewFeatures": "6.0.0-rc1-final",
     "ToracLibrary.AspNet": "1.0.0-*"
   }
 }

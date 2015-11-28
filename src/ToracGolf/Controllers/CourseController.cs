@@ -14,6 +14,7 @@ using ToracGolf.Filters;
 using ToracGolf.MiddleLayer.Courses;
 using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.GridCommon;
+using ToracGolf.MiddleLayer.Season;
 using ToracGolf.Settings;
 using ToracGolf.ViewModels.Courses;
 using ToracGolf.ViewModels.Navigation;
@@ -260,14 +261,26 @@ namespace ToracGolf.Controllers
             //grab the user id
             var userId = GetUserId();
 
+            //let's grab the users season
+            var userSeasons = (await SeasonDataProvider.SeasonSelectForUser(DbContext, userId)).Select(x => new SelectListItem { Value = x.Key.ToString(), Text = x.Value }).ToList();
+
+            //add the "all seasons"
+            userSeasons.Insert(0, new SelectListItem { Value = string.Empty, Text = "All Seasons" });
+
             //grab the course
-            var course = await CourseDataProvider.CourseStatsSelect(DbContext, CourseId, userId);
+            var courseData = await CourseDataProvider.CourseStatsSelect(DbContext, CourseId, userId);
+
+            var teeBoxes = courseData.TeeBoxLocations.Select(x => new SelectListItem { Text = x.Value, Value = x.Key.ToString() }).ToList();
+
+            teeBoxes.Insert(0, new SelectListItem { Value = string.Empty, Text = "All Tee Boxes" });
 
             return View(new CourseStatsViewModel(
                 await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
                 breadCrumb,
                 BuildTokenSet(Antiforgery),
-                course));
+                courseData,
+                userSeasons,
+                teeBoxes));
         }
 
         #endregion

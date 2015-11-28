@@ -39,7 +39,7 @@
                 <div class="row">
                     <div class="col-md-9">
                         <div class="row">
-                            <div class="col-md-7">
+                            <div class="col-md-6">
                                 <div class="product-gallery">
                                     <div class="primary-image">
                                         <a href="images/prv/estate/item-1.jpg" class="theater" rel="group" hidefocus="true">
@@ -48,7 +48,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-6">
                                 <div class="product-info">
                                     <div class="wp-block property list no-border">
                                         <div class="wp-block-content clearfix">
@@ -67,10 +67,10 @@
                                         </div>
                                         <div class="wp-block-footer style2 mt-15">
                                             <ul class="aux-info">
-                                                <li><i class="fa fa-building"></i>@Model.CourseRecord.TeeBoxCount Tee @(Model.CourseRecord.TeeBoxCount == 1 ? "Box" : "Boxes")</li>
-                                                <li><i class="fa fa-user"></i> @Model.CourseRecord.RoundCount @(Model.CourseRecord.RoundCount == 1 ? "Round" : "Rounds")</li>
-                                                <li><i class="fa fa-tint"></i> @Model.CourseRecord.BestScore <br/> Best Score</li>
-                                                <li><i class="fa fa-car"></i> @Model.CourseRecord.AverageScore.ToString("n1") <br/> Avg Score</li>
+                                                <li><i class="fa fa-building"></i>Tee Boxes: @Model.CourseRecord.TeeBoxCount</li>
+                                                <li><i class="fa fa-user"></i>Rounds: @Model.CourseRecord.RoundCount</li>
+                                                <li><i class="fa fa-tint"></i>Best Score: @Model.CourseRecord.BestScore</li>
+                                                <li><i class="fa fa-car"></i>Avg Score: @Model.CourseRecord.AverageScore.ToString("n1")</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -191,81 +191,25 @@
                                 <div class="panel-heading"><h2>Filter by</h2></div>
                                 <div class="panel-body">
                                     <form class="form-light" role="form">
+
                                         <div class="form-group">
-                                            <label>Search for properties</label>
-                                            <input type="text" class="form-control" placeholder="I want to find..." hidefocus="true">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Category</label>
-                                            <select class="form-control">
-                                                <option>Phones</option>
-                                                <option>Laptops</option>
-                                                <option>Cameras</option>
-                                                <option>Tablets</option>
+                                            <label>Season</label>
+                                            <select class="form-control" ng-model="SeasonFilter" ng-change="FetchAPageOfData(true)">
+                                                @foreach (var stateToAdd in Model.UserSeasons)
+                                                {
+                                                    <option value="@stateToAdd.Value">@stateToAdd.Text</option>
+                                                }
                                             </select>
                                         </div>
+
                                         <div class="form-group">
-                                            <label>Location</label>
-                                            <select class="form-control">
-                                                <option>Phones</option>
-                                                <option>Laptops</option>
-                                                <option>Cameras</option>
-                                                <option>Tablets</option>
+                                            <label>Season</label>
+                                            <select class="form-control" ng-model="SeasonFilter" ng-change="FetchAPageOfData(true)">
+                                                @foreach (var teeBoxToAdd in Model.TeeBoxLocations)
+                                                {
+                                                    <option value="@teeBoxToAdd.Value">@teeBoxToAdd.Text</option>
+                                                }
                                             </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Category</label>
-                                            <select class="form-control">
-                                                <option>Phones</option>
-                                                <option>Laptops</option>
-                                                <option>Cameras</option>
-                                                <option>Tablets</option>
-                                            </select>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Min Rooms</label>
-                                                    <select class="form-control">
-                                                        <option>1</option>
-                                                        <option>2</option>
-                                                        <option>3</option>
-                                                        <option>4</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Max Rooms</label>
-                                                    <select class="form-control">
-                                                        <option>2</option>
-                                                        <option>3</option>
-                                                        <option>4</option>
-                                                        <option>5</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Min area</label>
-                                                    <input type="text" class="form-control" placeholder="" hidefocus="true">
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Max area</label>
-                                                    <input type="text" class="form-control" placeholder="" hidefocus="true">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <button type="submit" class="btn btn-block btn-base btn-icon btn-icon-right btn-search">
-                                                    <span>Search</span>
-                                                </button>
-                                            </div>
                                         </div>
                                     </form>
                                 </div>

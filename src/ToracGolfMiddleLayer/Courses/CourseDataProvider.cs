@@ -7,6 +7,7 @@ using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.EFModel.Tables;
 using ToracLibrary.AspNet.Paging;
 using ToracGolf.MiddleLayer.Courses.Models;
+using ToracGolf.MiddleLayer.Common;
 
 namespace ToracGolf.MiddleLayer.Courses
 {
@@ -198,16 +199,17 @@ namespace ToracGolf.MiddleLayer.Courses
             return await dbContext.Course.AsNoTracking().Select(x => new CourseStatsModel
             {
                 CourseData = x,
-                RoundCount = dbContext.Rounds.Count(y => y.CourseId == courseId && y.UserId == userId ),
-                TeeBoxCount = x.CourseTeeLocations.Count(),
+                RoundCount = dbContext.Rounds.Count(y => y.CourseId == courseId && y.UserId == userId),
                 CourseState = x.State.Description,
                 CourseImage = x.CourseImage.CourseImage,
                 BestScore = dbContext.Rounds.Where(y => y.CourseId == courseId && y.UserId == userId).Select(y => y.Score).Min(),
                 AverageScore = dbContext.Rounds.Where(y => y.CourseId == courseId && y.UserId == userId).Select(y => y.Score).Average(),
+                TeeBoxLocations = x.CourseTeeLocations.Select(y => new EFKeyValuePair { Key = y.CourseTeeLocationId.ToString(), Value = y.Description })
+
             }).FirstAsync(x => x.CourseData.CourseId == courseId);
         }
 
-        #endregion  
+        #endregion
 
     }
 }

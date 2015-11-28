@@ -167,9 +167,9 @@
                                     <div class="form-group">
                                         <label>Season</label>
                                         <select class="form-control" ng-model="SeasonFilter" ng-change="FetchAPageOfData(true)">
-                                            @foreach (var stateToAdd in Model.UserSeasons)
+                                            @foreach (var seasonToAdd in Model.UserSeasons)
                                             {
-                                                <option value="@stateToAdd.Value">@stateToAdd.Text</option>
+                                                <option value="@seasonToAdd.Value">@seasonToAdd.Text</option>
                                             }
                                         </select>
                                     </div>
