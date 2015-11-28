@@ -9,26 +9,20 @@ namespace ToracGolf.MiddleLayer.Courses.Models
 {
     public class CourseStatsModel
     {
-        public Course CourseData { get; set; }
 
-        public int TeeBoxCount
-        {
-            get
-            {
-                return TeeBoxLocations.Count();
-            }
-        }
-
-        public int RoundCount { get; set; }
-
-        public string CourseState { get; set; }
+        public int CourseId { get; set; }
 
         public byte[] CourseImage { get; set; }
 
-        public int BestScore { get; set; }
+        public string CourseName { get; set; }
 
-        public double AverageScore { get; set; }
+        public string CourseCity { get; set; }
+
+        public string CourseState { get; set; }
+
+        public string CourseDescription { get; set; }
 
         public IEnumerable<EFKeyValuePair> TeeBoxLocations { get; set; }
+
     }
 }

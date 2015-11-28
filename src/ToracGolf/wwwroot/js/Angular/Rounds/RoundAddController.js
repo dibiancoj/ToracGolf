@@ -18,7 +18,7 @@
         $scope.$watch('model.TeeLocationId', function (newValue) {
 
             //go set the yardage,par, scope, rating
-
+   
             //grab the selected tee box
             var selectedTeeBox = null;
 
@@ -90,7 +90,7 @@
         },
 
         $scope.FetchTeeBoxesForCourse = function () {
-
+ 
             //if we change states, then we need to wait until we have a course selected
             if ($scope.model.CourseId == null)
             {

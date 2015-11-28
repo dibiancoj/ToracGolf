@@ -9,5 +9,5 @@ $.ajaxSetup({
 });
 
 function RunAjax(Url, AjaxParameters) {
-    return ToracTechnologies.Ajax.RunAjaxCall(Url, AjaxParameters, true, true);
+    return ToracTechnologies.Ajax.RunAjaxCall(_rootDir + Url, AjaxParameters, true, true);
 }

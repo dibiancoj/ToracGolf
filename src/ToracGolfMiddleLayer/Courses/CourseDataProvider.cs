@@ -8,6 +8,7 @@ using ToracGolf.MiddleLayer.EFModel.Tables;
 using ToracLibrary.AspNet.Paging;
 using ToracGolf.MiddleLayer.Courses.Models;
 using ToracGolf.MiddleLayer.Common;
+using ToracGolf.MiddleLayer.Courses.Models.CourseStats;
 
 namespace ToracGolf.MiddleLayer.Courses
 {
@@ -198,15 +199,42 @@ namespace ToracGolf.MiddleLayer.Courses
         {
             return await dbContext.Course.AsNoTracking().Select(x => new CourseStatsModel
             {
-                CourseData = x,
-                RoundCount = dbContext.Rounds.Count(y => y.CourseId == courseId && y.UserId == userId),
+                CourseId = x.CourseId,
+                CourseCity = x.State.Description,
+                CourseDescription = x.Description,
+                CourseName = x.Name,
                 CourseState = x.State.Description,
                 CourseImage = x.CourseImage.CourseImage,
-                BestScore = dbContext.Rounds.Where(y => y.CourseId == courseId && y.UserId == userId).Select(y => y.Score).Min(),
-                AverageScore = dbContext.Rounds.Where(y => y.CourseId == courseId && y.UserId == userId).Select(y => y.Score).Average(),
                 TeeBoxLocations = x.CourseTeeLocations.Select(y => new EFKeyValuePair { Key = y.CourseTeeLocationId.ToString(), Value = y.Description })
 
-            }).FirstAsync(x => x.CourseData.CourseId == courseId);
+            }).FirstAsync(x => x.CourseId == courseId);
+        }
+
+        public static async Task<CourseStatsQueryResponse> CourseStatsQuery(ToracGolfContext dbContext, CourseStatsQueryRequest queryModel, int userId)
+        {
+            var query = dbContext.Rounds.AsNoTracking().Where(x => x.UserId == userId && x.CourseId == queryModel.CourseId);
+
+            if (queryModel.SeasonId != 0)
+            {
+                query = query.Where(x => x.SeasonId == queryModel.SeasonId);
+            }
+
+            if (queryModel.TeeBoxLocationId != 0)
+            {
+                query = query.Where(x => x.CourseTeeLocationId == queryModel.TeeBoxLocationId);
+            }
+
+            //group by should chunk it up to 1 record
+            return await query.GroupBy(x => x.UserId).Select(x => new CourseStatsQueryResponse
+            {
+                QuickStats = new CondensedStats
+                {
+                    RoundCount = x.Count(),
+                    AverageScore = x.Average(y => y.Score),
+                    BestScore = x.Min(y => y.Score),
+                    TeeBoxCount = dbContext.CourseTeeLocations.Count(y => y.CourseId == queryModel.CourseId)
+                }
+            }).FirstAsync();
         }
 
         #endregion

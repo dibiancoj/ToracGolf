@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using ToracGolf.Constants;
 using ToracGolf.Filters;
 using ToracGolf.MiddleLayer.Courses;
+using ToracGolf.MiddleLayer.Courses.Models;
+using ToracGolf.MiddleLayer.Courses.Models.CourseStats;
 using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.GridCommon;
 using ToracGolf.MiddleLayer.Season;
@@ -281,6 +283,14 @@ namespace ToracGolf.Controllers
                 courseData,
                 userSeasons,
                 teeBoxes));
+        }
+
+        [HttpPost]
+        [ValidateCustomAntiForgeryToken()]
+        [Route("CourseStatQuery", Name = "CourseStatQuery")]
+        public async Task<IActionResult> CourseStatQueryRecords(CourseStatsQueryRequest queryModel)
+        {
+            return Json(await CourseDataProvider.CourseStatsQuery(DbContext, queryModel, GetUserId()));
         }
 
         #endregion
