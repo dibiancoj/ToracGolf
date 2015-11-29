@@ -25,6 +25,7 @@
 /// <reference path="js/Common/AjaxCommon.js" />
 /// <reference path="js/login.js" />
 /// <reference path="js/React/ChangePassword/ChangeMyPassword.js" />
+/// <reference path="js/react/common/reactformatting.js" />
 /// <reference path="js/react/common/ReactValidation.js" />
 /// <reference path="js/react/courses/coursestats.js" />
 /// <reference path="js/site.js" />

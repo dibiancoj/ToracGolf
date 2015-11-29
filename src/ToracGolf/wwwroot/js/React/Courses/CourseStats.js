@@ -12,7 +12,7 @@ var CondensedStats = React.createClass({displayName: "CondensedStats",
     render: function () {
         return  React.createElement("ul", {className: "aux-info"}, 
                           React.createElement("li", null, React.createElement("i", {className: "fa fa-building"}), "Tee Boxes: ", this.state.TeeBoxCount), 
-                          React.createElement("li", null, React.createElement("i", {className: "fa fa-user"}), "Rounds: ", this.state.RoundCount), 
+                          React.createElement("li", null, React.createElement("i", {className: "fa fa-user"}), "Rounds: ", React.createElement(FormatNumber, {valueToSet: this.state.RoundCount})), 
                           React.createElement("li", null, React.createElement("i", {className: "fa fa-tint"}), "Best Score: ", this.state.BestScore), 
                           React.createElement("li", null, React.createElement("i", {className: "fa fa-car"}), "Avg Score: ", this.state.AverageScore)
         )
@@ -32,7 +32,7 @@ var TeeBoxInformation = React.createClass({displayName: "TeeBoxInformation",
 
             return React.createElement("tr", {key: rowValue.TeeLocationId}, 
                         React.createElement("td", null, rowValue.Name), 
-                        React.createElement("td", null, rowValue.Yardage), 
+                        React.createElement("td", null, React.createElement(FormatNumber, {valueToSet: rowValue.Yardage})), 
                         React.createElement("td", null, rowValue.Par), 
                         React.createElement("td", null, rowValue.Slope), 
                         React.createElement("td", null, rowValue.Rating)

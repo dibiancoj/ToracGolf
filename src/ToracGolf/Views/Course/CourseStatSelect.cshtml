@@ -25,6 +25,7 @@
     <script src="~/lib/toraclibrary/toracajax.js"></script>
     <script src="~/lib/react/react.js"></script>
     <script src="~/lib/react/react-dom.js"></script>
+    <script src="~/js/react/common/reactformatting.js"></script>
     <script src="~/js/react/courses/coursestats.js"></script>
 }
 
@@ -57,7 +58,7 @@
                                             else
                                             {
                                                 <img src="data:image/png;base64,@Convert.ToBase64String(Model.CourseRecord.CourseImage)" class="img-responsive" alt="Course Image">
-                                            }  
+                                            }
                                         </a>
                                     </div>
                                 </div>
@@ -122,10 +123,10 @@
                                                 <div class="section-title-wr">
                                                     <h3 class="section-title left">Tee Box Information</h3>
                                                 </div>
-                                              
+
                                                 <div id="TabDataTeeBox"></div>
-                                                   @*this gets rendered by react*@
-                                               
+                                                @*this gets rendered by react*@
+
 
                                                 <div class="section-title-wr">
                                                     <h3 class="section-title left">Location details</h3>

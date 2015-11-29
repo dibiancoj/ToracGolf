@@ -12,7 +12,7 @@
     render: function () {
         return  <ul className="aux-info">
                           <li><i className="fa fa-building"></i>Tee Boxes: {this.state.TeeBoxCount}</li>
-                          <li><i className="fa fa-user"></i>Rounds: {this.state.RoundCount}</li>
+                          <li><i className="fa fa-user"></i>Rounds: <FormatNumber valueToSet={this.state.RoundCount}></FormatNumber></li>
                           <li><i className="fa fa-tint"></i>Best Score: {this.state.BestScore}</li>
                           <li><i className="fa fa-car"></i>Avg Score: {this.state.AverageScore}</li>
         </ul>
@@ -21,18 +21,13 @@
 
 var TeeBoxInformation = React.createClass({
 
-    //getInitialState: function () {
-    //    //return { TeeBoxInfo: [{ TeeBoxName: '', Yardage: '', Par: '', Slope: '', Rating: '' }] };
-    //    return { TeeBoxInfo: [] };
-    //},
-
     render: function () {
 
         var createRow = function (rowValue, index) {
 
             return <tr key={rowValue.TeeLocationId}>
                         <td>{rowValue.Name}</td>
-                        <td>{rowValue.Yardage}</td>
+                        <td><FormatNumber valueToSet={rowValue.Yardage}></FormatNumber></td>
                         <td>{rowValue.Par}</td>
                         <td>{rowValue.Slope}</td>
                         <td>{rowValue.Rating}</td>
