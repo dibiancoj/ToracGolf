@@ -21,11 +21,6 @@ var CondensedStats = React.createClass({displayName: "CondensedStats",
 
 var TeeBoxInformation = React.createClass({displayName: "TeeBoxInformation",
 
-    //getInitialState: function () {
-    //    //return { TeeBoxInfo: [{ TeeBoxName: '', Yardage: '', Par: '', Slope: '', Rating: '' }] };
-    //    return { TeeBoxInfo: [] };
-    //},
-
     render: function () {
 
         var createRow = function (rowValue, index) {
