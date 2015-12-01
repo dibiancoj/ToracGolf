@@ -33,7 +33,13 @@ namespace ToracGolf.MiddleLayer.Rounds.Models
             BestRawScore = 4,
 
             [Description("Worse Raw Score")]
-            WorseRawScore= 5
+            WorseRawScore= 5,
+
+            [Description("Round Handicap Descending")]
+            RoundHandicapDescending = 6,
+
+            [Description("Round Handicap Ascending")]
+            RoundHandicapAscending = 7,
 
         }
 

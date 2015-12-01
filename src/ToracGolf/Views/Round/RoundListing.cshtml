@@ -130,9 +130,9 @@
                                 </div>
                                 <div class="listing-footer">
                                     <ul class="aux-info">
-                                        <li title="Total Putts In Round"><i class="fa fa-bar-chart-o"></i><strong>Putts: </strong>{{(round.Putts) || 'N/A'}}</li>
-                                        <li title="Greens In Regulation"><i class="fa fa-smile-o"></i><strong>GIR: </strong>{{(round.GreensInRegulation) || 'N/A'}}</li>
-                                        <li title="Total Fairways Hit In The Round">
+                                        <li class="RoundDetailLI" title="Total Putts In Round"><i class="fa fa-bar-chart-o"></i><strong>Putts: </strong>{{(round.Putts) || 'N/A'}}</li>
+                                        <li class="RoundDetailLI" title="Greens In Regulation"><i class="fa fa-smile-o"></i><strong>GIR: </strong>{{(round.GreensInRegulation) || 'N/A'}}</li>
+                                        <li class="RoundDetailLI" title="Total Fairways Hit In The Round">
                                             <i class="fa fa-calculator"></i><strong>Fairways Hit: </strong>
 
                                             <span class="InlineSpan" ng-if="round.FairwaysHit != null && round.FairwaysHitAttempted != null">
@@ -146,6 +146,7 @@
                                                 N/A
                                             </span>
                                         </li>
+                                        <li class="RoundDetailLI" title="Round Handicap"><i class="fa fa-th-list:before"></i><strong>Round Handicap: </strong>{{(round.RoundHandicap) | number:1}}</li>
                                     </ul>
                                 </div>
                             </div>

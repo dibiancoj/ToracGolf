@@ -34,6 +34,9 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
         [Required]
         public bool Is9HoleScore { get; set; }
 
+        [Required]
+        public double RoundHandicap { get; set; }
+
         public int? GreensInRegulation { get; set; }
         public int? FairwaysHit { get; set; }
         public int? Putts { get; set; }

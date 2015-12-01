@@ -82,7 +82,7 @@ namespace ToracGolf.MiddleLayer.HandicapCalculator
         public static string MaxScorePerHole(double? courseHandicap)
         {
             //if we don't have a course handicap (because we don't have a handicap)
-            if (!courseHandicap.HasValue || courseHandicap.Value > 39)
+            if (!courseHandicap.HasValue || courseHandicap.Value >= 39)
             {
                 return "10";
             }
@@ -92,17 +92,17 @@ namespace ToracGolf.MiddleLayer.HandicapCalculator
                 return "Double Bogey";
             }
 
-            if (courseHandicap.Value > 9 && courseHandicap.Value < 19)
+            if (courseHandicap.Value >= 9 && courseHandicap.Value < 19)
             {
                 return "7";
             }
 
-            if (courseHandicap.Value > 19 && courseHandicap.Value < 29)
+            if (courseHandicap.Value >= 19 && courseHandicap.Value < 29)
             {
                 return "8";
             }
 
-            if (courseHandicap.Value > 29 && courseHandicap.Value < 39)
+            if (courseHandicap.Value >= 29 && courseHandicap.Value < 39)
             {
                 return "9";
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using ToracGolf.MiddleLayer.Courses;
 using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.EFModel.Tables;
 using ToracGolf.MiddleLayer.HandicapCalculator;
@@ -86,6 +87,12 @@ namespace ToracGolf.MiddleLayer.Rounds
                 FairwaysHit = roundData.FairwaysHit
             };
 
+            //go grab the tee location 
+            var teeLocation = await dbContext.CourseTeeLocations.AsNoTracking().FirstAsync(x => x.CourseTeeLocationId == roundData.TeeLocationId);
+
+            //add the round handicap now
+            round.RoundHandicap = Handicapper.CalculateHandicap(new Last20Rounds[] { new Last20Rounds { Rating = teeLocation.Rating, Slope = teeLocation.Slope, RoundScore = round.Score } }).Value;
+
             //add the round
             dbContext.Rounds.Add(round);
 
@@ -132,7 +139,6 @@ namespace ToracGolf.MiddleLayer.Rounds
                 Rating = x.CourseTeeLocation.Rating,
                 Slope = x.CourseTeeLocation.Slope
             };
-
 
             //lets loop through those rounds for the user
             foreach (var roundToCalculate in roundsForUser)
@@ -228,7 +234,9 @@ namespace ToracGolf.MiddleLayer.Rounds
 
                 Putts = x.Putts,
                 FairwaysHit = x.FairwaysHit,
-                GreensInRegulation = x.GreensInRegulation
+                GreensInRegulation = x.GreensInRegulation,
+
+                RoundHandicap = x.RoundHandicap
             });
         }
 
@@ -274,6 +282,14 @@ namespace ToracGolf.MiddleLayer.Rounds
             {
                 queryable = queryable.OrderByDescending(x => x.Score).ThenByDescending(x => x.RoundId);
             }
+            else if (sortBy == RoundListingSortOrder.RoundListingSortEnum.RoundHandicapAscending)
+            {
+                queryable = queryable.OrderBy(x => x.RoundHandicap).ThenBy(x => x.RoundId);
+            }
+            else if (sortBy == RoundListingSortOrder.RoundListingSortEnum.RoundHandicapDescending)
+            {
+                queryable = queryable.OrderByDescending(x => x.RoundHandicap).ThenByDescending(x => x.RoundId);
+            }
 
             //go run the query now
             var dataSet = await queryable.Skip(skipAmount).Take(recordsPerPage).ToArrayAsync();
@@ -287,9 +303,6 @@ namespace ToracGolf.MiddleLayer.Rounds
             //let's loop through the rounds and display the starts
             foreach (var round in dataSet)
             {
-                //calculate the round handicap
-                round.RoundHandicap = Handicapper.RoundHandicap(round.Score, round.TeeBoxLocation.Rating, round.TeeBoxLocation.Slope);
-
                 //calculate the adjusted score
                 round.AdjustedScore = Convert.ToInt32(Math.Round(round.Score - round.HandicapBeforeRound, 0));
 
