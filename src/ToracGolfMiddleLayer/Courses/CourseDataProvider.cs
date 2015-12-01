@@ -125,14 +125,9 @@ namespace ToracGolf.MiddleLayer.Courses
             {
                 queryable = queryable.OrderByDescending(x => x.CourseTeeLocations.Max(y => y.Slope));
             }
-            else if (sortBy == CourseListingSortOrder.CourseListingSortEnum.MostTimesPlayed)
-            {
-                //todo: need to fix when we get the rounds table going
-                queryable = queryable.OrderBy(x => x.Name);
-            }
 
             //go run the query now
-            return await queryable.Select(x => new CourseListingData
+            var query = queryable.Select(x => new CourseListingData
             {
                 CourseData = x,
                 StateDescription = dbContext.Ref_State.FirstOrDefault(y => y.StateId == x.StateId).Description,
@@ -149,8 +144,17 @@ namespace ToracGolf.MiddleLayer.Courses
                 FairwaysHitAttempted = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.CourseTeeLocation.FairwaysOnCourse).Sum(),
                 GreensInRegulation = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.GreensInRegulation).Average(),
                 NumberOfPutts = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.Putts).Average()
+            });
 
-            }).Skip(skipAmount).Take(recordsPerPage).ToArrayAsync();
+            //if we need to sort by most rounds played, then do it now
+            if (sortBy == CourseListingSortOrder.CourseListingSortEnum.MostTimesPlayed)
+            {
+                //todo: need to fix when we get the rounds table going
+                query = query.OrderByDescending(x => x.NumberOfRounds).ThenByDescending(x => x.CourseData.CourseId);
+            }
+
+            //go execute it and return it
+            return await query.Skip(skipAmount).Take(recordsPerPage).ToArrayAsync();
         }
 
         public static async Task<int> TotalNumberOfCourses(ToracGolfContext dbContext, string courseNameFilter, int? StateFilter, int RecordsPerPage)
