@@ -221,7 +221,7 @@ namespace ToracGolf.Controllers
 
             return Json(new
             {
-                PagedData = await RoundDataProvider.RoundSelect(DbContext, userId, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, seasonFilter, listNav.RoundsPerPage, listNav.RoundDateStartFilter, listNav.RoundDateEndFilter),
+                PagedData = await RoundDataProvider.RoundSelect(DbContext, userId, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, seasonFilter, listNav.RoundsPerPage, listNav.RoundDateStartFilter, listNav.RoundDateEndFilter, CacheFactory.GetCacheItem<CourseImageFinder>(CacheKeyNames.CourseImageFinder, Cache)),
                 TotalNumberOfPages = listNav.ResetPager ? new int?(await RoundDataProvider.TotalNumberOfRounds(DbContext, userId, listNav.CourseNameFilter, seasonFilter, listNav.RoundsPerPage, listNav.RoundDateStartFilter, listNav.RoundDateEndFilter)) : null
             });
         }

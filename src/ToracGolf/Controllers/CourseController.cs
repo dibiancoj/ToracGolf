@@ -84,6 +84,9 @@ namespace ToracGolf.Controllers
             //grab the user id
             var userId = GetUserId();
 
+            //remove the course image finder cache
+            CacheFactory.RemoveCacheItem(CacheKeyNames.CourseImageFinder, Cache);
+
             return View(new CourseAddViewModel(
                 await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
                 breadCrumb,
@@ -103,7 +106,7 @@ namespace ToracGolf.Controllers
                 try
                 {
                     //let's try to add this user to the system
-                    var courseAddAttempt = await CourseDataProvider.CourseAdd(DbContext, GetUserId(), model);
+                    var courseAddAttempt = await CourseDataProvider.CourseAdd(DbContext, GetUserId(), model, Configuration.Value.CourseImageSavePath);
 
                     //we saved it successfully
                     return Json(new { result = true });
@@ -224,7 +227,7 @@ namespace ToracGolf.Controllers
 
             return Json(new
             {
-                PagedData = await CourseDataProvider.CourseSelect(DbContext, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, stateFilter, listNav.CoursesPerPage, GetUserId()),
+                PagedData = await CourseDataProvider.CourseSelect(DbContext, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, stateFilter, listNav.CoursesPerPage, GetUserId(), CacheFactory.GetCacheItem<CourseImageFinder>(CacheKeyNames.CourseImageFinder, Cache)),
                 TotalNumberOfPages = listNav.ResetPager ? new int?(await CourseDataProvider.TotalNumberOfCourses(DbContext, listNav.CourseNameFilter, stateFilter, listNav.CoursesPerPage)) : null
             });
         }
@@ -266,14 +269,14 @@ namespace ToracGolf.Controllers
             var userSeasons = (await SeasonDataProvider.SeasonSelectForUser(DbContext, userId));
 
             //grab the course
-            var courseData = await CourseDataProvider.CourseStatsSelect(DbContext, CourseId, userId);
+            var courseData = await CourseDataProvider.CourseStatsSelect(DbContext, CourseId, userId, CacheFactory.GetCacheItem<CourseImageFinder>(CacheKeyNames.CourseImageFinder, Cache));
 
             return View(new CourseStatsViewModel(
                 await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
                 breadCrumb,
                 BuildTokenSet(Antiforgery),
                 courseData,
-                BuildSelectList(userSeasons, x => x.Key.ToString(),x=> x.Value, () => new SelectListItem { Value = string.Empty, Text = "All Seasons" }),
+                BuildSelectList(userSeasons, x => x.Key.ToString(), x => x.Value, () => new SelectListItem { Value = string.Empty, Text = "All Seasons" }),
                 BuildSelectList(courseData.TeeBoxLocations, x => x.TeeLocationId.ToString(), x => x.Name, () => new SelectListItem { Value = string.Empty, Text = "All Tee Boxes" }),
                 await CourseDataProvider.CourseStatsQuery(DbContext, new CourseStatsQueryRequest { CourseId = CourseId }, userId)));
         }

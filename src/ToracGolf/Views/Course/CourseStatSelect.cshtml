@@ -50,16 +50,9 @@
                             <div class="col-md-6">
                                 <div class="product-gallery">
                                     <div class="primary-image">
-                                        <a href="images/prv/estate/item-1.jpg" class="theater" rel="group" hidefocus="true">
-                                            @if (Model.CourseRecord.CourseImage == null)
-                                            {
-                                                <img class="img-responsive" alt="Course Image">
-                                            }
-                                            else
-                                            {
-                                                <img src="data:image/png;base64,@Convert.ToBase64String(Model.CourseRecord.CourseImage)" class="img-responsive" alt="Course Image">
-                                            }
-                                        </a>
+                                        @*<a href="images/prv/estate/item-1.jpg" class="theater" rel="group" hidefocus="true">*@
+                                            <img src="@Model.CourseRecord.CourseImageUrl" class="img-responsive" alt="Course Image">
+                                        @*</a>*@
                                     </div>
                                 </div>
                             </div>

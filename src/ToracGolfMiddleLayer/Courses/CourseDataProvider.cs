@@ -17,7 +17,7 @@ namespace ToracGolf.MiddleLayer.Courses
 
         #region Course Add
 
-        public static async Task<int> CourseAdd(ToracGolfContext dbContext, int userId, CourseAddEnteredData CourseData)
+        public static async Task<int> CourseAdd(ToracGolfContext dbContext, int userId, CourseAddEnteredData CourseData, string courseSavePath)
         {
             //course record to add
             var courseToAdd = new Course
@@ -55,13 +55,16 @@ namespace ToracGolf.MiddleLayer.Courses
             if (CourseData.CourseImage != null)
             {
                 //grab the byte array for the file
-                byte[] fileToSave = ToracLibrary.AspNet.Graphics.GraphicsUtilities.ImageFromJsonBase64String(CourseData.CourseImage).FileBytes;
+                var fileToSave = ToracLibrary.AspNet.Graphics.GraphicsUtilities.ImageFromJsonBase64String(CourseData.CourseImage);
 
-                //let's go save the image
-                dbContext.CourseImages.Add(new CourseImages { CourseId = courseToAdd.CourseId, CourseImage = fileToSave });
+                //grab where we have the actual .jpg vs png
+                var indexOfSlash = fileToSave.MimeType.IndexOf(@"/");
 
-                //save it now
-                await dbContext.SaveChangesAsync();
+                //grab the file name to save
+                var fileNameToSave = System.IO.Path.Combine(courseSavePath, string.Format("{0}.{1}", courseToAdd.CourseId, fileToSave.MimeType.Substring(indexOfSlash + 1, fileToSave.MimeType.Length - indexOfSlash - 1)));
+
+                //go save the file
+                System.IO.File.WriteAllBytes(fileNameToSave, fileToSave.FileBytes);
             }
 
             //return the course id
@@ -100,7 +103,8 @@ namespace ToracGolf.MiddleLayer.Courses
                                                                               string courseNameFilter,
                                                                               int? stateFilter,
                                                                               int recordsPerPage,
-                                                                              int userId)
+                                                                              int userId,
+                                                                              CourseImageFinder courseImageFinder)
         {
             //how many items to skip
             int skipAmount = pageId * recordsPerPage;
@@ -133,8 +137,6 @@ namespace ToracGolf.MiddleLayer.Courses
                 StateDescription = dbContext.Ref_State.FirstOrDefault(y => y.StateId == x.StateId).Description,
                 TeeLocationCount = x.CourseTeeLocations.Count,
 
-                CourseImage = x.CourseImage.CourseImage,
-
                 NumberOfRounds = dbContext.Rounds.Count(y => y.CourseId == x.CourseId && y.UserId == userId),
                 TopScore = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.Score).Min(),
                 WorseScore = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.Score).Max(),
@@ -154,7 +156,13 @@ namespace ToracGolf.MiddleLayer.Courses
             }
 
             //go execute it and return it
-            return await query.Skip(skipAmount).Take(recordsPerPage).ToArrayAsync();
+            var data = await query.Skip(skipAmount).Take(recordsPerPage).ToListAsync();
+
+            //go find the course paths
+            data.ForEach(x => x.CourseImageLocation = courseImageFinder.FindCourseImage(x.CourseData.CourseId));
+
+            //return the data set
+            return data;
         }
 
         public static async Task<int> TotalNumberOfCourses(ToracGolfContext dbContext, string courseNameFilter, int? StateFilter, int RecordsPerPage)
@@ -199,16 +207,16 @@ namespace ToracGolf.MiddleLayer.Courses
 
         #region Course Select
 
-        public static async Task<CourseStatsModel> CourseStatsSelect(ToracGolfContext dbContext, int courseId, int userId)
+        public static async Task<CourseStatsModel> CourseStatsSelect(ToracGolfContext dbContext, int courseId, int userId, CourseImageFinder courseImageFinder)
         {
-            return await dbContext.Course.AsNoTracking().Select(x => new CourseStatsModel
+            var courseRecord = await dbContext.Course.AsNoTracking().Select(x => new CourseStatsModel
             {
                 CourseId = x.CourseId,
                 CourseCity = x.State.Description,
                 CourseDescription = x.Description,
                 CourseName = x.Name,
                 CourseState = x.State.Description,
-                CourseImage = x.CourseImage.CourseImage,
+                //CourseImage = x.CourseImage.CourseImage,
                 TeeBoxLocations = x.CourseTeeLocations.Select(y => new TeeBoxData
                 {
                     TeeLocationId = y.CourseTeeLocationId,
@@ -219,6 +227,11 @@ namespace ToracGolf.MiddleLayer.Courses
                     Slope = y.Slope
                 })
             }).FirstAsync(x => x.CourseId == courseId);
+
+            //set the url path
+            courseRecord.CourseImageUrl = courseImageFinder.FindCourseImage(courseRecord.CourseId);
+
+            return courseRecord;
         }
 
         public static async Task<CourseStatsQueryResponse> CourseStatsQuery(ToracGolfContext dbContext, CourseStatsQueryRequest queryModel, int userId)

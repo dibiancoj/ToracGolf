@@ -17,6 +17,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.Constants;
+using ToracGolf.MiddleLayer.Courses;
 using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.Services;
 using ToracGolf.Settings;
@@ -126,7 +127,13 @@ namespace ToracGolf
             //add my cached items
             var cacheFactory = new CacheFactoryStore();
 
-            ////add the state listing factory configuration
+            var courseImageFilePath = Configuration["CourseImageSavePath"];
+            var courseImageVirtualUrlPath = Configuration["CourseImageVirtualUrl"];
+
+            cacheFactory.AddConfiguration(CacheKeyNames.CourseImageFinder,
+                () => new CourseImageFinder(courseImageFilePath, courseImageVirtualUrlPath));
+
+            //add the state listing factory configuration
             cacheFactory.AddConfiguration(CacheKeyNames.StateListing,
                  () => MiddleLayer.States.StateListing.StateSelect(services.BuildServiceProvider().GetService<ToracGolfContext>())
                 .Select(y => new SelectListItem { Text = y.Description, Value = y.StateId.ToString() })

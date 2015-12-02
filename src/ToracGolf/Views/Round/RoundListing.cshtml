@@ -108,7 +108,8 @@
                                 <div class="btn btn-icon btn-icon-right fa-close pull-right RoundDelete" title="Delete This Round" ng-click="DeleteARound(round.RoundId)"></div>
                             </div>
                             <div class="listing-image">
-                                <img ng-src="data:image/png;base64,{{FindCourseImageFromLookup(round.CourseId)}}" class="img-responsive RoundListingImage RoundListingHeight" alt="">
+                                @*<img ng-src="data:image/png;base64,{{FindCourseImageFromLookup(round.CourseId)}}" class="img-responsive RoundListingImage RoundListingHeight" alt="">*@
+                                <img ng-src="{{round.CourseImagePath}}" class="img-responsive RoundListingImage RoundListingHeight" alt="">
                                 <a href="#" class="btn btn-lg btn-square btn-base btn-block-bm btn-icon btn-icon-go">See more</a>
                             </div>
                             <div class="cell">

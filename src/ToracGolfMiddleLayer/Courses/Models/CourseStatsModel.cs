@@ -13,7 +13,7 @@ namespace ToracGolf.MiddleLayer.Courses.Models
 
         public int CourseId { get; set; }
 
-        public byte[] CourseImage { get; set; }
+        //public byte[] CourseImage { get; set; }
 
         public string CourseName { get; set; }
 
@@ -22,6 +22,8 @@ namespace ToracGolf.MiddleLayer.Courses.Models
         public string CourseState { get; set; }
 
         public string CourseDescription { get; set; }
+
+        public string CourseImageUrl { get; set; }
 
         public IEnumerable<TeeBoxData> TeeBoxLocations { get; set; }
 

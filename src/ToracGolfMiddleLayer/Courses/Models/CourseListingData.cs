@@ -17,8 +17,8 @@ namespace ToracGolf.MiddleLayer.Courses
 
         public int TeeLocationCount { get; set; }
 
-        public byte[] CourseImage { get; set; }
-
+        //public byte[] CourseImage { get; set; }
+        public string CourseImageLocation { get; set; }
 
         public int NumberOfRounds { get; set; }
         public int? TopScore { get; set; }

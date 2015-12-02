@@ -12,6 +12,10 @@ namespace ToracGolf.Settings
         public AppSettingsData Data { get; set; }
 
         public int DefaultListingRecordsPerPage { get; set; }
+
+        public string CourseImageSavePath { get; set; }
+
+        public string CourseImageVirtualUrl { get; set; }
     }
 
     public class AppSettingsData

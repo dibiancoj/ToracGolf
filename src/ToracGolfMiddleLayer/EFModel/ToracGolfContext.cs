@@ -19,7 +19,6 @@ namespace ToracGolf.MiddleLayer.EFModel
         public virtual DbSet<UserSeason> UserSeason { get; set; }
         public virtual DbSet<Course> Course { get; set; }
         public virtual DbSet<CourseTeeLocations> CourseTeeLocations { get; set; }
-        public virtual DbSet<CourseImages> CourseImages { get; set; }
         public virtual DbSet<Round> Rounds { get; set; }
         public virtual DbSet<RoundHandicap> RoundHandicap { get; set; }
 
@@ -33,8 +32,7 @@ namespace ToracGolf.MiddleLayer.EFModel
 
             //modelBuilder.Entity<CourseTeeLocations>().HasKey(e => e.CourseTeeLocationId);
 
-            modelBuilder.Entity<CourseImages>().HasKey(x => x.CourseId);
-            modelBuilder.Entity<Course>().HasOptional(x => x.CourseImage).WithRequired(x => x.Course);
+            //modelBuilder.Entity<Course>().HasOptional(x => x.CourseImage).WithRequired(x => x.Course);
 
             modelBuilder.Entity<Ref_State>().HasKey(x => x.StateId);
             modelBuilder.Entity<Course>().HasRequired(x => x.State).WithMany(x => x.Courses);

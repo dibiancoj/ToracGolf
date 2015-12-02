@@ -10,13 +10,13 @@ namespace ToracGolf.MiddleLayer.Rounds.Models
     public class RoundSelectModel
     {
 
-        public RoundSelectModel(IDictionary<int, byte[]> courseImages, IEnumerable<RoundListingData> listingData)
+        public RoundSelectModel(IEnumerable<RoundListingData> listingData)
         {
-            CourseImages = courseImages;
+            //CourseImages = courseImages;
             ListingData = listingData;
         }
 
-        public IDictionary<int, byte[]> CourseImages { get; }
+       // public IDictionary<int, byte[]> CourseImages { get; }
         public IEnumerable<RoundListingData> ListingData { get; }
     }
 
@@ -33,6 +33,8 @@ namespace ToracGolf.MiddleLayer.Rounds.Models
         public double RoundHandicap { get; set; }
         public int AdjustedScore { get; set; }
         public double HandicapBeforeRound { get; set; }
+
+        public string CourseImagePath { get; set; }
 
         public int? Putts { get; set; }
         public int? GreensInRegulation { get; set; }

@@ -85,6 +85,16 @@ namespace ToracLibrary.AspNet.Caching.FactoryStore
             }
         }
 
+        /// <summary>
+        /// Cache item to remove
+        /// </summary>
+        /// <param name="CacheKeyToRemove">Cache key to remove</param>
+        /// <param name="MemoryCacheToUse">Cache to use</param>
+        public void RemoveCacheItem(string CacheKeyToRemove, IMemoryCache MemoryCacheToUse)
+        {
+            MemoryCacheToUse.Remove(CacheKeyToRemove);
+        }
+
         #endregion
 
     }

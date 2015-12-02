@@ -29,6 +29,13 @@ namespace ToracLibrary.AspNet.Caching.FactoryStore
         /// <returns>The cached item. Or the item from the data source.</returns>
         T GetCacheItem<T>(string CacheKey, IMemoryCache MemoryCacheToUse);
 
+        /// <summary>
+        /// Cache item to remove
+        /// </summary>
+        /// <param name="CacheKeyToRemove">Cache key to remove</param>
+        /// <param name="MemoryCacheToUse">Cache to use</param>
+        void RemoveCacheItem(string CacheKeyToRemove, IMemoryCache MemoryCacheToUse);
+
     }
 
 }

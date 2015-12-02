@@ -249,7 +249,8 @@ namespace ToracGolf.MiddleLayer.Rounds
                                                                int? seasonFilter,
                                                                int recordsPerPage,
                                                                DateTime? roundDateStartFilter,
-                                                               DateTime? roundDateEndFilter)
+                                                               DateTime? roundDateEndFilter,
+                                                               CourseImageFinder courseImageFinder)
         {
             //how many items to skip
             int skipAmount = pageId * recordsPerPage;
@@ -294,12 +295,6 @@ namespace ToracGolf.MiddleLayer.Rounds
             //go run the query now
             var dataSet = await queryable.Skip(skipAmount).Take(recordsPerPage).ToArrayAsync();
 
-            //now grab the distinct course id's so we can get the images
-            var distinctCourseIds = dataSet.Select(x => x.CourseId).Distinct();
-
-            //now grab all the course images
-            var courseImages = await dbContext.CourseImages.Where(x => distinctCourseIds.Contains(x.CourseId)).ToDictionaryAsync(x => x.CourseId, y => y.CourseImage);
-
             //let's loop through the rounds and display the starts
             foreach (var round in dataSet)
             {
@@ -308,10 +303,13 @@ namespace ToracGolf.MiddleLayer.Rounds
 
                 //go calculate the round performance
                 round.RoundPerformance = (int)RoundPerformance.CalculateRoundPerformance(round.TeeBoxLocation.Front9Par + round.TeeBoxLocation.Back9Par, round.AdjustedScore);
+
+                //set the image path
+                round.CourseImagePath = courseImageFinder.FindCourseImage(round.CourseId);
             }
 
             //go return the lookup now
-            return new RoundSelectModel(courseImages, dataSet);
+            return new RoundSelectModel(dataSet);
         }
 
         public static async Task<int> TotalNumberOfRounds(ToracGolfContext dbContext, int userId, string roundNameFilter, int? StateFilter, int RecordsPerPage, DateTime? roundDateStartFilter, DateTime? roundDateEndFilter)
