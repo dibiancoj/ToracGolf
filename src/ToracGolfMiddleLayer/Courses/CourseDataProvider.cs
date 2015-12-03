@@ -266,7 +266,7 @@ namespace ToracGolf.MiddleLayer.Courses
                 }
             }).FirstAsync();
 
-            model.ScoreGraphData = await ScoreGraph(dbContext, userId, queryModel.CourseId, null, null);
+            model.ScoreGraphData = await ScoreGraph(dbContext, userId, queryModel.CourseId, queryModel.SeasonId, queryModel.TeeBoxLocationId);
 
             return model;
         }

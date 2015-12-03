@@ -22,6 +22,7 @@ namespace ToracGolf.MiddleLayer.Rounds
         {
             return await dbContext.Course.AsNoTracking()
                          .Where(x => x.StateId == stateId && x.IsActive)
+                         .OrderBy(x=> x.Name)
                        .Select(x => new CourseForRoundAddScreen
                        {
                            CourseId = x.CourseId,
