@@ -9,6 +9,7 @@ using ToracLibrary.AspNet.Paging;
 using ToracGolf.MiddleLayer.Courses.Models;
 using ToracGolf.MiddleLayer.Common;
 using ToracGolf.MiddleLayer.Courses.Models.CourseStats;
+using ToracGolf.MiddleLayer.Dashboard.Models;
 
 namespace ToracGolf.MiddleLayer.Courses
 {
@@ -254,7 +255,7 @@ namespace ToracGolf.MiddleLayer.Courses
             }
 
             //group by should chunk it up to 1 record
-            return await query.GroupBy(x => x.UserId).Select(x => new CourseStatsQueryResponse
+            var model = await query.GroupBy(x => x.UserId).Select(x => new CourseStatsQueryResponse
             {
                 QuickStats = new CondensedStats
                 {
@@ -264,7 +265,48 @@ namespace ToracGolf.MiddleLayer.Courses
                     TeeBoxCount = dbContext.CourseTeeLocations.Count(y => y.CourseId == queryModel.CourseId)
                 }
             }).FirstAsync();
+
+            model.ScoreGraphData = await ScoreGraph(dbContext, userId, queryModel.CourseId, null, null);
+
+            return model;
         }
+
+        #region Graphs
+
+        private static IQueryable<Round> BuildBaseGraphQuery(ToracGolfContext dbContext, int userId, int courseId, int? seasonId, int? teeBoxLocationId)
+        {
+            var baseQuery = dbContext.Rounds.AsNoTracking().Where(x => x.UserId == userId && x.CourseId == courseId);
+
+            if (seasonId.HasValue)
+            {
+                baseQuery = baseQuery.Where(x => x.SeasonId == seasonId);
+            }
+
+            if (teeBoxLocationId.HasValue)
+            {
+                baseQuery = baseQuery.Where(x => x.CourseTeeLocationId == teeBoxLocationId);
+            }
+
+            return baseQuery;
+        }
+
+        public static async Task<IEnumerable<DashboardHandicapScoreSplitDisplay>> ScoreGraph(ToracGolfContext dbContext, int userId, int courseId, int? seasonId, int? teeBoxLocationId)
+        {
+            var minDateToGrab = DateTime.Now.AddYears(-1);
+
+            //just grab the last year so we don't grab globs of data
+            return await BuildBaseGraphQuery(dbContext, userId, courseId, seasonId, teeBoxLocationId).Where(x => x.RoundDate > minDateToGrab).OrderBy(x => x.RoundDate)
+                .Select(x => new DashboardHandicapScoreSplitDisplay
+                {
+                    Month = x.RoundDate.Month,
+                    Day = x.RoundDate.Day,
+                    Year = x.RoundDate.Year,
+                    Score = x.Score,
+                    Handicap = dbContext.RoundHandicap.FirstOrDefault(y => y.RoundId == x.RoundId).HandicapAfterRound
+                }).ToArrayAsync();
+        }
+
+        #endregion
 
         #endregion
 

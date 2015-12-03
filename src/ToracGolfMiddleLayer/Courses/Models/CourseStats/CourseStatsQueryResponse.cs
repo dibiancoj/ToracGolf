@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ToracGolf.MiddleLayer.Dashboard.Models;
 
 namespace ToracGolf.MiddleLayer.Courses.Models.CourseStats
 {
@@ -10,6 +11,8 @@ namespace ToracGolf.MiddleLayer.Courses.Models.CourseStats
     {
         public CondensedStats QuickStats { get; set; }
         //public IEnumerable<TeeBoxData> TeeBoxInfo { get; set; }
+
+        public IEnumerable<DashboardHandicapScoreSplitDisplay> ScoreGraphData { get; set; }
     }
 
     public class CondensedStats

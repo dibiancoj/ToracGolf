@@ -43,9 +43,9 @@ var TeeBoxInformation = React.createClass({
                                                            <td><strong>Slope</strong></td>
                                                            <td><strong>Rating</strong></td>
                                                        </tr>
-                                                       {this.props.TeeBoxInfo.map(createRow)}
-                                                   </tbody>
-        </table>
+        {this.props.TeeBoxInfo.map(createRow)}
+        </tbody>
+</table>
     }
 });
 
@@ -62,22 +62,118 @@ function RunQuery() {
                   BestScore: response.QuickStats.BestScore,
                   AverageScore: response.QuickStats.AverageScore
               });
+              
+              //go build the score chart
+              BuildScoreChart(response.ScoreGraphData);
           })
           .fail(function (err) {
               alert('Error Getting Data: ' + err);
           });
 }
 
-function InitReact(teeBoxData, quickStats) {
+function BuildScoreChart(dataSet) {
+
+    var rounds = [];
+    var handicap = [];
+
+    if (dataSet != null)
+    {
+        for (var i = 0; i < dataSet.length; i++) {
+
+            var item = dataSet[i];
+
+            //subtract for month because javascript uses a 0 base index. .net is 1 base index ie. jan = 1
+            rounds.push([Date.UTC(item.Year, item.Month - 1, item.Day), item.Score])
+            handicap.push([Date.UTC(item.Year, item.Month - 1, item.Day), item.Handicap])
+        }
+    }
+
+    $('#ScoreLineChart').highcharts({
+        credits: {
+            enabled: false
+        },
+        chart: {
+            type: 'spline',
+            zoomType: 'x'
+        },
+        title: {
+            text: 'Scores'
+        },
+        xAxis: {
+            type: 'datetime',
+            dateTimeLabelFormats: { // don't display the dummy year
+                month: '%e. %b',
+                year: '%b'
+            },
+            title: {
+                text: 'Date'
+            }
+        },
+        yAxis: [{ // primary yaxis
+            title: {
+                text: 'Round Score',
+                style: {
+                    color: Highcharts.getOptions().colors[0]
+                }
+            },
+            labels: {
+                format: '{value}',
+                style: {
+                    color: Highcharts.getOptions().colors[0]
+                }
+            },
+            opposite: false
+        },
+        { // secondary yAxis
+            labels: {
+                format: '{value}',
+                style: {
+                    color: Highcharts.getOptions().colors[1]
+                }
+            },
+            title: {
+                text: 'Handicap',
+                style: {
+                    color: Highcharts.getOptions().colors[1]
+                }
+            }
+        }],
+
+        plotOptions: {
+            spline: {
+                marker: {
+                    enabled: true
+                }
+            }
+        },
+
+        series: [{
+            name: 'Round',
+            yAxis: 0,
+            // Define the data points. All series have a dummy year
+            // of 1970/71 in order to be compared on the same x axis. Note
+            // that in JavaScript, months start at 0 for January, 1 for February etc.
+            data: rounds
+        }, {
+            name: 'Handicap',
+            yAxis: 1,
+            data: handicap
+        }]
+    });
+}
+
+function InitReact(teeBoxData, quickStats, scoreGraphData) {
 
     condensedStats = ReactDOM.render(
        <CondensedStats InitData={quickStats} />,
-       document.getElementById('CondensedStats'));
+document.getElementById('CondensedStats'));
 
-    teeBoxTabData = ReactDOM.render(
-        <TeeBoxInformation TeeBoxInfo={teeBoxData} />,
+teeBoxTabData = ReactDOM.render(
+    <TeeBoxInformation TeeBoxInfo={teeBoxData} />,
         document.getElementById('TabDataTeeBox'));
 
-    //add hooks into the select combo box to re-run the query
+    BuildScoreChart(scoreGraphData);
+
+//add hooks into the select combo box to re-run the query
     $('.ReRunQuery').change(RunQuery);
 }
