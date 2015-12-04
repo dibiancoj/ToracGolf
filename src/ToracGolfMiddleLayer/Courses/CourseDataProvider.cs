@@ -201,7 +201,7 @@ namespace ToracGolf.MiddleLayer.Courses
 
         public static async Task<int> TeeboxNumberOfFairways(ToracGolfContext dbContext, int courseTeeLocationId)
         {
-            return (await dbContext.CourseTeeLocations.FirstAsync(x => x.CourseTeeLocationId == courseTeeLocationId)).CourseTeeLocationId;
+            return (await dbContext.CourseTeeLocations.FirstAsync(x => x.CourseTeeLocationId == courseTeeLocationId)).FairwaysOnCourse;
         }
 
         #endregion

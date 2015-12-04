@@ -107,7 +107,7 @@ namespace ToracGolf.Controllers
 
                     if (model.FairwaysHit.Value > maxFairwaysHitAllowed)
                     {
-                        ModelState.AddModelError(string.Empty, "Fairways Hit Must Be Less Than " + maxFairwaysHitAllowed);
+                        ModelState.AddModelError(string.Empty, "Fairways Hit Must Be Less Than Or Equal To " + maxFairwaysHitAllowed);
                     }
                 }
 
