@@ -67,7 +67,7 @@ var ScoreChart = React.createClass({
         //only gets called 1 time on first render
         this.initializeChart();
     },
-    
+
     componentDidUpdate: function () {
 
         //does not get called on initial render
@@ -75,7 +75,7 @@ var ScoreChart = React.createClass({
     },
 
     initializeChart: function () {
-        
+
         var rounds = [];
         var handicap = [];
 
@@ -166,7 +166,7 @@ var ScoreChart = React.createClass({
 
 });
 
-var PuttChart = React.createClass({
+var StandardChart = React.createClass({
 
     getInitialState: function () {
         return {
@@ -175,25 +175,22 @@ var PuttChart = React.createClass({
     },
 
     render: function () {
-
-        return <div ref="PuttLineChart"></div>
+        return <div ref={this.props.IdToUse}></div>
     },
 
     componentDidMount: function () {
-
         //only gets called 1 time on first render
         this.initializeChart();
     },
-    
-    componentDidUpdate: function () {
 
+    componentDidUpdate: function () {
         //does not get called on initial render
         this.initializeChart();
     },
 
     initializeChart: function () {
-
-        var putts = [];
+      
+        var dataSetToRender = [];
 
         if (this.state.DataSet != null) {
             for (var i = 0; i < this.state.DataSet.length; i++) {
@@ -201,11 +198,11 @@ var PuttChart = React.createClass({
                 var item = this.state.DataSet[i];
 
                 //subtract for month because javascript uses a 0 base index. .net is 1 base index ie. jan = 1
-                putts.push([Date.UTC(item.Year, item.Month - 1, item.Day), item.Putts])
+                dataSetToRender.push([Date.UTC(item.Year, item.Month - 1, item.Day), item[this.props.PropertyOfData]])
             }
         }
-
-        $(this.refs.PuttLineChart).highcharts({
+       
+        $(this.refs[this.props.IdToUse]).highcharts({
             credits: {
                 enabled: false
             },
@@ -214,7 +211,7 @@ var PuttChart = React.createClass({
                 zoomType: 'x'
             },
             title: {
-                text: 'Putts'
+                text: this.props.TitleOfChart
             },
             xAxis: {
                 type: 'datetime',
@@ -251,206 +248,12 @@ var PuttChart = React.createClass({
             },
 
             series: [{
-                name: 'Round',
+                name: this.props.TitleOfSeries,
                 yAxis: 0,
                 // Define the data points. All series have a dummy year
                 // of 1970/71 in order to be compared on the same x axis. Note
                 // that in JavaScript, months start at 0 for January, 1 for February etc.
-                data: putts
-            }]
-        });
-    }
-
-});
-
-var GIRChart = React.createClass({
-
-    getInitialState: function () {
-        return {
-            DataSet: this.props.DataSetToUse
-        };
-    },
-
-    render: function () {
-
-        return <div ref="GIRLineChart"></div>
-    },
-
-    componentDidMount: function () {
-
-        //only gets called 1 time on first render
-        this.initializeChart();
-    },
-    
-    componentDidUpdate: function () {
-
-        //does not get called on initial render
-        this.initializeChart();
-    },
-
-    initializeChart: function () {
-
-        var girHit = [];
-
-        if (this.state.DataSet != null) {
-            for (var i = 0; i < this.state.DataSet.length; i++) {
-
-                var item = this.state.DataSet[i];
-
-                //subtract for month because javascript uses a 0 base index. .net is 1 base index ie. jan = 1
-                girHit.push([Date.UTC(item.Year, item.Month - 1, item.Day), item.GreensHit])
-            }
-        }
-
-        $(this.refs.GIRLineChart).highcharts({
-            credits: {
-                enabled: false
-            },
-            chart: {
-                type: 'spline',
-                zoomType: 'x'
-            },
-            title: {
-                text: 'Greens In Regulation (GIR)'
-            },
-            xAxis: {
-                type: 'datetime',
-                dateTimeLabelFormats: { // don't display the dummy year
-                    month: '%e. %b',
-                    year: '%b'
-                },
-                title: {
-                    text: 'Date'
-                }
-            },
-            yAxis: [{ // primary yaxis
-                title: {
-                    text: 'Putts',
-                    style: {
-                        color: Highcharts.getOptions().colors[0]
-                    }
-                },
-                labels: {
-                    format: '{value}',
-                    style: {
-                        color: Highcharts.getOptions().colors[0]
-                    }
-                },
-                opposite: false
-            }],
-
-            plotOptions: {
-                spline: {
-                    marker: {
-                        enabled: true
-                    }
-                }
-            },
-
-            series: [{
-                name: 'Greens In Regulation (GIR)',
-                yAxis: 0,
-                // Define the data points. All series have a dummy year
-                // of 1970/71 in order to be compared on the same x axis. Note
-                // that in JavaScript, months start at 0 for January, 1 for February etc.
-                data: girHit
-            }]
-        });
-    }
-
-});
-
-var FairwayChart = React.createClass({
-
-    getInitialState: function () {
-        return {
-            DataSet: this.props.DataSetToUse
-        };
-    },
-
-    render: function () {
-
-        return <div ref="fairwaysLineChart"></div>
-    },
-
-    componentDidMount: function () {
-
-        //only gets called 1 time on first render
-        this.initializeChart();
-    },
-    
-    componentDidUpdate: function () {
-
-        //does not get called on initial render
-        this.initializeChart();
-    },
-
-    initializeChart: function () {
-
-        var fairwaysHit = [];
-
-        if (this.state.DataSet != null) {
-            for (var i = 0; i < this.state.DataSet.length; i++) {
-
-                var item = this.state.DataSet[i];
-
-                //subtract for month because javascript uses a 0 base index. .net is 1 base index ie. jan = 1
-                fairwaysHit.push([Date.UTC(item.Year, item.Month - 1, item.Day), item.FairwaysHit])
-            }
-        }
-
-        $(this.refs.fairwaysLineChart).highcharts({
-            credits: {
-                enabled: false
-            },
-            chart: {
-                type: 'spline',
-                zoomType: 'x'
-            },
-            title: {
-                text: 'Fairways In Regulation'
-            },
-            xAxis: {
-                type: 'datetime',
-                dateTimeLabelFormats: { // don't display the dummy year
-                    month: '%e. %b',
-                    year: '%b'
-                },
-                title: {
-                    text: 'Date'
-                }
-            },
-            yAxis: [{ // primary yaxis
-                title: {
-                    text: 'Putts',
-                    style: {
-                        color: Highcharts.getOptions().colors[0]
-                    }
-                },
-                labels: {
-                    format: '{value}',
-                    style: {
-                        color: Highcharts.getOptions().colors[0]
-                    }
-                },
-                opposite: false
-            }],
-
-            plotOptions: {
-                spline: {
-                    marker: {
-                        enabled: true
-                    }
-                }
-            },
-
-            series: [{
-                name: 'Fairways In Regulation',
-                yAxis: 0,
-                // Define the data points. All series have a dummy year
-                // of 1970/71 in order to be compared on the same x axis. Note
-                // that in JavaScript, months start at 0 for January, 1 for February etc.
-                data: fairwaysHit
+                data: dataSetToRender
             }]
         });
     }
@@ -470,7 +273,7 @@ function RunQuery() {
                   BestScore: response.QuickStats.BestScore,
                   AverageScore: response.QuickStats.AverageScore
               });
-            
+
               //we basically so need to re-render the entire grid since it's not really html
               roundScoreGraph.setState({ DataSet: response.ScoreGraphData });
 
@@ -500,15 +303,15 @@ function InitReact(teeBoxData, quickStats, scoreGraphData, puttGraphData, girGra
         document.getElementById('ScoreDivContainer'));
 
     puttGraph = ReactDOM.render(
-        <PuttChart DataSetToUse={puttGraphData } />,
+        <StandardChart IdToUse="PuttsChart" PropertyOfData="Putts" TitleOfChart="Putts Per Round" TitleOfSeries="Putts Per Round" DataSetToUse={puttGraphData} />,
         document.getElementById('PuttDivContainer'));
 
     girGraph = ReactDOM.render(
-       <GIRChart DataSetToUse={girGraphData } />,
+       <StandardChart IdToUse="GIRChart" PropertyOfData="GreensHit" TitleOfChart="Greens In Regulation (GIR)" TitleOfSeries="Greens In Regulation (GIR)" DataSetToUse={girGraphData } />,
         document.getElementById('GIRDivContainer'));
-        
+
     fairwaysHitGraph = ReactDOM.render(
-       <FairwayChart DataSetToUse={fairwaysHitGraphData } />,
+       <StandardChart IdToUse="FairwaysHitChart" PropertyOfData="FairwaysHit" TitleOfChart="Fairways In Regulation" TitleOfSeries="Fairways In Regulation" DataSetToUse={fairwaysHitGraphData } />,
         document.getElementById('FaiwaysHitDivContainer'));
 
     //add hooks into the select combo box to re-run the query
