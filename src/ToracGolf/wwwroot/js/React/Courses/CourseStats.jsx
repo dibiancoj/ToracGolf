@@ -14,7 +14,7 @@
                           <li><i className="fa fa-building"></i>Tee Boxes: {this.state.TeeBoxCount}</li>
                           <li><i className="fa fa-user"></i>Rounds: <FormatNumber valueToSet={this.state.RoundCount}></FormatNumber></li>
                           <li><i className="fa fa-tint"></i>Best Score: {this.state.BestScore}</li>
-                          <li><i className="fa fa-car"></i>Avg Score: {this.state.AverageScore}</li>
+                          <li><i className="fa fa-car"></i>Avg Score: <ToDecimalPoints decimals={2} valueToSet={this.state.AverageScore}></ToDecimalPoints></li>
         </ul>
     }
 });
@@ -150,7 +150,7 @@ var ScoreChart = React.createClass({
             },
 
             series: [{
-                name: 'Round',
+                name: 'Round Score',
                 yAxis: 0,
                 // Define the data points. All series have a dummy year
                 // of 1970/71 in order to be compared on the same x axis. Note
@@ -160,6 +160,103 @@ var ScoreChart = React.createClass({
                 name: 'Handicap',
                 yAxis: 1,
                 data: handicap
+            }]
+        });
+    }
+
+});
+
+var PuttChart = React.createClass({
+
+    getInitialState: function () {
+        return {
+            DataSet: this.props.DataSetToUse
+        };
+    },
+
+    render: function () {
+
+        return <div ref="PuttLineChart"></div>
+    },
+
+    componentDidMount: function () {
+
+        //only gets called 1 time on first render
+        this.initializeChart();
+    },
+    
+    componentDidUpdate: function () {
+
+        //does not get called on initial render
+        this.initializeChart();
+    },
+
+    initializeChart: function () {
+
+        var putts = [];
+
+        if (this.state.DataSet != null) {
+            for (var i = 0; i < this.state.DataSet.length; i++) {
+
+                var item = this.state.DataSet[i];
+
+                //subtract for month because javascript uses a 0 base index. .net is 1 base index ie. jan = 1
+                putts.push([Date.UTC(item.Year, item.Month - 1, item.Day), item.Putts])
+            }
+        }
+
+        $(this.refs.PuttLineChart).highcharts({
+            credits: {
+                enabled: false
+            },
+            chart: {
+                type: 'spline',
+                zoomType: 'x'
+            },
+            title: {
+                text: 'Putts'
+            },
+            xAxis: {
+                type: 'datetime',
+                dateTimeLabelFormats: { // don't display the dummy year
+                    month: '%e. %b',
+                    year: '%b'
+                },
+                title: {
+                    text: 'Date'
+                }
+            },
+            yAxis: [{ // primary yaxis
+                title: {
+                    text: 'Putts',
+                    style: {
+                        color: Highcharts.getOptions().colors[0]
+                    }
+                },
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[0]
+                    }
+                },
+                opposite: false
+            }],
+
+            plotOptions: {
+                spline: {
+                    marker: {
+                        enabled: true
+                    }
+                }
+            },
+
+            series: [{
+                name: 'Round',
+                yAxis: 0,
+                // Define the data points. All series have a dummy year
+                // of 1970/71 in order to be compared on the same x axis. Note
+                // that in JavaScript, months start at 0 for January, 1 for February etc.
+                data: putts
             }]
         });
     }
@@ -183,13 +280,14 @@ function RunQuery() {
               //we basically so need to re-render the entire grid since it's not really html
               roundScoreGraph.setState({ DataSet: response.ScoreGraphData });
 
+              puttGraph.setState({ DataSet: response.PuttsGraphData });
           })
           .fail(function (err) {
               alert('Error Getting Data: ' + err);
           });
 }
 
-function InitReact(teeBoxData, quickStats, scoreGraphData) {
+function InitReact(teeBoxData, quickStats, scoreGraphData, puttGraphData) {
 
     condensedStats = ReactDOM.render(
        <CondensedStats InitData={quickStats} />,
@@ -202,6 +300,10 @@ function InitReact(teeBoxData, quickStats, scoreGraphData) {
     roundScoreGraph = ReactDOM.render(
         <ScoreChart DataSetToUse={scoreGraphData } />,
         document.getElementById('ScoreDivContainer'));
+
+    puttGraph = ReactDOM.render(
+        <PuttChart DataSetToUse={puttGraphData } />,
+        document.getElementById('PuttDivContainer'));
 
     //add hooks into the select combo box to re-run the query
     $('.ReRunQuery').change(RunQuery);

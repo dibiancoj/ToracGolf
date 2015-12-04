@@ -34,7 +34,10 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        InitReact(@Html.Raw(Json.Serialize(Model.CourseRecord.TeeBoxLocations)), @Html.Raw(Json.Serialize(Model.CondensedStats.QuickStats)), @Html.Raw(Json.Serialize(Model.CondensedStats.ScoreGraphData)));
+        InitReact(@Html.Raw(Json.Serialize(Model.CourseRecord.TeeBoxLocations)), 
+                  @Html.Raw(Json.Serialize(Model.CondensedStats.QuickStats)), 
+                  @Html.Raw(Json.Serialize(Model.CondensedStats.ScoreGraphData)),
+                  @Html.Raw(Json.Serialize(Model.CondensedStats.PuttsGraphData)));
 
         $('[data-toggle=tab]').click(function(){
             setTimeout(function(){
@@ -138,7 +141,9 @@
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="tab-Putts">
-                                            <div class="tab-body"></div>
+                                            <div id="PuttDivContainer" class="tab-body">
+                                                @*this gets rendered by react*@
+                                            </div>
                                         </div>
                                         <div class="tab-pane fade" id="tab-FaiwaysHit">
                                             <div class="tab-body"></div>

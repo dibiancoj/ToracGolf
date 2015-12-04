@@ -5,13 +5,10 @@ using System.Threading.Tasks;
 
 namespace ToracGolf.MiddleLayer.Dashboard.Models
 {
-
-    public class DashboardHandicapScoreSplitDisplay : ChartDateTimeMonthBase
+    public class ChartDateTimeMonthBase
     {
-
-        public int Score { get; set; }
-        public double Handicap { get; set; }
-
+        public int Month { get; set; }
+        public int Day { get; set; }
+        public int Year { get; set; }
     }
-
 }

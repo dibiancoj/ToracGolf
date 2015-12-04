@@ -15,3 +15,15 @@ FormatNumber = React.createClass({
         return <span>{this.numberWithCommas()}</span>
     }
 });
+
+ToDecimalPoints = React.createClass({
+
+    numberToDecimals: function (){
+        return parseFloat(Math.round(this.props.valueToSet * 100) / 100).toFixed(this.props.decimals)
+    },
+
+    render: function () {
+        return <span>{this.numberToDecimals()}</span>
+    }
+
+})
