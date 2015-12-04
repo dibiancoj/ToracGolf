@@ -52,7 +52,6 @@
     display: inline-block;
 }
 
-.RoundDetailLI {
-    padding-left: 7px !important;
-    padding-right: 7px !important;
+.ListLabel {
+    font-weight: bold;
 }

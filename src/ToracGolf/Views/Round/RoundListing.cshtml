@@ -33,7 +33,7 @@
     <script src="~/js/angular/common/pagerfactory.js"></script>
     <script src="~/js/angular/common/numberonlydirective.js"></script>
     <script src="~/js/angular/common/datepickerdirective.js"></script>
-    <script src="~/js/angular/common/ValidationService.js"></script>    
+    <script src="~/js/angular/common/ValidationService.js"></script>
     <script src="~/js/angular/rounds/roundhttp.js"></script>
     <script src="~/js/angular/common/select2directive.js"></script>
     <script src="~/js/angular/rounds/roundlistingcontroller.js"></script>
@@ -116,18 +116,20 @@
                                 <div class="listing-body clearfix RoundListingHeight">
                                     <h3><a href="{{RootPath()}}CourseSelect/{{::round.CourseId}}">{{::round.CourseName}}</a></h3>
                                     <h4>{{::round.RoundDate | date:'MM/dd/yyyy'}}</h4>
-                                    <p>
-                                        Par: {{::round.TeeBoxLocation.Front9Par + round.TeeBoxLocation.Back9Par}} - Yardage: {{::round.TeeBoxLocation.Yardage | number:0}}
-                                    </p>
-                                    <p>
-                                        Raw Score = {{::round.Score}}
-                                    </p>
-                                    <p>
-                                        Adjusted Score = {{::round.AdjustedScore}}
-                                    </p>
-                                    <p>
-                                        Tee Box: {{::round.TeeBoxLocation.Description}}
-                                    </p>
+
+                                    <div class="row">
+                                        <div class="col-sm-6"><span class="ListLabel">Par:</span> {{::round.TeeBoxLocation.Front9Par + round.TeeBoxLocation.Back9Par}} - <span class="ListLabel">Yardage:</span> {{::round.TeeBoxLocation.Yardage | number:0}}</div>
+                                        <div class="col-sm-6"><span class="ListLabel">Tee Box:</span> {{::round.TeeBoxLocation.Description}}</div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-sm-6"><span class="ListLabel">Raw Score:</span> {{::round.Score}}</div>
+                                        <div class="col-sm-6"><span class="ListLabel">Round Handicap:</span> {{::(round.RoundHandicap) | number:1}}</div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-sm-12"><span class="ListLabel">Adjusted Score:</span> {{::round.AdjustedScore}}</div>
+                                    </div>
                                 </div>
                                 <div class="listing-footer">
                                     <ul class="aux-info">
@@ -141,13 +143,12 @@
                                                 of
                                                 {{::round.FairwaysHitAttempted}}
 
-                                                <b> ({{((round.FairwaysHit / round.FairwaysHitAttempted) | percent: 0)}})</b>
+                                                <b> ({{((round.FairwaysHit / round.FairwaysHitAttempted) | percent: 1)}})</b>
                                             </span>
                                             <span class="InlineSpan" ng-if="round.FairwaysHit == null || round.FairwaysHitAttempted == null">
                                                 N/A
                                             </span>
                                         </li>
-                                        <li class="RoundDetailLI" title="Round Handicap"><i class="fa fa-th-list"></i><strong>Round Handicap: </strong>{{(round.RoundHandicap) | number:1}}</li>
                                     </ul>
                                 </div>
                             </div>
