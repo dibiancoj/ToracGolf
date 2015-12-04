@@ -263,6 +263,200 @@ var PuttChart = React.createClass({displayName: "PuttChart",
 
 });
 
+var GIRChart = React.createClass({displayName: "GIRChart",
+
+    getInitialState: function () {
+        return {
+            DataSet: this.props.DataSetToUse
+        };
+    },
+
+    render: function () {
+
+        return React.createElement("div", {ref: "GIRLineChart"})
+    },
+
+    componentDidMount: function () {
+
+        //only gets called 1 time on first render
+        this.initializeChart();
+    },
+    
+    componentDidUpdate: function () {
+
+        //does not get called on initial render
+        this.initializeChart();
+    },
+
+    initializeChart: function () {
+
+        var girHit = [];
+
+        if (this.state.DataSet != null) {
+            for (var i = 0; i < this.state.DataSet.length; i++) {
+
+                var item = this.state.DataSet[i];
+
+                //subtract for month because javascript uses a 0 base index. .net is 1 base index ie. jan = 1
+                girHit.push([Date.UTC(item.Year, item.Month - 1, item.Day), item.GreensHit])
+            }
+        }
+
+        $(this.refs.GIRLineChart).highcharts({
+            credits: {
+                enabled: false
+            },
+            chart: {
+                type: 'spline',
+                zoomType: 'x'
+            },
+            title: {
+                text: 'Greens In Regulation (GIR)'
+            },
+            xAxis: {
+                type: 'datetime',
+                dateTimeLabelFormats: { // don't display the dummy year
+                    month: '%e. %b',
+                    year: '%b'
+                },
+                title: {
+                    text: 'Date'
+                }
+            },
+            yAxis: [{ // primary yaxis
+                title: {
+                    text: 'Putts',
+                    style: {
+                        color: Highcharts.getOptions().colors[0]
+                    }
+                },
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[0]
+                    }
+                },
+                opposite: false
+            }],
+
+            plotOptions: {
+                spline: {
+                    marker: {
+                        enabled: true
+                    }
+                }
+            },
+
+            series: [{
+                name: 'Greens In Regulation (GIR)',
+                yAxis: 0,
+                // Define the data points. All series have a dummy year
+                // of 1970/71 in order to be compared on the same x axis. Note
+                // that in JavaScript, months start at 0 for January, 1 for February etc.
+                data: girHit
+            }]
+        });
+    }
+
+});
+
+var FairwayChart = React.createClass({displayName: "FairwayChart",
+
+    getInitialState: function () {
+        return {
+            DataSet: this.props.DataSetToUse
+        };
+    },
+
+    render: function () {
+
+        return React.createElement("div", {ref: "fairwaysLineChart"})
+    },
+
+    componentDidMount: function () {
+
+        //only gets called 1 time on first render
+        this.initializeChart();
+    },
+    
+    componentDidUpdate: function () {
+
+        //does not get called on initial render
+        this.initializeChart();
+    },
+
+    initializeChart: function () {
+
+        var fairwaysHit = [];
+
+        if (this.state.DataSet != null) {
+            for (var i = 0; i < this.state.DataSet.length; i++) {
+
+                var item = this.state.DataSet[i];
+
+                //subtract for month because javascript uses a 0 base index. .net is 1 base index ie. jan = 1
+                fairwaysHit.push([Date.UTC(item.Year, item.Month - 1, item.Day), item.FairwaysHit])
+            }
+        }
+
+        $(this.refs.fairwaysLineChart).highcharts({
+            credits: {
+                enabled: false
+            },
+            chart: {
+                type: 'spline',
+                zoomType: 'x'
+            },
+            title: {
+                text: 'Fairways In Regulation'
+            },
+            xAxis: {
+                type: 'datetime',
+                dateTimeLabelFormats: { // don't display the dummy year
+                    month: '%e. %b',
+                    year: '%b'
+                },
+                title: {
+                    text: 'Date'
+                }
+            },
+            yAxis: [{ // primary yaxis
+                title: {
+                    text: 'Putts',
+                    style: {
+                        color: Highcharts.getOptions().colors[0]
+                    }
+                },
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[0]
+                    }
+                },
+                opposite: false
+            }],
+
+            plotOptions: {
+                spline: {
+                    marker: {
+                        enabled: true
+                    }
+                }
+            },
+
+            series: [{
+                name: 'Fairways In Regulation',
+                yAxis: 0,
+                // Define the data points. All series have a dummy year
+                // of 1970/71 in order to be compared on the same x axis. Note
+                // that in JavaScript, months start at 0 for January, 1 for February etc.
+                data: fairwaysHit
+            }]
+        });
+    }
+
+});
+
 function RunQuery() {
     //ajax call
 
@@ -281,13 +475,17 @@ function RunQuery() {
               roundScoreGraph.setState({ DataSet: response.ScoreGraphData });
 
               puttGraph.setState({ DataSet: response.PuttsGraphData });
+
+              girGraph.setState({ DataSet: response.GIRGraphData });
+
+              fairwaysHitGraph.setState({ DataSet: response.FairwaysGraphData });
           })
           .fail(function (err) {
               alert('Error Getting Data: ' + err);
           });
 }
 
-function InitReact(teeBoxData, quickStats, scoreGraphData, puttGraphData) {
+function InitReact(teeBoxData, quickStats, scoreGraphData, puttGraphData, girGraphData, fairwaysHitGraphData) {
 
     condensedStats = ReactDOM.render(
        React.createElement(CondensedStats, {InitData: quickStats}),
@@ -304,6 +502,14 @@ function InitReact(teeBoxData, quickStats, scoreGraphData, puttGraphData) {
     puttGraph = ReactDOM.render(
         React.createElement(PuttChart, {DataSetToUse: puttGraphData }),
         document.getElementById('PuttDivContainer'));
+
+    girGraph = ReactDOM.render(
+       React.createElement(GIRChart, {DataSetToUse: girGraphData }),
+        document.getElementById('GIRDivContainer'));
+        
+    fairwaysHitGraph = ReactDOM.render(
+       React.createElement(FairwayChart, {DataSetToUse: fairwaysHitGraphData }),
+        document.getElementById('FaiwaysHitDivContainer'));
 
     //add hooks into the select combo box to re-run the query
     $('.ReRunQuery').change(RunQuery);

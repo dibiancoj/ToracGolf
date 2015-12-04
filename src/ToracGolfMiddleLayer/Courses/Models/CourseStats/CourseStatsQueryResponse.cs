@@ -14,7 +14,9 @@ namespace ToracGolf.MiddleLayer.Courses.Models.CourseStats
 
         public IEnumerable<DashboardHandicapScoreSplitDisplay> ScoreGraphData { get; set; }
 
-        public IEnumerable<PuttsCourseStats> PuttsGraphData { get; set; }
+        public IEnumerable<PuttsCourseStatsGraph> PuttsGraphData { get; set; }
+        public IEnumerable<FairwaysInRegulationCourseStatsGraph> FairwaysGraphData { get; set; }
+        public IEnumerable<GreensInRegulationCourseStatsGraph> GIRGraphData { get; set; }
     }
 
     public class CondensedStats

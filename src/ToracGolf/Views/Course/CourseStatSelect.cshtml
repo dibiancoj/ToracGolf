@@ -37,7 +37,9 @@
         InitReact(@Html.Raw(Json.Serialize(Model.CourseRecord.TeeBoxLocations)), 
                   @Html.Raw(Json.Serialize(Model.CondensedStats.QuickStats)), 
                   @Html.Raw(Json.Serialize(Model.CondensedStats.ScoreGraphData)),
-                  @Html.Raw(Json.Serialize(Model.CondensedStats.PuttsGraphData)));
+                  @Html.Raw(Json.Serialize(Model.CondensedStats.PuttsGraphData)),
+                  @Html.Raw(Json.Serialize(Model.CondensedStats.GIRGraphData)),
+                  @Html.Raw(Json.Serialize(Model.CondensedStats.FairwaysGraphData)));
 
         $('[data-toggle=tab]').click(function(){
             setTimeout(function(){
@@ -145,11 +147,15 @@
                                                 @*this gets rendered by react*@
                                             </div>
                                         </div>
-                                        <div class="tab-pane fade" id="tab-FaiwaysHit">
-                                            <div class="tab-body"></div>
+                                        <div class="tab-pane fade" id="tab-FairwaysHit">
+                                            <div id="FaiwaysHitDivContainer" class="tab-body">
+                                                @*this gets rendered by react*@
+                                            </div>
                                         </div>
                                         <div class="tab-pane fade" id="tab-GIR">
-                                            <div class="tab-body"></div>
+                                            <div id="GIRDivContainer" class="tab-body">
+                                                @*this gets rendered by react*@
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

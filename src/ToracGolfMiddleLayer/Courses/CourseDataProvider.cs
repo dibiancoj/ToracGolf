@@ -268,6 +268,8 @@ namespace ToracGolf.MiddleLayer.Courses
 
             model.ScoreGraphData = await ScoreGraph(dbContext, userId, queryModel.CourseId, queryModel.SeasonId, queryModel.TeeBoxLocationId);
             model.PuttsGraphData = await PuttGraph(dbContext, userId, queryModel.CourseId, queryModel.SeasonId, queryModel.TeeBoxLocationId);
+            model.FairwaysGraphData = await FairwaysHitGraph(dbContext, userId, queryModel.CourseId, queryModel.SeasonId, queryModel.TeeBoxLocationId);
+            model.GIRGraphData = await GIRGraph(dbContext, userId, queryModel.CourseId, queryModel.SeasonId, queryModel.TeeBoxLocationId);
 
             return model;
         }
@@ -307,16 +309,42 @@ namespace ToracGolf.MiddleLayer.Courses
                 }).ToArrayAsync();
         }
 
-        private static async Task<IEnumerable<PuttsCourseStats>> PuttGraph(ToracGolfContext dbContext, int userId, int courseId, int? seasonId, int? teeBoxLocationId)
+        private static async Task<IEnumerable<PuttsCourseStatsGraph>> PuttGraph(ToracGolfContext dbContext, int userId, int courseId, int? seasonId, int? teeBoxLocationId)
         {
             //just grab the last year so we don't grab globs of data
             return await BuildBaseGraphQuery(dbContext, userId, courseId, seasonId, teeBoxLocationId).Where(x => x.Putts.HasValue)
-                .Select(x =>new PuttsCourseStats
+                .Select(x => new PuttsCourseStatsGraph
                 {
                     Month = x.RoundDate.Month,
                     Day = x.RoundDate.Day,
                     Year = x.RoundDate.Year,
                     Putts = x.Putts.Value
+                }).ToArrayAsync();
+        }
+
+        private static async Task<IEnumerable<GreensInRegulationCourseStatsGraph>> GIRGraph(ToracGolfContext dbContext, int userId, int courseId, int? seasonId, int? teeBoxLocationId)
+        {
+            //just grab the last year so we don't grab globs of data
+            return await BuildBaseGraphQuery(dbContext, userId, courseId, seasonId, teeBoxLocationId).Where(x => x.GreensInRegulation.HasValue)
+                .Select(x => new GreensInRegulationCourseStatsGraph
+                {
+                    Month = x.RoundDate.Month,
+                    Day = x.RoundDate.Day,
+                    Year = x.RoundDate.Year,
+                    GreensHit = x.GreensInRegulation.Value
+                }).ToArrayAsync();
+        }
+
+        private static async Task<IEnumerable<FairwaysInRegulationCourseStatsGraph>> FairwaysHitGraph(ToracGolfContext dbContext, int userId, int courseId, int? seasonId, int? teeBoxLocationId)
+        {
+            //just grab the last year so we don't grab globs of data
+            return await BuildBaseGraphQuery(dbContext, userId, courseId, seasonId, teeBoxLocationId).Where(x => x.FairwaysHit.HasValue)
+                .Select(x => new FairwaysInRegulationCourseStatsGraph
+                {
+                    Month = x.RoundDate.Month,
+                    Day = x.RoundDate.Day,
+                    Year = x.RoundDate.Year,
+                    FairwaysHit = x.FairwaysHit.Value
                 }).ToArrayAsync();
         }
 
