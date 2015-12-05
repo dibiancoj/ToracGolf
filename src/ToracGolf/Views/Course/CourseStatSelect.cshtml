@@ -34,12 +34,13 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        InitReact(@Html.Raw(Json.Serialize(Model.CourseRecord.TeeBoxLocations)), 
-                  @Html.Raw(Json.Serialize(Model.CondensedStats.QuickStats)), 
+        InitReact(@Html.Raw(Json.Serialize(Model.CourseRecord.TeeBoxLocations)),
+                  @Html.Raw(Json.Serialize(Model.CondensedStats.QuickStats)),
                   @Html.Raw(Json.Serialize(Model.CondensedStats.ScoreGraphData)),
                   @Html.Raw(Json.Serialize(Model.CondensedStats.PuttsGraphData)),
                   @Html.Raw(Json.Serialize(Model.CondensedStats.GIRGraphData)),
-                  @Html.Raw(Json.Serialize(Model.CondensedStats.FairwaysGraphData)));
+                  @Html.Raw(Json.Serialize(Model.CondensedStats.FairwaysGraphData)),
+                  @Html.Raw(Json.Serialize(Model.CondensedStats.RecentRounds)));
 
         $('[data-toggle=tab]').click(function(){
             setTimeout(function(){
@@ -197,95 +198,9 @@
                             <div class="panel panel-default panel-sidebar-1">
                                 <div class="panel-heading"><h2>Recent Rounds</h2></div>
                                 <div class="panel-body">
-                                    <ul class="featured featured-vertical">
-                                        <li>
-                                            @*<img src="images/prv/estate/item-1.jpg" alt="">*@
-                                            <div class="featured-content">
-                                                <h3 class="title">
-                                                    <a href="#" hidefocus="true">3015 Grand Avenue, CocoWalk</a>
-                                                </h3>
-                                                <span class="star-rating">
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star-half-full"></i>
-                                                    <i class="fa fa-star-o"></i>
-                                                </span>
-                                                <div class="table no-margin">
-                                                    <div class="price-wr width-50">
-                                                        <span class="price">$2300</span>
-                                                        <span class="period">per month</span>
-                                                    </div>
-                                                    <div class="">
-                                                        <span class="capacity">
-                                                            <i class="fa fa-user"></i>
-                                                            <i class="fa fa-user"></i>
-                                                            <i class="fa fa-user"></i>
-                                                            <i class="fa fa-user"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            @*<img src="images/prv/estate/item-2.jpg" alt="">*@
-                                            <div class="featured-content">
-                                                <h3 class="title">
-                                                    <a href="#" hidefocus="true">3015 Grand Avenue, CocoWalk</a>
-                                                </h3>
-                                                <span class="star-rating">
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star-half-full"></i>
-                                                    <i class="fa fa-star-o"></i>
-                                                </span>
-                                                <div class="table no-margin">
-                                                    <div class="price-wr width-50">
-                                                        <span class="price">$2300</span>
-                                                        <span class="period">per month</span>
-                                                    </div>
-                                                    <div class="">
-                                                        <span class="capacity">
-                                                            <i class="fa fa-user"></i>
-                                                            <i class="fa fa-user"></i>
-                                                            <i class="fa fa-user"></i>
-                                                            <i class="fa fa-user"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            @*<img src="images/prv/estate/item-3.jpg" alt="">*@
-                                            <div class="featured-content">
-                                                <h3 class="title">
-                                                    <a href="#" hidefocus="true">3015 Grand Avenue, CocoWalk</a>
-                                                </h3>
-                                                <span class="star-rating">
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star-half-full"></i>
-                                                    <i class="fa fa-star-o"></i>
-                                                </span>
-                                                <div class="table no-margin">
-                                                    <div class="price-wr width-50">
-                                                        <span class="price">$2300</span>
-                                                        <span class="period">per month</span>
-                                                    </div>
-                                                    <div class="">
-                                                        <span class="capacity">
-                                                            <i class="fa fa-user"></i>
-                                                            <i class="fa fa-user"></i>
-                                                            <i class="fa fa-user"></i>
-                                                            <i class="fa fa-user"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                    <div id="RecentRoundContainer" className="form-light" role="form">
+                                        @*this gets rendered by react*@
+                                    </div>
                                 </div>
                             </div>
                         </div>

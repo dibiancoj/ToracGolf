@@ -189,7 +189,7 @@ var StandardChart = React.createClass({
     },
 
     initializeChart: function () {
-      
+
         var dataSetToRender = [];
 
         if (this.state.DataSet != null) {
@@ -201,7 +201,7 @@ var StandardChart = React.createClass({
                 dataSetToRender.push([Date.UTC(item.Year, item.Month - 1, item.Day), item[this.props.PropertyOfData]])
             }
         }
-       
+
         $(this.refs[this.props.IdToUse]).highcharts({
             credits: {
                 enabled: false
@@ -260,10 +260,62 @@ var StandardChart = React.createClass({
 
 });
 
+var RecentRoundTable = React.createClass({
+
+    getInitialState: function () {
+        return {
+            RecentRounds: this.props.DataSetToUse,
+            TeeBoxId: this.props.TeeBoxId
+        };
+    },
+
+    render: function () {
+
+        var outputTeeBoxLocation = this.state.TeeBoxId == 0;
+
+        var createRow = function (rowValue, index) {
+
+            var teeBoxHtml;
+
+            if (outputTeeBoxLocation) {
+                teeBoxHtml = <td>{rowValue.TeeBoxLocation}</td>
+            }
+
+            return <tr key={rowValue.RoundId}>
+                        <td><ToDate dateValue={rowValue.RoundDate} /></td>
+                        {teeBoxHtml}
+                        <td>{rowValue.Score}</td>
+            </tr>
+        };
+
+        var ds = this.state.RecentRounds == null ? [] : this.state.RecentRounds;
+
+        var outputTeeBoxHeader;
+
+        if (outputTeeBoxLocation) {
+            outputTeeBoxHeader =  <td><strong>Tee Box</strong></td>
+        }
+
+        return  <table className="table table-bordered table-striped table-hover table-responsive">
+                                                   <tbody>
+                                                       <tr>
+                                                           <td><strong>Round Date</strong></td>
+                                                           {outputTeeBoxHeader}
+                                                           <td><strong>Score</strong></td>
+                                                       </tr>
+                                                       {ds.map(createRow)}
+                                                   </tbody>
+        </table>
+
+    }
+})
+
 function RunQuery() {
     //ajax call
 
-    RunAjax('CourseStatQuery', { CourseId: $('#CourseId').val(), SeasonId: $('#SeasonSelect').val(), TeeBoxLocationId: $('#TeeBoxSelect').val() })
+    var teeBoxId = $('#TeeBoxSelect').val();
+
+    RunAjax('CourseStatQuery', { CourseId: $('#CourseId').val(), SeasonId: $('#SeasonSelect').val(), TeeBoxLocationId: teeBoxId })
           .done(function (response) {
 
               //go set the quick stats
@@ -273,6 +325,8 @@ function RunQuery() {
                   BestScore: response.QuickStats.BestScore,
                   AverageScore: response.QuickStats.AverageScore
               });
+
+              recentRounds.setState({ RecentRounds: response.RecentRounds, TeeBoxId: teeBoxId });
 
               //we basically so need to re-render the entire grid since it's not really html
               roundScoreGraph.setState({ DataSet: response.ScoreGraphData });
@@ -288,18 +342,22 @@ function RunQuery() {
           });
 }
 
-function InitReact(teeBoxData, quickStats, scoreGraphData, puttGraphData, girGraphData, fairwaysHitGraphData) {
+function InitReact(teeBoxData, quickStats, scoreGraphData, puttGraphData, girGraphData, fairwaysHitGraphData, recentRoundsTableData) {
 
     condensedStats = ReactDOM.render(
        <CondensedStats InitData={quickStats} />,
-        document.getElementById('CondensedStats'));
+       document.getElementById('CondensedStats'));
+
+    recentRounds = ReactDOM.render(
+        <RecentRoundTable DataSetToUse={recentRoundsTableData} TeeBoxId="0" />,
+        document.getElementById('RecentRoundContainer'));
 
     teeBoxTabData = ReactDOM.render(
         <TeeBoxInformation TeeBoxInfo={teeBoxData} />,
         document.getElementById('TabDataTeeBox'));
 
     roundScoreGraph = ReactDOM.render(
-        <ScoreChart DataSetToUse={scoreGraphData } />,
+        <ScoreChart DataSetToUse={scoreGraphData} />,
         document.getElementById('ScoreDivContainer'));
 
     puttGraph = ReactDOM.render(
@@ -307,11 +365,11 @@ function InitReact(teeBoxData, quickStats, scoreGraphData, puttGraphData, girGra
         document.getElementById('PuttDivContainer'));
 
     girGraph = ReactDOM.render(
-       <StandardChart IdToUse="GIRChart" PropertyOfData="GreensHit" TitleOfChart="Greens In Regulation (GIR)" TitleOfSeries="Greens In Regulation (GIR)" DataSetToUse={girGraphData } />,
+        <StandardChart IdToUse="GIRChart" PropertyOfData="GreensHit" TitleOfChart="Greens In Regulation (GIR)" TitleOfSeries="Greens In Regulation (GIR)" DataSetToUse={girGraphData } />,
         document.getElementById('GIRDivContainer'));
 
     fairwaysHitGraph = ReactDOM.render(
-       <StandardChart IdToUse="FairwaysHitChart" PropertyOfData="FairwaysHit" TitleOfChart="Fairways In Regulation" TitleOfSeries="Fairways In Regulation" DataSetToUse={fairwaysHitGraphData } />,
+        <StandardChart IdToUse="FairwaysHitChart" PropertyOfData="FairwaysHit" TitleOfChart="Fairways In Regulation" TitleOfSeries="Fairways In Regulation" DataSetToUse={fairwaysHitGraphData } />,
         document.getElementById('FaiwaysHitDivContainer'));
 
     //add hooks into the select combo box to re-run the query

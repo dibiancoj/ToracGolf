@@ -15,8 +15,12 @@ namespace ToracGolf.MiddleLayer.Courses.Models.CourseStats
         public IEnumerable<DashboardHandicapScoreSplitDisplay> ScoreGraphData { get; set; }
 
         public IEnumerable<PuttsCourseStatsGraph> PuttsGraphData { get; set; }
+
         public IEnumerable<FairwaysInRegulationCourseStatsGraph> FairwaysGraphData { get; set; }
+
         public IEnumerable<GreensInRegulationCourseStatsGraph> GIRGraphData { get; set; }
+
+        public IEnumerable<RecentCourseStatsRounds> RecentRounds { get; set; }
     }
 
     public class CondensedStats
@@ -35,6 +39,14 @@ namespace ToracGolf.MiddleLayer.Courses.Models.CourseStats
         public int Par { get; set; }
         public double Slope { get; set; }
         public double Rating { get; set; }
+    }
+
+    public class RecentCourseStatsRounds
+    {
+        public int RoundId { get; set; }
+        public string TeeBoxLocation { get; set; }
+        public DateTime RoundDate { get; set; }
+        public int Score { get; set; }
     }
 
 }

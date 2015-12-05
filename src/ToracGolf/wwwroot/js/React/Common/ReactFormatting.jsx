@@ -27,3 +27,14 @@ ToDecimalPoints = React.createClass({
     }
 
 })
+
+ToDate = React.createClass({
+    
+    toDateFormat: function(){
+        return new Date(this.props.dateValue).toLocaleDateString();
+    },
+
+    render: function () {
+        return <span>{this.toDateFormat()}</span>
+    }
+});
