@@ -23,7 +23,7 @@
         },
 
         $scope.SaveASeasonDialogOkEvent = function () {
-            window.location.href = 'SeasonListing';
+            window.location.href = 'ViewSeasons';
         }
 
     }]);
