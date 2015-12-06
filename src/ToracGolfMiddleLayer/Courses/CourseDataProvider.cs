@@ -213,7 +213,7 @@ namespace ToracGolf.MiddleLayer.Courses
             var courseRecord = await dbContext.Course.AsNoTracking().Select(x => new CourseStatsModel
             {
                 CourseId = x.CourseId,
-                CourseCity = x.State.Description,
+                CourseCity = x.City,
                 CourseDescription = x.Description,
                 CourseName = x.Name,
                 CourseState = x.State.Description,
