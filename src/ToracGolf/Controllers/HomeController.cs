@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ToracGolf.Constants;
 using ToracGolf.Filters;
 using ToracGolf.MiddleLayer.Dashboard;
 using ToracGolf.MiddleLayer.Dashboard.Models;
@@ -52,8 +53,7 @@ namespace ToracGolf.Controllers
 
         #region Methods
 
-        //[Route("Home", Name = "Home")]
-        [Route("Dashboard", Name = "Dashboard")]
+        [Route(ApplicationConstants.MainLandingPage, Name = ApplicationConstants.MainLandingPage)]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
