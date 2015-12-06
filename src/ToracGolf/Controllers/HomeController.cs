@@ -53,6 +53,7 @@ namespace ToracGolf.Controllers
         #region Methods
 
         //[Route("Home", Name = "Home")]
+        [Route("Dashboard", Name = "Dashboard")]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
