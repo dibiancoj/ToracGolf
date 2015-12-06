@@ -95,7 +95,7 @@
                     <ul class="list-listings-2" ng-repeat="round in PagedData track by round.RoundId">
                         <li class="featured">
                             <div class="listing-header bg-base">
-                                {{::round.RoundDate | date:'MM/dd/yyyy'}}: {{::round.Score}} at {{::round.CourseName}} ({{::round.TeeBoxLocation.Description}} Tee Box)
+                                {{::round.RoundDate | date:'MM/dd/yyyy'}}: {{::round.Score}} at {{::round.CourseName}} - {{::round.TeeBoxLocation.Description}} Tee Box
 
                                 <span class="star-rating">
                                     <i ng-class="round.RoundPerformance > 0 ? 'fa fa-star': 'fa fa-star-o'"></i>
