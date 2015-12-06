@@ -1,0 +1,27 @@
+﻿@{
+    Layout = "_ToracGolfLayout";
+    ViewBag.Title = "News Feed";
+}
+@model ToracGolf.ViewModels.Home.NewsFeedViewModel
+
+@section Breadcrumb{
+    @Html.Partial("_Breadcrumb", Model.Breadcrumb)
+}
+
+@section TopNav{
+    @Html.Partial("_TopNav", new ToracGolf.ViewModels.Navigation.TopNavViewModel(true))
+}
+
+@section HandicapStatus{
+    @Html.Partial("_HandicapStatus", Model.HandicapStatus)
+}
+
+@section Styles{
+
+}
+
+@section Scripts{
+
+}
+
+<section class="slice slice-lg bg-image" style="background-image:url(images/backgrounds/SeasonAdd.jpg);"></section>

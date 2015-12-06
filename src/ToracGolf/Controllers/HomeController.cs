@@ -53,6 +53,8 @@ namespace ToracGolf.Controllers
 
         #region Methods
 
+        #region Dashboard
+
         [Route(ApplicationConstants.MainLandingPage, Name = ApplicationConstants.MainLandingPage)]
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -92,10 +94,38 @@ namespace ToracGolf.Controllers
             });
         }
 
+        #endregion
+
+        #region News Feed
+
+        [Route("NewsFeed", Name = "NewsFeed")]
+        [HttpGet]
+        public async Task<IActionResult> NewsFeedIndex()
+        {
+            //grab the user id
+            var userId = GetUserId();
+
+            var breadCrumb = new List<BreadcrumbNavItem>();
+
+            breadCrumb.Add(new BreadcrumbNavItem("Home", ApplicationConstants.MainLandingPage));
+            breadCrumb.Add(new BreadcrumbNavItem("News Feed", "#"));
+
+            return View(new NewsFeedViewModel(
+                await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
+                breadCrumb,
+                BuildTokenSet(Antiforgery)));
+        }
+
+        #endregion
+
+        #region Error Handling
+
         public IActionResult Error()
         {
             return View("~/Views/Shared/Error.cshtml");
         }
+
+        #endregion
 
         #endregion
 
