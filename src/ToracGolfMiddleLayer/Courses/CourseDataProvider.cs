@@ -226,7 +226,7 @@ namespace ToracGolf.MiddleLayer.Courses
                     Par = y.Front9Par + y.Back9Par,
                     Rating = y.Rating,
                     Slope = y.Slope
-                })
+                }).OrderBy(y => y.Yardage)
             }).FirstAsync(x => x.CourseId == courseId);
 
             //set the url path
@@ -251,7 +251,7 @@ namespace ToracGolf.MiddleLayer.Courses
 
             if (query.Count() == 0)
             {
-                return new CourseStatsQueryResponse { QuickStats = new CondensedStats() };
+                return new CourseStatsQueryResponse { QuickStats = new CondensedStats { TeeBoxCount = dbContext.CourseTeeLocations.Count(y => y.CourseId == queryModel.CourseId) } };
             }
 
             //group by should chunk it up to 1 record
