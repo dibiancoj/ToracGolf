@@ -76,7 +76,7 @@
                 xAxis: {
                     type: 'datetime',
                     dateTimeLabelFormats: { // don't display the dummy year
-                        month: '%e. %b',
+                        month: '%b \'%y',
                         year: '%b'
                     },
                     title: {

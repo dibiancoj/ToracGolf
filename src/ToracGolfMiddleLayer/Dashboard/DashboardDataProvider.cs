@@ -54,10 +54,10 @@ namespace ToracGolf.MiddleLayer.Dashboard
 
         public static async Task<IEnumerable<DashboardHandicapScoreSplitDisplay>> ScoreHandicapGraph(ToracGolfContext dbContext, int userId, int? seasonId)
         {
-            var minDateToGrab = DateTime.Now.AddYears(-1);
+            //var minDateToGrab = DateTime.Now.AddYears(-1);
 
             //just grab the last year so we don't grab globs of data
-            return await BuildBaseQuery(dbContext, userId, seasonId).Where(x => x.RoundDate > minDateToGrab).OrderBy(x => x.RoundDate)
+            return await BuildBaseQuery(dbContext, userId, seasonId).OrderBy(x => x.RoundDate).Take(20)
                 .Select(x => new DashboardHandicapScoreSplitDisplay
                 {
                     Month = x.RoundDate.Month,

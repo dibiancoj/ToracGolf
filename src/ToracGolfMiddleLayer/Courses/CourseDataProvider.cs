@@ -290,11 +290,9 @@ namespace ToracGolf.MiddleLayer.Courses
 
         #region Graphs
 
-        private static IOrderedQueryable<Round> BuildBaseCourseStatsQuery(ToracGolfContext dbContext, int userId, int courseId, int? seasonId, int? teeBoxLocationId)
+        private static IQueryable<Round> BuildBaseCourseStatsQuery(ToracGolfContext dbContext, int userId, int courseId, int? seasonId, int? teeBoxLocationId)
         {
-            var minDateToGrab = DateTime.Now.AddYears(-1);
-
-            var baseQuery = dbContext.Rounds.AsNoTracking().Where(x => x.UserId == userId && x.CourseId == courseId && x.RoundDate > minDateToGrab);
+            var baseQuery = dbContext.Rounds.AsNoTracking().Where(x => x.UserId == userId && x.CourseId == courseId);
 
             if (seasonId.HasValue)
             {
@@ -306,7 +304,7 @@ namespace ToracGolf.MiddleLayer.Courses
                 baseQuery = baseQuery.Where(x => x.CourseTeeLocationId == teeBoxLocationId);
             }
 
-            return baseQuery.OrderBy(x => x.RoundDate);
+            return baseQuery.OrderBy(x => x.RoundDate).Take(20);
         }
 
         private static async Task<IEnumerable<DashboardHandicapScoreSplitDisplay>> ScoreGraph(ToracGolfContext dbContext, int userId, int courseId, int? seasonId, int? teeBoxLocationId)
