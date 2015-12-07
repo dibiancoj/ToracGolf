@@ -36,3 +36,4 @@
 /// <reference path="lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js" />
 /// <reference path="lib/react/react.js" />
 /// <reference path="lib/react/react-dom.js" />
+/// <reference path="min/boomerangejquerycontrols.min.js" />

@@ -24,24 +24,31 @@
                   asp-fallback-test-class="carousel-caption" asp-fallback-test-property="display" asp-fallback-test-value="none" />
             <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
         </environment>*@
-    <!-- Torac Golf Site Level Styles -->
-    <link href="~/css/site.css" rel="stylesheet" />
 
     <!-- Essential styles -->
     <link rel="stylesheet" href="~/lib/bootstraptemplate/assets/bootstrap/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="~/lib/bootstraptemplate/font-awesome/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="~/lib/bootstraptemplate/assets/fancybox/jquery.fancybox.css?v=2.1.5" media="screen">
 
-    <!-- Boomerang styles -->
-    <link id="wpStylesheet" type="text/css" href="~/lib/bootstraptemplate/css/global-style.css" rel="stylesheet" media="screen">
-
     <!-- Favicon -->
     <link href="images/favicon.png" rel="icon" type="image/png">
 
+    <!-- Leave outside of bundle and min. -->
+    <link id="wpStylesheet" type="text/css" href="~/lib/bootstraptemplate/css/global-style.css" rel="stylesheet" media="screen">
+
+    <!-- Boomerang styles -->
     <!-- Assets -->
-    <link rel="stylesheet" href="~/lib/bootstraptemplate/assets/owl-carousel/owl.carousel.css">
-    <link rel="stylesheet" href="~/lib/bootstraptemplate/assets/owl-carousel/owl.theme.css">
-    <link rel="stylesheet" href="~/lib/bootstraptemplate/assets/sky-forms/css/sky-forms.css">
+    <environment names="Development">
+        <!-- Torac Golf Site Level Styles -->
+        <link href="~/css/site.css" rel="stylesheet" />
+
+        <link rel="stylesheet" href="~/lib/bootstraptemplate/assets/owl-carousel/owl.carousel.css">
+        <link rel="stylesheet" href="~/lib/bootstraptemplate/assets/owl-carousel/owl.theme.css">
+        <link rel="stylesheet" href="~/lib/bootstraptemplate/assets/sky-forms/css/sky-forms.css">
+    </environment>
+    <environment names="Staging,Production">
+        <link href="~/min/layoutboomerang.min.css" rel="stylesheet" />
+    </environment>
 
     <!-- Page styles -->
     @RenderSection("Styles", required: false)
@@ -108,12 +115,18 @@
     <!-- Essentials -->
     <script src="~/lib/bootstraptemplate/js/modernizr.custom.js"></script>
     <script src="~/lib/bootstraptemplate/assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="~/lib/bootstraptemplate/js/jquery.mousewheel-3.0.6.pack.js"></script>
-    <script src="~/lib/bootstraptemplate/js/jquery.easing.js"></script>
-    <script src="~/lib/bootstraptemplate/js/jquery.metadata.js"></script>
-    <script src="~/lib/bootstraptemplate/js/jquery.hoverup.js"></script>
-    <script src="~/lib/bootstraptemplate/js/jquery.hoverdir.js"></script>
-    <script src="~/lib/bootstraptemplate/js/jquery.stellar.js"></script>
+
+    <environment names="Development">
+        <script src="~/lib/bootstraptemplate/js/jquery.mousewheel-3.0.6.pack.js"></script>
+        <script src="~/lib/bootstraptemplate/js/jquery.easing.js"></script>
+        <script src="~/lib/bootstraptemplate/js/jquery.metadata.js"></script>
+        <script src="~/lib/bootstraptemplate/js/jquery.hoverup.js"></script>
+        <script src="~/lib/bootstraptemplate/js/jquery.hoverdir.js"></script>
+        <script src="~/lib/bootstraptemplate/js/jquery.stellar.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/min/boomerangejquerycontrols.min.js"></script>
+    </environment>
 
     <!-- Boomerang mobile nav - Optional  -->
     <script src="~/lib/bootstraptemplate/assets/responsive-mobile-nav/js/jquery.dlmenu.js"></script>
@@ -149,35 +162,6 @@
         <script src="js/html5shiv.js"></script>
         <script src="js/respond.min.js"></script>
     <![endif]-->
-    @*Temp -- You can remove this once you started to work on your project
-        <script src="~/lib/bootstraptemplate/js/jquery.cookie.js"></script>*@
-
-    @*<environment names="Development">
-            <script src="~/lib/jquery/dist/jquery.js"></script>
-            <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-            <script src="~/lib/hammer.js/hammer.js"></script>
-            <script src="~/lib/bootstrap-touch-carousel/dist/js/bootstrap-touch-carousel.js"></script>
-            <script src="~/js/site.js" asp-append-version="true"></script>
-        </environment>
-        <environment names="Staging,Production">
-            <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.4.min.js"
-                    asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                    asp-fallback-test="window.jQuery">
-            </script>
-            <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.0.0/bootstrap.min.js"
-                    asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                    asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
-            </script>
-            <script src="https://ajax.aspnetcdn.com/ajax/hammer.js/2.0.4/hammer.min.js"
-                    asp-fallback-src="~/lib/hammer.js/hammer.js"
-                    asp-fallback-test="window.Hammer">
-            </script>
-            <script src="https://ajax.aspnetcdn.com/ajax/bootstrap-touch-carousel/0.8.0/js/bootstrap-touch-carousel.js"
-                    asp-fallback-src="~/lib/bootstrap-touch-carousel/dist/js/bootstrap-touch-carousel.js"
-                    asp-fallback-test="window.Hammer && window.Hammer.Instance">
-            </script>
-            <script src="~/js/site.js" asp-append-version="true"></script>
-        </environment>*@
 
     @RenderSection("Scripts", required: false)
 

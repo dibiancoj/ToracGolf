@@ -1,4 +1,4 @@
-/// <binding BeforeBuild='reactValidation, reactTransformChangePw, reactCourseStats, reactFormatting' Clean='clean' />
+/// <binding BeforeBuild='reactValidation, reactTransformChangePw, reactCourseStats, reactFormatting, Layout:Boomerang:css, BoomerangControlJs:min:js' Clean='clean' />
 "use strict";
 
 var gulp = require("gulp"),
@@ -81,5 +81,27 @@ gulp.task("reactCourseStats", function () {
         .pipe(react({ harmony: false }))
         .pipe(gulp.dest('.'))
 });
+
+//layout .css with the theme
+function GetWebRootPath(file) {
+    return paths.webroot + file;
+}
+
+gulp.task('Layout:Boomerang:css', function () {
+    return gulp.src([GetWebRootPath('css/**/site.css'), GetWebRootPath('lib/**/owl.carousel.css'), GetWebRootPath('lib/**/owl.theme.css'), GetWebRootPath('lib/**/sky-forms.css')])
+                .pipe(concat(GetWebRootPath('min/LayoutBoomerang.min.css')))
+                .pipe(cssmin())
+                .pipe(gulp.dest("."));
+});
+
+
+gulp.task("BoomerangControlJs:min:js", function () {
+    return gulp.src([GetWebRootPath('lib/bootstraptemplate/js/jquery.mousewheel-3.0.6.pack.js'), GetWebRootPath('lib/bootstraptemplate/js/jquery.easing.js'),
+                     GetWebRootPath('lib/bootstraptemplate/js/jquery.metadata.js'), GetWebRootPath('lib/bootstraptemplate/js/jquery.hoverup.js'),
+                     GetWebRootPath('lib/bootstraptemplate/js/jquery.hoverdir.js'), GetWebRootPath('lib/bootstraptemplate/js/jquery.stellar.js')])
+        .pipe(concat(GetWebRootPath('min/BoomerangeJQueryControls.min.js')))
+        .pipe(uglify())
+        .pipe(gulp.dest("."));
+})
 
 gulp.task("min", ["min:js", "min:css"]);

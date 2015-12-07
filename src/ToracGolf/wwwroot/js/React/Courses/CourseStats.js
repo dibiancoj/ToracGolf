@@ -104,7 +104,7 @@ var ScoreChart = React.createClass({displayName: "ScoreChart",
             xAxis: {
                 type: 'datetime',
                 dateTimeLabelFormats: { // don't display the dummy year
-                    month: '%e. %b',
+                    month: '%b \'%y',
                     year: '%b'
                 },
                 title: {
@@ -216,7 +216,7 @@ var StandardChart = React.createClass({displayName: "StandardChart",
             xAxis: {
                 type: 'datetime',
                 dateTimeLabelFormats: { // don't display the dummy year
-                    month: '%e. %b',
+                    month: '%b \'%y',
                     year: '%b'
                 },
                 title: {
