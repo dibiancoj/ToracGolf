@@ -129,31 +129,47 @@
     </environment>
 
     <!-- Boomerang mobile nav - Optional  -->
-    <script src="~/lib/bootstraptemplate/assets/responsive-mobile-nav/js/jquery.dlmenu.js"></script>
-    <script src="~/lib/bootstraptemplate/assets/responsive-mobile-nav/js/jquery.dlmenu.autofill.js"></script>
+    <environment names="Development">
+        <script src="~/lib/bootstraptemplate/assets/responsive-mobile-nav/js/jquery.dlmenu.js"></script>
+        <script src="~/lib/bootstraptemplate/assets/responsive-mobile-nav/js/jquery.dlmenu.autofill.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/min/boomerangresponsivemobile.min.js"></script>
+    </environment>
 
     <!-- Forms -->
-    <script src="~/lib/bootstraptemplate/assets/ui-kit/js/jquery.powerful-placeholder.min.js"></script>
-    <script src="~/lib/bootstraptemplate/assets/ui-kit/js/cusel.min.js"></script>
-    <script src="~/lib/bootstraptemplate/assets/sky-forms/js/jquery.form.min.js"></script>
-    <script src="~/lib/bootstraptemplate/assets/sky-forms/js/jquery.validate.min.js"></script>
-    <script src="~/lib/bootstraptemplate/assets/sky-forms/js/jquery.maskedinput.min.js"></script>
-    <script src="~/lib/bootstraptemplate/assets/sky-forms/js/jquery.modal.js"></script>
+    <environment names="Development">
+        <script src="~/lib/bootstraptemplate/assets/ui-kit/js/jquery.powerful-placeholder.min.js"></script>
+        <script src="~/lib/bootstraptemplate/assets/ui-kit/js/cusel.min.js"></script>
+        <script src="~/lib/bootstraptemplate/assets/sky-forms/js/jquery.form.min.js"></script>
+        <script src="~/lib/bootstraptemplate/assets/sky-forms/js/jquery.validate.min.js"></script>
+        <script src="~/lib/bootstraptemplate/assets/sky-forms/js/jquery.maskedinput.min.js"></script>
+        <script src="~/lib/bootstraptemplate/assets/sky-forms/js/jquery.modal.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/min/boomerangjqueryforms.min.js"></script>
+    </environment>
 
     <!-- Assets -->
-    <script src="~/lib/bootstraptemplate/assets/hover-dropdown/bootstrap-hover-dropdown.min.js"></script>
-    <script src="~/lib/bootstraptemplate/assets/page-scroller/jquery.ui.totop.min.js"></script>
-    <script src="~/lib/bootstraptemplate/assets/mixitup/jquery.mixitup.js"></script>
-    <script src="~/lib/bootstraptemplate/assets/mixitup/jquery.mixitup.init.js"></script>
-    <script src="~/lib/bootstraptemplate/assets/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
-    <script src="~/lib/bootstraptemplate/assets/waypoints/waypoints.min.js"></script>
-    <script src="~/lib/bootstraptemplate/assets/milestone-counter/jquery.countTo.js"></script>
-    <script src="~/lib/bootstraptemplate/assets/easy-pie-chart/js/jquery.easypiechart.js"></script>
-    <script src="~/lib/bootstraptemplate/assets/social-buttons/js/rrssb.min.js"></script>
-    <script src="~/lib/bootstraptemplate/assets/nouislider/js/jquery.nouislider.min.js"></script>
-    <script src="~/lib/bootstraptemplate/assets/owl-carousel/owl.carousel.js"></script>
-    <script src="~/lib/bootstraptemplate/assets/bootstrap/js/tooltip.js"></script>
-    <script src="~/lib/bootstraptemplate/assets/bootstrap/js/popover.js"></script>
+    <environment names="Development">
+        <script src="~/lib/bootstraptemplate/assets/hover-dropdown/bootstrap-hover-dropdown.min.js"></script>
+        <script src="~/lib/bootstraptemplate/assets/page-scroller/jquery.ui.totop.min.js"></script>
+        <script src="~/lib/bootstraptemplate/assets/mixitup/jquery.mixitup.js"></script>
+        <script src="~/lib/bootstraptemplate/assets/mixitup/jquery.mixitup.init.js"></script>
+        <script src="~/lib/bootstraptemplate/assets/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
+        <script src="~/lib/bootstraptemplate/assets/waypoints/waypoints.min.js"></script>
+        <script src="~/lib/bootstraptemplate/assets/milestone-counter/jquery.countTo.js"></script>
+        <script src="~/lib/bootstraptemplate/assets/easy-pie-chart/js/jquery.easypiechart.js"></script>
+        <script src="~/lib/bootstraptemplate/assets/social-buttons/js/rrssb.min.js"></script>
+        <script src="~/lib/bootstraptemplate/assets/nouislider/js/jquery.nouislider.min.js"></script>
+        <script src="~/lib/bootstraptemplate/assets/owl-carousel/owl.carousel.js"></script>
+        <script src="~/lib/bootstraptemplate/assets/bootstrap/js/tooltip.js"></script>
+        <script src="~/lib/bootstraptemplate/assets/bootstrap/js/popover.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/lib/bootstraptemplate/assets/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
+        <script src="~/min/boomerangassets.min.js"></script>
+    </environment>
 
     <!-- Sripts for individual pages, depending on what plug-ins are used -->
     <!-- Boomerang App JS -->

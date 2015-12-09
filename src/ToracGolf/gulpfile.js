@@ -1,4 +1,4 @@
-/// <binding BeforeBuild='reactValidation, reactTransformChangePw, reactCourseStats, reactFormatting, Layout:Boomerang:css, BoomerangControlJs:min:js' Clean='clean' />
+/// <binding BeforeBuild='reactValidation, reactTransformChangePw, reactCourseStats, reactFormatting, Layout:Boomerang:css, BoomerangControlJs:min:js, BoomerangAssets:min:js, BoomerangJQueryForms:min:js, BoomerangResponsiveMobile:min:js' Clean='clean' ProjectOpened='BoomerangAssets:min:js, BoomerangControlJs:min:js, BoomerangJQueryForms:min:js, BoomerangResponsiveMobile:min:js, Layout:Boomerang:css' />
 "use strict";
 
 var gulp = require("gulp"),
@@ -87,7 +87,7 @@ function GetWebRootPath(file) {
     return paths.webroot + file;
 }
 
-gulp.task('Layout:Boomerang:css', function () {
+gulp.task('BoomerangLayout:css', function () {
     return gulp.src([GetWebRootPath('css/**/site.css'), GetWebRootPath('lib/**/owl.carousel.css'), GetWebRootPath('lib/**/owl.theme.css'), GetWebRootPath('lib/**/sky-forms.css')])
                 .pipe(concat(GetWebRootPath('min/LayoutBoomerang.min.css')))
                 .pipe(cssmin())
@@ -100,6 +100,49 @@ gulp.task("BoomerangControlJs:min:js", function () {
                      GetWebRootPath('lib/bootstraptemplate/js/jquery.metadata.js'), GetWebRootPath('lib/bootstraptemplate/js/jquery.hoverup.js'),
                      GetWebRootPath('lib/bootstraptemplate/js/jquery.hoverdir.js'), GetWebRootPath('lib/bootstraptemplate/js/jquery.stellar.js')])
         .pipe(concat(GetWebRootPath('min/BoomerangeJQueryControls.min.js')))
+        .pipe(uglify())
+        .pipe(gulp.dest("."));
+})
+
+gulp.task("BoomerangAssets:min:js", function () {
+    return gulp.src([GetWebRootPath('/lib/bootstraptemplate/assets/hover-dropdown/bootstrap-hover-dropdown.min.js'),
+                     GetWebRootPath('/lib/bootstraptemplate/assets/page-scroller/jquery.ui.totop.min.js'),
+                     GetWebRootPath('/lib/bootstraptemplate/assets/mixitup/jquery.mixitup.js'),
+                     GetWebRootPath('/lib/bootstraptemplate/assets/mixitup/jquery.mixitup.init.js'),
+                     //GetWebRootPath('/lib/bootstraptemplate/assets/fancybox/jquery.fancybox.pack.js?v=2.1.5'),
+                     GetWebRootPath('/lib/bootstraptemplate/assets/waypoints/waypoints.min.js'),
+                     GetWebRootPath('/lib/bootstraptemplate/assets/milestone-counter/jquery.countTo.js'),
+                     GetWebRootPath('/lib/bootstraptemplate/assets/easy-pie-chart/js/jquery.easypiechart.js'),
+                     GetWebRootPath('/lib/bootstraptemplate/assets/social-buttons/js/rrssb.min.js'),
+                     GetWebRootPath('/lib/bootstraptemplate/assets/nouislider/js/jquery.nouislider.min.js'),
+                     GetWebRootPath('/lib/bootstraptemplate/assets/owl-carousel/owl.carousel.js'),
+                     GetWebRootPath('/lib/bootstraptemplate/assets/bootstrap/js/tooltip.js'),
+                     GetWebRootPath('/lib/bootstraptemplate/assets/bootstrap/js/popover.js')])
+
+        .pipe(concat(GetWebRootPath('min/BoomerangAssets.min.js')))
+        .pipe(uglify())
+        .pipe(gulp.dest("."));
+})
+
+
+gulp.task("BoomerangJQueryForms:min:js", function () {
+    return gulp.src([GetWebRootPath('/lib/bootstraptemplate/assets/ui-kit/js/jquery.powerful-placeholder.min.js'),
+                     GetWebRootPath('/lib/bootstraptemplate/assets/ui-kit/js/cusel.min.js'),
+                     GetWebRootPath('/lib/bootstraptemplate/assets/sky-forms/js/jquery.form.min.js'),
+                     GetWebRootPath('/lib/bootstraptemplate/assets/sky-forms/js/jquery.validate.min.js'),                    
+                     GetWebRootPath('/lib/bootstraptemplate/assets/sky-forms/js/jquery.maskedinput.min.js'),
+                     GetWebRootPath('/lib/bootstraptemplate/assets/sky-forms/js/jquery.modal.js')])
+
+        .pipe(concat(GetWebRootPath('min/BoomerangJQueryForms.min.js')))
+        .pipe(uglify())
+        .pipe(gulp.dest("."));
+})
+
+gulp.task("BoomerangResponsiveMobile:min:js", function () {
+    return gulp.src([GetWebRootPath('/lib/bootstraptemplate/assets/responsive-mobile-nav/js/jquery.dlmenu.js'),
+                     GetWebRootPath('/lib/bootstraptemplate/assets/responsive-mobile-nav/js/jquery.dlmenu.autofill.js')])
+
+        .pipe(concat(GetWebRootPath('min/BoomerangResponsiveMobile.min.js')))
         .pipe(uglify())
         .pipe(gulp.dest("."));
 })
