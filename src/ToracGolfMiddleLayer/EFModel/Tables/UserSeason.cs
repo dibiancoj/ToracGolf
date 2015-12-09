@@ -19,5 +19,7 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
         [Required]
         public DateTime CreatedDate { get; set; }
 
+        public ICollection<Round> Rounds { get; set; } 
+
     }
 }

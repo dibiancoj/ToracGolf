@@ -189,10 +189,10 @@ namespace ToracGolf.Controllers
             var userId = GetUserId();
 
             //let's grab the users season
-            var userSeasons = (await SeasonDataProvider.SeasonSelectForUser(DbContext, userId)).Select(x => new SelectListItem { Value = x.Key.ToString(), Text = x.Value }).ToList();
-
-            //add the "all seasons"
-            userSeasons.Insert(0, new SelectListItem { Value = string.Empty, Text = "All Seasons" });
+            var userSeasons = BuildSelectList<KeyValuePair<int, string>>((await SeasonDataProvider.SeasonSelectForUser(DbContext, userId)),
+                x => x.Key.ToString(),
+                x => x.Value,
+                () => new SelectListItem { Value = string.Empty, Text = "All Seasons" });
 
             //go return the view
             return View(new RoundListingViewModel(

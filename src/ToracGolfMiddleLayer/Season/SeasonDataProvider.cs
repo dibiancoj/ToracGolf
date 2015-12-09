@@ -25,26 +25,26 @@ namespace ToracGolf.MiddleLayer.Season
                           join refSeasons in dbContext.Ref_Season.AsNoTracking()
                           on mySeasons.SeasonId equals refSeasons.SeasonId
                           where mySeasons.UserId == userId
-                          orderby mySeasons.CreatedDate
+                          orderby mySeasons.Rounds.Min(x => x.RoundDate) descending
                           select refSeasons).ToDictionaryAsync(x => x.SeasonId, x => x.SeasonText);
         }
 
         public static async Task<IEnumerable<SeasonListingData>> SeasonListingForGrid(ToracGolfContext dbContext, int userId)
         {
             return await (from mySeasons in dbContext.UserSeason.AsNoTracking()
-                           join refSeasons in dbContext.Ref_Season.AsNoTracking()
-                           on mySeasons.SeasonId equals refSeasons.SeasonId
-                           where mySeasons.UserId == userId
-                           orderby mySeasons.CreatedDate
-                           select new SeasonListingData
-                           {
-                               Description = refSeasons.SeasonText,
-                               SeasonId = refSeasons.SeasonId,
-                               NumberOfRounds = dbContext.Rounds.Count(x => x.UserId == userId && x.SeasonId == mySeasons.SeasonId),
-                               TopScore = dbContext.Rounds.Where(x => x.UserId == userId && x.SeasonId == mySeasons.SeasonId).Min(x => x.Score),
-                               WorseScore = dbContext.Rounds.Where(x => x.UserId == userId && x.SeasonId == mySeasons.SeasonId).Max(x => x.Score),
-                               AverageScore = dbContext.Rounds.Where(x => x.UserId == userId && x.SeasonId == mySeasons.SeasonId).Average(x => x.Score),
-                           }).ToArrayAsync();
+                          join refSeasons in dbContext.Ref_Season.AsNoTracking()
+                          on mySeasons.SeasonId equals refSeasons.SeasonId
+                          where mySeasons.UserId == userId
+                          orderby mySeasons.Rounds.Min(x => x.RoundDate) descending
+                          select new SeasonListingData
+                          {
+                              Description = refSeasons.SeasonText,
+                              SeasonId = refSeasons.SeasonId,
+                              NumberOfRounds = dbContext.Rounds.Count(x => x.UserId == userId && x.SeasonId == mySeasons.SeasonId),
+                              TopScore = dbContext.Rounds.Where(x => x.UserId == userId && x.SeasonId == mySeasons.SeasonId).Min(x => x.Score),
+                              WorseScore = dbContext.Rounds.Where(x => x.UserId == userId && x.SeasonId == mySeasons.SeasonId).Max(x => x.Score),
+                              AverageScore = dbContext.Rounds.Where(x => x.UserId == userId && x.SeasonId == mySeasons.SeasonId).Average(x => x.Score),
+                          }).ToArrayAsync();
         }
 
         public static async Task<Ref_Season> RefSeasonAddOrGet(ToracGolfContext dbContext, string seasonText)
