@@ -148,3 +148,12 @@ gulp.task("BoomerangResponsiveMobile:min:js", function () {
 })
 
 gulp.task("min", ["min:js", "min:css"]);
+
+
+//in project.json i can say on publish to server, run this task
+//"scripts": {
+//    "prepublish": [ "npm install", "bower install", "gulp clean", "gulp min", "OnPublishToServer"]
+//}
+gulp.task("OnPublishToServer", ["reactValidation", "reactFormatting", "reactTransformChangePw", "reactCourseStats",
+                        "BoomerangLayout:css", "BoomerangControlJs:min:js", "BoomerangAssets:min:js", "BoomerangJQueryForms:min:js",
+                        "BoomerangResponsiveMobile:min:js"]);
