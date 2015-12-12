@@ -208,7 +208,7 @@ namespace ToracGolf.Controllers
               await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
               breadCrumb,
               BuildTokenSet(Antiforgery),
-              await CourseDataProvider.TotalNumberOfCourses(DbContext, null, null, Configuration.Value.DefaultListingRecordsPerPage),
+              await CourseDataProvider.TotalNumberOfCoursePages(DbContext, null, null, Configuration.Value.DefaultListingRecordsPerPage),
               CacheFactory.GetCacheItem<IList<SortOrderViewModel>>(CacheKeyNames.CourseListingSortOrder, Cache),
               stateListing,
               defaultState,
@@ -228,7 +228,7 @@ namespace ToracGolf.Controllers
             return Json(new
             {
                 PagedData = await CourseDataProvider.CourseSelect(DbContext, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, stateFilter, listNav.CoursesPerPage, GetUserId(), CacheFactory.GetCacheItem<CourseImageFinder>(CacheKeyNames.CourseImageFinder, Cache)),
-                TotalNumberOfPages = listNav.ResetPager ? new int?(await CourseDataProvider.TotalNumberOfCourses(DbContext, listNav.CourseNameFilter, stateFilter, listNav.CoursesPerPage)) : null
+                TotalNumberOfPages = listNav.ResetPager ? new int?(await CourseDataProvider.TotalNumberOfCoursePages(DbContext, listNav.CourseNameFilter, stateFilter, listNav.CoursesPerPage)) : null
             });
         }
 
