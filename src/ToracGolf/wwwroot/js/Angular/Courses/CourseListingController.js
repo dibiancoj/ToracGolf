@@ -2,7 +2,7 @@
 
     appToracGolf.controller('CourseListingController', ['$scope', 'ValidationService', 'CourseHttp', 'PagerFactory', function ($scope, ValidationService, CourseHttp, PagerFactory) {
 
-        $scope.init = function (totalNumberOfPages, courseSortOrder, userStatePreference, defaultCoursesPerPage, coursesPerPageLookup, courseNameFilter) {
+        $scope.init = function (totalNumberOfPages, courseSortOrder, userStatePreference, defaultCoursesPerPage, coursesPerPageLookup, courseNameFilter, numberOfRecords) {
 
             //set the drop down items
             $scope.SortByLookup = courseSortOrder;
@@ -26,16 +26,19 @@
             $scope.CurrentPageId = 0;
 
             //go build the pager 
-            $scope.BuildPager(totalNumberOfPages);
+            $scope.BuildPager(totalNumberOfPages, numberOfRecords);
 
             //go fetch the page now
             $scope.FetchAPageOfData(false);
         },
 
-        $scope.BuildPager = function (totalNumberOfPages) {
-
+        $scope.BuildPager = function (totalNumberOfPages, numberOfRecords) {
+       
             //total number of pages (set the scope)
             $scope.TotalNumberOfPages = totalNumberOfPages;
+
+            //total number of records
+            $scope.TotalNumberOfRecords = numberOfRecords;
 
             //set the pager elements
             $scope.PagerElements = PagerFactory.BuildPagerModel(totalNumberOfPages);
@@ -62,13 +65,13 @@
             //go grab the records to display
             CourseHttp.CourseListing(resetPagerToPage1, $scope.CurrentPageId, $scope.SortBy, $scope.SearchByCourseName, $scope.StateFilter, $scope.CoursesPerPage)
                 .then(function (result) {
-               
+
                     //set the paged data
                     $scope.PagedData = result.data.PagedData;
 
                     //do we need to rebuild the pager?
-                    if (result.data.TotalNumberOfPages != null) {
-                        $scope.BuildPager(result.data.TotalNumberOfPages)
+                    if (result.data.TotalNumberOfPages != null && result.data.TotalNumberOfRecords != null) {
+                        $scope.BuildPager(result.data.TotalNumberOfPages, result.data.TotalNumberOfRecords)
                     }
 
                 }, function (errResponse) {

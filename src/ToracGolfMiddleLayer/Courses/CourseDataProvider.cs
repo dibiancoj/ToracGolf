@@ -166,9 +166,9 @@ namespace ToracGolf.MiddleLayer.Courses
             return data;
         }
 
-        public static async Task<int> TotalNumberOfCoursePages(ToracGolfContext dbContext, string courseNameFilter, int? StateFilter, int RecordsPerPage)
+        public static async Task<int> TotalNumberOfCourses(ToracGolfContext dbContext, string courseNameFilter, int? StateFilter)
         {
-            return DataSetPaging.CalculateTotalPages(await CourseSelectQueryBuilder(dbContext, courseNameFilter, StateFilter).CountAsync(), RecordsPerPage);
+            return await CourseSelectQueryBuilder(dbContext, courseNameFilter, StateFilter).CountAsync();
         }
 
         public static async Task<Tuple<string, string>> CourseNameAndState(ToracGolfContext dbContext, int courseId)

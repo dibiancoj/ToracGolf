@@ -39,7 +39,7 @@
     <script src="~/js/angular/rounds/roundlistingcontroller.js"></script>
 }
 
-<section ng-cloak class="slice bg-white" ng-app="toracApp" ng-controller="RoundListingController" ng-init="init(@Model.TotalNumberofPages, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.SortOrder), @Model.DefaultRoundsPerPage, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.RoundsPerPage))">
+<section ng-cloak class="slice bg-white" ng-app="toracApp" ng-controller="RoundListingController" ng-init="init(@Model.TotalNumberofPages, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.SortOrder), @Model.DefaultRoundsPerPage, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.RoundsPerPage), @Model.TotalNumberOfRounds)">
     @Html.Partial("_AngularTokenSet", Model.TokenSet)
 
     <div class="modal fade" modalevent showdialog="DeleteRoundModalShow">
@@ -63,7 +63,9 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="wp-block default product-list-filters light-gray">
-                        <ul class="pagination pagination pull-left" ng-hide="TotalNumberOfPages == 1">
+                        <div id="RoundCount" class="ng-binding pull-left">Round Count: {{TotalNumberOfRecords | number:0}}</div>
+
+                        <ul class="pagination pagination pull-left" ng-hide="TotalNumberOfPages <= 1">
                             <li><a ng-click="PagerClick(0)" hidefocus="true">«</a></li>
 
                             <li ng-class="pageId == CurrentPageId ?'active':''" ng-repeat="pageId in PagerElements track by pageId">

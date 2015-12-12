@@ -20,6 +20,7 @@ namespace ToracGolf.ViewModels.Rounds
                                      AntiforgeryTokenSet tokenSet,
                                      //string usersDefaultState,
                                      int totalNumberofPages,
+                                     int totalNumberOfRounds,
                                      IList<SortOrderViewModel> sortOrder,
                                      int defaultRoundsPerPage,
                                      IEnumerable<int> roundsPerPage,
@@ -35,6 +36,7 @@ namespace ToracGolf.ViewModels.Rounds
             DefaultRoundsPerPage = defaultRoundsPerPage;
             RoundsPerPage = roundsPerPage;
             UserSeasons = userSeasons;
+            TotalNumberOfRounds = totalNumberOfRounds;
         }
 
         public HandicapStatusViewModel HandicapStatus { get; }
@@ -48,6 +50,8 @@ namespace ToracGolf.ViewModels.Rounds
        // public string UsersDefaultState { get; }
 
         public int TotalNumberofPages { get; }
+
+        public int TotalNumberOfRounds { get; }
 
         public IList<SortOrderViewModel> SortOrder { get; }
 

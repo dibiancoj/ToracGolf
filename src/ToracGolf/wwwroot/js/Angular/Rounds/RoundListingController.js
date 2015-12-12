@@ -21,7 +21,7 @@
             }
         },
 
-        $scope.init = function (totalNumberOfPages, roundSortOrder, defaultRoundsPerPage, roundsPerPageLookup) {
+        $scope.init = function (totalNumberOfPages, roundSortOrder, defaultRoundsPerPage, roundsPerPageLookup, numberOfRecords) {
 
             //set the drop down items
             $scope.SortByLookup = roundSortOrder;
@@ -46,16 +46,19 @@
             $scope.CurrentPageId = 0;
 
             //go build the pager 
-            $scope.BuildPager(totalNumberOfPages);
+            $scope.BuildPager(totalNumberOfPages, numberOfRecords);
 
             //go fetch the page now
             $scope.FetchAPageOfData(false);
         },
 
-        $scope.BuildPager = function (totalNumberOfPages) {
+        $scope.BuildPager = function (totalNumberOfPages, numberOfRecords) {
 
             //total number of pages (set the scope)
             $scope.TotalNumberOfPages = totalNumberOfPages;
+
+            //total number of records
+            $scope.TotalNumberOfRecords = numberOfRecords;
 
             //set the pager elements
             $scope.PagerElements = PagerFactory.BuildPagerModel(totalNumberOfPages);
@@ -87,8 +90,8 @@
                     $scope.PagedData = result.data.PagedData.ListingData;
 
                     //do we need to rebuild the pager?
-                    if (result.data.TotalNumberOfPages != null) {
-                        $scope.BuildPager(result.data.TotalNumberOfPages)
+                    if (result.data.TotalNumberOfPages != null && result.data.TotalNumberOfRecords != null) {
+                        $scope.BuildPager(result.data.TotalNumberOfPages, result.data.TotalNumberOfRecords);
                     }
 
                 }, function (errResponse) {

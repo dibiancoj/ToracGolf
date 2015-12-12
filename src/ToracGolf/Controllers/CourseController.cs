@@ -20,6 +20,7 @@ using ToracGolf.Settings;
 using ToracGolf.ViewModels.Courses;
 using ToracGolf.ViewModels.Navigation;
 using ToracLibrary.AspNet.Caching.FactoryStore;
+using ToracLibrary.AspNet.Paging;
 
 namespace ToracGolf.Controllers
 {
@@ -203,12 +204,16 @@ namespace ToracGolf.Controllers
                 defaultState = courseInfo.Item2;
             }
 
+            //get the total number of courses
+            var totalNumberOfCourses = await CourseDataProvider.TotalNumberOfCourses(DbContext, null, null);
+
             //return the view
             return View(new CourseListingViewModel(
               await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
               breadCrumb,
               BuildTokenSet(Antiforgery),
-              await CourseDataProvider.TotalNumberOfCoursePages(DbContext, null, null, Configuration.Value.DefaultListingRecordsPerPage),
+              DataSetPaging.CalculateTotalPages(totalNumberOfCourses, Configuration.Value.DefaultListingRecordsPerPage),
+              totalNumberOfCourses,
               CacheFactory.GetCacheItem<IList<SortOrderViewModel>>(CacheKeyNames.CourseListingSortOrder, Cache),
               stateListing,
               defaultState,
@@ -225,10 +230,22 @@ namespace ToracGolf.Controllers
             //state filter to use
             int? stateFilter = string.IsNullOrEmpty(listNav.StateFilter) ? new int?() : Convert.ToInt32(listNav.StateFilter);
 
+            //total number of pages and records
+            int? totalNumberOfPages = null;
+            int? totalNumberOfRecords = null;
+
+            if (listNav.ResetPager)
+            {
+                totalNumberOfRecords = await CourseDataProvider.TotalNumberOfCourses(DbContext, listNav.CourseNameFilter, stateFilter);
+
+                totalNumberOfPages = DataSetPaging.CalculateTotalPages(totalNumberOfRecords.Value, listNav.CoursesPerPage);
+            }
+
             return Json(new
             {
                 PagedData = await CourseDataProvider.CourseSelect(DbContext, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, stateFilter, listNav.CoursesPerPage, GetUserId(), CacheFactory.GetCacheItem<CourseImageFinder>(CacheKeyNames.CourseImageFinder, Cache)),
-                TotalNumberOfPages = listNav.ResetPager ? new int?(await CourseDataProvider.TotalNumberOfCoursePages(DbContext, listNav.CourseNameFilter, stateFilter, listNav.CoursesPerPage)) : null
+                TotalNumberOfPages = totalNumberOfPages,
+                TotalNumberOfRecords = totalNumberOfRecords
             });
         }
 

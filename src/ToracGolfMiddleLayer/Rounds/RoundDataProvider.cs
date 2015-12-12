@@ -313,9 +313,9 @@ namespace ToracGolf.MiddleLayer.Rounds
             return new RoundSelectModel(dataSet);
         }
 
-        public static async Task<int> TotalNumberOfRoundPages(ToracGolfContext dbContext, int userId, string roundNameFilter, int? StateFilter, int RecordsPerPage, DateTime? roundDateStartFilter, DateTime? roundDateEndFilter)
+        public static async Task<int> TotalNumberOfRounds(ToracGolfContext dbContext, int userId, string roundNameFilter, int? StateFilter, DateTime? roundDateStartFilter, DateTime? roundDateEndFilter)
         {
-            return DataSetPaging.CalculateTotalPages(await RoundSelectQueryBuilder(dbContext, userId, roundNameFilter, StateFilter, roundDateStartFilter, roundDateEndFilter).CountAsync(), RecordsPerPage);
+            return await RoundSelectQueryBuilder(dbContext, userId, roundNameFilter, StateFilter, roundDateStartFilter, roundDateEndFilter).CountAsync();
         }
 
         #endregion

@@ -42,3 +42,8 @@
 .ListLabel {
     font-weight: bold;
 }
+
+#CourseCount {
+    padding-top: 8px;
+    margin-left: 2px;
+}

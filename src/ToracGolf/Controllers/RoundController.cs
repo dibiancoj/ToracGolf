@@ -19,6 +19,7 @@ using ToracGolf.Settings;
 using ToracGolf.ViewModels.Navigation;
 using ToracGolf.ViewModels.Rounds;
 using ToracLibrary.AspNet.Caching.FactoryStore;
+using ToracLibrary.AspNet.Paging;
 
 namespace ToracGolf.Controllers
 {
@@ -194,6 +195,9 @@ namespace ToracGolf.Controllers
                 x => x.Value,
                 () => new SelectListItem { Value = string.Empty, Text = "All Seasons" });
 
+            //get the total number of rounds
+            var totalNumberOfRounds = await RoundDataProvider.TotalNumberOfRounds(DbContext, userId, null, null, null, null);
+
             //go return the view
             return View(new RoundListingViewModel(
                 await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
@@ -201,7 +205,8 @@ namespace ToracGolf.Controllers
                 //CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
                 BuildTokenSet(Antiforgery),
                 //GetUserDefaultState(),
-                await RoundDataProvider.TotalNumberOfRoundPages(DbContext, userId, null, null, Configuration.Value.DefaultListingRecordsPerPage, null, null),
+                DataSetPaging.CalculateTotalPages(totalNumberOfRounds, Configuration.Value.DefaultListingRecordsPerPage),
+                totalNumberOfRounds,
                 CacheFactory.GetCacheItem<IList<SortOrderViewModel>>(CacheKeyNames.RoundListingSortOrder, Cache),
                 Configuration.Value.DefaultListingRecordsPerPage,
                 CacheFactory.GetCacheItem<IEnumerable<int>>(CacheKeyNames.NumberOfListingsPerPage, Cache),
@@ -219,10 +224,21 @@ namespace ToracGolf.Controllers
             //state filter to use
             int? seasonFilter = string.IsNullOrEmpty(listNav.SeasonFilter) ? new int?() : Convert.ToInt32(listNav.SeasonFilter);
 
+            int? totalNumberOfPages = null;
+            int? totalNumberOfRecords = null;
+
+            if (listNav.ResetPager)
+            {
+                totalNumberOfRecords = await RoundDataProvider.TotalNumberOfRounds(DbContext, userId, listNav.CourseNameFilter, seasonFilter, listNav.RoundDateStartFilter, listNav.RoundDateEndFilter);
+
+                totalNumberOfPages = DataSetPaging.CalculateTotalPages(totalNumberOfRecords.Value, listNav.RoundsPerPage);
+            }
+
             return Json(new
             {
                 PagedData = await RoundDataProvider.RoundSelect(DbContext, userId, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, seasonFilter, listNav.RoundsPerPage, listNav.RoundDateStartFilter, listNav.RoundDateEndFilter, CacheFactory.GetCacheItem<CourseImageFinder>(CacheKeyNames.CourseImageFinder, Cache)),
-                TotalNumberOfPages = listNav.ResetPager ? new int?(await RoundDataProvider.TotalNumberOfRoundPages(DbContext, userId, listNav.CourseNameFilter, seasonFilter, listNav.RoundsPerPage, listNav.RoundDateStartFilter, listNav.RoundDateEndFilter)) : null
+                TotalNumberOfPages = totalNumberOfPages,
+                TotalNumberOfRecords = totalNumberOfRecords
             });
         }
 

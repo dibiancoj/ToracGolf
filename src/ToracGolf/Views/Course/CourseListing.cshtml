@@ -33,7 +33,7 @@
     <script src="~/js/angular/courses/courselistingcontroller.js"></script>
 }
 
-<section ng-cloak class="slice bg-white" ng-app="toracApp" ng-controller="CourseListingController" ng-init="init(@Model.TotalPagesOfCourses, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.SortOrder), '@Model.UserStatePreference', @Model.DefaultCoursesPerPage, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.CoursesPerPage), '@Model.CourseNameFilter')">
+<section ng-cloak class="slice bg-white" ng-app="toracApp" ng-controller="CourseListingController" ng-init="init(@Model.TotalPagesOfCourses, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.SortOrder), '@Model.UserStatePreference', @Model.DefaultCoursesPerPage, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.CoursesPerPage), '@Model.CourseNameFilter', @Model.TotalNumberOfCourses)">
     @Html.Partial("_AngularTokenSet", Model.TokenSet)
 
     <div class="modal fade" modalevent showdialog="DeleteCourseModalShow">
@@ -57,7 +57,9 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="wp-block default product-list-filters light-gray">
-                        <ul class="pagination pagination pull-left" ng-hide="TotalNumberOfPages == 1">
+                        <div id="CourseCount" class="ng-binding pull-left">Course Count: {{TotalNumberOfRecords | number:0}}</div>
+
+                        <ul class="pagination pagination pull-left" ng-hide="TotalNumberOfPages <= 1">
                             <li><a ng-click="PagerClick(0)" hidefocus="true">«</a></li>
 
                             <li ng-class="pageId == CurrentPageId ?'active':''" ng-repeat="pageId in PagerElements track by pageId">
