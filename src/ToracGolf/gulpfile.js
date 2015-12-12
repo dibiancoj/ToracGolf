@@ -1,4 +1,4 @@
-/// <binding BeforeBuild='reactValidation, reactTransformChangePw, reactCourseStats, reactFormatting, Layout:Boomerang:css, BoomerangControlJs:min:js, BoomerangAssets:min:js, BoomerangJQueryForms:min:js, BoomerangResponsiveMobile:min:js' Clean='clean' ProjectOpened='BoomerangAssets:min:js, BoomerangControlJs:min:js, BoomerangJQueryForms:min:js, BoomerangResponsiveMobile:min:js, Layout:Boomerang:css' />
+/// <binding Clean='clean' ProjectOpened='BoomerangAssets:min:js, BoomerangControlJs:min:js, BoomerangJQueryForms:min:js, BoomerangResponsiveMobile:min:js, reactFormatting, reactCourseStats, reactTransformChangePw, reactValidation' />
 "use strict";
 
 var gulp = require("gulp"),
