@@ -80,8 +80,10 @@ namespace ToracGolf.Controllers
         public IActionResult LogIn()
         {
             #region Only Here For Debugging
+#if DEBUG
             LogUserIn(SecurityDataProvider.UserLogIn(DbContext, "dibiancoj@gmail.com", "0").Result).Wait();
             return RedirectToAction("Index", "Home");
+#endif
             #endregion
 
             if (IsUserAuthenticated())

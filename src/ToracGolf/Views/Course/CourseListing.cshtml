@@ -54,12 +54,11 @@
 
     <div class="wp-section">
         <div class="container">
-            <div class="row">
+            <div class="row" ng-hide="TotalNumberOfPages <= 1">
                 <div class="col-md-12">
                     <div class="wp-block default product-list-filters light-gray">
-                        <div id="CourseCount" class="ng-binding pull-left">Course Count: {{TotalNumberOfRecords | number:0}}</div>
-
-                        <ul class="pagination pagination pull-left" ng-hide="TotalNumberOfPages <= 1">
+    
+                        <ul class="pagination pagination pull-left">
                             <li><a ng-click="PagerClick(0)" hidefocus="true">«</a></li>
 
                             <li ng-class="pageId == CurrentPageId ?'active':''" ng-repeat="pageId in PagerElements track by pageId">
@@ -68,19 +67,6 @@
 
                             <li><a ng-click="PagerClick(TotalNumberOfPages - 1)" hidefocus="true">»</a></li>
                         </ul>
-
-                        <div class="filter sort-filter col-xs-6">
-                            <div class="form-inline form-light">
-                                <label>Courses Per Page</label>
-                                <select class="form-control" ng-change="FetchAPageOfData(true)" ng-model="CoursesPerPage" ng-options="perPage as perPage for perPage in CoursesPerPageLookup"></select>
-                            </div>
-                        </div>
-
-
-                        <div class="form-inline form-light filter sort-filter pull-right">
-                            <label>Sort by</label>
-                            <select class="form-control" ng-model="SortBy" ng-change="FetchAPageOfData(true)" ng-options="option.Value as option.Description for option in SortByLookup"></select>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -150,6 +136,31 @@
                             </div>
                         </li>
                     </ul>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="sidebar">
+                        <div class="panel panel-default panel-sidebar-1">
+                            <div class="panel-heading"><h2>Filter by</h2></div>
+                            <div class="panel-body">
+                                <form class="form-light" role="form">
+                                    <div class="form-group">
+                                        <div id="CourseCount" class="ng-binding">Course Count: {{TotalNumberOfRecords | number:0}}</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="form-inline form-light">
+                                            <label>Courses Per Page:</label>
+                                            <select class="form-control" ng-change="FetchAPageOfData(true)" ng-model="CoursesPerPage" ng-options="perPage as perPage for perPage in CoursesPerPageLookup"></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Sort by:</label>
+                                        <select class="form-control" ng-model="SortBy" ng-change="FetchAPageOfData(true)" ng-options="option.Value as option.Description for option in SortByLookup"></select>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
 

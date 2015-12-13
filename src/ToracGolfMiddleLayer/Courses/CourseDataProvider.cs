@@ -124,7 +124,7 @@ namespace ToracGolf.MiddleLayer.Courses
             }
             else if (sortBy == CourseListingSortOrder.CourseListingSortEnum.EasiestCourses)
             {
-                queryable = queryable.OrderBy(x => x.CourseTeeLocations.Min(y => y.Slope));
+                queryable = queryable.OrderBy(x => x.CourseTeeLocations.Max(y => y.Slope));
             }
             else if (sortBy == CourseListingSortOrder.CourseListingSortEnum.HardestCourses)
             {
