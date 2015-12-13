@@ -34,55 +34,24 @@
 }
 
 <section id="DashboardSection" ng-app="toracApp" ng-cloak ng-controller="DashboardController" ng-init="init('@Model.ViewType')" class="slice slice-lg bg-image">
-        @Html.Partial("_AngularTokenSet", Model.TokenSet)
-        <div class="container">
+    @Html.Partial("_AngularTokenSet", Model.TokenSet)
+    <div class="container">
 
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="row">
-                        <div class="col-sm-12" style="margin-bottom: 15px;">
-                            <div id="HandicapProgression" style="height: 400px; margin: 0 auto"></div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 col-sm-12">
-                            <div class="panel panel-default panel-sidebar-1">
-                                <div class="panel-heading"><h2>Best 5 Rounds</h2></div>
-                                <div class="panel-body">
-                                    <div class="form-light" role="form">
-                                        <table class="table table-hover">
-                                            <tr ng-repeat="roundToOutput in Top5Rounds">
-                                                <td><a href="ViewCourses?CourseId={{::roundToOutput.CourseId}}">{{::roundToOutput.CourseName}}</a></td>
-                                                <td>{{::roundToOutput.RoundDate | date:'MM/dd/yyyy'}}</td>
-                                                <td>{{::roundToOutput.TeeBoxLocation}}</td>
-                                                <td>{{::roundToOutput.Score}}</td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-sm-12">
-                            <div id="ScorePieChart" style="height: 200px; margin: 0 auto"></div>
-                        </div>
-
+        <div class="row">
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-sm-12" style="margin-bottom: 15px;">
+                        <div id="HandicapProgression" style="height: 400px; margin: 0 auto"></div>
                     </div>
                 </div>
-
-                <div class="col-md-4">
-                    <div class="sidebar">
-                        <ul class="categories mb-20">
-                            <li><a href="#" ng-click="DashboardView = 'Career'" ng-class="DashboardView == 'Career' ? 'DashboardViewActive':'DashboardViewNoActive'">Career View</a></li>
-                            <li><a href="#" ng-click="DashboardView = 'Season'" ng-class="DashboardView == 'Season' ? 'DashboardViewActive':'DashboardViewNoActive'">Season View</a></li>
-                        </ul>
-
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
                         <div class="panel panel-default panel-sidebar-1">
-                            <div class="panel-heading"><h2>Last 5 Rounds</h2></div>
+                            <div class="panel-heading"><h2>Best 5 Rounds</h2></div>
                             <div class="panel-body">
                                 <div class="form-light" role="form">
                                     <table class="table table-hover">
-                                        <tr ng-repeat="roundToOutput in Last5Rounds">
+                                        <tr ng-repeat="roundToOutput in Top5Rounds">
                                             <td><a href="ViewCourses?CourseId={{::roundToOutput.CourseId}}">{{::roundToOutput.CourseName}}</a></td>
                                             <td>{{::roundToOutput.RoundDate | date:'MM/dd/yyyy'}}</td>
                                             <td>{{::roundToOutput.TeeBoxLocation}}</td>
@@ -92,30 +61,103 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="panel panel-default panel-sidebar-1">
-                            <div class="panel-heading"><h2>News Feed</h2></div>
-                            <div class="panel-body">
-                                <div class="form-light" role="form">
-                                    <table class="table table-hover">
-                                        <tr>
-                                            <td>Mike Ciamp Score A 79 At Beekman.</td>
-                                        </tr>
-                                        <tr>
-                                            <td><a href="ViewCourses?CourseId=8">West Point Golf Course Has Been Entered In The system</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>What else can we have...do we have like email will you mark as read? or have them page?</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Bla bla handicap is now -1 lower. Currently 16.2</td>
-                                        </tr>
-                                    </table>
+                    <div class="col-md-6 col-sm-12">
+                        <div id="ScorePieChart" style="height: 200px; margin: 0 auto"></div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="sidebar">
+                    <ul class="categories mb-20">
+                        <li><a href="#" ng-click="DashboardView = 'Career'" ng-class="DashboardView == 'Career' ? 'DashboardViewActive':'DashboardViewNoActive'">Career View</a></li>
+                        <li><a href="#" ng-click="DashboardView = 'Season'" ng-class="DashboardView == 'Season' ? 'DashboardViewActive':'DashboardViewNoActive'">Season View</a></li>
+                    </ul>
+
+                    <div class="panel panel-default panel-sidebar-1">
+                        <div class="panel-heading"><h2>Last 5 Rounds</h2></div>
+                        <div class="panel-body">
+                            <div class="form-light" role="form">
+                                <table class="table table-hover">
+                                    <tr ng-repeat="roundToOutput in Last5Rounds">
+                                        <td><a href="ViewCourses?CourseId={{::roundToOutput.CourseId}}">{{::roundToOutput.CourseName}}</a></td>
+                                        <td>{{::roundToOutput.RoundDate | date:'MM/dd/yyyy'}}</td>
+                                        <td>{{::roundToOutput.TeeBoxLocation}}</td>
+                                        <td>{{::roundToOutput.Score}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default panel-sidebar-1">
+                        <div id="NewsFeedHeader" class="panel-heading">
+                            <h2 class="col-xs-10">News Feed</h2>
+                            <a href="@Url.RouteUrl(ToracGolf.Constants.ApplicationConstants.NewsFeed)" class="col-xs-2 pull-right">Edit</a>
+                        </div>
+                        <div class="panel-body NewsFeedBody">
+                            <div class="form-light" role="form">
+
+                                <div class="row col-xs-12">
+                                    Jason scored bla
                                 </div>
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-thumbs-up"></i><span class="NewsFeedMenu">Like</span>
+                                    </div>
+                                    <div class="col-xs-5">
+                                        <i class="fa fa-comments"></i><span class="NewsFeedMenu">Comments</span>
+                                    </div>
+                                </div>
+                                <div class="row col-xs-12">
+                                    12 People Liked This
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-10 SaveCommentDiv">
+                                        <input type="text" class="NewsFeedCommentInput" placeholder="Write A Comment" />                    
+                                    </div>
+                                    <div class="col-xs-2 SaveComment">
+                                        <i class="fa fa-save fa-lg"></i>
+                                    </div>
+                                </div>
+                                <div class="row col-xs-12">
+                                    <hr />
+                                </div>
+
+
+                                <div class="row col-xs-12">
+                                    Jason scored bla
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-thumbs-up"></i><span class="NewsFeedMenu">Like</span>
+                                    </div>
+                                    <div class="col-xs-5">
+                                        <i class="fa fa-comments"></i><span class="NewsFeedMenu">Comments</span>
+                                    </div>
+                                </div>
+                                <div class="row col-xs-12">
+                                    12 People Liked This
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-10 SaveCommentDiv">
+                                        <input type="text" class="NewsFeedCommentInput" placeholder="Write A Comment" />
+                                    </div>
+                                    <div class="col-xs-2 SaveComment">
+                                        <i class="fa fa-save fa-lg"></i>
+                                    </div>
+                                </div>
+                                <div class="row col-xs-12">
+                                    <hr />
+                                </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+</section>

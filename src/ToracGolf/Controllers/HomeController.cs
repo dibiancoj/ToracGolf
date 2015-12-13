@@ -112,7 +112,7 @@ namespace ToracGolf.Controllers
 
         #region News Feed
 
-        [Route("NewsFeed", Name = "NewsFeed")]
+        [Route(ApplicationConstants.NewsFeed, Name = ApplicationConstants.NewsFeed)]
         [HttpGet]
         public async Task<IActionResult> NewsFeedIndex()
         {

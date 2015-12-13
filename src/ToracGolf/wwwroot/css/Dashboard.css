@@ -10,3 +10,28 @@
     padding-top: 20px !important;
     background-image: url(../images/backgrounds/Dashboard.jpg);
 }
+
+#NewsFeedHeader {
+    padding-bottom: 25px;
+}
+
+.NewsFeedBody {
+    height: 250px;
+    overflow-y: auto;
+}
+
+.NewsFeedMenu {
+    margin-left: 3px;
+}
+
+.NewsFeedCommentInput {
+    width: 99%;
+}
+
+.SaveComment {
+    padding-left: 2px !important;
+}
+
+.SaveCommentDiv {
+    padding-right: 1px !important;
+}
