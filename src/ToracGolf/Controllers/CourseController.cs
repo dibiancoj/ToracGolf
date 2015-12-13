@@ -205,15 +205,15 @@ namespace ToracGolf.Controllers
             }
 
             //get the total number of courses
-            var totalNumberOfCourses = await CourseDataProvider.TotalNumberOfCourses(DbContext, null, null);
+            //var totalNumberOfCourses = await CourseDataProvider.TotalNumberOfCourses(DbContext, null, null);
 
             //return the view
             return View(new CourseListingViewModel(
               await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
               breadCrumb,
               BuildTokenSet(Antiforgery),
-              DataSetPaging.CalculateTotalPages(totalNumberOfCourses, Configuration.Value.DefaultListingRecordsPerPage),
-              totalNumberOfCourses,
+              //DataSetPaging.CalculateTotalPages(totalNumberOfCourses, Configuration.Value.DefaultListingRecordsPerPage),
+              //totalNumberOfCourses,
               CacheFactory.GetCacheItem<IList<SortOrderViewModel>>(CacheKeyNames.CourseListingSortOrder, Cache),
               stateListing,
               defaultState,

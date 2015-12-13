@@ -16,8 +16,8 @@ namespace ToracGolf.ViewModels.Courses
         public CourseListingViewModel(HandicapStatusViewModel handicapStatus,
                                       IList<Navigation.BreadcrumbNavItem> breadcrumb,
                                       AntiforgeryTokenSet tokenSet,
-                                      int totalPagesOfCourses,
-                                      int totalNumberOfCourses,
+                                      //int totalPagesOfCourses,
+                                      //int totalNumberOfCourses,
                                       IEnumerable<SortOrderViewModel> sortOrder,
                                       IEnumerable<SelectListItem> stateListing,
                                       string userStatePreference,
@@ -28,14 +28,14 @@ namespace ToracGolf.ViewModels.Courses
             HandicapStatus = handicapStatus;
             Breadcrumb = breadcrumb;
             TokenSet = tokenSet;
-            TotalPagesOfCourses = totalPagesOfCourses;
+            //TotalPagesOfCourses = totalPagesOfCourses;
             SortOrder = sortOrder;
             StateListing = stateListing;
             UserStatePreference = userStatePreference;
             DefaultCoursesPerPage = defaultCoursesPerPage;
             CoursesPerPage = coursesPerPage;
             CourseNameFilter = courseNameFilter;
-            TotalNumberOfCourses = totalNumberOfCourses;
+            //TotalNumberOfCourses = totalNumberOfCourses;
         }
 
         public HandicapStatusViewModel HandicapStatus { get; }
@@ -44,9 +44,9 @@ namespace ToracGolf.ViewModels.Courses
 
         public AntiforgeryTokenSet TokenSet { get; }
 
-        public int TotalPagesOfCourses { get; }
+        //public int TotalPagesOfCourses { get; }
 
-        public int TotalNumberOfCourses { get; }
+        //public int TotalNumberOfCourses { get; }
 
         public IEnumerable<SortOrderViewModel> SortOrder { get; }
 

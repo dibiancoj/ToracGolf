@@ -33,7 +33,7 @@
     <script src="~/js/angular/courses/courselistingcontroller.js"></script>
 }
 
-<section ng-cloak class="slice bg-white" ng-app="toracApp" ng-controller="CourseListingController" ng-init="init(@Model.TotalPagesOfCourses, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.SortOrder), '@Model.UserStatePreference', @Model.DefaultCoursesPerPage, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.CoursesPerPage), '@Model.CourseNameFilter', @Model.TotalNumberOfCourses)">
+<section ng-cloak class="slice bg-white" ng-app="toracApp" ng-controller="CourseListingController" ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model.SortOrder), '@Model.UserStatePreference', @Model.DefaultCoursesPerPage, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.CoursesPerPage), '@Model.CourseNameFilter')">
     @Html.Partial("_AngularTokenSet", Model.TokenSet)
 
     <div class="modal fade" modalevent showdialog="DeleteCourseModalShow">

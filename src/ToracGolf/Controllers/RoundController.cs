@@ -196,7 +196,7 @@ namespace ToracGolf.Controllers
                 () => new SelectListItem { Value = string.Empty, Text = "All Seasons" });
 
             //get the total number of rounds
-            var totalNumberOfRounds = await RoundDataProvider.TotalNumberOfRounds(DbContext, userId, null, null, null, null, false);
+            //var totalNumberOfRounds = await RoundDataProvider.TotalNumberOfRounds(DbContext, userId, null, null, null, null, false);
 
             //go return the view
             return View(new RoundListingViewModel(
@@ -205,8 +205,8 @@ namespace ToracGolf.Controllers
                 //CacheFactory.GetCacheItem<IEnumerable<SelectListItem>>(CacheKeyNames.StateListing, Cache),
                 BuildTokenSet(Antiforgery),
                 //GetUserDefaultState(),
-                DataSetPaging.CalculateTotalPages(totalNumberOfRounds, Configuration.Value.DefaultListingRecordsPerPage),
-                totalNumberOfRounds,
+                //DataSetPaging.CalculateTotalPages(totalNumberOfRounds, Configuration.Value.DefaultListingRecordsPerPage),
+                //totalNumberOfRounds,
                 CacheFactory.GetCacheItem<IList<SortOrderViewModel>>(CacheKeyNames.RoundListingSortOrder, Cache),
                 Configuration.Value.DefaultListingRecordsPerPage,
                 CacheFactory.GetCacheItem<IEnumerable<int>>(CacheKeyNames.NumberOfListingsPerPage, Cache),

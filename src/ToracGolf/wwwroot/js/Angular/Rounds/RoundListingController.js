@@ -21,7 +21,7 @@
             }
         },
 
-        $scope.init = function (totalNumberOfPages, roundSortOrder, defaultRoundsPerPage, roundsPerPageLookup, numberOfRecords) {
+        $scope.init = function (roundSortOrder, defaultRoundsPerPage, roundsPerPageLookup) {
 
             //set the drop down items
             $scope.SortByLookup = roundSortOrder;
@@ -49,10 +49,10 @@
             $scope.CurrentPageId = 0;
 
             //go build the pager 
-            $scope.BuildPager(totalNumberOfPages, numberOfRecords);
+            //$scope.BuildPager(totalNumberOfPages, numberOfRecords);
 
             //go fetch the page now
-            $scope.FetchAPageOfData(false);
+            $scope.FetchAPageOfData(true);
         },
 
         $scope.BuildPager = function (totalNumberOfPages, numberOfRecords) {
