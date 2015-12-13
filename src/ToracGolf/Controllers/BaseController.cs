@@ -102,8 +102,14 @@ namespace ToracGolf.Controllers
                  return Handicapper.CalculateHandicap(tsk.Result);
              });
 
+            //grab the season progression
+            var seasonProgression = await HandicapDataProvider.HandicapProgression(dbContext, userId, userCurrentSeason);
+
+            //grab the career progression
+            var careerProgression = await HandicapDataProvider.HandicapProgression(dbContext, userId, null);
+
             //go wait for both of them and build up our handicap model
-            var handicap = new HandicapStatusViewModel(tskSeasonRounds, tskCareerRounds);
+            var handicap = new HandicapStatusViewModel(tskSeasonRounds, tskCareerRounds, Handicapper.HandicapProgression(seasonProgression), Handicapper.HandicapProgression(careerProgression));
 
             //set the session so we have it
             HttpContext.Session.SetString(HandicapStatusSessionName, JsonConvert.SerializeObject(handicap));

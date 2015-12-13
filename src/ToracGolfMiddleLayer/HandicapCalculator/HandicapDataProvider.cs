@@ -24,6 +24,23 @@ namespace ToracGolf.MiddleLayer.HandicapCalculator
             return HandicapCalculatorRoundSelectorHelper(dbContext, userId, null);
         }
 
+        public static async Task<HandicapProgression> HandicapProgression(ToracGolfContext dbContext, int userId, int? seasonId)
+        {
+            var query = dbContext.Rounds.Include(x => x.Handicap).AsNoTracking()
+                        .Where(x => x.UserId == userId);
+
+            if (seasonId.HasValue)
+            {
+                query = query.Where(x => x.SeasonId == seasonId.Value);
+            }
+
+            return await query.OrderByDescending(x => x.RoundDate).OrderByDescending(x => x.RoundId).Select(x => new HandicapProgression
+            {
+                HandicapBeforeRound = x.Handicap.HandicapBeforeRound,
+                HandicapAfterRound = x.Handicap.HandicapAfterRound
+            }).FirstOrDefaultAsync();
+        }
+
         #endregion
 
         #region Helper Methods

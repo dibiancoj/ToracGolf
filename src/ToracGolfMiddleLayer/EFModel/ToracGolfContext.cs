@@ -20,15 +20,21 @@ namespace ToracGolf.MiddleLayer.EFModel
         public virtual DbSet<Course> Course { get; set; }
         public virtual DbSet<CourseTeeLocations> CourseTeeLocations { get; set; }
         public virtual DbSet<Round> Rounds { get; set; }
-        public virtual DbSet<RoundHandicap> RoundHandicap { get; set; }
+        public virtual DbSet<Handicap> Handicap { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserSeason>().ToTable("UserSeason");
             modelBuilder.Entity<Course>().ToTable("Course");
-            modelBuilder.Entity<RoundHandicap>().ToTable("RoundHandicap");
+            modelBuilder.Entity<Handicap>().ToTable("Handicap");
 
             modelBuilder.Entity<Round>().ToTable("Round");//.HasRequired(x => x.CourseTeeLocationId);
+
+            modelBuilder.Entity<Round>()
+                .HasRequired(x => x.Handicap);
+                //.HasForeignKey(x => x.RoundId);
+
+
 
             //modelBuilder.Entity<CourseTeeLocations>().HasKey(e => e.CourseTeeLocationId);
 

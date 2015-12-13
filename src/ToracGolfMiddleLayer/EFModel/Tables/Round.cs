@@ -43,7 +43,9 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
 
         public virtual Course Course { get; set; }
 
-       public virtual CourseTeeLocations CourseTeeLocation { get; set; }
+        public virtual CourseTeeLocations CourseTeeLocation { get; set; }
+
+        public virtual Handicap Handicap { get; set; }
 
     }
 }

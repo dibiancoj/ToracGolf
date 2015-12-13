@@ -28,6 +28,8 @@ namespace ToracGolf.ViewModels.Rounds
 
         public DateTime? RoundDateEndFilter { get; set; }
 
+        public bool HandicappedRoundsOnly { get; set; }
+
         #endregion
 
     }

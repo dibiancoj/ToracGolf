@@ -1,8 +1,20 @@
 ﻿@model ToracGolf.ViewModels.Handicap.HandicapStatusViewModel
 
+@functions{
+    private static string ProgressionOutput(double? progression)
+    {
+        if (progression.HasValue)
+        {
+            return string.Format("({0})", progression.Value);
+        }
+
+        return string.Empty;
+    }
+}
+
 <div class="row">
-    Season Handicap: <span id="SeasonHandicap">@Model.SeasonHandicap</span>
+    Season Handicap: <span id="SeasonHandicap">@Model.SeasonHandicap</span> <span id="SeasonProgression">@ProgressionOutput(Model.SeasonProgression)</span>
 </div>
 <div class="row">
-    Career Handicap: <span id="CareerHandicap">@Model.CareerHandicap</span>
+    Career Handicap: <span id="CareerHandicap">@Model.CareerHandicap</span> <span id="CareerProgression">@ProgressionOutput(Model.CareerProgression)</span>
 </div>

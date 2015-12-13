@@ -196,7 +196,7 @@ namespace ToracGolf.Controllers
                 () => new SelectListItem { Value = string.Empty, Text = "All Seasons" });
 
             //get the total number of rounds
-            var totalNumberOfRounds = await RoundDataProvider.TotalNumberOfRounds(DbContext, userId, null, null, null, null);
+            var totalNumberOfRounds = await RoundDataProvider.TotalNumberOfRounds(DbContext, userId, null, null, null, null, false);
 
             //go return the view
             return View(new RoundListingViewModel(
@@ -229,14 +229,14 @@ namespace ToracGolf.Controllers
 
             if (listNav.ResetPager)
             {
-                totalNumberOfRecords = await RoundDataProvider.TotalNumberOfRounds(DbContext, userId, listNav.CourseNameFilter, seasonFilter, listNav.RoundDateStartFilter, listNav.RoundDateEndFilter);
+                totalNumberOfRecords = await RoundDataProvider.TotalNumberOfRounds(DbContext, userId, listNav.CourseNameFilter, seasonFilter, listNav.RoundDateStartFilter, listNav.RoundDateEndFilter, listNav.HandicappedRoundsOnly);
 
                 totalNumberOfPages = DataSetPaging.CalculateTotalPages(totalNumberOfRecords.Value, listNav.RoundsPerPage);
             }
 
             return Json(new
             {
-                PagedData = await RoundDataProvider.RoundSelect(DbContext, userId, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, seasonFilter, listNav.RoundsPerPage, listNav.RoundDateStartFilter, listNav.RoundDateEndFilter, CacheFactory.GetCacheItem<CourseImageFinder>(CacheKeyNames.CourseImageFinder, Cache)),
+                PagedData = await RoundDataProvider.RoundSelect(DbContext, userId, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, seasonFilter, listNav.RoundsPerPage, listNav.RoundDateStartFilter, listNav.RoundDateEndFilter, CacheFactory.GetCacheItem<CourseImageFinder>(CacheKeyNames.CourseImageFinder, Cache), listNav.HandicappedRoundsOnly),
                 TotalNumberOfPages = totalNumberOfPages,
                 TotalNumberOfRecords = totalNumberOfRecords
             });

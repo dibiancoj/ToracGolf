@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ToracGolf.MiddleLayer.EFModel.Tables
 {
 
-    public class RoundHandicap
+    public class Handicap
     {
 
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -17,6 +17,8 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
         public double HandicapBeforeRound { get; set; }
 
         public double HandicapAfterRound { get; set; }
+
+        public Round Round { get; set; }
 
     }
 

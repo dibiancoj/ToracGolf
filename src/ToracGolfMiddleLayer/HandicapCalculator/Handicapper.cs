@@ -121,16 +121,7 @@ namespace ToracGolf.MiddleLayer.HandicapCalculator
             //return Math.Round(differential * .96, 1);
         }
 
-        #endregion
-
-        #region Helper Methods
-
-        private static double CalculateDifferential(int score, double teeBoxRating, double teeBoxSlope)
-        {
-            return ((score - teeBoxRating) * CourseHandicapFactor / teeBoxSlope);
-        }
-
-        private static int HowManyRoundsToUseInFormula(int howManyRoundsToCalculateWith)
+        public static int HowManyRoundsToUseInFormula(int howManyRoundsToCalculateWith)
         {
             switch (howManyRoundsToCalculateWith)
             {
@@ -177,6 +168,29 @@ namespace ToracGolf.MiddleLayer.HandicapCalculator
                 default:
                     throw new ArgumentOutOfRangeException(nameof(howManyRoundsToCalculateWith), "You should only have 20 rounds at most to calculate");
             }
+        }
+
+        #region Handicap Progression
+
+        public static double? HandicapProgression(HandicapProgression handicapProgressionRecords)
+        {
+            if (handicapProgressionRecords == null)
+            {
+                return null;
+            }
+
+            return handicapProgressionRecords.HandicapAfterRound - handicapProgressionRecords.HandicapBeforeRound;
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Helper Methods
+
+        private static double CalculateDifferential(int score, double teeBoxRating, double teeBoxSlope)
+        {
+            return ((score - teeBoxRating) * CourseHandicapFactor / teeBoxSlope);
         }
 
         #endregion

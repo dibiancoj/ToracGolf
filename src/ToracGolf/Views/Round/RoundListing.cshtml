@@ -187,6 +187,10 @@
                                             <input class="form-control RoundDateFilter" placeholder="End Date" date-picker maxDate="0" maxlength="100" ng-model="SearchByRoundDateEnd" />
                                         </div>
                                     </div>
+                                    <div class="form-group" title="The best rounds you shot which are used in the handicap formula.">
+                                        <input type="checkbox" ng-model="SearchByHandicapRound" ng-change="FetchAPageOfData(true)">
+                                        <label>Handicapped Rounds Only</label>
+                                    </div>
                                     <button type="submit" ng-click="FetchAPageOfData(true)" class="btn btn-base">Search</button>
                                 </form>
                             </div>

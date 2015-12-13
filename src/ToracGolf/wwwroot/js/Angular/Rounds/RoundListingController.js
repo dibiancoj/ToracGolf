@@ -38,6 +38,9 @@
             //set the seach by course
             $scope.SearchByCourseName = '';
 
+            //handicap rounds only
+            $scope.SearchByHandicapRound = false;
+
             //set the search by date
             $scope.SearchByRoundDateStart = '';
             $scope.SearchByRoundDateEnd = '';
@@ -83,7 +86,7 @@
             }
 
             //go grab the records to display
-            RoundHttp.RoundListing(resetPagerToPage1, $scope.CurrentPageId, $scope.SortBy, $scope.SearchByCourseName, $scope.SeasonFilter, $scope.RoundsPerPage, $scope.SearchByRoundDateStart, $scope.SearchByRoundDateEnd)
+            RoundHttp.RoundListing(resetPagerToPage1, $scope.CurrentPageId, $scope.SortBy, $scope.SearchByCourseName, $scope.SeasonFilter, $scope.RoundsPerPage, $scope.SearchByRoundDateStart, $scope.SearchByRoundDateEnd, $scope.SearchByHandicapRound)
                 .then(function (result) {
 
                     //set the paged data
@@ -123,6 +126,10 @@
                     //let's go reset the handicap stuff
                     $('#SeasonHandicap').text(result.data.NewHandicap.SeasonHandicap == null ? '' : result.data.NewHandicap.SeasonHandicap);
                     $('#CareerHandicap').text(result.data.NewHandicap.CareerHandicap == null ? '' : result.data.NewHandicap.CareerHandicap);
+
+                    $('#SeasonProgression').text(result.data.NewHandicap.SeasonHandicap == null ? '' : result.data.NewHandicap.SeasonProgression);
+                    $('#CareerProgression').text(result.data.NewHandicap.CareerHandicap == null ? '' : result.data.NewHandicap.CareerProgression);
+
 
                     //window.location.reload();
                 },

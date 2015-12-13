@@ -317,7 +317,7 @@ namespace ToracGolf.MiddleLayer.Courses
                     Day = x.RoundDate.Day,
                     Year = x.RoundDate.Year,
                     Score = x.Score,
-                    Handicap = dbContext.RoundHandicap.FirstOrDefault(y => y.RoundId == x.RoundId).HandicapAfterRound
+                    Handicap = dbContext.Handicap.FirstOrDefault(y => y.RoundId == x.RoundId).HandicapAfterRound
                 }).ToArrayAsync();
         }
 

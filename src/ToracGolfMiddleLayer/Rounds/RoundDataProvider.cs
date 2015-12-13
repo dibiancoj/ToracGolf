@@ -22,7 +22,7 @@ namespace ToracGolf.MiddleLayer.Rounds
         {
             return await dbContext.Course.AsNoTracking()
                          .Where(x => x.StateId == stateId && x.IsActive)
-                         .OrderBy(x=> x.Name)
+                         .OrderBy(x => x.Name)
                        .Select(x => new CourseForRoundAddScreen
                        {
                            CourseId = x.CourseId,
@@ -116,13 +116,13 @@ namespace ToracGolf.MiddleLayer.Rounds
         {
             //let's go delete all the handicap records
             var roundsToDelete = await (from myData in dbContext.Rounds
-                                        join myHandicaps in dbContext.RoundHandicap
+                                        join myHandicaps in dbContext.Handicap
                                         on myData.RoundId equals myHandicaps.RoundId
                                         where myData.UserId == userId
                                         select myHandicaps).ToArrayAsync();
 
             //delete all handicap records
-            dbContext.RoundHandicap.RemoveRange(roundsToDelete);
+            dbContext.Handicap.RemoveRange(roundsToDelete);
 
             //save the deletions
             await dbContext.SaveChangesAsync();
@@ -173,7 +173,7 @@ namespace ToracGolf.MiddleLayer.Rounds
                 }
 
                 //add the record to the context
-                dbContext.RoundHandicap.Add(new RoundHandicap
+                dbContext.Handicap.Add(new Handicap
                 {
                     RoundId = roundToCalculate.RoundId,
                     HandicapBeforeRound = Handicapper.CalculateHandicap(roundsToUse).Value,
@@ -192,7 +192,7 @@ namespace ToracGolf.MiddleLayer.Rounds
 
         #region Round Listing
 
-        public static IQueryable<RoundListingData> RoundSelectQueryBuilder(ToracGolfContext dbContext, int userId, string courseNameFilter, int? seasonFilter, DateTime? roundDateStartFilter, DateTime? roundDateEndFilter)
+        public static IQueryable<RoundListingData> RoundSelectQueryBuilder(ToracGolfContext dbContext, int userId, string courseNameFilter, int? seasonFilter, DateTime? roundDateStartFilter, DateTime? roundDateEndFilter, bool handicappedRoundsOnly)
         {
             //build the queryable
             var queryable = dbContext.Rounds.AsNoTracking().Where(x => x.UserId == userId).AsQueryable();
@@ -221,6 +221,26 @@ namespace ToracGolf.MiddleLayer.Rounds
                 queryable = queryable.Where(x => x.RoundDate <= roundDateEndFilter.Value);
             }
 
+            if (handicappedRoundsOnly)
+            {
+                //how many rounds do we have?
+                int roundsWeHaveInQuery = queryable.Count();
+
+                //now check how many are in the calculation
+                var howManyToCalculateWith = Handicapper.HowManyRoundsToUseInFormula(roundsWeHaveInQuery > 20 ? 20 : roundsWeHaveInQuery);
+
+                //now just grab the last 20
+                var last20RoundIds = queryable.OrderByDescending(x => x.RoundDate)
+                                              .ThenByDescending(x => x.RoundId)
+                                              .Take(20) //we only ever get the last 20...
+                                              .OrderBy(x => x.RoundHandicap) //now grab the lowest rated rounds of how many we are going to calculate with
+                                              .Take(howManyToCalculateWith) //then grab just those
+                                              .Select(x => x.RoundId).ToArray();
+
+                //add the round id's to the query
+                queryable = queryable.Where(x => last20RoundIds.Contains(x.RoundId));
+            }
+
             //go return the queryable
             return queryable.Select(x => new RoundListingData
             {
@@ -231,7 +251,7 @@ namespace ToracGolf.MiddleLayer.Rounds
                 Score = x.Score,
                 SeasonId = x.SeasonId,
                 TeeBoxLocation = dbContext.CourseTeeLocations.FirstOrDefault(y => y.CourseId == x.CourseId && y.CourseTeeLocationId == x.CourseTeeLocationId),
-                HandicapBeforeRound = dbContext.RoundHandicap.FirstOrDefault(y => y.RoundId == x.RoundId).HandicapBeforeRound,
+                HandicapBeforeRound = dbContext.Handicap.FirstOrDefault(y => y.RoundId == x.RoundId).HandicapBeforeRound,
 
                 Putts = x.Putts,
                 FairwaysHit = x.FairwaysHit,
@@ -241,7 +261,6 @@ namespace ToracGolf.MiddleLayer.Rounds
             });
         }
 
-        /// <param name="pageId">0 base index that holds what page we are on</param>
         public static async Task<RoundSelectModel> RoundSelect(ToracGolfContext dbContext,
                                                                int userId,
                                                                int pageId,
@@ -251,13 +270,14 @@ namespace ToracGolf.MiddleLayer.Rounds
                                                                int recordsPerPage,
                                                                DateTime? roundDateStartFilter,
                                                                DateTime? roundDateEndFilter,
-                                                               CourseImageFinder courseImageFinder)
+                                                               CourseImageFinder courseImageFinder,
+                                                               bool handicappedRoundOnly)
         {
             //how many items to skip
             int skipAmount = pageId * recordsPerPage;
 
             //go grab the query
-            var queryable = RoundSelectQueryBuilder(dbContext, userId, courseNameFilter, seasonFilter, roundDateStartFilter, roundDateEndFilter);
+            var queryable = RoundSelectQueryBuilder(dbContext, userId, courseNameFilter, seasonFilter, roundDateStartFilter, roundDateEndFilter, handicappedRoundOnly);
 
             //figure out what you want to order by
             if (sortBy == RoundListingSortOrder.RoundListingSortEnum.CourseNameAscending)
@@ -313,9 +333,9 @@ namespace ToracGolf.MiddleLayer.Rounds
             return new RoundSelectModel(dataSet);
         }
 
-        public static async Task<int> TotalNumberOfRounds(ToracGolfContext dbContext, int userId, string roundNameFilter, int? StateFilter, DateTime? roundDateStartFilter, DateTime? roundDateEndFilter)
+        public static async Task<int> TotalNumberOfRounds(ToracGolfContext dbContext, int userId, string roundNameFilter, int? StateFilter, DateTime? roundDateStartFilter, DateTime? roundDateEndFilter, bool onlyHandicappedRounds)
         {
-            return await RoundSelectQueryBuilder(dbContext, userId, roundNameFilter, StateFilter, roundDateStartFilter, roundDateEndFilter).CountAsync();
+            return await RoundSelectQueryBuilder(dbContext, userId, roundNameFilter, StateFilter, roundDateStartFilter, roundDateEndFilter, onlyHandicappedRounds).CountAsync();
         }
 
         #endregion
