@@ -16,12 +16,25 @@
 }
 
 .NewsFeedBody {
+    padding-top: 4px !important;
     height: 250px;
     overflow-y: auto;
 }
 
 .NewsFeedMenu {
     margin-left: 3px;
+}
+
+.SaveCommentDiv {
+    padding-right: 1px !important;
+}
+
+.NewsFeedDescription {
+    font-weight: bold;
+}
+
+.NewsFeedMenuDiv {
+    cursor: pointer;
 }
 
 .NewsFeedCommentInput {
@@ -32,6 +45,6 @@
     padding-left: 2px !important;
 }
 
-.SaveCommentDiv {
-    padding-right: 1px !important;
+.NewsFeedHr {
+    margin-top: 3px !important;
 }
