@@ -53,6 +53,19 @@ namespace ToracGolf.Controllers
 
         #region Methods
 
+        #region Breadcrumbs
+
+        private static IList<BreadcrumbNavItem> BaseBreadCrumb()
+        {
+            var breadCrumb = new List<BreadcrumbNavItem>();
+
+            breadCrumb.Add(new BreadcrumbNavItem("Home", ApplicationConstants.MainLandingPage));
+
+            return breadCrumb;
+        }
+
+        #endregion
+
         #region Dashboard
 
         [Route(ApplicationConstants.MainLandingPage, Name = ApplicationConstants.MainLandingPage)]
@@ -62,9 +75,10 @@ namespace ToracGolf.Controllers
             //grab the user id
             var userId = GetUserId();
 
-            var breadCrumb = new List<BreadcrumbNavItem>();
+            var breadCrumb = BaseBreadCrumb();
 
-            breadCrumb.Add(new BreadcrumbNavItem("Home", "#"));
+            //add the current screen
+            breadCrumb.Add(new BreadcrumbNavItem("Dashboard", "#"));
 
             return View("Index", new IndexViewModel(
                 await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
