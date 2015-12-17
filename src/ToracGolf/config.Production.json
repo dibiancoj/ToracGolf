@@ -1,7 +1,7 @@
 {
   "Data": {
     "DefaultConnection": {
-      "ConnectionString": "data source=localhost;initial catalog=ToracGolf;MultipleActiveResultSets=True;App=EntityFramework;User Id=ToracGolfV2;Password=0"
+      "ConnectionString": "data source=localhost;initial catalog=ToracGolf;MultipleActiveResultSets=True;App=EntityFramework;User Id=ToracGolfV2User;Password=0"
     }
 
   },

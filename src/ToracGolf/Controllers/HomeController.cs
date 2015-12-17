@@ -24,6 +24,7 @@ namespace ToracGolf.Controllers
     public class HomeController : BaseController
     {
 
+
         #region Constructor
 
         public HomeController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, ToracGolfContext dbContext, IAntiforgery antiforgery, IOptions<AppSettings> configuration)
@@ -66,11 +67,21 @@ namespace ToracGolf.Controllers
 
         #endregion
 
+        #region Main Index For Default Route
+
+        public ActionResult Index()
+        {
+            //*** leave this in here *** if you remove it the default route will be jacked up. so if you do http://toracgolfv2 it goes to a blank page
+            return RedirectToRoute(ApplicationConstants.MainLandingPage);
+        }
+
+        #endregion
+
         #region Dashboard
 
         [Route(ApplicationConstants.MainLandingPage, Name = ApplicationConstants.MainLandingPage)]
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> DashboardIndex()
         {
             //grab the user id
             var userId = GetUserId();
