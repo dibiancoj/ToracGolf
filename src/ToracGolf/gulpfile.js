@@ -159,3 +159,18 @@ gulp.task("min", ["min:css"]);
 gulp.task("OnPublishToServer", ["reactValidation", "reactFormatting", "reactTransformChangePw", "reactCourseStats",
                         "BoomerangLayout:css", "BoomerangControlJs:min:js", "BoomerangAssets:min:js", "BoomerangJQueryForms:min:js",
                         "BoomerangResponsiveMobile:min:js"]);
+
+
+
+//var config = {
+//    libBase: 'node_modules',
+//    lib: [
+//        require.resolve('systemjs/dist/system.src.js'),
+//        require.resolve('angular2/bundles/angular2.dev.js'),
+//    ]
+//};
+
+//gulp.task('build.lib', function () {
+//    return gulp.src(config.lib, { base: config.libBase })
+//        .pipe(gulp.dest(paths.webroot + 'lib'));
+//});
