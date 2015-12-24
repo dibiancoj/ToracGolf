@@ -1,0 +1,39 @@
+﻿ <!-- Standard image post example -->
+
+<div class="post-item style2" *ngFor="#post of Posts">
+    <div class="post-meta hidden-xs">
+        <div class="date">
+            <span class="icon"><i class="fa fa-calendar"></i></span>
+            <span class="month">{{post.Month}}</span>
+            <span class="day">{{post.Day}}</span>
+        </div>
+        <div class="like-box">
+            <a href="#" class="btn btn-block btn-xs btn-base btn-icon btn-heart">
+                <span>2310</span>
+            </a>
+        </div>
+    </div>
+    <div class="post-content-wr">
+        <div class="post-meta-top">
+            <div class="post-image">
+                <a href="#">
+                    <img src="images/prv/blog/blog-img-1_1280x800.jpg" alt="">
+                </a>
+            </div>
+            <h2 class="post-title">
+                <a href="#">The true sign of intelligence is not knowledge but imagination</a>
+            </h2>
+        </div>
+        <div class="post-content clearfix">
+            <div class="post-tags">Posted in <a href="#">HOTELS</a>, <a href="#">SPECIAL PROMOS</a>, <a href="#">SUMMER</a></div>
+            <div class="post-comments"><strong>23</strong>comments</div>
+            <div class="post-desc">
+                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+            </div>
+        </div>
+        <div class="post-meta-bot clearfix">
+            <span class="post-author">WRITTEN BY <a href="#">MARC JACOBS</a></span>
+            <a href="#" class="btn btn-sm btn-base">Read more</a>
+        </div>
+    </div>
+</div>
