@@ -25,6 +25,7 @@
 /// <reference path="js/angular2/newsfeed/app.component.js" />
 /// <reference path="js/angular2/newsfeed/boot.js" />
 /// <reference path="js/angular2/newsfeed/newsfeed.js" />
+/// <reference path="js/angular2/newsfeed/newsfeedapp.js" />
 /// <reference path="js/angular2/newsfeed/newsfeedpost.js" />
 /// <reference path="js/Common/AjaxCommon.js" />
 /// <reference path="js/login.js" />

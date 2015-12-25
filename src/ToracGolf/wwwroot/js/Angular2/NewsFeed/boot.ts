@@ -1,6 +1,7 @@
 ﻿import {bootstrap}    from 'angular2/platform/browser'
-import {AppComponent} from './app.component'
-import {enableProdMode} from 'angular2/core';
-enableProdMode();
+import {NewsFeedApp} from './NewsFeedApp'
+import {enableProdMode} from 'angular2/core'; 
 
-bootstrap(AppComponent);
+enableProdMode();
+ 
+bootstrap(NewsFeedApp);
