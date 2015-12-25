@@ -1,4 +1,4 @@
-/// <binding Clean='clean' ProjectOpened='BoomerangAssets:min:js, BoomerangControlJs:min:js, BoomerangJQueryForms:min:js, BoomerangResponsiveMobile:min:js, reactFormatting, reactCourseStats, reactTransformChangePw, reactValidation' />
+/// <binding Clean='clean' ProjectOpened='BoomerangAssets:min:js, BoomerangControlJs:min:js, BoomerangJQueryForms:min:js, BoomerangResponsiveMobile:min:js, reactFormatting, reactCourseStats, reactTransformChangePw, reactValidation, copy_NPM' />
 "use strict";
 
 var gulp = require("gulp"),
@@ -130,7 +130,7 @@ gulp.task("BoomerangJQueryForms:min:js", function () {
     return gulp.src([GetWebRootPath('/lib/bootstraptemplate/assets/ui-kit/js/jquery.powerful-placeholder.min.js'),
                      GetWebRootPath('/lib/bootstraptemplate/assets/ui-kit/js/cusel.min.js'),
                      GetWebRootPath('/lib/bootstraptemplate/assets/sky-forms/js/jquery.form.min.js'),
-                     GetWebRootPath('/lib/bootstraptemplate/assets/sky-forms/js/jquery.validate.min.js'),                    
+                     GetWebRootPath('/lib/bootstraptemplate/assets/sky-forms/js/jquery.validate.min.js'),
                      GetWebRootPath('/lib/bootstraptemplate/assets/sky-forms/js/jquery.maskedinput.min.js'),
                      GetWebRootPath('/lib/bootstraptemplate/assets/sky-forms/js/jquery.modal.js')])
 
@@ -162,15 +162,43 @@ gulp.task("OnPublishToServer", ["reactValidation", "reactFormatting", "reactTran
 
 
 
-//var config = {
-//    libBase: 'node_modules',
-//    lib: [
-//        require.resolve('systemjs/dist/system.src.js'),
-//        require.resolve('angular2/bundles/angular2.dev.js'),
-//    ]
-//};
+var config = {
+    libBase: 'node_modules',
+    lib: [
+        require.resolve('systemjs/dist/system.src.js'),
+        require.resolve('rxjs/bundles/Rx.js'),
+        //require.resolve('angular2/bundles/angular2.dev.js'),
+        //require.resolve('angular2/core.js'),
+        //require.resolve('angular2/bundles/angular2-polyfills.js'),
+        //require.resolve('angular2/platform/browser.js'),
+        //require.resolve('angular2/compiler.js'),
+        //require.resolve('angular2/src/facade/lang.js'),
+        //require.resolve('angular2/src/core/reflection/reflection_capabilities.js'),
+        //require.resolve('angular2/src/core/metadata.js'),
+        //require.resolve('angular2/src/core/util.js'),
+        //require.resolve('angular2/src/core/di.js'),
+        //require.resolve('angular2/src/core/prod_mode.js'),
+        //require.resolve('angular2/src/core/angular_entrypoint.js'),
+        //require.resolve('angular2/src/platform/browser_common.js'),
+        //require.resolve('angular2/src/platform/browser/xhr_impl.js'),
+        //require.resolve('angular2/src/facade/facade.js'),
 
-//gulp.task('build.lib', function () {
-//    return gulp.src(config.lib, { base: config.libBase })
-//        .pipe(gulp.dest(paths.webroot + 'lib'));
-//});
+        //require.resolve('angular2/src/core/zone.js'),
+        //require.resolve('angular2/src/core/application_ref.js'),
+        //require.resolve('angular2/src/core/application_tokens.js'),
+        //require.resolve('angular2/src/core/render.js'),
+        require.resolve('angular2/core.js')
+    ]
+};
+
+
+
+gulp.task('copy_NPM', function () {
+    return gulp.src(config.lib, { base: config.libBase })
+        .pipe(gulp.dest(paths.webroot + 'lib'));
+});
+
+gulp.task('test', function () {
+    return gulp.src(config.lib, { base: config.libBase })
+        .pipe(gulp.dest(paths.webroot + 'lib'));
+});

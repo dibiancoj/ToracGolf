@@ -1,5 +1,3 @@
-﻿(function (app) {
-    document.addEventListener('DOMContentLoaded', function () {
-        ng.platform.browser.bootstrap(app.NewsFeedPage);
-    });
-})(window.app || (window.app = {}));
+var browser_1 = require('angular2/platform/browser');
+var app_component_1 = require('./app.component');
+browser_1.bootstrap(app_component_1.AppComponent);

@@ -22,15 +22,31 @@
 
 @section Scripts{
 <script src="~/lib/angular2/angular2-polyfills.js"></script>
-<script src="~/lib/angular2/rx.umd.js"></script>
-<script src="~/lib/angular2/angular2-all.umd.js"></script>
+<script src="~/lib/systemjs/dist/system.src.js"></script>
+<script src="~/lib/rxjs/bundles/rx.js"></script>
+<script src="~/lib/angular2/bundles/angular2.dev.js"></script>
 
-@*<script src="~/js/angular2/newsfeed/newsfeed.js"></script>*@
-<script src="~/js/angular2/newsfeed/NewsFeedpost.js"></script>
-<script src="~/js/angular2/newsfeed/boot.js"></script>
+<script>
+    System.config({
+        defaultJSExtensions: true,
+        packages: {
+          app: {
+            format: 'register',
+            defaultExtension: 'js'
+          }
+        }
+    });
+
+    System.baseURL = '/lib';
+
+    System.import('./js/Angular2/NewsFeed/boot.js')
+            .then(null, console.error.bind(console));
+</script>
 }
 
-<section class="slice bg-white">
+<my-app>Loading...</my-app>
+
+@*<section class="slice bg-white">
     <div class="wp-section">
         <div class="container">
             <div class="row">
@@ -286,4 +302,4 @@
             </div>
         </div>
     </div>
-</section>
+</section>*@

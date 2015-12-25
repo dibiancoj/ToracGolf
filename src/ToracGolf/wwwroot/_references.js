@@ -22,6 +22,7 @@
 /// <reference path="js/Angular/Season/SeasonHttp.js" />
 /// <reference path="js/angular/season/seasonlistingcontroller.js" />
 /// <reference path="js/angular/toracgolfapp.js" />
+/// <reference path="js/angular2/newsfeed/app.component.js" />
 /// <reference path="js/angular2/newsfeed/boot.js" />
 /// <reference path="js/angular2/newsfeed/newsfeed.js" />
 /// <reference path="js/angular2/newsfeed/newsfeedpost.js" />

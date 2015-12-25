@@ -77,4 +77,3 @@ var ToracTechnologies;
         Ajax.SetupAjaxWaitSpinner = SetupAjaxWaitSpinner;
     })(Ajax = ToracTechnologies.Ajax || (ToracTechnologies.Ajax = {}));
 })(ToracTechnologies || (ToracTechnologies = {}));
-//# sourceMappingURL=ToracAjax.js.map
