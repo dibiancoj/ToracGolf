@@ -1,4 +1,4 @@
-/// <binding Clean='clean' ProjectOpened='BoomerangAssets:min:js, BoomerangControlJs:min:js, BoomerangJQueryForms:min:js, BoomerangResponsiveMobile:min:js, reactFormatting, reactCourseStats, reactTransformChangePw, reactValidation, copy_NPM' />
+/// <binding Clean='clean' ProjectOpened='BoomerangAssets:min:js, BoomerangControlJs:min:js, BoomerangJQueryForms:min:js, BoomerangResponsiveMobile:min:js, reactFormatting, reactCourseStats, reactTransformChangePw, reactValidation' />
 "use strict";
 
 var gulp = require("gulp"),
@@ -161,39 +161,27 @@ gulp.task("OnPublishToServer", ["reactValidation", "reactFormatting", "reactTran
                         "BoomerangResponsiveMobile:min:js"]);
 
 
+//the following is all for angular 2 and dealing with the npm crap...copying it over to wwwroot
 
 var config = {
     libBase: 'node_modules',
     lib: [
-        require.resolve('systemjs/dist/system.src.js'),
-        require.resolve('rxjs/bundles/Rx.js'),
-        //require.resolve('angular2/bundles/angular2.dev.js'),
-        //require.resolve('angular2/core.js'),
-        //require.resolve('angular2/bundles/angular2-polyfills.js'),
-        //require.resolve('angular2/platform/browser.js'),
-        //require.resolve('angular2/compiler.js'),
-        //require.resolve('angular2/src/facade/lang.js'),
-        //require.resolve('angular2/src/core/reflection/reflection_capabilities.js'),
-        //require.resolve('angular2/src/core/metadata.js'),
-        //require.resolve('angular2/src/core/util.js'),
-        //require.resolve('angular2/src/core/di.js'),
-        //require.resolve('angular2/src/core/prod_mode.js'),
-        //require.resolve('angular2/src/core/angular_entrypoint.js'),
-        //require.resolve('angular2/src/platform/browser_common.js'),
-        //require.resolve('angular2/src/platform/browser/xhr_impl.js'),
-        //require.resolve('angular2/src/facade/facade.js'),
-
-        //require.resolve('angular2/src/core/zone.js'),
-        //require.resolve('angular2/src/core/application_ref.js'),
-        //require.resolve('angular2/src/core/application_tokens.js'),
-        //require.resolve('angular2/src/core/render.js'),
-        require.resolve('angular2/core.js')
+        require.resolve('systemjs/dist/system.js')
     ]
 };
-
-
 
 gulp.task('copy_NPM', function () {
     return gulp.src(config.lib, { base: config.libBase })
         .pipe(gulp.dest(paths.webroot + 'lib'));
+});
+
+
+gulp.task('CopyAngular2FromNPMToWWWLib', function () {
+    return gulp.src('node_modules' + '/angular2' + "/**/*.js")
+        .pipe(gulp.dest(paths.webroot + 'lib/angular2'));
+});
+
+gulp.task('CopyRXJSFromNPMToWWWLib', function () {
+    return gulp.src('node_modules' + '/rxjs' + "/**/*.js")
+        .pipe(gulp.dest(paths.webroot + 'lib/rxjs'));
 });

@@ -1,4 +1,5 @@
-﻿import {Component} from 'angular2/core';
+﻿import {Component} from 'angular2/angular2';
+//import {PeopleService} from './peopleService';
 
 @Component({
     selector: 'my-app',
