@@ -197,8 +197,3 @@ gulp.task('copy_NPM', function () {
     return gulp.src(config.lib, { base: config.libBase })
         .pipe(gulp.dest(paths.webroot + 'lib'));
 });
-
-gulp.task('test', function () {
-    return gulp.src(config.lib, { base: config.libBase })
-        .pipe(gulp.dest(paths.webroot + 'lib'));
-});
