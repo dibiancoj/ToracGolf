@@ -166,7 +166,8 @@ gulp.task("OnPublishToServer", ["reactValidation", "reactFormatting", "reactTran
 var config = {
     libBase: 'node_modules',
     lib: [
-        require.resolve('systemjs/dist/system.js')
+        //require.resolve('systemjs/dist/system.js'),
+        require.resolve('es6-shim/es6-shim.js'),
     ]
 };
 
@@ -184,4 +185,9 @@ gulp.task('CopyAngular2FromNPMToWWWLib', function () {
 gulp.task('CopyRXJSFromNPMToWWWLib', function () {
     return gulp.src('node_modules' + '/rxjs' + "/**/*.js")
         .pipe(gulp.dest(paths.webroot + 'lib/rxjs'));
+});
+
+gulp.task('CopySystemJsFromNPMToWWWLib', function () {
+    return gulp.src('node_modules' + '/systemjs' + "/**/*.js")
+        .pipe(gulp.dest(paths.webroot + 'lib/systemjs'));
 });
