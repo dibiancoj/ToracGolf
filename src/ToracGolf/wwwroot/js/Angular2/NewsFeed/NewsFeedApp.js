@@ -20,15 +20,20 @@ System.register(['angular2/core', './NewsFeedService'], function(exports_1) {
             }],
         execute: function() {
             NewsFeedApp = (function () {
+                //Posts: Array<NewsFeedItem>;
                 function NewsFeedApp(newsFeedService) {
                     this.NewsFeedSvc = newsFeedService;
-                    this.Posts = this.NewsFeedSvc.NewsFeeds;
-                    // var postClosure = this.Posts;
+                    //this.Posts = this.NewsFeedSvc.NewsFeeds;
                     //setTimeout(function () {
-                    //    debugger;
-                    //    postClosure.push({ Month: 'January', Day: 5 });
+                    //    //this has an issue in ie 11 (the timeout it looks like)
+                    //    postClosure.Posts.push({ Month: 'January', Day: 5 });
                     //}, 4000);
                 }
+                ;
+                NewsFeedApp.prototype.Test = function () {
+                    this.NewsFeedSvc.NewsFeeds.push({ Month: 'January', Day: 5 });
+                };
+                ;
                 NewsFeedApp = __decorate([
                     core_1.Component({
                         selector: 'NewsFeedPostContainer',

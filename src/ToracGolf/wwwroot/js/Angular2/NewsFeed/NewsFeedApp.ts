@@ -8,20 +8,15 @@ import {NewsFeedService, NewsFeedItem} from './NewsFeedService';
 })
 export class NewsFeedApp {
 
-    //Posts: Array<NewsFeedItem>;
     NewsFeedSvc: NewsFeedService;
-    Posts: Array<NewsFeedItem>;
 
     constructor(newsFeedService: NewsFeedService) {
         this.NewsFeedSvc = newsFeedService;
-        this.Posts = this.NewsFeedSvc.NewsFeeds;
+    };
 
-       // var postClosure = this.Posts;
-
-        //setTimeout(function () {
-        //    debugger;
-        //    postClosure.push({ Month: 'January', Day: 5 });
-        //}, 4000);
-    }
+    //Test() {
+       
+    //    this.NewsFeedSvc.NewsFeeds.push({ Month: 'January', Day: 5 });
+    //};
 
 }
