@@ -21,12 +21,18 @@ System.register(['angular2/core', './NewsFeedService'], function(exports_1) {
         execute: function() {
             NewsFeedApp = (function () {
                 function NewsFeedApp(newsFeedService) {
-                    this.service = newsFeedService;
+                    this.NewsFeedSvc = newsFeedService;
+                    this.Posts = this.NewsFeedSvc.NewsFeeds;
+                    // var postClosure = this.Posts;
+                    //setTimeout(function () {
+                    //    debugger;
+                    //    postClosure.push({ Month: 'January', Day: 5 });
+                    //}, 4000);
                 }
                 NewsFeedApp = __decorate([
                     core_1.Component({
-                        selector: 'my-app',
-                        template: '<h1>Jason</h1>',
+                        selector: 'NewsFeedPostContainer',
+                        templateUrl: 'js/Angular2/NewsFeed/NewsFeedPostView.html',
                         bindings: [NewsFeedService_1.NewsFeedService]
                     }), 
                     __metadata('design:paramtypes', [NewsFeedService_1.NewsFeedService])

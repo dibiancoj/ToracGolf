@@ -3,7 +3,7 @@
     constructor() {
         this.NewsFeeds = [];
 
-        this.NewsFeeds.push({ PostDate: new Date() });
+        this.NewsFeeds.push({ Month: 'January', Day: 5 }, { Month: 'December', Day: 10 });
     }
 
     NewsFeeds: Array<NewsFeedItem>;
@@ -15,5 +15,6 @@
 }
 
 export class NewsFeedItem {
-    PostDate: Date;
+    Month: string;
+    Day: number;
 }

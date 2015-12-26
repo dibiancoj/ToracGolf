@@ -6,7 +6,7 @@ System.register([], function(exports_1) {
             NewsFeedService = (function () {
                 function NewsFeedService() {
                     this.NewsFeeds = [];
-                    this.NewsFeeds.push({ PostDate: new Date() });
+                    this.NewsFeeds.push({ Month: 'January', Day: 5 }, { Month: 'December', Day: 10 });
                 }
                 NewsFeedService.prototype.NewFeedGet = function () {
                     return this.NewsFeeds;
