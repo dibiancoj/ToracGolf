@@ -31,7 +31,8 @@ System.register(['angular2/core', './NewsFeedService', 'rxjs/add/operator/map'],
                     //go grab the data
                     this.NewsFeedSvc.NewFeedGet().subscribe(function (posts) {
                         _thisClass.NgZoneSvc.run(function () {
-                            debugger;
+                            //the pipe for date time format doesn't support iso string's right now. so flip it to a date it can handle
+                            posts.forEach(function (x) { return x.PostDate = new Date(x.PostDate.toString()); });
                             _this.Posts = posts;
                         });
                     });

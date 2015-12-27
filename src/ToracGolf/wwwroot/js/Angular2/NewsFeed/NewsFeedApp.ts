@@ -27,7 +27,10 @@ export class NewsFeedApp {
         this.NewsFeedSvc.NewFeedGet().subscribe((posts: Array<NewsFeedItem>) => {
 
             _thisClass.NgZoneSvc.run(() => {
-                debugger;
+
+                //the pipe for date time format doesn't support iso string's right now. so flip it to a date it can handle
+                posts.forEach(x => x.PostDate = new Date(x.PostDate.toString()));
+
                 this.Posts = posts;
             });
         });
