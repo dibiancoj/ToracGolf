@@ -1,20 +1,24 @@
-﻿export class NewsFeedService {
+﻿import { Injectable } from 'angular2/core';
+import { Http, Response } from 'angular2/http';
+//import 'rxjs/operators/map';
+import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs/Observable';
 
-    constructor() {
-        this.NewsFeeds = [];
+@Injectable()
+export class NewsFeedService {
 
-        this.NewsFeeds.push({ Month: 'January', Day: 5 }, { Month: 'December', Day: 10 });
+    constructor(http: Http) {
+        this.HttpModule = http;
     }
 
-    NewsFeeds: Array<NewsFeedItem>;
+    HttpModule: Http;
 
-    NewFeedGet(): Array<NewsFeedItem> {
-        return this.NewsFeeds;
+    NewFeedGet(): Observable<Response> {
+        return this.HttpModule.get('NewsFeedsGetPost').map(res => res.json());
     }
 
 }
 
 export class NewsFeedItem {
-    Month: string;
-    Day: number;
+    PostDate: Date;
 }

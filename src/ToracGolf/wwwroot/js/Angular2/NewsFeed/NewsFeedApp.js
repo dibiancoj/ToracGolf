@@ -1,4 +1,4 @@
-System.register(['angular2/core', './NewsFeedService'], function(exports_1) {
+System.register(['angular2/core', './NewsFeedService', 'rxjs/add/operator/map'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -17,24 +17,24 @@ System.register(['angular2/core', './NewsFeedService'], function(exports_1) {
             },
             function (NewsFeedService_1_1) {
                 NewsFeedService_1 = NewsFeedService_1_1;
-            }],
+            },
+            function (_1) {}],
         execute: function() {
             NewsFeedApp = (function () {
                 function NewsFeedApp(newsFeedService, ngZone) {
+                    var _this = this;
+                    this.Posts = [];
                     this.NewsFeedSvc = newsFeedService;
                     this.NgZoneSvc = ngZone;
-                    var t = this;
-                    setTimeout(function () {
-                        //run outside of the angular zone for performance
-                        t.NgZoneSvc.runOutsideAngular(function () {
-                            //we have some data (get this from ajax return 
-                            var data = [{ Month: 'January', Day: 5 }, { Month: 'Feb', Day: 10 }];
-                            //now re-enter the zone so we can update the ui
-                            t.NgZoneSvc.run(function () {
-                                data.forEach(function (x) { return t.NewsFeedSvc.NewsFeeds.push(x); });
-                            });
+                    //closure
+                    var _thisClass = this;
+                    //go grab the data
+                    this.NewsFeedSvc.NewFeedGet().subscribe(function (posts) {
+                        _thisClass.NgZoneSvc.run(function () {
+                            debugger;
+                            _this.Posts = posts;
                         });
-                    }, 3000);
+                    });
                 }
                 ;
                 NewsFeedApp = __decorate([

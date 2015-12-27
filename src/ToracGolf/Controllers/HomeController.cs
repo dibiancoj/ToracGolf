@@ -12,6 +12,7 @@ using ToracGolf.Filters;
 using ToracGolf.MiddleLayer.Dashboard;
 using ToracGolf.MiddleLayer.Dashboard.Models;
 using ToracGolf.MiddleLayer.EFModel;
+using ToracGolf.MiddleLayer.NewsFeed;
 using ToracGolf.Settings;
 using ToracGolf.ViewModels.Home;
 using ToracGolf.ViewModels.Navigation;
@@ -139,6 +140,18 @@ namespace ToracGolf.Controllers
                 await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
                 breadCrumb,
                 BuildTokenSet(Antiforgery)));
+        }
+
+        [Route("NewsFeedsGetPost", Name = "NewsFeedsgetPost")]
+        [HttpGet]
+        public async Task<IActionResult> NewsFeedGet()
+        {
+            return Json(await Task.FromResult<IEnumerable<NewsFeedItemModel>>(
+                new List<NewsFeedItemModel>
+                {
+                    new NewsFeedItemModel { PostDate = DateTime.Now.AddDays(-20)
+                    }
+                }));
         }
 
         #endregion

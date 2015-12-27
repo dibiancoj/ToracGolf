@@ -1,6 +1,9 @@
 ﻿import {Component, Inject, NgZone} from 'angular2/core';
 import {NewsFeedService, NewsFeedItem} from './NewsFeedService';
 
+import { Http, Response } from 'angular2/http';
+import 'rxjs/add/operator/map';
+
 @Component({
     selector: 'NewsFeedPostContainer',
     templateUrl: 'js/Angular2/NewsFeed/NewsFeedPostView.html',
@@ -10,29 +13,24 @@ export class NewsFeedApp {
 
     NewsFeedSvc: NewsFeedService;
     NgZoneSvc: NgZone;
+    Posts: Array<NewsFeedItem>;
 
     constructor(newsFeedService: NewsFeedService, ngZone: NgZone) {
+        this.Posts = [];
         this.NewsFeedSvc = newsFeedService;
         this.NgZoneSvc = ngZone;
 
-        var t = this;
+        //closure
+        var _thisClass = this;
 
-        setTimeout(function () {
+        //go grab the data
+        this.NewsFeedSvc.NewFeedGet().subscribe((posts: Array<NewsFeedItem>) => {
 
-            //run outside of the angular zone for performance
-            t.NgZoneSvc.runOutsideAngular(() => {
-
-                //we have some data (get this from ajax return 
-                var data = [{ Month: 'January', Day: 5 }, { Month: 'Feb', Day: 10 }];
-
-                //now re-enter the zone so we can update the ui
-                t.NgZoneSvc.run(() => {
-
-                    data.forEach(x => t.NewsFeedSvc.NewsFeeds.push(x));
-                });
-
+            _thisClass.NgZoneSvc.run(() => {
+                debugger;
+                this.Posts = posts;
             });
-        }, 3000);
+        });
     };
 
     //Test() {
