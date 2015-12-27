@@ -25,7 +25,9 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map'], fun
                     this.HttpModule = http;
                 }
                 NewsFeedService.prototype.NewFeedGet = function () {
-                    return this.HttpModule.get('NewsFeedsGetPost').map(function (res) { return res.json(); });
+                    var customHeaders = new http_1.Headers();
+                    customHeaders.append('RequestVerificationToken', $('#__RequestVerificationToken').val());
+                    return this.HttpModule.post('NewsFeedsGetPost', '', { headers: customHeaders }).map(function (res) { return res.json(); });
                 };
                 NewsFeedService = __decorate([
                     core_1.Injectable(), 

@@ -142,8 +142,9 @@ namespace ToracGolf.Controllers
                 BuildTokenSet(Antiforgery)));
         }
 
+        [ValidateCustomAntiForgeryToken]
         [Route("NewsFeedsGetPost", Name = "NewsFeedsgetPost")]
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> NewsFeedGet()
         {
             return Json(await Task.FromResult<IEnumerable<NewsFeedItemModel>>(

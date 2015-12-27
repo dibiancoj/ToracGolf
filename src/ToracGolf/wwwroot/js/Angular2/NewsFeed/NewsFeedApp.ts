@@ -16,7 +16,8 @@ export class NewsFeedApp {
     Posts: Array<NewsFeedItem>;
 
     constructor(newsFeedService: NewsFeedService, ngZone: NgZone) {
-        this.Posts = [];
+
+        //set the properties
         this.NewsFeedSvc = newsFeedService;
         this.NgZoneSvc = ngZone;
 
@@ -26,6 +27,7 @@ export class NewsFeedApp {
         //go grab the data
         this.NewsFeedSvc.NewFeedGet().subscribe((posts: Array<NewsFeedItem>) => {
 
+            //go run this so angular can update the new records
             _thisClass.NgZoneSvc.run(() => {
 
                 //the pipe for date time format doesn't support iso string's right now. so flip it to a date it can handle
@@ -35,10 +37,5 @@ export class NewsFeedApp {
             });
         });
     };
-
-    //Test() {
-       
-    //    this.NewsFeedSvc.NewsFeeds.push({ Month: 'January', Day: 5 });
-    //};
 
 }

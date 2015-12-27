@@ -23,13 +23,14 @@ System.register(['angular2/core', './NewsFeedService', 'rxjs/add/operator/map'],
             NewsFeedApp = (function () {
                 function NewsFeedApp(newsFeedService, ngZone) {
                     var _this = this;
-                    this.Posts = [];
+                    //set the properties
                     this.NewsFeedSvc = newsFeedService;
                     this.NgZoneSvc = ngZone;
                     //closure
                     var _thisClass = this;
                     //go grab the data
                     this.NewsFeedSvc.NewFeedGet().subscribe(function (posts) {
+                        //go run this so angular can update the new records
                         _thisClass.NgZoneSvc.run(function () {
                             //the pipe for date time format doesn't support iso string's right now. so flip it to a date it can handle
                             posts.forEach(function (x) { return x.PostDate = new Date(x.PostDate.toString()); });
