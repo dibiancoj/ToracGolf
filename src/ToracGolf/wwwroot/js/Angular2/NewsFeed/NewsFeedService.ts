@@ -22,4 +22,5 @@ export class NewsFeedService {
 
 export class NewsFeedItem {
     PostDate: Date;
+    CommentCount: number;
 }

@@ -10,5 +10,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed
 
         public DateTime PostDate { get; set; }
 
+        public int CommentCount { get; set; }
+
     }
 }

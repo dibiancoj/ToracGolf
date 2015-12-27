@@ -150,7 +150,10 @@ namespace ToracGolf.Controllers
             return Json(await Task.FromResult<IEnumerable<NewsFeedItemModel>>(
                 new List<NewsFeedItemModel>
                 {
-                    new NewsFeedItemModel { PostDate = DateTime.Now.AddDays(-20)
+                    new NewsFeedItemModel
+                    {
+                        PostDate = DateTime.Now.AddDays(-20),
+                        CommentCount = 20
                     }
                 }));
         }
