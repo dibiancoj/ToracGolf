@@ -20,19 +20,22 @@ System.register(['angular2/core', './NewsFeedService'], function(exports_1) {
             }],
         execute: function() {
             NewsFeedApp = (function () {
-                //Posts: Array<NewsFeedItem>;
-                function NewsFeedApp(newsFeedService) {
+                function NewsFeedApp(newsFeedService, ngZone) {
                     this.NewsFeedSvc = newsFeedService;
-                    //this.Posts = this.NewsFeedSvc.NewsFeeds;
-                    //setTimeout(function () {
-                    //    //this has an issue in ie 11 (the timeout it looks like)
-                    //    postClosure.Posts.push({ Month: 'January', Day: 5 });
-                    //}, 4000);
+                    this.NgZoneSvc = ngZone;
+                    var t = this;
+                    setTimeout(function () {
+                        //run outside of the angular zone for performance
+                        t.NgZoneSvc.runOutsideAngular(function () {
+                            //we have some data (get this from ajax return 
+                            var data = [{ Month: 'January', Day: 5 }, { Month: 'Feb', Day: 10 }];
+                            //now re-enter the zone so we can update the ui
+                            t.NgZoneSvc.run(function () {
+                                data.forEach(function (x) { return t.NewsFeedSvc.NewsFeeds.push(x); });
+                            });
+                        });
+                    }, 3000);
                 }
-                ;
-                NewsFeedApp.prototype.Test = function () {
-                    this.NewsFeedSvc.NewsFeeds.push({ Month: 'January', Day: 5 });
-                };
                 ;
                 NewsFeedApp = __decorate([
                     core_1.Component({
@@ -40,7 +43,7 @@ System.register(['angular2/core', './NewsFeedService'], function(exports_1) {
                         templateUrl: 'js/Angular2/NewsFeed/NewsFeedPostView.html',
                         bindings: [NewsFeedService_1.NewsFeedService]
                     }), 
-                    __metadata('design:paramtypes', [NewsFeedService_1.NewsFeedService])
+                    __metadata('design:paramtypes', [NewsFeedService_1.NewsFeedService, core_1.NgZone])
                 ], NewsFeedApp);
                 return NewsFeedApp;
             })();
