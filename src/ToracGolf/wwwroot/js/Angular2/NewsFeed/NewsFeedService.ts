@@ -3,22 +3,19 @@ import { Http, Headers, Response } from 'angular2/http';
 //import 'rxjs/operators/map';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
+import { HttpInterceptor } from '../Common/httpinterceptor';
 
 @Injectable()
 export class NewsFeedService {
 
-    constructor(http: Http) {
-        this.HttpModule = http;
+    constructor(httpInterceptor: HttpInterceptor) {
+        this.HttpInterceptorSvc = httpInterceptor;
     }
 
-    HttpModule: Http;
+    HttpInterceptorSvc: HttpInterceptor;
 
     NewFeedGet(): Observable<Response> {
-
-        var customHeaders = new Headers();
-        customHeaders.append('RequestVerificationToken', $('#__RequestVerificationToken').val());
-
-        return this.HttpModule.post('NewsFeedsGetPost', '', { headers: customHeaders }).map(res => res.json());
+        return this.HttpInterceptorSvc.Post('NewsFeedsGetPost', '');
     }
 
 }
