@@ -5,12 +5,41 @@ using System.Threading.Tasks;
 
 namespace ToracGolf.MiddleLayer.NewsFeed
 {
-    public class NewsFeedItemModel
+    public abstract class NewsFeedItemModel
     {
+
+        public enum NewsFeedTypeId
+        {
+            NewRound = 0,
+            NewCourse = 1
+            //what else?
+        }
+
+        public abstract NewsFeedTypeId FeedTypeId { get; }
+
+        public string TitleOfPost { get; set; }
 
         public DateTime PostDate { get; set; }
 
+        public string CourseImagePath { get; set; }
+
         public int CommentCount { get; set; }
 
+        public int LikeCount { get; set; }
+
     }
+
+    public class NewRoundNewsFeed : NewsFeedItemModel
+    {
+
+        public override NewsFeedTypeId FeedTypeId
+        {
+            get
+            {
+                return NewsFeedTypeId.NewRound;
+            }
+        }
+
+    }
+
 }

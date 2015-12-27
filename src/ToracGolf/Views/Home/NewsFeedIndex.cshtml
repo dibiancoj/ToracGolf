@@ -17,32 +17,32 @@
 }
 
 @section Styles{
-
+    <link href="~/css/newsfeed.css" rel="stylesheet" />
 }
 
 @section Scripts{
-<script src="~/lib/es6-shim/es6-shim.js"></script>
-<script src="~/lib/angular2/angular2-polyfills.js"></script>
-<script src="~/lib/systemjs/dist/system.js"></script>
-<script src="~/lib/rxjs/bundles/rx.js"></script>
-<script src="~/lib/angular2/bundles/angular2.dev.js"></script>
+    <script src="~/lib/es6-shim/es6-shim.js"></script>
+    <script src="~/lib/angular2/angular2-polyfills.js"></script>
+    <script src="~/lib/systemjs/dist/system.js"></script>
+    <script src="~/lib/rxjs/bundles/rx.js"></script>
+    <script src="~/lib/angular2/bundles/angular2.dev.js"></script>
 
-<script>
-    System.config({
-        defaultJSExtensions: true,
-        packages: {
-          app: {
-            format: 'register',
-            defaultExtension: 'js'
-          }
-        }
-    });
+    <script>
+        System.config({
+            defaultJSExtensions: true,
+            packages: {
+                app: {
+                    format: 'register',
+                    defaultExtension: 'js'
+                }
+            }
+        });
 
-    System.baseURL = 'lib';
+        System.baseURL = 'lib';
 
-    System.import('./js/Angular2/NewsFeed/boot.js')
-            .then(null, console.error.bind(console));
-</script>
+        System.import('./js/Angular2/NewsFeed/boot.js')
+                .then(null, console.error.bind(console));
+    </script>
 }
 
 <section class="slice bg-white">
@@ -52,7 +52,7 @@
             <div class="row">
                 <div class="col-md-9">
 
-                   <NewsFeedPostContainer></NewsFeedPostContainer>
+                    <NewsFeedPostContainer></NewsFeedPostContainer>
 
                 </div>
 

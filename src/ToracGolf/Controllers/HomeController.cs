@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.Constants;
 using ToracGolf.Filters;
+using ToracGolf.MiddleLayer.Courses;
 using ToracGolf.MiddleLayer.Dashboard;
 using ToracGolf.MiddleLayer.Dashboard.Models;
 using ToracGolf.MiddleLayer.EFModel;
@@ -147,15 +148,7 @@ namespace ToracGolf.Controllers
         [HttpPost]
         public async Task<IActionResult> NewsFeedGet()
         {
-            return Json(await Task.FromResult<IEnumerable<NewsFeedItemModel>>(
-                new List<NewsFeedItemModel>
-                {
-                    new NewsFeedItemModel
-                    {
-                        PostDate = DateTime.Now.AddDays(-20),
-                        CommentCount = 20
-                    }
-                }));
+            return Json(await NewsFeedDataProvider.NewsFeedPostSelect(DbContext, CacheFactory.GetCacheItem<CourseImageFinder>(CacheKeyNames.CourseImageFinder, Cache), GetUserId()));
         }
 
         #endregion

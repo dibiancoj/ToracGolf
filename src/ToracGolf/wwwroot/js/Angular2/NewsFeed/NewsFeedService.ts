@@ -21,6 +21,12 @@ export class NewsFeedService {
 }
 
 export class NewsFeedItem {
+    FeedTypeId: NewFeedTypeId;
     PostDate: Date;
     CommentCount: number;
+}
+
+enum NewFeedTypeId {
+    NewRound,
+    NewCourse 
 }
