@@ -30,7 +30,8 @@ namespace ToracGolf.MiddleLayer.Courses
                 City = CourseData.City,
                 StateId = Convert.ToInt32(CourseData.StateListing),
                 UserIdThatCreatedCourse = userId,
-                OnlyAllow18Holes = CourseData.OnlyAllow18Holes
+                OnlyAllow18Holes = CourseData.OnlyAllow18Holes,
+                CreatedDate = DateTime.Now
             };
 
             courseToAdd.CourseTeeLocations = CourseData.TeeLocations.Select((x, i) => new CourseTeeLocations

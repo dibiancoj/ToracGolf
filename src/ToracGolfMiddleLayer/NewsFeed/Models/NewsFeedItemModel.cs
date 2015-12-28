@@ -19,6 +19,8 @@ namespace ToracGolf.MiddleLayer.NewsFeed
 
         public string TitleOfPost { get; set; }
 
+        public string BodyOfPost { get; set; }
+
         public DateTime PostDate { get; set; }
 
         public string CourseImagePath { get; set; }
@@ -37,6 +39,19 @@ namespace ToracGolf.MiddleLayer.NewsFeed
             get
             {
                 return NewsFeedTypeId.NewRound;
+            }
+        }
+
+    }
+
+    public class NewCourseNewsFeed : NewsFeedItemModel
+    {
+
+        public override NewsFeedTypeId FeedTypeId
+        {
+            get
+            {
+                return NewsFeedTypeId.NewCourse;
             }
         }
 
