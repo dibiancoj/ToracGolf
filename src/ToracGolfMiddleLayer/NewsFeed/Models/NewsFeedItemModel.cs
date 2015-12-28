@@ -19,7 +19,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed
 
         public string TitleOfPost { get; set; }
 
-        public string BodyOfPost { get; set; }
+        public IEnumerable<string> BodyOfPost { get; set; }
 
         public DateTime PostDate { get; set; }
 

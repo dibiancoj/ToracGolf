@@ -5,7 +5,7 @@
     {
         if (progression.HasValue)
         {
-            return string.Format("({0})", progression.Value);
+            return string.Format("({0})", Math.Round(progression.Value, 2));
         }
 
         return string.Empty;

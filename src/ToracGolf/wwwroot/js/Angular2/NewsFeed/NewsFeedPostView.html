@@ -26,7 +26,9 @@
             <div class="post-tags">Posted in <a href="#">HOTELS</a>, <a href="#">SPECIAL PROMOS</a>, <a href="#">SUMMER</a></div>
             <div class="post-comments"><strong>{{post.CommentCount}}</strong>comments</div>
             <div class="post-desc">
-                <p>{{post.BodyOfPost}}</p>
+                <p *ngFor="#body of post.BodyOfPost">
+                    {{body}}
+                </p>
             </div>
         </div>
 

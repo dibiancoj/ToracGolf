@@ -21,6 +21,8 @@ namespace ToracGolf.MiddleLayer.EFModel
         public virtual DbSet<CourseTeeLocations> CourseTeeLocations { get; set; }
         public virtual DbSet<Round> Rounds { get; set; }
         public virtual DbSet<Handicap> Handicap { get; set; }
+        public virtual DbSet<NewsFeedLike> NewsFeedLike { get; set; }
+        public virtual DbSet<NewsFeedComment> NewsFeedComment { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -31,8 +33,9 @@ namespace ToracGolf.MiddleLayer.EFModel
             modelBuilder.Entity<Round>().ToTable("Round");//.HasRequired(x => x.CourseTeeLocationId);
 
             modelBuilder.Entity<Round>()
-                .HasRequired(x => x.Handicap);
-                //.HasForeignKey(x => x.RoundId);
+                .HasRequired(x => x.Handicap)
+                .WithRequiredPrincipal(c2 => c2.Round); //need this otherwise when we go to insert a round it blows up 
+            //.HasForeignKey(x => x.RoundId);
 
 
 
@@ -42,7 +45,7 @@ namespace ToracGolf.MiddleLayer.EFModel
 
             modelBuilder.Entity<Ref_State>().HasKey(x => x.StateId);
             modelBuilder.Entity<Course>().HasRequired(x => x.State).WithMany(x => x.Courses);
-            
+
         }
 
     }

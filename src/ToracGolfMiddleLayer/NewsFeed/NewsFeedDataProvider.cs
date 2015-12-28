@@ -27,16 +27,25 @@ namespace ToracGolf.MiddleLayer.NewsFeed
                                     y.Score,
                                     y.CourseId,
                                     CourseName = y.Course.Name,
-                                    TeeBoxDescription = y.CourseTeeLocation.Description
+                                    TeeBoxDescription = y.CourseTeeLocation.Description,
+                                    Likes = dbContext.NewsFeedLike.Count(x => x.NewsFeedTypeId == (int)NewsFeedItemModel.NewsFeedTypeId.NewRound && x.AreaId == y.RoundId),
+                                    Comments = dbContext.NewsFeedComment.Count(x => x.NewsFeedTypeId == (int)NewsFeedItemModel.NewsFeedTypeId.NewRound && x.AreaId == y.RoundId),
+                                    AdjustedScore = y.Score - y.Handicap.HandicapBeforeRound,
+                                    RoundHandicap = y.RoundHandicap
                                 }).ToArrayAsync();
 
             newsFeedItems.AddRange(myRounds.Select(x => new NewRoundNewsFeed
             {
                 CourseImagePath = courseImageFinder.FindCourseImage(x.CourseId),
                 PostDate = x.RoundDate,
-                CommentCount = 20,
-                LikeCount = 30,
-                TitleOfPost = string.Format($"You Scored A {x.Score} At {x.CourseName} - {x.TeeBoxDescription}")
+                CommentCount = x.Comments,
+                LikeCount = x.Likes,
+                TitleOfPost = string.Format($"You Scored A {x.Score} At {x.CourseName} - {x.TeeBoxDescription}"),
+                BodyOfPost = new string[]
+                {
+                    string.Format($"Adjusted Score: {Convert.ToInt32(Math.Round(x.AdjustedScore, 1))}"),
+                    string.Format($"Round Handicap: {Math.Round(x.RoundHandicap, 2)}")
+                }
             }));
 
             //go add the courses now
@@ -50,17 +59,19 @@ namespace ToracGolf.MiddleLayer.NewsFeed
                                 CourseId = x.CourseId,
                                 CourseDescription = x.Description,
                                 StateTxt = x.State.Description,
-                                City = x.City
+                                City = x.City,
+                                Likes = dbContext.NewsFeedLike.Count(y => y.NewsFeedTypeId == (int)NewsFeedItemModel.NewsFeedTypeId.NewCourse && y.AreaId == x.CourseId),
+                                Comments = dbContext.NewsFeedComment.Count(y => y.NewsFeedTypeId == (int)NewsFeedItemModel.NewsFeedTypeId.NewCourse && y.AreaId == x.CourseId)
                             }).ToArrayAsync();
 
             newsFeedItems.AddRange(myCourses.Select(x => new NewCourseNewsFeed
             {
                 CourseImagePath = courseImageFinder.FindCourseImage(x.CourseId),
-                CommentCount = 20,
-                LikeCount = 20,
+                CommentCount = x.Comments,
+                LikeCount = x.Likes,
                 PostDate = x.CreatedDate,
                 TitleOfPost = string.Format($"{x.CourseName} In {x.City}, {x.StateTxt} Has Been Created."),
-                BodyOfPost = x.CourseDescription
+                BodyOfPost = new string[] { x.CourseDescription }
             }));
 
             return newsFeedItems.OrderByDescending(x => x.PostDate).ToArray();
