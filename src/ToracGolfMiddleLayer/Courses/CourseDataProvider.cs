@@ -10,6 +10,7 @@ using ToracGolf.MiddleLayer.Courses.Models;
 using ToracGolf.MiddleLayer.Common;
 using ToracGolf.MiddleLayer.Courses.Models.CourseStats;
 using ToracGolf.MiddleLayer.Dashboard.Models;
+using ToracGolf.MiddleLayer.GridCommon;
 
 namespace ToracGolf.MiddleLayer.Courses
 {
@@ -108,9 +109,6 @@ namespace ToracGolf.MiddleLayer.Courses
                                                                               int userId,
                                                                               CourseImageFinder courseImageFinder)
         {
-            //how many items to skip
-            int skipAmount = pageId * recordsPerPage;
-
             //go grab the query
             var queryable = CourseSelectQueryBuilder(dbContext, courseNameFilter, stateFilter);
 
@@ -157,7 +155,7 @@ namespace ToracGolf.MiddleLayer.Courses
             }
 
             //go execute it and return it
-            var data = await query.Skip(skipAmount).Take(recordsPerPage).ToListAsync();
+            var data = await EFPaging.PageEfQuery(query, pageId, recordsPerPage).ToListAsync();
 
             //go find the course paths
             data.ForEach(x => x.CourseImageLocation = courseImageFinder.FindCourseImage(x.CourseData.CourseId));

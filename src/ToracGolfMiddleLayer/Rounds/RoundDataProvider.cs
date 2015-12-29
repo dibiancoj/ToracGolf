@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ToracGolf.MiddleLayer.Courses;
 using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.EFModel.Tables;
+using ToracGolf.MiddleLayer.GridCommon;
 using ToracGolf.MiddleLayer.HandicapCalculator;
 using ToracGolf.MiddleLayer.HandicapCalculator.Models;
 using ToracGolf.MiddleLayer.Rounds.Models;
@@ -314,7 +315,7 @@ namespace ToracGolf.MiddleLayer.Rounds
             }
 
             //go run the query now
-            var dataSet = await queryable.Skip(skipAmount).Take(recordsPerPage).ToArrayAsync();
+            var dataSet = await EFPaging.PageEfQuery(queryable, pageId, recordsPerPage).ToListAsync();
 
             //let's loop through the rounds and display the starts
             foreach (var round in dataSet)
