@@ -153,7 +153,6 @@ namespace ToracGolf.MiddleLayer.Courses
             //if we need to sort by most rounds played, then do it now
             if (sortBy == CourseListingSortOrder.CourseListingSortEnum.MostTimesPlayed)
             {
-                //todo: need to fix when we get the rounds table going
                 query = query.OrderByDescending(x => x.NumberOfRounds).ThenByDescending(x => x.CourseData.CourseId);
             }
 
