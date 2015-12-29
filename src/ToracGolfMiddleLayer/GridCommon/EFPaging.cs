@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ToracLibrary.AspNet.Paging
+namespace ToracGolf.MiddleLayer.GridCommon
 {
     public static class EFPaging
     {
