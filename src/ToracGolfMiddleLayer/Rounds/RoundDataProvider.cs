@@ -7,11 +7,11 @@ using ToracGolf.MiddleLayer.Courses;
 using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.EFModel.Tables;
 using ToracGolf.MiddleLayer.GridCommon;
+using ToracGolf.MiddleLayer.GridCommon.Filters.QueryBuilder;
 using ToracGolf.MiddleLayer.HandicapCalculator;
 using ToracGolf.MiddleLayer.HandicapCalculator.Models;
 using ToracGolf.MiddleLayer.ListingFactories;
 using ToracGolf.MiddleLayer.Rounds.Models;
-using ToracLibrary.AspNet.Paging;
 
 namespace ToracGolf.MiddleLayer.Rounds
 {
@@ -194,57 +194,71 @@ namespace ToracGolf.MiddleLayer.Rounds
 
         #region Round Listing
 
-        public static IQueryable<RoundListingData> RoundSelectQueryBuilder(ToracGolfContext dbContext, int userId, string courseNameFilter, int? seasonFilter, DateTime? roundDateStartFilter, DateTime? roundDateEndFilter, bool handicappedRoundsOnly)
+        public static IQueryable<Round> RoundSelectQueryBuilder(ToracGolfContext dbContext,
+                                                                IListingFactory<Round, RoundListingData> roundListingFactory,
+                                                                int userId,
+                                                                string courseNameFilter,
+                                                                int? seasonFilter,
+                                                                DateTime? roundDateStartFilter,
+                                                                DateTime? roundDateEndFilter,
+                                                                bool handicappedRoundsOnly)
         {
             //build the queryable
             var queryable = dbContext.Rounds.AsNoTracking().Where(x => x.UserId == userId).AsQueryable();
 
-            //if we have a course name, add it as a filter
-            if (!string.IsNullOrEmpty(courseNameFilter))
-            {
-                queryable = queryable.Where(x => x.Course.Name.Contains(courseNameFilter));
-            }
+            //go build the query filters
+            queryable = FilterBuilder.BuildQueryFilter(dbContext, queryable, roundListingFactory,
+                                    new KeyValuePair<string, object>(nameof(courseNameFilter), courseNameFilter),
+                                    new KeyValuePair<string, object>(nameof(seasonFilter), seasonFilter),
+                                    new KeyValuePair<string, object>(nameof(roundDateStartFilter), roundDateStartFilter),
+                                    new KeyValuePair<string, object>(nameof(roundDateStartFilter), roundDateStartFilter),
+                                    new KeyValuePair<string, object>(nameof(handicappedRoundsOnly), (handicappedRoundsOnly ? new bool?(handicappedRoundsOnly) : new bool?())));
 
-            //do we have a state filter?
-            if (seasonFilter.HasValue)
-            {
-                queryable = queryable.Where(x => x.SeasonId == seasonFilter.Value);
-            }
+            //if (handicappedRoundsOnly)
+            //{
+            //    //how many rounds do we have?
+            //    int roundsWeHaveInQuery = queryable.Count();
 
-            //do we have start date filter?
-            if (roundDateStartFilter.HasValue)
-            {
-                queryable = queryable.Where(x => x.RoundDate >= roundDateStartFilter.Value);
-            }
+            //    //now check how many are in the calculation
+            //    var howManyToCalculateWith = Handicapper.HowManyRoundsToUseInFormula(roundsWeHaveInQuery > 20 ? 20 : roundsWeHaveInQuery);
 
-            //end date filter?
-            if (roundDateEndFilter.HasValue)
-            {
-                queryable = queryable.Where(x => x.RoundDate <= roundDateEndFilter.Value);
-            }
+            //    //now just grab the last 20
+            //    var last20RoundIds = queryable.OrderByDescending(x => x.RoundDate)
+            //                                  .ThenByDescending(x => x.RoundId)
+            //                                  .Take(20) //we only ever get the last 20...
+            //                                  .OrderBy(x => x.RoundHandicap) //now grab the lowest rated rounds of how many we are going to calculate with
+            //                                  .Take(howManyToCalculateWith) //then grab just those
+            //                                  .Select(x => x.RoundId).ToArray();
 
-            if (handicappedRoundsOnly)
-            {
-                //how many rounds do we have?
-                int roundsWeHaveInQuery = queryable.Count();
+            //    //add the round id's to the query
+            //    queryable = queryable.Where(x => last20RoundIds.Contains(x.RoundId));
+            //}
 
-                //now check how many are in the calculation
-                var howManyToCalculateWith = Handicapper.HowManyRoundsToUseInFormula(roundsWeHaveInQuery > 20 ? 20 : roundsWeHaveInQuery);
+            //return the query
+            return queryable;
+        }
 
-                //now just grab the last 20
-                var last20RoundIds = queryable.OrderByDescending(x => x.RoundDate)
-                                              .ThenByDescending(x => x.RoundId)
-                                              .Take(20) //we only ever get the last 20...
-                                              .OrderBy(x => x.RoundHandicap) //now grab the lowest rated rounds of how many we are going to calculate with
-                                              .Take(howManyToCalculateWith) //then grab just those
-                                              .Select(x => x.RoundId).ToArray();
+        public static async Task<RoundSelectModel> RoundSelect(IListingFactory<Round, RoundListingData> roundListingFactory,
+                                                               ToracGolfContext dbContext,
+                                                               int userId,
+                                                               int pageId,
+                                                               RoundListingSortOrder.RoundListingSortEnum sortBy,
+                                                               string courseNameFilter,
+                                                               int? seasonFilter,
+                                                               int recordsPerPage,
+                                                               DateTime? roundDateStartFilter,
+                                                               DateTime? roundDateEndFilter,
+                                                               CourseImageFinder courseImageFinder,
+                                                               bool handicappedRoundOnly)
+        {
+            //go grab the query
+            var queryable = RoundSelectQueryBuilder(dbContext, roundListingFactory, userId, courseNameFilter, seasonFilter, roundDateStartFilter, roundDateEndFilter, handicappedRoundOnly);
 
-                //add the round id's to the query
-                queryable = queryable.Where(x => last20RoundIds.Contains(x.RoundId));
-            }
+            //go sort the data
+            var sortedQueryable = roundListingFactory.SortByConfiguration[sortBy.ToString()](queryable, new ListingFactoryParameters(dbContext, userId)).ThenBy(x => x.RoundId);
 
             //go return the queryable
-            return queryable.Select(x => new RoundListingData
+            var selectableQuery = sortedQueryable.Select(x => new RoundListingData
             {
                 RoundId = x.RoundId,
                 CourseId = x.CourseId,
@@ -261,29 +275,9 @@ namespace ToracGolf.MiddleLayer.Rounds
 
                 RoundHandicap = x.RoundHandicap
             });
-        }
-
-        public static async Task<RoundSelectModel> RoundSelect(IListingFactory<RoundListingData> roundListingFactory,
-                                                               ToracGolfContext dbContext,
-                                                               int userId,
-                                                               int pageId,
-                                                               RoundListingSortOrder.RoundListingSortEnum sortBy,
-                                                               string courseNameFilter,
-                                                               int? seasonFilter,
-                                                               int recordsPerPage,
-                                                               DateTime? roundDateStartFilter,
-                                                               DateTime? roundDateEndFilter,
-                                                               CourseImageFinder courseImageFinder,
-                                                               bool handicappedRoundOnly)
-        {
-            //go grab the query
-            var queryable = RoundSelectQueryBuilder(dbContext, userId, courseNameFilter, seasonFilter, roundDateStartFilter, roundDateEndFilter, handicappedRoundOnly);
-
-            //go sort the data
-            var sortedQueryable = roundListingFactory.SortByConfiguration[sortBy.ToString()](queryable, new ListingFactoryParameters(dbContext, userId)).ThenBy(x => x.RoundId);
 
             //go run the query now
-            var dataSet = await EFPaging.PageEfQuery(sortedQueryable, pageId, recordsPerPage).ToListAsync();
+            var dataSet = await EFPaging.PageEfQuery(selectableQuery, pageId, recordsPerPage).ToListAsync();
 
             //let's loop through the rounds and display the starts
             foreach (var round in dataSet)
@@ -302,9 +296,9 @@ namespace ToracGolf.MiddleLayer.Rounds
             return new RoundSelectModel(dataSet);
         }
 
-        public static async Task<int> TotalNumberOfRounds(ToracGolfContext dbContext, int userId, string roundNameFilter, int? StateFilter, DateTime? roundDateStartFilter, DateTime? roundDateEndFilter, bool onlyHandicappedRounds)
+        public static async Task<int> TotalNumberOfRounds(ToracGolfContext dbContext, IListingFactory<Round, RoundListingData> roundListingFactory, int userId, string roundNameFilter, int? StateFilter, DateTime? roundDateStartFilter, DateTime? roundDateEndFilter, bool onlyHandicappedRounds)
         {
-            return await RoundSelectQueryBuilder(dbContext, userId, roundNameFilter, StateFilter, roundDateStartFilter, roundDateEndFilter, onlyHandicappedRounds).CountAsync();
+            return await RoundSelectQueryBuilder(dbContext, roundListingFactory, userId, roundNameFilter, StateFilter, roundDateStartFilter, roundDateEndFilter, onlyHandicappedRounds).CountAsync();
         }
 
         #endregion

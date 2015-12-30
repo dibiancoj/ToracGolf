@@ -12,6 +12,7 @@ using ToracGolf.Constants;
 using ToracGolf.Filters;
 using ToracGolf.MiddleLayer.Courses;
 using ToracGolf.MiddleLayer.EFModel;
+using ToracGolf.MiddleLayer.EFModel.Tables;
 using ToracGolf.MiddleLayer.GridCommon;
 using ToracGolf.MiddleLayer.ListingFactories;
 using ToracGolf.MiddleLayer.Rounds;
@@ -32,12 +33,12 @@ namespace ToracGolf.Controllers
 
         #region Constructor
 
-        public RoundController(IMemoryCache cache, 
-                               ICacheFactoryStore cacheFactoryStore, 
-                               ToracGolfContext dbContext, 
-                               IAntiforgery antiforgery, 
+        public RoundController(IMemoryCache cache,
+                               ICacheFactoryStore cacheFactoryStore,
+                               ToracGolfContext dbContext,
+                               IAntiforgery antiforgery,
                                IOptions<AppSettings> configuration,
-                               IListingFactory<RoundListingData> roundListingFactory)
+                               IListingFactory<Round, RoundListingData> roundListingFactory)
         {
             DbContext = dbContext;
             Cache = cache;
@@ -61,7 +62,7 @@ namespace ToracGolf.Controllers
 
         private IOptions<AppSettings> Configuration { get; }
 
-        private IListingFactory<RoundListingData> RoundListingFactory { get; }
+        private IListingFactory<Round, RoundListingData> RoundListingFactory { get; }
 
         #endregion
 
@@ -239,7 +240,7 @@ namespace ToracGolf.Controllers
 
             if (listNav.ResetPager)
             {
-                totalNumberOfRecords = await RoundDataProvider.TotalNumberOfRounds(DbContext, userId, listNav.CourseNameFilter, seasonFilter, listNav.RoundDateStartFilter, listNav.RoundDateEndFilter, listNav.HandicappedRoundsOnly);
+                totalNumberOfRecords = await RoundDataProvider.TotalNumberOfRounds(DbContext, RoundListingFactory, userId, listNav.CourseNameFilter, seasonFilter, listNav.RoundDateStartFilter, listNav.RoundDateEndFilter, listNav.HandicappedRoundsOnly);
 
                 totalNumberOfPages = DataSetPaging.CalculateTotalPages(totalNumberOfRecords.Value, listNav.RoundsPerPage);
             }

@@ -6,7 +6,12 @@
   "projectUrl": "",
   "licenseUrl": "",
   "frameworks": {
-    "dnx451": { }
+    "dnx451": {
+      "dependencies": {
+        "System.Collections.Immutable": "1.0.0-*",
+        "ToracLibrary.Core": "1.0.0-*"
+      }
+    }
   },
   "dependencies": {
     "EntityFramework": "6.1.3",

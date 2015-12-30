@@ -38,7 +38,7 @@ namespace ToracGolf.Controllers
                                 ToracGolfContext dbContext,
                                 IAntiforgery antiforgery,
                                 IOptions<AppSettings> configuration,
-                                IListingFactory<Course> courseListingFactory)
+                                IListingFactory<Course, CourseListingData> courseListingFactory)
         {
             DbContext = dbContext;
             Cache = cache;
@@ -62,7 +62,7 @@ namespace ToracGolf.Controllers
 
         private IOptions<AppSettings> Configuration { get; }
 
-        private IListingFactory<Course> CourseListingFactory { get; }
+        private IListingFactory<Course, CourseListingData> CourseListingFactory { get; }
 
         #endregion
 
@@ -246,7 +246,7 @@ namespace ToracGolf.Controllers
 
             if (listNav.ResetPager)
             {
-                totalNumberOfRecords = await CourseDataProvider.TotalNumberOfCourses(DbContext, listNav.CourseNameFilter, stateFilter);
+                totalNumberOfRecords = await CourseDataProvider.TotalNumberOfCourses(DbContext, CourseListingFactory, listNav.CourseNameFilter, stateFilter);
 
                 totalNumberOfPages = DataSetPaging.CalculateTotalPages(totalNumberOfRecords.Value, listNav.CoursesPerPage);
             }

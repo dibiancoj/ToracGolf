@@ -126,8 +126,8 @@ namespace ToracGolf
             //    options.IdleTimeout = new TimeSpan(0, 5, 0);
             //});
 
-            services.AddSingleton<IListingFactory<RoundListingData>, RoundListingFactory>((x) => new RoundListingFactory(RoundListingFactory.SortByConfigurationBuilder()));
-            services.AddSingleton<IListingFactory<Course>, CourseListingFactory>((x) => new CourseListingFactory(CourseListingFactory.SortByConfigurationBuilder()));
+            services.AddSingleton<IListingFactory<Round, RoundListingData>, RoundListingFactory>((x) => new RoundListingFactory(RoundListingFactory.SortByConfigurationBuilder(), RoundListingFactory.FilterByConfigurationBuilder()));
+            services.AddSingleton<IListingFactory<Course, CourseListingData>, CourseListingFactory>((x) => new CourseListingFactory(CourseListingFactory.SortByConfigurationBuilder(), CourseListingFactory.FilterByConfigurationBuilder()));
 
 #if DNX451
             // utilize resource only available with .NET Framework

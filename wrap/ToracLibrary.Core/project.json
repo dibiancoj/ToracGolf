@@ -3,7 +3,10 @@
   "frameworks": {
     "dnx451": {
       "bin": {
-        "assembly": "../../src/ToracGolf/ToracLibraryReferences/ToracLibrary.Core.dll"
+        "assembly": "../../src/ToracGolfMiddleLayer/References/ToracLibrary.Core.dll"
+      },
+      "dependencies": {
+        "System.Collections.Immutable": "1.0.0-*"
       }
     }
   }

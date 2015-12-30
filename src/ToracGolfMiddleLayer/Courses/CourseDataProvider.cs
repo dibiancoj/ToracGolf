@@ -9,6 +9,7 @@ using ToracGolf.MiddleLayer.Dashboard.Models;
 using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.EFModel.Tables;
 using ToracGolf.MiddleLayer.GridCommon;
+using ToracGolf.MiddleLayer.GridCommon.Filters.QueryBuilder;
 using ToracGolf.MiddleLayer.ListingFactories;
 
 namespace ToracGolf.MiddleLayer.Courses
@@ -77,29 +78,25 @@ namespace ToracGolf.MiddleLayer.Courses
 
         #region Course Listing
 
-        public static IQueryable<Course> CourseSelectQueryBuilder(ToracGolfContext dbContext, string courseNameFilter, int? StateFilter)
+        public static IQueryable<Course> CourseSelectQueryBuilder(ToracGolfContext dbContext,
+                                                                  IListingFactory<Course, CourseListingData> courseListingFactory,
+                                                                  string courseNameFilter,
+                                                                  int? stateFilter)
         {
             //build the queryable
             var queryable = dbContext.Course.AsNoTracking().Where(x => x.IsActive).AsQueryable();
 
-            //if we have a course name, add it as a filter
-            if (!string.IsNullOrEmpty(courseNameFilter))
-            {
-                queryable = queryable.Where(x => x.Name.Contains(courseNameFilter));
-            }
-
-            //do we have a state filter?
-            if (StateFilter.HasValue)
-            {
-                queryable = queryable.Where(x => x.StateId == StateFilter.Value);
-            }
+            //go build the query
+            queryable = FilterBuilder.BuildQueryFilter(dbContext, queryable, courseListingFactory,
+                                    new KeyValuePair<string, object>(nameof(courseNameFilter), courseNameFilter),
+                                    new KeyValuePair<string, object>(nameof(stateFilter), stateFilter));
 
             //return the queryable
             return queryable;
         }
 
         /// <param name="pageId">0 base index that holds what page we are on</param>
-        public static async Task<IEnumerable<CourseListingData>> CourseSelect(IListingFactory<Course> courseListingFactory,
+        public static async Task<IEnumerable<CourseListingData>> CourseSelect(IListingFactory<Course, CourseListingData> courseListingFactory,
                                                                               ToracGolfContext dbContext,
                                                                               int pageId,
                                                                               CourseListingSortOrder.CourseListingSortEnum sortBy,
@@ -110,13 +107,10 @@ namespace ToracGolf.MiddleLayer.Courses
                                                                               CourseImageFinder courseImageFinder)
         {
             //go grab the query
-            var queryable = CourseSelectQueryBuilder(dbContext, courseNameFilter, stateFilter);
+            var queryable = CourseSelectQueryBuilder(dbContext, courseListingFactory, courseNameFilter, stateFilter);
 
             //go sort the data
             var sortedQueryable = courseListingFactory.SortByConfiguration[sortBy.ToString()](queryable, new ListingFactoryParameters(dbContext, userId)).ThenBy(x => x.CourseId);
-
-            //add the secondary sort on now
-            sortedQueryable = sortedQueryable.ThenBy(x => x.CourseId);
 
             //go run the query now
             var query = sortedQueryable.Select(x => new CourseListingData
@@ -146,9 +140,9 @@ namespace ToracGolf.MiddleLayer.Courses
             return data;
         }
 
-        public static async Task<int> TotalNumberOfCourses(ToracGolfContext dbContext, string courseNameFilter, int? StateFilter)
+        public static async Task<int> TotalNumberOfCourses(ToracGolfContext dbContext, IListingFactory<Course, CourseListingData> courseListingFactory, string courseNameFilter, int? StateFilter)
         {
-            return await CourseSelectQueryBuilder(dbContext, courseNameFilter, StateFilter).CountAsync();
+            return await CourseSelectQueryBuilder(dbContext, courseListingFactory, courseNameFilter, StateFilter).CountAsync();
         }
 
         public static async Task<Tuple<string, string>> CourseNameAndState(ToracGolfContext dbContext, int courseId)
