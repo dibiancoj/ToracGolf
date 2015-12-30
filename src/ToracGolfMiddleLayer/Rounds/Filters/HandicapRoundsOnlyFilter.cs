@@ -16,6 +16,13 @@ namespace ToracGolf.MiddleLayer.Rounds.Filters
             where TFrom : class
             where TTo : class
         {
+            //if they pass in false, just leave the query alone
+            if (!(bool)filter.Value)
+            {
+                //it's false, just return whatever query we have
+                return query;
+            }
+
             //case the query
             var castedQuery = (IQueryable<Round>)query;
 
