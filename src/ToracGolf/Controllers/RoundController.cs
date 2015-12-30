@@ -13,7 +13,9 @@ using ToracGolf.Filters;
 using ToracGolf.MiddleLayer.Courses;
 using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.GridCommon;
+using ToracGolf.MiddleLayer.ListingFactories;
 using ToracGolf.MiddleLayer.Rounds;
+using ToracGolf.MiddleLayer.Rounds.Models;
 using ToracGolf.MiddleLayer.Season;
 using ToracGolf.Settings;
 using ToracGolf.ViewModels.Navigation;
@@ -30,13 +32,19 @@ namespace ToracGolf.Controllers
 
         #region Constructor
 
-        public RoundController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, ToracGolfContext dbContext, IAntiforgery antiforgery, IOptions<AppSettings> configuration)
+        public RoundController(IMemoryCache cache, 
+                               ICacheFactoryStore cacheFactoryStore, 
+                               ToracGolfContext dbContext, 
+                               IAntiforgery antiforgery, 
+                               IOptions<AppSettings> configuration,
+                               IListingFactory<RoundListingData> roundListingFactory)
         {
             DbContext = dbContext;
             Cache = cache;
             CacheFactory = cacheFactoryStore;
             Antiforgery = antiforgery;
             Configuration = configuration;
+            RoundListingFactory = roundListingFactory;
         }
 
         #endregion
@@ -52,6 +60,8 @@ namespace ToracGolf.Controllers
         private IAntiforgery Antiforgery { get; }
 
         private IOptions<AppSettings> Configuration { get; }
+
+        private IListingFactory<RoundListingData> RoundListingFactory { get; }
 
         #endregion
 
@@ -190,7 +200,7 @@ namespace ToracGolf.Controllers
             var userId = GetUserId();
 
             //let's grab the users season
-            var userSeasons = BuildSelectList<KeyValuePair<int, string>>((await SeasonDataProvider.SeasonSelectForUser(DbContext, userId)),
+            var userSeasons = BuildSelectList((await SeasonDataProvider.SeasonSelectForUser(DbContext, userId)),
                 x => x.Key.ToString(),
                 x => x.Value,
                 () => new SelectListItem { Value = string.Empty, Text = "All Seasons" });
@@ -236,7 +246,7 @@ namespace ToracGolf.Controllers
 
             return Json(new
             {
-                PagedData = await RoundDataProvider.RoundSelect(DbContext, userId, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, seasonFilter, listNav.RoundsPerPage, listNav.RoundDateStartFilter, listNav.RoundDateEndFilter, CacheFactory.GetCacheItem<CourseImageFinder>(CacheKeyNames.CourseImageFinder, Cache), listNav.HandicappedRoundsOnly),
+                PagedData = await RoundDataProvider.RoundSelect(RoundListingFactory, DbContext, userId, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, seasonFilter, listNav.RoundsPerPage, listNav.RoundDateStartFilter, listNav.RoundDateEndFilter, CacheFactory.GetCacheItem<CourseImageFinder>(CacheKeyNames.CourseImageFinder, Cache), listNav.HandicappedRoundsOnly),
                 TotalNumberOfPages = totalNumberOfPages,
                 TotalNumberOfRecords = totalNumberOfRecords
             });

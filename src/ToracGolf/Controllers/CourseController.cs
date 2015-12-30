@@ -14,7 +14,9 @@ using ToracGolf.Filters;
 using ToracGolf.MiddleLayer.Courses;
 using ToracGolf.MiddleLayer.Courses.Models.CourseStats;
 using ToracGolf.MiddleLayer.EFModel;
+using ToracGolf.MiddleLayer.EFModel.Tables;
 using ToracGolf.MiddleLayer.GridCommon;
+using ToracGolf.MiddleLayer.ListingFactories;
 using ToracGolf.MiddleLayer.Season;
 using ToracGolf.Settings;
 using ToracGolf.ViewModels.Courses;
@@ -31,13 +33,19 @@ namespace ToracGolf.Controllers
 
         #region Constructor
 
-        public CourseController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, ToracGolfContext dbContext, IAntiforgery antiforgery, IOptions<AppSettings> configuration)
+        public CourseController(IMemoryCache cache,
+                                ICacheFactoryStore cacheFactoryStore,
+                                ToracGolfContext dbContext,
+                                IAntiforgery antiforgery,
+                                IOptions<AppSettings> configuration,
+                                IListingFactory<Course> courseListingFactory)
         {
             DbContext = dbContext;
             Cache = cache;
             CacheFactory = cacheFactoryStore;
             Antiforgery = antiforgery;
             Configuration = configuration;
+            CourseListingFactory = courseListingFactory;
         }
 
         #endregion
@@ -53,6 +61,8 @@ namespace ToracGolf.Controllers
         private IAntiforgery Antiforgery { get; }
 
         private IOptions<AppSettings> Configuration { get; }
+
+        private IListingFactory<Course> CourseListingFactory { get; }
 
         #endregion
 
@@ -243,7 +253,7 @@ namespace ToracGolf.Controllers
 
             return Json(new
             {
-                PagedData = await CourseDataProvider.CourseSelect(DbContext, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, stateFilter, listNav.CoursesPerPage, GetUserId(), CacheFactory.GetCacheItem<CourseImageFinder>(CacheKeyNames.CourseImageFinder, Cache)),
+                PagedData = await CourseDataProvider.CourseSelect(CourseListingFactory, DbContext, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, stateFilter, listNav.CoursesPerPage, GetUserId(), CacheFactory.GetCacheItem<CourseImageFinder>(CacheKeyNames.CourseImageFinder, Cache)),
                 TotalNumberOfPages = totalNumberOfPages,
                 TotalNumberOfRecords = totalNumberOfRecords
             });

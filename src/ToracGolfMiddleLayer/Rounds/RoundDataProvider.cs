@@ -9,6 +9,7 @@ using ToracGolf.MiddleLayer.EFModel.Tables;
 using ToracGolf.MiddleLayer.GridCommon;
 using ToracGolf.MiddleLayer.HandicapCalculator;
 using ToracGolf.MiddleLayer.HandicapCalculator.Models;
+using ToracGolf.MiddleLayer.ListingFactories;
 using ToracGolf.MiddleLayer.Rounds.Models;
 using ToracLibrary.AspNet.Paging;
 
@@ -262,7 +263,8 @@ namespace ToracGolf.MiddleLayer.Rounds
             });
         }
 
-        public static async Task<RoundSelectModel> RoundSelect(ToracGolfContext dbContext,
+        public static async Task<RoundSelectModel> RoundSelect(IListingFactory<RoundListingData> roundListingFactory,
+                                                               ToracGolfContext dbContext,
                                                                int userId,
                                                                int pageId,
                                                                RoundListingSortOrder.RoundListingSortEnum sortBy,
@@ -280,45 +282,8 @@ namespace ToracGolf.MiddleLayer.Rounds
             //go grab the query
             var queryable = RoundSelectQueryBuilder(dbContext, userId, courseNameFilter, seasonFilter, roundDateStartFilter, roundDateEndFilter, handicappedRoundOnly);
 
-            //holds the ordered data
-            IOrderedQueryable<RoundListingData> sortedQueryable = null;
-
-            //figure out what you want to order by
-            if (sortBy == RoundListingSortOrder.RoundListingSortEnum.CourseNameAscending)
-            {
-                sortedQueryable = queryable.OrderBy(x => x.CourseName);
-            }
-            else if (sortBy == RoundListingSortOrder.RoundListingSortEnum.CourseNameDescending)
-            {
-                sortedQueryable = queryable.OrderByDescending(x => x.CourseName);
-            }
-            else if (sortBy == RoundListingSortOrder.RoundListingSortEnum.RoundDateAscending)
-            {
-                sortedQueryable = queryable.OrderBy(x => x.RoundDate);
-            }
-            else if (sortBy == RoundListingSortOrder.RoundListingSortEnum.RoundDateDescending)
-            {
-                sortedQueryable = queryable.OrderByDescending(x => x.RoundDate);
-            }
-            else if (sortBy == RoundListingSortOrder.RoundListingSortEnum.BestRawScore)
-            {
-                sortedQueryable = queryable.OrderBy(x => x.Score);
-            }
-            else if (sortBy == RoundListingSortOrder.RoundListingSortEnum.WorseRawScore)
-            {
-                sortedQueryable = queryable.OrderByDescending(x => x.Score);
-            }
-            else if (sortBy == RoundListingSortOrder.RoundListingSortEnum.RoundHandicapAscending)
-            {
-                sortedQueryable = queryable.OrderBy(x => x.RoundHandicap);
-            }
-            else if (sortBy == RoundListingSortOrder.RoundListingSortEnum.RoundHandicapDescending)
-            {
-                sortedQueryable = queryable.OrderByDescending(x => x.RoundHandicap);
-            }
-
-            //then add the secondary sort
-            sortedQueryable = sortedQueryable.ThenBy(x => x.RoundId);
+            //go sort the data
+            var sortedQueryable = roundListingFactory.SortByConfiguration[sortBy.ToString()](queryable, new ListingFactoryParameters(dbContext, userId)).ThenBy(x => x.RoundId);
 
             //go run the query now
             var dataSet = await EFPaging.PageEfQuery(sortedQueryable, pageId, recordsPerPage).ToListAsync();

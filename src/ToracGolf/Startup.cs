@@ -19,6 +19,10 @@ using System.Threading.Tasks;
 using ToracGolf.Constants;
 using ToracGolf.MiddleLayer.Courses;
 using ToracGolf.MiddleLayer.EFModel;
+using ToracGolf.MiddleLayer.EFModel.Tables;
+using ToracGolf.MiddleLayer.ListingFactories;
+using ToracGolf.MiddleLayer.Rounds;
+using ToracGolf.MiddleLayer.Rounds.Models;
 using ToracGolf.Services;
 using ToracGolf.Settings;
 using ToracLibrary.AspNet.Caching.FactoryStore;
@@ -121,6 +125,9 @@ namespace ToracGolf
             //{
             //    options.IdleTimeout = new TimeSpan(0, 5, 0);
             //});
+
+            services.AddSingleton<IListingFactory<RoundListingData>, RoundListingFactory>((x) => new RoundListingFactory(RoundListingFactory.SortByConfigurationBuilder()));
+            services.AddSingleton<IListingFactory<Course>, CourseListingFactory>((x) => new CourseListingFactory(CourseListingFactory.SortByConfigurationBuilder()));
 
 #if DNX451
             // utilize resource only available with .NET Framework

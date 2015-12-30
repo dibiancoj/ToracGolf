@@ -1,16 +1,15 @@
-﻿using System.Data.Entity;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using ToracGolf.MiddleLayer.EFModel;
-using ToracGolf.MiddleLayer.EFModel.Tables;
-using ToracLibrary.AspNet.Paging;
 using ToracGolf.MiddleLayer.Courses.Models;
-using ToracGolf.MiddleLayer.Common;
 using ToracGolf.MiddleLayer.Courses.Models.CourseStats;
 using ToracGolf.MiddleLayer.Dashboard.Models;
+using ToracGolf.MiddleLayer.EFModel;
+using ToracGolf.MiddleLayer.EFModel.Tables;
 using ToracGolf.MiddleLayer.GridCommon;
+using ToracGolf.MiddleLayer.ListingFactories;
 
 namespace ToracGolf.MiddleLayer.Courses
 {
@@ -100,7 +99,8 @@ namespace ToracGolf.MiddleLayer.Courses
         }
 
         /// <param name="pageId">0 base index that holds what page we are on</param>
-        public static async Task<IEnumerable<CourseListingData>> CourseSelect(ToracGolfContext dbContext,
+        public static async Task<IEnumerable<CourseListingData>> CourseSelect(IListingFactory<Course> courseListingFactory,
+                                                                              ToracGolfContext dbContext,
                                                                               int pageId,
                                                                               CourseListingSortOrder.CourseListingSortEnum sortBy,
                                                                               string courseNameFilter,
@@ -112,30 +112,8 @@ namespace ToracGolf.MiddleLayer.Courses
             //go grab the query
             var queryable = CourseSelectQueryBuilder(dbContext, courseNameFilter, stateFilter);
 
-            IOrderedQueryable<Course> sortedQueryable = null;
-
-            //figure out what you want to order by
-            if (sortBy == CourseListingSortOrder.CourseListingSortEnum.CourseNameAscending)
-            {
-                sortedQueryable = queryable.OrderBy(x => x.Name);
-            }
-            else if (sortBy == CourseListingSortOrder.CourseListingSortEnum.CourseNameDescending)
-            {
-                sortedQueryable = queryable.OrderByDescending(x => x.Name);
-            }
-            else if (sortBy == CourseListingSortOrder.CourseListingSortEnum.EasiestCourses)
-            {
-                sortedQueryable = queryable.OrderBy(x => x.CourseTeeLocations.Max(y => y.Slope));
-            }
-            else if (sortBy == CourseListingSortOrder.CourseListingSortEnum.HardestCourses)
-            {
-                sortedQueryable = queryable.OrderByDescending(x => x.CourseTeeLocations.Max(y => y.Slope));
-            }
-            else if (sortBy == CourseListingSortOrder.CourseListingSortEnum.MostTimesPlayed)
-            {
-                //query.OrderByDescending(x => x.NumberOfRounds).ThenByDescending(x => x.CourseData.CourseId);
-                sortedQueryable = queryable.OrderByDescending(x => dbContext.Rounds.Count(y => y.CourseId == x.CourseId && y.UserId == userId));
-            }
+            //go sort the data
+            var sortedQueryable = courseListingFactory.SortByConfiguration[sortBy.ToString()](queryable, new ListingFactoryParameters(dbContext, userId)).ThenBy(x => x.CourseId);
 
             //add the secondary sort on now
             sortedQueryable = sortedQueryable.ThenBy(x => x.CourseId);
