@@ -178,12 +178,13 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Season</label>
-                                        <select class="form-control" ng-model="SeasonFilter" ng-change="FetchAPageOfData(true)">
+                                        <ToracSelect SelectItems="Model.UserSeasons" class="form-control" ng-model="SeasonFilter" ng-change="FetchAPageOfData(true)"></ToracSelect>
+                                        @*<select class="form-control" ng-model="SeasonFilter" ng-change="FetchAPageOfData(true)">
                                             @foreach (var seasonToAdd in Model.UserSeasons)
                                             {
                                                 <option value="@seasonToAdd.Value">@seasonToAdd.Text</option>
                                             }
-                                        </select>
+                                        </select>*@
                                     </div>
                                     <div class="form-group" style="padding-bottom: 30px;">
                                         <label>Round Date</label><br />
