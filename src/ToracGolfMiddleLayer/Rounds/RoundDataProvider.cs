@@ -276,9 +276,6 @@ namespace ToracGolf.MiddleLayer.Rounds
                                                                CourseImageFinder courseImageFinder,
                                                                bool handicappedRoundOnly)
         {
-            //how many items to skip
-            int skipAmount = pageId * recordsPerPage;
-
             //go grab the query
             var queryable = RoundSelectQueryBuilder(dbContext, userId, courseNameFilter, seasonFilter, roundDateStartFilter, roundDateEndFilter, handicappedRoundOnly);
 
