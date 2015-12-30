@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using ToracGolf.MiddleLayer.EFModel;
+using ToracGolf.MiddleLayer.GridCommon.Filters.ProcessFilterRules;
 using ToracLibrary.Core.ExpressionTrees.API;
 
 namespace ToracGolf.MiddleLayer.GridCommon.Filters.QueryBuilder
@@ -15,9 +16,10 @@ namespace ToracGolf.MiddleLayer.GridCommon.Filters.QueryBuilder
 
         #region Constructor
 
-        public SimpleFilterBuilder(FilterConfig<TQueryType> filterConfig)
+        public SimpleFilterBuilder(FilterConfig<TQueryType> filterConfig, params IProcessFilterRule[] processFilterRules)
         {
             FilterConfig = filterConfig;
+            ProcessFilterRules = processFilterRules;
         }
 
         #endregion
@@ -25,6 +27,8 @@ namespace ToracGolf.MiddleLayer.GridCommon.Filters.QueryBuilder
         #region Properties
 
         public FilterConfig<TQueryType> FilterConfig { get; }
+
+        public IEnumerable<IProcessFilterRule> ProcessFilterRules { get; }
 
         #endregion
 

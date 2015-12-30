@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ToracGolf.MiddleLayer.Courses;
 using ToracGolf.MiddleLayer.EFModel.Tables;
 using ToracGolf.MiddleLayer.GridCommon.Filters;
+using ToracGolf.MiddleLayer.GridCommon.Filters.ProcessFilterRules;
 using ToracGolf.MiddleLayer.GridCommon.Filters.QueryBuilder;
 using ToracGolf.MiddleLayer.ListingFactories;
 using static ToracLibrary.Core.ExpressionTrees.API.ExpressionBuilder;
@@ -54,8 +55,8 @@ namespace ToracGolf.MiddleLayer.Rounds
         {
             var dct = new Dictionary<string, IQueryBuilder<Course>>();
 
-            dct.Add("courseNameFilter", new SimpleFilterBuilder<Course>(new FilterConfig<Course>(x => x.Name)));
-            dct.Add("stateFilter", new SimpleFilterBuilder<Course>(new FilterConfig<Course>(x => x.StateId, DynamicUtilitiesEquations.Equal)));
+            dct.Add("courseNameFilter", new SimpleFilterBuilder<Course>(new FilterConfig<Course>(x => x.Name), new StringIsNotNullProcessFilterRule()));
+            dct.Add("stateFilter", new SimpleFilterBuilder<Course>(new FilterConfig<Course>(x => x.StateId, DynamicUtilitiesEquations.Equal), new NotNullProcessFilterRule()));
 
             return dct;
         }

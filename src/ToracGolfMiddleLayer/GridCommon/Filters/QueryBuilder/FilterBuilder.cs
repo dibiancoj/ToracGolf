@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.ListingFactories;
+using ToracLibrary.Core.ExtensionMethods.IEnumerableExtensions;
 
 namespace ToracGolf.MiddleLayer.GridCommon.Filters.QueryBuilder
 {
@@ -14,13 +15,18 @@ namespace ToracGolf.MiddleLayer.GridCommon.Filters.QueryBuilder
             where TFrom : class
             where TTo : class
         {
-            foreach (var filter in filters.Where(x => x.Value != null))
+            foreach (var filter in filters)
             {
                 //grab the filter config
                 var filterQueryBuilder = factory.FilterConfiguration[filter.Key];
 
-                //build the expression and tack it on to the query
-                query = filterQueryBuilder.BuildAFilterQuery(dbContext, query, filter);
+                //process this filter?
+                //so either we have no rules, or 1 rule evalulated to true
+                if (!filterQueryBuilder.ProcessFilterRules.AnyWithNullCheck() || filterQueryBuilder.ProcessFilterRules.AnyWithNullCheck(x => x.ProcessFilter(filter)))
+                {
+                    //build the expression and tack it on to the query
+                    query = filterQueryBuilder.BuildAFilterQuery(dbContext, query, filter);
+                }
             }
 
             //return the query

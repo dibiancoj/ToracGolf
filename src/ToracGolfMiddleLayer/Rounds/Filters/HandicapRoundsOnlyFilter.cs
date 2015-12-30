@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.EFModel.Tables;
+using ToracGolf.MiddleLayer.GridCommon.Filters.ProcessFilterRules;
 using ToracGolf.MiddleLayer.GridCommon.Filters.QueryBuilder;
 using ToracGolf.MiddleLayer.HandicapCalculator;
 
@@ -13,15 +14,26 @@ namespace ToracGolf.MiddleLayer.Rounds.Filters
     public class HandicapRoundsOnlyFilter<TQueryType> : IQueryBuilder<TQueryType>
         where TQueryType : Round
     {
+
+        #region Constructor
+
+        public HandicapRoundsOnlyFilter(params IProcessFilterRule[] processFilterRules)
+        {
+            ProcessFilterRules = processFilterRules;
+        }
+
+        #endregion
+
+        #region Properties
+
+        public IEnumerable<IProcessFilterRule> ProcessFilterRules { get; }
+
+        #endregion
+
+        #region Methods
+
         public IQueryable<TQueryType> BuildAFilterQuery(ToracGolfContext dbContext, IQueryable<TQueryType> query, KeyValuePair<string, object> filter)
         {
-            //if they pass in false, just leave the query alone
-            if (!(bool)filter.Value)
-            {
-                //it's false, just return whatever query we have
-                return query;
-            }
-
             //how many rounds do we have?
             int roundsWeHaveInQuery = query.Count();
 
@@ -39,6 +51,9 @@ namespace ToracGolf.MiddleLayer.Rounds.Filters
             //add the round id's to the query
             return query.Where(x => last20RoundIds.Contains(x.RoundId));
         }
+
+        #endregion
+
     }
 
 }

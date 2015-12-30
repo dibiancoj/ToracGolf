@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.MiddleLayer.EFModel.Tables;
 using ToracGolf.MiddleLayer.GridCommon.Filters;
+using ToracGolf.MiddleLayer.GridCommon.Filters.ProcessFilterRules;
 using ToracGolf.MiddleLayer.GridCommon.Filters.QueryBuilder;
 using ToracGolf.MiddleLayer.ListingFactories;
 using ToracGolf.MiddleLayer.Rounds.Filters;
 using ToracGolf.MiddleLayer.Rounds.Models;
-using ToracLibrary.Core.ExpressionTrees.API;
 using static ToracLibrary.Core.ExpressionTrees.API.ExpressionBuilder;
 
 namespace ToracGolf.MiddleLayer.Rounds
@@ -60,11 +60,11 @@ namespace ToracGolf.MiddleLayer.Rounds
         {
             var dct = new Dictionary<string, IQueryBuilder<Round>>();
 
-            dct.Add("courseNameFilter", new SimpleFilterBuilder<Round>(new FilterConfig<Round>(x => x.Course.Name)));
-            dct.Add("seasonFilter", new SimpleFilterBuilder<Round>(new FilterConfig<Round>(x => x.SeasonId, DynamicUtilitiesEquations.Equal)));
-            dct.Add("roundDateStartFilter", new SimpleFilterBuilder<Round>(new FilterConfig<Round>(x => x.RoundDate, DynamicUtilitiesEquations.GreaterThanOrEqual)));
-            dct.Add("roundDateEndFilter", new SimpleFilterBuilder<Round>(new FilterConfig<Round>(x => x.RoundDate, DynamicUtilitiesEquations.LessThanOrEqual)));
-            dct.Add("handicappedRoundOnly", new HandicapRoundsOnlyFilter<Round>());
+            dct.Add("courseNameFilter", new SimpleFilterBuilder<Round>(new FilterConfig<Round>(x => x.Course.Name), new StringIsNotNullProcessFilterRule()));
+            dct.Add("seasonFilter", new SimpleFilterBuilder<Round>(new FilterConfig<Round>(x => x.SeasonId, DynamicUtilitiesEquations.Equal), new NotNullProcessFilterRule()));
+            dct.Add("roundDateStartFilter", new SimpleFilterBuilder<Round>(new FilterConfig<Round>(x => x.RoundDate, DynamicUtilitiesEquations.GreaterThanOrEqual), new NotNullProcessFilterRule()));
+            dct.Add("roundDateEndFilter", new SimpleFilterBuilder<Round>(new FilterConfig<Round>(x => x.RoundDate, DynamicUtilitiesEquations.LessThanOrEqual), new NotNullProcessFilterRule()));
+            dct.Add("handicappedRoundsOnly", new HandicapRoundsOnlyFilter<Round>(new BooleanIsTrueFilterRule()));
 
             return dct;
         }
