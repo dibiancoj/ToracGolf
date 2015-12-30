@@ -28,7 +28,7 @@ namespace ToracGolf.MiddleLayer.GridCommon.Filters.QueryBuilder
 
         public FilterConfig<TQueryType> FilterConfig { get; }
 
-        public IEnumerable<IProcessFilterRule> ProcessFilterRules { get; }
+        public IList<IProcessFilterRule> ProcessFilterRules { get; }
 
         #endregion
 

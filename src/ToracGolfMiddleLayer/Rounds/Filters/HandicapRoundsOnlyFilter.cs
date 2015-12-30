@@ -26,7 +26,7 @@ namespace ToracGolf.MiddleLayer.Rounds.Filters
 
         #region Properties
 
-        public IEnumerable<IProcessFilterRule> ProcessFilterRules { get; }
+        public IList<IProcessFilterRule> ProcessFilterRules { get; }
 
         #endregion
 

@@ -11,7 +11,7 @@ namespace ToracGolf.MiddleLayer.GridCommon.Filters.QueryBuilder
          where TQueryType : class
     {
 
-        IEnumerable<IProcessFilterRule> ProcessFilterRules { get; }
+        IList<IProcessFilterRule> ProcessFilterRules { get; }
 
         IQueryable<TQueryType> BuildAFilterQuery(ToracGolfContext dbContext, IQueryable<TQueryType> query, KeyValuePair<string, object> filter);
 
