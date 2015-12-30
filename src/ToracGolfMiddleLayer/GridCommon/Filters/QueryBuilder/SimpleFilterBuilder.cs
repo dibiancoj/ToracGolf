@@ -33,42 +33,20 @@ namespace ToracGolf.MiddleLayer.GridCommon.Filters.QueryBuilder
              where TFrom : class
              where TTo : class
         {
-            //build the expression
-            var expression = CreateProperty<TFrom>(FilterConfig, filter.Value);
+            Expression<Func<TFrom, bool>> expressionToAdd;
+
+            //string contains vs everything else
+            if (FilterConfig.Parameter.PropertyMemberExpression.Type == typeof(string))
+            {
+                expressionToAdd = Expression.Lambda<Func<TFrom, bool>>(Expression.Call(FilterConfig.Parameter.PropertyMemberExpression, typeof(string).GetMethod(nameof(string.Contains)), Expression.Constant(filter.Value.ToString(), typeof(string))), FilterConfig.Parameter.ParametersForExpression);
+            }
+            else
+            {
+                expressionToAdd = ExpressionBuilder.BuildStatement<TFrom>(FilterConfig.Parameter, FilterConfig.FilterOperation.Value, filter.Value);
+            }
 
             //tack it on to the query
-            return query.Where(expression);
-        }
-
-        private static Expression<Func<TFrom, bool>> CreateProperty<TFrom>(FilterConfig filterConfig, object valueToQuery)
-            where TFrom : class
-        {
-            if (filterConfig.Parameter.PropertyMemberExpression.Type == typeof(int?))
-            {
-                return ExpressionBuilder.BuildStatement<TFrom, int?>(filterConfig.Parameter, filterConfig.FilterOperation.Value, (int?)valueToQuery);
-            }
-
-            if (filterConfig.Parameter.PropertyMemberExpression.Type == typeof(int))
-            {
-                return ExpressionBuilder.BuildStatement<TFrom, int>(filterConfig.Parameter, filterConfig.FilterOperation.Value, (int)valueToQuery);
-            }
-
-            if (filterConfig.Parameter.PropertyMemberExpression.Type == typeof(DateTime))
-            {
-                return ExpressionBuilder.BuildStatement<TFrom, DateTime>(filterConfig.Parameter, filterConfig.FilterOperation.Value, (DateTime)valueToQuery);
-            }
-
-            if (filterConfig.Parameter.PropertyMemberExpression.Type == typeof(DateTime?))
-            {
-                return ExpressionBuilder.BuildStatement<TFrom, DateTime?>(filterConfig.Parameter, filterConfig.FilterOperation.Value, (DateTime?)valueToQuery);
-            }
-
-            if (filterConfig.Parameter.PropertyMemberExpression.Type == typeof(string))
-            {
-                return Expression.Lambda<Func<TFrom, bool>>(Expression.Call(filterConfig.Parameter.PropertyMemberExpression, typeof(string).GetMethod(nameof(string.Contains)), Expression.Constant(valueToQuery.ToString(), typeof(string))), filterConfig.Parameter.ParametersForExpression);
-            }
-
-            throw new NotImplementedException();
+            return query.Where(expressionToAdd);
         }
 
         #endregion
