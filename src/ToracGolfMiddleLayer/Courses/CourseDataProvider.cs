@@ -112,26 +112,36 @@ namespace ToracGolf.MiddleLayer.Courses
             //go grab the query
             var queryable = CourseSelectQueryBuilder(dbContext, courseNameFilter, stateFilter);
 
+            IOrderedQueryable<Course> sortedQueryable = null;
+
             //figure out what you want to order by
             if (sortBy == CourseListingSortOrder.CourseListingSortEnum.CourseNameAscending)
             {
-                queryable = queryable.OrderBy(x => x.Name);
+                sortedQueryable = queryable.OrderBy(x => x.Name);
             }
             else if (sortBy == CourseListingSortOrder.CourseListingSortEnum.CourseNameDescending)
             {
-                queryable = queryable.OrderByDescending(x => x.Name);
+                sortedQueryable = queryable.OrderByDescending(x => x.Name);
             }
             else if (sortBy == CourseListingSortOrder.CourseListingSortEnum.EasiestCourses)
             {
-                queryable = queryable.OrderBy(x => x.CourseTeeLocations.Max(y => y.Slope));
+                sortedQueryable = queryable.OrderBy(x => x.CourseTeeLocations.Max(y => y.Slope));
             }
             else if (sortBy == CourseListingSortOrder.CourseListingSortEnum.HardestCourses)
             {
-                queryable = queryable.OrderByDescending(x => x.CourseTeeLocations.Max(y => y.Slope));
+                sortedQueryable = queryable.OrderByDescending(x => x.CourseTeeLocations.Max(y => y.Slope));
+            }
+            else if (sortBy == CourseListingSortOrder.CourseListingSortEnum.MostTimesPlayed)
+            {
+                //query.OrderByDescending(x => x.NumberOfRounds).ThenByDescending(x => x.CourseData.CourseId);
+                sortedQueryable = queryable.OrderByDescending(x => dbContext.Rounds.Count(y => y.CourseId == x.CourseId && y.UserId == userId));
             }
 
+            //add the secondary sort on now
+            sortedQueryable = sortedQueryable.ThenBy(x => x.CourseId);
+
             //go run the query now
-            var query = queryable.Select(x => new CourseListingData
+            var query = sortedQueryable.Select(x => new CourseListingData
             {
                 CourseData = x,
                 StateDescription = dbContext.Ref_State.FirstOrDefault(y => y.StateId == x.StateId).Description,
@@ -147,12 +157,6 @@ namespace ToracGolf.MiddleLayer.Courses
                 GreensInRegulation = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.GreensInRegulation).Average(),
                 NumberOfPutts = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.Putts).Average()
             });
-
-            //if we need to sort by most rounds played, then do it now
-            if (sortBy == CourseListingSortOrder.CourseListingSortEnum.MostTimesPlayed)
-            {
-                query = query.OrderByDescending(x => x.NumberOfRounds).ThenByDescending(x => x.CourseData.CourseId);
-            }
 
             //go execute it and return it
             var data = await EFPaging.PageEfQuery(query, pageId, recordsPerPage).ToListAsync();
