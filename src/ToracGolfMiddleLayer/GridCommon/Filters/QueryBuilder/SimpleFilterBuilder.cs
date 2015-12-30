@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using ToracGolf.MiddleLayer.EFModel;
-using ToracGolf.MiddleLayer.ListingFactories;
 using ToracLibrary.Core.ExpressionTrees.API;
 
 namespace ToracGolf.MiddleLayer.GridCommon.Filters.QueryBuilder

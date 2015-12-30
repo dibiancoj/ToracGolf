@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ToracGolf.MiddleLayer.GridCommon.Filters;
 using ToracGolf.MiddleLayer.GridCommon.Filters.QueryBuilder;
 
 namespace ToracGolf.MiddleLayer.ListingFactories
@@ -21,7 +20,7 @@ namespace ToracGolf.MiddleLayer.ListingFactories
         IDictionary<string, Func<IQueryable<TFromTable>, ListingFactoryParameters, IOrderedQueryable<TFromTable>>> SortByConfiguration { get; }
 
         /// <summary>
-        /// Key is the filter name. Value is the field to query
+        /// Key is the filter name. Value is class
         /// </summary>
         IDictionary<string, IQueryBuilder> FilterConfiguration { get; }
 
