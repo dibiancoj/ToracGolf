@@ -19,7 +19,7 @@ namespace ToracGolf.MiddleLayer.Rounds
         #region Constructor
 
         public RoundListingFactory(IDictionary<string, Func<IQueryable<Round>, ListingFactoryParameters, IOrderedQueryable<Round>>> sortByConfiguration,
-                                   IDictionary<string, IQueryBuilder> filterConfiguration)
+                                   IDictionary<string, IQueryBuilder<Round>> filterConfiguration)
         {
             SortByConfiguration = sortByConfiguration;
             FilterConfiguration = filterConfiguration;
@@ -31,7 +31,7 @@ namespace ToracGolf.MiddleLayer.Rounds
 
         public IDictionary<string, Func<IQueryable<Round>, ListingFactoryParameters, IOrderedQueryable<Round>>> SortByConfiguration { get; }
 
-        public IDictionary<string, IQueryBuilder> FilterConfiguration { get; }
+        public IDictionary<string, IQueryBuilder<Round>> FilterConfiguration { get; }
 
         #endregion
 
@@ -56,15 +56,15 @@ namespace ToracGolf.MiddleLayer.Rounds
             return dct;
         }
 
-        public static IDictionary<string, IQueryBuilder> FilterByConfigurationBuilder()
+        public static IDictionary<string, IQueryBuilder<Round>> FilterByConfigurationBuilder()
         {
-            var dct = new Dictionary<string, IQueryBuilder>();
+            var dct = new Dictionary<string, IQueryBuilder<Round>>();
 
-            dct.Add("courseNameFilter", new SimpleFilterBuilder(new FilterConfig(ParameterBuilder.BuildParameterFromLinqPropertySelector<Round>(x => x.Course.Name), null)));
-            dct.Add("seasonFilter", new SimpleFilterBuilder(new FilterConfig(ParameterBuilder.BuildParameterFromLinqPropertySelector<Round>(x => x.SeasonId), DynamicUtilitiesEquations.Equal)));
-            dct.Add("roundDateStartFilter", new SimpleFilterBuilder(new FilterConfig(ParameterBuilder.BuildParameterFromLinqPropertySelector<Round>(x => x.RoundDate), DynamicUtilitiesEquations.GreaterThanOrEqual)));
-            dct.Add("roundDateEndFilter", new SimpleFilterBuilder(new FilterConfig(ParameterBuilder.BuildParameterFromLinqPropertySelector<Round>(x => x.RoundDate), DynamicUtilitiesEquations.LessThanOrEqual)));
-            dct.Add("handicappedRoundOnly", new HandicapRoundsOnlyFilter());
+            dct.Add("courseNameFilter", new SimpleFilterBuilder<Round>(new FilterConfig<Round>(x => x.Course.Name)));
+            dct.Add("seasonFilter", new SimpleFilterBuilder<Round>(new FilterConfig<Round>(x => x.SeasonId, DynamicUtilitiesEquations.Equal)));
+            dct.Add("roundDateStartFilter", new SimpleFilterBuilder<Round>(new FilterConfig<Round>(x => x.RoundDate, DynamicUtilitiesEquations.GreaterThanOrEqual)));
+            dct.Add("roundDateEndFilter", new SimpleFilterBuilder<Round>(new FilterConfig<Round>(x => x.RoundDate, DynamicUtilitiesEquations.LessThanOrEqual)));
+            dct.Add("handicappedRoundOnly", new HandicapRoundsOnlyFilter<Round>());
 
             return dct;
         }

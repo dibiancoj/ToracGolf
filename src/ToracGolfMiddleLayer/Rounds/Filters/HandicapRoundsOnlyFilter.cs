@@ -10,11 +10,10 @@ using ToracGolf.MiddleLayer.HandicapCalculator;
 namespace ToracGolf.MiddleLayer.Rounds.Filters
 {
 
-    public class HandicapRoundsOnlyFilter : IQueryBuilder
+    public class HandicapRoundsOnlyFilter<TQueryType> : IQueryBuilder<TQueryType>
+        where TQueryType : Round
     {
-        public IQueryable<TFrom> BuildAFilterQuery<TFrom, TTo>(ToracGolfContext dbContext, IQueryable<TFrom> query, KeyValuePair<string, object> filter)
-            where TFrom : class
-            where TTo : class
+        public IQueryable<TQueryType> BuildAFilterQuery(ToracGolfContext dbContext, IQueryable<TQueryType> query, KeyValuePair<string, object> filter)
         {
             //if they pass in false, just leave the query alone
             if (!(bool)filter.Value)
@@ -23,17 +22,14 @@ namespace ToracGolf.MiddleLayer.Rounds.Filters
                 return query;
             }
 
-            //case the query
-            var castedQuery = (IQueryable<Round>)query;
-
             //how many rounds do we have?
-            int roundsWeHaveInQuery = castedQuery.Count();
+            int roundsWeHaveInQuery = query.Count();
 
             //now check how many are in the calculation
             var howManyToCalculateWith = Handicapper.HowManyRoundsToUseInFormula(roundsWeHaveInQuery > 20 ? 20 : roundsWeHaveInQuery);
 
             //now just grab the last 20
-            var last20RoundIds = castedQuery.OrderByDescending(x => x.RoundDate)
+            var last20RoundIds = query.OrderByDescending(x => x.RoundDate)
                                           .ThenByDescending(x => x.RoundId)
                                           .Take(20) //we only ever get the last 20...
                                           .OrderBy(x => x.RoundHandicap) //now grab the lowest rated rounds of how many we are going to calculate with
@@ -41,7 +37,7 @@ namespace ToracGolf.MiddleLayer.Rounds.Filters
                                           .Select(x => x.RoundId).ToArray();
 
             //add the round id's to the query
-            return (IQueryable<TFrom>)castedQuery.Where(x => last20RoundIds.Contains(x.RoundId));
+            return query.Where(x => last20RoundIds.Contains(x.RoundId));
         }
     }
 

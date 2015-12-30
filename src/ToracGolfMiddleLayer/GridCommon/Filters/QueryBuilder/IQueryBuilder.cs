@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.MiddleLayer.EFModel;
-using ToracGolf.MiddleLayer.ListingFactories;
 
 namespace ToracGolf.MiddleLayer.GridCommon.Filters.QueryBuilder
 {
-    public interface IQueryBuilder
+    public interface IQueryBuilder<TQueryType>
+         where TQueryType : class
     {
 
-        IQueryable<TFrom> BuildAFilterQuery<TFrom, TTo>(ToracGolfContext dbContext, IQueryable<TFrom> query, KeyValuePair<string, object> filter)
-             where TFrom : class
-             where TTo : class;
+        IQueryable<TQueryType> BuildAFilterQuery(ToracGolfContext dbContext, IQueryable<TQueryType> query, KeyValuePair<string, object> filter);
 
     }
 }

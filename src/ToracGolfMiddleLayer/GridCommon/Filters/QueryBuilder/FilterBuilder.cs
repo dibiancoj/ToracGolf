@@ -20,7 +20,7 @@ namespace ToracGolf.MiddleLayer.GridCommon.Filters.QueryBuilder
                 var filterQueryBuilder = factory.FilterConfiguration[filter.Key];
 
                 //build the expression and tack it on to the query
-                query = filterQueryBuilder.BuildAFilterQuery<TFrom, TTo>(dbContext, query, filter);
+                query = filterQueryBuilder.BuildAFilterQuery(dbContext, query, filter);
             }
 
             //return the query

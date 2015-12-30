@@ -22,7 +22,7 @@ namespace ToracGolf.MiddleLayer.ListingFactories
         /// <summary>
         /// Key is the filter name. Value is class
         /// </summary>
-        IDictionary<string, IQueryBuilder> FilterConfiguration { get; }
+        IDictionary<string, IQueryBuilder<TFromTable>> FilterConfiguration { get; }
 
         #endregion
 
