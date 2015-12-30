@@ -212,7 +212,7 @@ namespace ToracGolf.MiddleLayer.Rounds
                                     new KeyValuePair<string, object>(nameof(seasonFilter), seasonFilter),
                                     new KeyValuePair<string, object>(nameof(roundDateStartFilter), roundDateStartFilter),
                                     new KeyValuePair<string, object>(nameof(roundDateStartFilter), roundDateStartFilter),
-                                    new KeyValuePair<string, object>(nameof(handicappedRoundsOnly), handicappedRoundsOnly);
+                                    new KeyValuePair<string, object>(nameof(handicappedRoundsOnly), handicappedRoundsOnly));
 
             //if (handicappedRoundsOnly)
             //{
