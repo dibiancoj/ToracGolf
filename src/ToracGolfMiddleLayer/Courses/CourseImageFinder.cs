@@ -20,20 +20,20 @@ namespace ToracGolf.MiddleLayer.Courses
 
         #region Properties
 
-        private IDictionary<string, string> FilePathMapping { get; }
+        private IDictionary<int, string> FilePathMapping { get; }
 
         #endregion
 
         #region Methods
 
-        private static IDictionary<string, string> FilePathMapBuilder(string courseImageFilePath, string courseImageVirtualUrl)
+        private static IDictionary<int, string> FilePathMapBuilder(string courseImageFilePath, string courseImageVirtualUrl)
         {
             //key is just the file name without attribute, value is the full path
-            var dct = new Dictionary<string, string>();
+            var dct = new Dictionary<int, string>();
 
             foreach (var fileToCheck in Directory.GetFiles(courseImageFilePath))
             {
-                dct.Add(Path.GetFileNameWithoutExtension(fileToCheck), Path.Combine(courseImageVirtualUrl, Path.GetFileName(fileToCheck)));
+                dct.Add(Convert.ToInt32(Path.GetFileNameWithoutExtension(fileToCheck)), Path.Combine(courseImageVirtualUrl, Path.GetFileName(fileToCheck)));
             }
 
             return dct;
@@ -43,7 +43,7 @@ namespace ToracGolf.MiddleLayer.Courses
         {
             string fullPath;
 
-            if (FilePathMapping.TryGetValue(courseId.ToString(), out fullPath))
+            if (FilePathMapping.TryGetValue(courseId, out fullPath))
             {
                 return fullPath;
             }
