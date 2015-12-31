@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using static ToracGolf.MiddleLayer.Courses.CourseListingSortOrder;
+using ToracGolf.MiddleLayer.Courses;
 
 namespace ToracGolf.ViewModels.Courses
 {
@@ -20,7 +20,7 @@ namespace ToracGolf.ViewModels.Courses
 
         public int PageIndexId { get; set; }
 
-        public CourseListingSortEnum SortBy { get; set; }
+        public CourseListingFactory.CourseListingSortEnum SortBy { get; set; }
 
         public string CourseNameFilter { get; set; }
 

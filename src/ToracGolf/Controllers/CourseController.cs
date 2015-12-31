@@ -38,7 +38,7 @@ namespace ToracGolf.Controllers
                                 ToracGolfContext dbContext,
                                 IAntiforgery antiforgery,
                                 IOptions<AppSettings> configuration,
-                                IListingFactory<Course, CourseListingData> courseListingFactory)
+                                IListingFactory<CourseListingFactory.CourseListingSortEnum, Course, CourseListingData> courseListingFactory)
         {
             DbContext = dbContext;
             Cache = cache;
@@ -62,7 +62,7 @@ namespace ToracGolf.Controllers
 
         private IOptions<AppSettings> Configuration { get; }
 
-        private IListingFactory<Course, CourseListingData> CourseListingFactory { get; }
+        private IListingFactory<CourseListingFactory.CourseListingSortEnum, Course, CourseListingData> CourseListingFactory { get; }
 
         #endregion
 

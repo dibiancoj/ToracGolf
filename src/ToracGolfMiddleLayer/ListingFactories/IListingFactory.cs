@@ -7,7 +7,8 @@ using ToracGolf.MiddleLayer.GridCommon.Filters.QueryBuilder;
 namespace ToracGolf.MiddleLayer.ListingFactories
 {
 
-    public interface IListingFactory<TFromTable, TToTable>
+    public interface IListingFactory<TSortByEnum, TFromTable, TToTable>
+        where TSortByEnum : struct, IConvertible
         where TFromTable : class
         where TToTable : class
     {
@@ -17,7 +18,7 @@ namespace ToracGolf.MiddleLayer.ListingFactories
         /// <summary>
         /// int is the user id
         /// </summary>
-        IDictionary<string, Func<IQueryable<TFromTable>, ListingFactoryParameters, IOrderedQueryable<TFromTable>>> SortByConfiguration { get; }
+        IDictionary<TSortByEnum, Func<IQueryable<TFromTable>, ListingFactoryParameters, IOrderedQueryable<TFromTable>>> SortByConfiguration { get; }
 
         /// <summary>
         /// Key is the filter name. Value is class

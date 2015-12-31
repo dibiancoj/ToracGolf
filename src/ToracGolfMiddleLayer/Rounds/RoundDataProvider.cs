@@ -195,7 +195,7 @@ namespace ToracGolf.MiddleLayer.Rounds
         #region Round Listing
 
         public static IQueryable<Round> RoundSelectQueryBuilder(ToracGolfContext dbContext,
-                                                                IListingFactory<Round, RoundListingData> roundListingFactory,
+                                                                IListingFactory<RoundListingFactory.RoundListingSortEnum, Round, RoundListingData> roundListingFactory,
                                                                 int userId,
                                                                 string courseNameFilter,
                                                                 int? seasonFilter,
@@ -238,11 +238,11 @@ namespace ToracGolf.MiddleLayer.Rounds
             return queryable;
         }
 
-        public static async Task<RoundSelectModel> RoundSelect(IListingFactory<Round, RoundListingData> roundListingFactory,
+        public static async Task<RoundSelectModel> RoundSelect(IListingFactory<RoundListingFactory.RoundListingSortEnum, Round, RoundListingData> roundListingFactory,
                                                                ToracGolfContext dbContext,
                                                                int userId,
                                                                int pageId,
-                                                               RoundListingSortOrder.RoundListingSortEnum sortBy,
+                                                               RoundListingFactory.RoundListingSortEnum sortBy,
                                                                string courseNameFilter,
                                                                int? seasonFilter,
                                                                int recordsPerPage,
@@ -255,7 +255,7 @@ namespace ToracGolf.MiddleLayer.Rounds
             var queryable = RoundSelectQueryBuilder(dbContext, roundListingFactory, userId, courseNameFilter, seasonFilter, roundDateStartFilter, roundDateEndFilter, handicappedRoundOnly);
 
             //go sort the data
-            var sortedQueryable = roundListingFactory.SortByConfiguration[sortBy.ToString()](queryable, new ListingFactoryParameters(dbContext, userId)).ThenBy(x => x.RoundId);
+            var sortedQueryable = roundListingFactory.SortByConfiguration[sortBy](queryable, new ListingFactoryParameters(dbContext, userId)).ThenBy(x => x.RoundId);
 
             //go return the queryable
             var selectableQuery = sortedQueryable.Select(x => new RoundListingData
@@ -296,7 +296,7 @@ namespace ToracGolf.MiddleLayer.Rounds
             return new RoundSelectModel(dataSet);
         }
 
-        public static async Task<int> TotalNumberOfRounds(ToracGolfContext dbContext, IListingFactory<Round, RoundListingData> roundListingFactory, int userId, string roundNameFilter, int? StateFilter, DateTime? roundDateStartFilter, DateTime? roundDateEndFilter, bool onlyHandicappedRounds)
+        public static async Task<int> TotalNumberOfRounds(ToracGolfContext dbContext, IListingFactory<RoundListingFactory.RoundListingSortEnum, Round, RoundListingData> roundListingFactory, int userId, string roundNameFilter, int? StateFilter, DateTime? roundDateStartFilter, DateTime? roundDateEndFilter, bool onlyHandicappedRounds)
         {
             return await RoundSelectQueryBuilder(dbContext, roundListingFactory, userId, roundNameFilter, StateFilter, roundDateStartFilter, roundDateEndFilter, onlyHandicappedRounds).CountAsync();
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.MiddleLayer.EFModel.Tables;
@@ -13,12 +14,12 @@ using static ToracLibrary.Core.ExpressionTrees.API.ExpressionBuilder;
 
 namespace ToracGolf.MiddleLayer.Rounds
 {
-    public class RoundListingFactory : IListingFactory<Round, RoundListingData>
+    public class RoundListingFactory : IListingFactory<RoundListingFactory.RoundListingSortEnum, Round, RoundListingData>
     {
 
         #region Constructor
 
-        public RoundListingFactory(IDictionary<string, Func<IQueryable<Round>, ListingFactoryParameters, IOrderedQueryable<Round>>> sortByConfiguration,
+        public RoundListingFactory(IDictionary<RoundListingSortEnum, Func<IQueryable<Round>, ListingFactoryParameters, IOrderedQueryable<Round>>> sortByConfiguration,
                                    IDictionary<string, IQueryBuilder<Round>> filterConfiguration)
         {
             SortByConfiguration = sortByConfiguration;
@@ -29,29 +30,62 @@ namespace ToracGolf.MiddleLayer.Rounds
 
         #region Properties
 
-        public IDictionary<string, Func<IQueryable<Round>, ListingFactoryParameters, IOrderedQueryable<Round>>> SortByConfiguration { get; }
+        public IDictionary<RoundListingSortEnum, Func<IQueryable<Round>, ListingFactoryParameters, IOrderedQueryable<Round>>> SortByConfiguration { get; }
 
         public IDictionary<string, IQueryBuilder<Round>> FilterConfiguration { get; }
 
         #endregion
 
+        #region Sort Enum
+
+        public enum RoundListingSortEnum
+        {
+
+            [Description("Round Date Descending")]
+            RoundDateDescending = 0,
+
+            [Description("Round Date Ascending")]
+            RoundDateAscending = 1,
+
+            [Description("Course Name Descending")]
+            CourseNameDescending = 2,
+
+            [Description("Course Name Ascending")]
+            CourseNameAscending = 3,
+
+            [Description("Best Raw Score")]
+            BestRawScore = 4,
+
+            [Description("Worse Raw Score")]
+            WorseRawScore = 5,
+
+            [Description("Round Handicap Descending")]
+            RoundHandicapDescending = 6,
+
+            [Description("Round Handicap Ascending")]
+            RoundHandicapAscending = 7,
+
+        }
+
+        #endregion
+
         #region Lookup
 
-        public static IDictionary<string, Func<IQueryable<Round>, ListingFactoryParameters, IOrderedQueryable<Round>>> SortByConfigurationBuilder()
+        public static IDictionary<RoundListingSortEnum, Func<IQueryable<Round>, ListingFactoryParameters, IOrderedQueryable<Round>>> SortByConfigurationBuilder()
         {
-            var dct = new Dictionary<string, Func<IQueryable<Round>, ListingFactoryParameters, IOrderedQueryable<Round>>>();
+            var dct = new Dictionary<RoundListingSortEnum, Func<IQueryable<Round>, ListingFactoryParameters, IOrderedQueryable<Round>>>();
 
-            dct.Add(RoundListingSortOrder.RoundListingSortEnum.CourseNameAscending.ToString(), (x, param) => x.OrderBy(y => y.Course.Name));
-            dct.Add(RoundListingSortOrder.RoundListingSortEnum.CourseNameDescending.ToString(), (x, param) => x.OrderByDescending(y => y.Course.Name));
+            dct.Add(RoundListingSortEnum.CourseNameAscending, (x, param) => x.OrderBy(y => y.Course.Name));
+            dct.Add(RoundListingSortEnum.CourseNameDescending, (x, param) => x.OrderByDescending(y => y.Course.Name));
 
-            dct.Add(RoundListingSortOrder.RoundListingSortEnum.RoundDateAscending.ToString(), (x, param) => x.OrderBy(y => y.RoundDate));
-            dct.Add(RoundListingSortOrder.RoundListingSortEnum.RoundDateDescending.ToString(), (x, param) => x.OrderByDescending(y => y.RoundDate));
+            dct.Add(RoundListingSortEnum.RoundDateAscending, (x, param) => x.OrderBy(y => y.RoundDate));
+            dct.Add(RoundListingSortEnum.RoundDateDescending, (x, param) => x.OrderByDescending(y => y.RoundDate));
 
-            dct.Add(RoundListingSortOrder.RoundListingSortEnum.BestRawScore.ToString(), (x, param) => x.OrderBy(y => y.Score));
-            dct.Add(RoundListingSortOrder.RoundListingSortEnum.WorseRawScore.ToString(), (x, param) => x.OrderByDescending(y => y.Score));
+            dct.Add(RoundListingSortEnum.BestRawScore, (x, param) => x.OrderBy(y => y.Score));
+            dct.Add(RoundListingSortEnum.WorseRawScore, (x, param) => x.OrderByDescending(y => y.Score));
 
-            dct.Add(RoundListingSortOrder.RoundListingSortEnum.RoundHandicapAscending.ToString(), (x, param) => x.OrderBy(y => y.RoundHandicap));
-            dct.Add(RoundListingSortOrder.RoundListingSortEnum.RoundHandicapDescending.ToString(), (x, param) => x.OrderByDescending(y => y.RoundHandicap));
+            dct.Add(RoundListingSortEnum.RoundHandicapAscending, (x, param) => x.OrderBy(y => y.RoundHandicap));
+            dct.Add(RoundListingSortEnum.RoundHandicapDescending, (x, param) => x.OrderByDescending(y => y.RoundHandicap));
 
             return dct;
         }
