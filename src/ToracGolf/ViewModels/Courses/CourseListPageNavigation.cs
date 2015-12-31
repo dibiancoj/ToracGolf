@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using ToracLibrary.AspNet.EnumUtilities;
 using static ToracGolf.MiddleLayer.Courses.CourseListingSortOrder;
 
 namespace ToracGolf.ViewModels.Courses

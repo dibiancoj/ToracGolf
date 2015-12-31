@@ -22,7 +22,7 @@ using ToracGolf.Settings;
 using ToracGolf.ViewModels.Navigation;
 using ToracGolf.ViewModels.Rounds;
 using ToracLibrary.AspNet.Caching.FactoryStore;
-using ToracLibrary.AspNet.Paging;
+using ToracLibrary.Core.Paging;
 
 namespace ToracGolf.Controllers
 {

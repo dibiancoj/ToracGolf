@@ -58,7 +58,7 @@ namespace ToracGolf.MiddleLayer.Courses
             if (CourseData.CourseImage != null)
             {
                 //grab the byte array for the file
-                var fileToSave = ToracLibrary.AspNet.Graphics.GraphicsUtilities.ImageFromJsonBase64String(CourseData.CourseImage);
+                var fileToSave = ToracLibrary.Core.Graphics.GraphicsUtilities.ImageFromJsonBase64String(CourseData.CourseImage);
 
                 //grab where we have the actual .jpg vs png
                 var indexOfSlash = fileToSave.MimeType.IndexOf(@"/");
