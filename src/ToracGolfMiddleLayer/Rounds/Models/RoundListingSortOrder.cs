@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.MiddleLayer.GridCommon;
-using ToracLibrary.AspNet.EnumUtilities;
+using ToracLibrary.Core.EnumUtilities;
 
 namespace ToracGolf.MiddleLayer.Rounds.Models
 {
