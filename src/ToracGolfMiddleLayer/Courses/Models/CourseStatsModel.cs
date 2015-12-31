@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ToracGolf.MiddleLayer.Common;
 using ToracGolf.MiddleLayer.Courses.Models.CourseStats;
-using ToracGolf.MiddleLayer.EFModel.Tables;
 
 namespace ToracGolf.MiddleLayer.Courses.Models
 {
