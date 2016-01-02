@@ -55,7 +55,7 @@ namespace ToracGolf.MiddleLayer.Rounds.Models
         {
             var difference = coursePar - roundAdjustedScore;
 
-            if (difference >= 13)
+            if (difference >= 6)
             {
                 return RoundPerformanceEnum.Awesome;
             }
