@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.MiddleLayer.Courses;
@@ -10,14 +11,14 @@ using ToracGolf.MiddleLayer.GridCommon.Filters.QueryBuilder;
 using ToracGolf.MiddleLayer.ListingFactories;
 using static ToracLibrary.Core.ExpressionTrees.API.ExpressionBuilder;
 
-namespace ToracGolf.MiddleLayer.Rounds
+namespace ToracGolf.MiddleLayer.Courses
 {
-    public class CourseListingFactory : IListingFactory<Course, CourseListingData>
+    public class CourseListingFactory : IListingFactory<CourseListingFactory.CourseListingSortEnum, Course, CourseListingData>
     {
 
         #region Constructor
 
-        public CourseListingFactory(IDictionary<string, Func<IQueryable<Course>, ListingFactoryParameters, IOrderedQueryable<Course>>> sortByConfiguration,
+        public CourseListingFactory(IDictionary<CourseListingSortEnum, Func<IQueryable<Course>, ListingFactoryParameters, IOrderedQueryable<Course>>> sortByConfiguration,
                                     IDictionary<string, IQueryBuilder<Course>> filterConfiguration)
         {
             SortByConfiguration = sortByConfiguration;
@@ -28,25 +29,48 @@ namespace ToracGolf.MiddleLayer.Rounds
 
         #region Properties
 
-        public IDictionary<string, Func<IQueryable<Course>, ListingFactoryParameters, IOrderedQueryable<Course>>> SortByConfiguration { get; }
+        public IDictionary<CourseListingSortEnum, Func<IQueryable<Course>, ListingFactoryParameters, IOrderedQueryable<Course>>> SortByConfiguration { get; }
 
         public IDictionary<string, IQueryBuilder<Course>> FilterConfiguration { get; }
 
         #endregion
 
+        #region Sort Enum
+
+        public enum CourseListingSortEnum
+        {
+
+            [Description("Most Times Played")]
+            MostTimesPlayed = 0,
+
+            [Description("Course Name Ascending")]
+            CourseNameAscending = 1,
+
+            [Description("Course Name Descending")]
+            CourseNameDescending = 2,
+
+            [Description("Hardest Courses")]
+            HardestCourses = 3,
+
+            [Description("Easiest Courses")]
+            EasiestCourses = 4
+        }
+
+        #endregion
+
         #region Lookup
 
-        public static IDictionary<string, Func<IQueryable<Course>, ListingFactoryParameters, IOrderedQueryable<Course>>> SortByConfigurationBuilder()
+        public static IDictionary<CourseListingSortEnum, Func<IQueryable<Course>, ListingFactoryParameters, IOrderedQueryable<Course>>> SortByConfigurationBuilder()
         {
-            var dct = new Dictionary<string, Func<IQueryable<Course>, ListingFactoryParameters, IOrderedQueryable<Course>>>();
+            var dct = new Dictionary<CourseListingSortEnum, Func<IQueryable<Course>, ListingFactoryParameters, IOrderedQueryable<Course>>>();
 
-            dct.Add(CourseListingSortOrder.CourseListingSortEnum.CourseNameAscending.ToString(), (x, param) => x.OrderBy(y => y.Name));
-            dct.Add(CourseListingSortOrder.CourseListingSortEnum.CourseNameDescending.ToString(), (x, param) => x.OrderByDescending(y => y.Name));
+            dct.Add(CourseListingSortEnum.CourseNameAscending, (x, param) => x.OrderBy(y => y.Name));
+            dct.Add(CourseListingSortEnum.CourseNameDescending, (x, param) => x.OrderByDescending(y => y.Name));
 
-            dct.Add(CourseListingSortOrder.CourseListingSortEnum.EasiestCourses.ToString(), (x, param) => x.OrderBy(y => y.CourseTeeLocations.Max(z => z.Slope)));
-            dct.Add(CourseListingSortOrder.CourseListingSortEnum.HardestCourses.ToString(), (x, param) => x.OrderByDescending(y => y.CourseTeeLocations.Max(z => z.Slope)));
+            dct.Add(CourseListingSortEnum.EasiestCourses, (x, param) => x.OrderBy(y => y.CourseTeeLocations.Max(z => z.Slope)));
+            dct.Add(CourseListingSortEnum.HardestCourses, (x, param) => x.OrderByDescending(y => y.CourseTeeLocations.Max(z => z.Slope)));
 
-            dct.Add(CourseListingSortOrder.CourseListingSortEnum.MostTimesPlayed.ToString(), (x, param) => x.OrderByDescending(z => param.DbContext.Rounds.Count(y => y.CourseId == z.CourseId && y.UserId == param.UserId)));
+            dct.Add(CourseListingSortEnum.MostTimesPlayed, (x, param) => x.OrderByDescending(z => param.DbContext.Rounds.Count(y => y.CourseId == z.CourseId && y.UserId == param.UserId)));
 
             return dct;
         }

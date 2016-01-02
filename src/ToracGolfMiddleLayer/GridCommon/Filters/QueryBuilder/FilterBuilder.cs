@@ -11,7 +11,8 @@ namespace ToracGolf.MiddleLayer.GridCommon.Filters.QueryBuilder
     public static class FilterBuilder
     {
 
-        public static IQueryable<TFrom> BuildQueryFilter<TFrom, TTo>(ToracGolfContext dbContext, IQueryable<TFrom> query, IListingFactory<TFrom, TTo> factory, params KeyValuePair<string, object>[] filters)
+        public static IQueryable<TFrom> BuildQueryFilter<TSortByEnum, TFrom, TTo>(ToracGolfContext dbContext, IQueryable<TFrom> query, IListingFactory<TSortByEnum, TFrom, TTo> factory, params KeyValuePair<string, object>[] filters)
+            where TSortByEnum : struct, IConvertible
             where TFrom : class
             where TTo : class
         {

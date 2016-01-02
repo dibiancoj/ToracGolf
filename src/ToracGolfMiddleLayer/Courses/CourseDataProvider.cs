@@ -58,7 +58,7 @@ namespace ToracGolf.MiddleLayer.Courses
             if (CourseData.CourseImage != null)
             {
                 //grab the byte array for the file
-                var fileToSave = ToracLibrary.AspNet.Graphics.GraphicsUtilities.ImageFromJsonBase64String(CourseData.CourseImage);
+                var fileToSave = ToracLibrary.Core.Graphics.GraphicsUtilities.ImageFromJsonBase64String(CourseData.CourseImage);
 
                 //grab where we have the actual .jpg vs png
                 var indexOfSlash = fileToSave.MimeType.IndexOf(@"/");
@@ -79,7 +79,7 @@ namespace ToracGolf.MiddleLayer.Courses
         #region Course Listing
 
         public static IQueryable<Course> CourseSelectQueryBuilder(ToracGolfContext dbContext,
-                                                                  IListingFactory<Course, CourseListingData> courseListingFactory,
+                                                                  IListingFactory<CourseListingFactory.CourseListingSortEnum, Course, CourseListingData> courseListingFactory,
                                                                   string courseNameFilter,
                                                                   int? stateFilter)
         {
@@ -96,10 +96,10 @@ namespace ToracGolf.MiddleLayer.Courses
         }
 
         /// <param name="pageId">0 base index that holds what page we are on</param>
-        public static async Task<IEnumerable<CourseListingData>> CourseSelect(IListingFactory<Course, CourseListingData> courseListingFactory,
+        public static async Task<IEnumerable<CourseListingData>> CourseSelect(IListingFactory<CourseListingFactory.CourseListingSortEnum, Course, CourseListingData> courseListingFactory,
                                                                               ToracGolfContext dbContext,
                                                                               int pageId,
-                                                                              CourseListingSortOrder.CourseListingSortEnum sortBy,
+                                                                              CourseListingFactory.CourseListingSortEnum sortBy,
                                                                               string courseNameFilter,
                                                                               int? stateFilter,
                                                                               int recordsPerPage,
@@ -110,7 +110,7 @@ namespace ToracGolf.MiddleLayer.Courses
             var queryable = CourseSelectQueryBuilder(dbContext, courseListingFactory, courseNameFilter, stateFilter);
 
             //go sort the data
-            var sortedQueryable = courseListingFactory.SortByConfiguration[sortBy.ToString()](queryable, new ListingFactoryParameters(dbContext, userId)).ThenBy(x => x.CourseId);
+            var sortedQueryable = courseListingFactory.SortByConfiguration[sortBy](queryable, new ListingFactoryParameters(dbContext, userId)).ThenBy(x => x.CourseId);
 
             //go run the query now
             var query = sortedQueryable.Select(x => new CourseListingData
@@ -140,7 +140,7 @@ namespace ToracGolf.MiddleLayer.Courses
             return data;
         }
 
-        public static async Task<int> TotalNumberOfCourses(ToracGolfContext dbContext, IListingFactory<Course, CourseListingData> courseListingFactory, string courseNameFilter, int? StateFilter)
+        public static async Task<int> TotalNumberOfCourses(ToracGolfContext dbContext, IListingFactory<CourseListingFactory.CourseListingSortEnum, Course, CourseListingData> courseListingFactory, string courseNameFilter, int? StateFilter)
         {
             return await CourseSelectQueryBuilder(dbContext, courseListingFactory, courseNameFilter, StateFilter).CountAsync();
         }

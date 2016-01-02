@@ -20,6 +20,7 @@ using ToracGolf.Constants;
 using ToracGolf.MiddleLayer.Courses;
 using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.EFModel.Tables;
+using ToracGolf.MiddleLayer.GridCommon;
 using ToracGolf.MiddleLayer.ListingFactories;
 using ToracGolf.MiddleLayer.Rounds;
 using ToracGolf.MiddleLayer.Rounds.Models;
@@ -126,8 +127,8 @@ namespace ToracGolf
             //    options.IdleTimeout = new TimeSpan(0, 5, 0);
             //});
 
-            services.AddSingleton<IListingFactory<Round, RoundListingData>, RoundListingFactory>((x) => new RoundListingFactory(RoundListingFactory.SortByConfigurationBuilder(), RoundListingFactory.FilterByConfigurationBuilder()));
-            services.AddSingleton<IListingFactory<Course, CourseListingData>, CourseListingFactory>((x) => new CourseListingFactory(CourseListingFactory.SortByConfigurationBuilder(), CourseListingFactory.FilterByConfigurationBuilder()));
+            services.AddSingleton<IListingFactory<RoundListingFactory.RoundListingSortEnum, Round, RoundListingData>, RoundListingFactory>((x) => new RoundListingFactory(RoundListingFactory.SortByConfigurationBuilder(), RoundListingFactory.FilterByConfigurationBuilder()));
+            services.AddSingleton<IListingFactory<CourseListingFactory.CourseListingSortEnum, Course, CourseListingData>, CourseListingFactory>((x) => new CourseListingFactory(CourseListingFactory.SortByConfigurationBuilder(), CourseListingFactory.FilterByConfigurationBuilder()));
 
 #if DNX451
             // utilize resource only available with .NET Framework
@@ -148,11 +149,11 @@ namespace ToracGolf
 
             //add the course list sort order
             cacheFactory.AddConfiguration(CacheKeyNames.CourseListingSortOrder,
-                () => MiddleLayer.Courses.CourseListingSortOrder.BuildDropDownValues().ToImmutableList());
+                () => SortOrderViewModel.BuildListFromEnumLazy<CourseListingFactory.CourseListingSortEnum>().ToImmutableList());
 
             //add the round list sort order
             cacheFactory.AddConfiguration(CacheKeyNames.RoundListingSortOrder,
-                () => MiddleLayer.Rounds.Models.RoundListingSortOrder.BuildDropDownValues().ToImmutableList());
+                () => SortOrderViewModel.BuildListFromEnumLazy<RoundListingFactory.RoundListingSortEnum>().ToImmutableList());
 
             //add the courses per page options (this way we don't have to keep creating arrays)
             cacheFactory.AddConfiguration(CacheKeyNames.NumberOfListingsPerPage,

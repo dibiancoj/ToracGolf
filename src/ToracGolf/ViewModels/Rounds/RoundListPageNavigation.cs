@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ToracGolf.MiddleLayer.Rounds.Models;
+using ToracGolf.MiddleLayer.Rounds;
 
 namespace ToracGolf.ViewModels.Rounds
 {
@@ -16,7 +16,7 @@ namespace ToracGolf.ViewModels.Rounds
 
         public int PageIndexId { get; set; }
 
-        public RoundListingSortOrder.RoundListingSortEnum SortBy { get; set; }
+        public RoundListingFactory.RoundListingSortEnum SortBy { get; set; }
 
         public string CourseNameFilter { get; set; }
 

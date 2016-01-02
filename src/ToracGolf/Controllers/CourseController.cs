@@ -22,7 +22,7 @@ using ToracGolf.Settings;
 using ToracGolf.ViewModels.Courses;
 using ToracGolf.ViewModels.Navigation;
 using ToracLibrary.AspNet.Caching.FactoryStore;
-using ToracLibrary.AspNet.Paging;
+using ToracLibrary.Core.Paging;
 
 namespace ToracGolf.Controllers
 {
@@ -38,7 +38,7 @@ namespace ToracGolf.Controllers
                                 ToracGolfContext dbContext,
                                 IAntiforgery antiforgery,
                                 IOptions<AppSettings> configuration,
-                                IListingFactory<Course, CourseListingData> courseListingFactory)
+                                IListingFactory<CourseListingFactory.CourseListingSortEnum, Course, CourseListingData> courseListingFactory)
         {
             DbContext = dbContext;
             Cache = cache;
@@ -62,7 +62,7 @@ namespace ToracGolf.Controllers
 
         private IOptions<AppSettings> Configuration { get; }
 
-        private IListingFactory<Course, CourseListingData> CourseListingFactory { get; }
+        private IListingFactory<CourseListingFactory.CourseListingSortEnum, Course, CourseListingData> CourseListingFactory { get; }
 
         #endregion
 
@@ -124,7 +124,7 @@ namespace ToracGolf.Controllers
                 }
                 catch (Exception ex)
                 {
-                    var sqlException = ToracLibrary.AspNet.ExceptionHelpers.ExceptionUtilities.RetrieveExceptionType<SqlException>(ex);
+                    var sqlException = ToracLibrary.Core.Exceptions.ExceptionUtilities.RetrieveExceptionType<SqlException>(ex);
 
                     //do we have a sql exception/* PK/UKC violation */
                     if (sqlException != null && sqlException.Errors.OfType<SqlError>().Any(x => x.Number == UniqueConstraintId))

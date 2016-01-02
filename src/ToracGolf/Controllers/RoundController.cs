@@ -22,7 +22,7 @@ using ToracGolf.Settings;
 using ToracGolf.ViewModels.Navigation;
 using ToracGolf.ViewModels.Rounds;
 using ToracLibrary.AspNet.Caching.FactoryStore;
-using ToracLibrary.AspNet.Paging;
+using ToracLibrary.Core.Paging;
 
 namespace ToracGolf.Controllers
 {
@@ -38,7 +38,7 @@ namespace ToracGolf.Controllers
                                ToracGolfContext dbContext,
                                IAntiforgery antiforgery,
                                IOptions<AppSettings> configuration,
-                               IListingFactory<Round, RoundListingData> roundListingFactory)
+                               IListingFactory<RoundListingFactory.RoundListingSortEnum, Round, RoundListingData> roundListingFactory)
         {
             DbContext = dbContext;
             Cache = cache;
@@ -62,7 +62,7 @@ namespace ToracGolf.Controllers
 
         private IOptions<AppSettings> Configuration { get; }
 
-        private IListingFactory<Round, RoundListingData> RoundListingFactory { get; }
+        private IListingFactory<RoundListingFactory.RoundListingSortEnum, Round, RoundListingData> RoundListingFactory { get; }
 
         #endregion
 
