@@ -89,13 +89,22 @@ namespace ToracGolf.MiddleLayer.NewsFeed
 
         public static async Task<bool> NewsFeedLikeAdd(ToracGolfContext dbContext, int userId, int id, NewsFeedItemModel.NewsFeedTypeId newsFeedTypeId)
         {
-            dbContext.NewsFeedLike.Add(new EFModel.Tables.NewsFeedLike
+            //so you like the item already?
+            var alreadyLikeItem = await dbContext.NewsFeedLike.FirstOrDefaultAsync(x => x.AreaId == id && x.NewsFeedTypeId == (int)newsFeedTypeId && x.UserIdThatLikedItem == userId);
+
+            if (alreadyLikeItem != null)
             {
-                AreaId = id,
-                NewsFeedTypeId = (int)newsFeedTypeId,
-                UserIdThatLikedItem = userId,
-                CreatedDate = DateTime.Now
-            });
+                dbContext.NewsFeedLike.Remove(alreadyLikeItem);
+            }
+            else {
+                dbContext.NewsFeedLike.Add(new EFModel.Tables.NewsFeedLike
+                {
+                    AreaId = id,
+                    NewsFeedTypeId = (int)newsFeedTypeId,
+                    UserIdThatLikedItem = userId,
+                    CreatedDate = DateTime.Now
+                });
+            }
 
             await dbContext.SaveChangesAsync();
 

@@ -44,10 +44,8 @@ export class NewsFeedApp {
         //go grab the record
         var recordToUpdate = this.Posts.First(function (x) { return x.Id == id && x.FeedTypeId == newsFeedTypeId });
 
-        //don't update the record again
-        if (recordToUpdate.YouLikedItem) {
-            return;
-        }
+        //if you already like the item, you want to unlike the item
+        var youLikeTheItemAlready = recordToUpdate.YouLikedItem;
 
         //closure
         var _thisClass = this;
@@ -58,10 +56,15 @@ export class NewsFeedApp {
             _thisClass.NgZoneSvc.run(() => {
 
                 //go find the post and increment by 1 (instead of reloading the data)
-                recordToUpdate.LikeCount++;
+                if (youLikeTheItemAlready) {
+                    recordToUpdate.LikeCount--;
+                }
+                else {
+                    recordToUpdate.LikeCount++;
+                }
 
                 //set that you liked it
-                recordToUpdate.YouLikedItem = true;
+                recordToUpdate.YouLikedItem = !youLikeTheItemAlready;
             });
         });
     };
