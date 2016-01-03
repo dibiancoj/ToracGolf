@@ -27,7 +27,6 @@ namespace ToracGolf.Controllers
     public class HomeController : BaseController
     {
 
-
         #region Constructor
 
         public HomeController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, ToracGolfContext dbContext, IAntiforgery antiforgery, IOptions<AppSettings> configuration)
@@ -157,8 +156,7 @@ namespace ToracGolf.Controllers
         [HttpPost]
         public async Task<IActionResult> NewsFeedLike([FromBody]NewsFeedAddLike likeModel)
         {
-
-            throw new NotImplementedException();
+            return Json(await NewsFeedDataProvider.NewsFeedLikeAdd(DbContext, GetUserId(), likeModel.Id, likeModel.NewsFeedTypeId));
         }
 
         #endregion

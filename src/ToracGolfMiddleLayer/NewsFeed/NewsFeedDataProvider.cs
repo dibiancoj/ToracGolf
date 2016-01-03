@@ -16,6 +16,9 @@ namespace ToracGolf.MiddleLayer.NewsFeed
         {
             var newsFeedItems = new List<NewsFeedItemModel>();
 
+            int newRoundEnumValue = (int)NewsFeedItemModel.NewsFeedTypeId.NewRound;
+            int newCourseEnumValue = (int)NewsFeedItemModel.NewsFeedTypeId.NewCourse;
+
             //grab my rounds
             var myRounds = await dbContext.Rounds.AsNoTracking()
                                 .Where(x => x.UserId == userId)
@@ -29,10 +32,11 @@ namespace ToracGolf.MiddleLayer.NewsFeed
                                     y.CourseId,
                                     CourseName = y.Course.Name,
                                     TeeBoxDescription = y.CourseTeeLocation.Description,
-                                    Likes = dbContext.NewsFeedLike.Count(x => x.NewsFeedTypeId == (int)NewsFeedItemModel.NewsFeedTypeId.NewRound && x.AreaId == y.RoundId),
-                                    Comments = dbContext.NewsFeedComment.Count(x => x.NewsFeedTypeId == (int)NewsFeedItemModel.NewsFeedTypeId.NewRound && x.AreaId == y.RoundId),
+                                    Likes = dbContext.NewsFeedLike.Count(x => x.NewsFeedTypeId == newRoundEnumValue && x.AreaId == y.RoundId),
+                                    Comments = dbContext.NewsFeedComment.Count(x => x.NewsFeedTypeId == newRoundEnumValue && x.AreaId == y.RoundId),
                                     AdjustedScore = y.Score - y.Handicap.HandicapBeforeRound,
-                                    RoundHandicap = y.RoundHandicap
+                                    RoundHandicap = y.RoundHandicap,
+                                    YouLikedItem = dbContext.NewsFeedLike.Any(x => x.AreaId == y.RoundId && x.NewsFeedTypeId == newRoundEnumValue && x.UserIdThatLikedItem == userId)
                                 }).ToArrayAsync();
 
             newsFeedItems.AddRange(myRounds.Select(x => new NewRoundNewsFeed
@@ -42,6 +46,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed
                 PostDate = x.RoundDate,
                 CommentCount = x.Comments,
                 LikeCount = x.Likes,
+                YouLikedItem = x.YouLikedItem,
                 TitleOfPost = string.Format($"You Scored A {x.Score} At {x.CourseName} - {x.TeeBoxDescription}"),
                 BodyOfPost = new string[]
                 {
@@ -62,8 +67,9 @@ namespace ToracGolf.MiddleLayer.NewsFeed
                                 CourseDescription = x.Description,
                                 StateTxt = x.State.Description,
                                 City = x.City,
-                                Likes = dbContext.NewsFeedLike.Count(y => y.NewsFeedTypeId == (int)NewsFeedItemModel.NewsFeedTypeId.NewCourse && y.AreaId == x.CourseId),
-                                Comments = dbContext.NewsFeedComment.Count(y => y.NewsFeedTypeId == (int)NewsFeedItemModel.NewsFeedTypeId.NewCourse && y.AreaId == x.CourseId)
+                                Likes = dbContext.NewsFeedLike.Count(y => y.NewsFeedTypeId == newCourseEnumValue && y.AreaId == x.CourseId),
+                                Comments = dbContext.NewsFeedComment.Count(y => y.NewsFeedTypeId == newCourseEnumValue && y.AreaId == x.CourseId),
+                                YouLikedItem = dbContext.NewsFeedLike.Any(y => x.CourseId == y.AreaId && y.NewsFeedTypeId == newCourseEnumValue && y.UserIdThatLikedItem == userId)
                             }).ToArrayAsync();
 
             newsFeedItems.AddRange(myCourses.Select(x => new NewCourseNewsFeed
@@ -73,11 +79,27 @@ namespace ToracGolf.MiddleLayer.NewsFeed
                 CommentCount = x.Comments,
                 LikeCount = x.Likes,
                 PostDate = x.CreatedDate,
+                YouLikedItem = x.YouLikedItem,
                 TitleOfPost = string.Format($"{x.CourseName} In {x.City}, {x.StateTxt} Has Been Created."),
                 BodyOfPost = new string[] { x.CourseDescription }
             }));
 
             return newsFeedItems.OrderByDescending(x => x.PostDate).ToArray();
+        }
+
+        public static async Task<bool> NewsFeedLikeAdd(ToracGolfContext dbContext, int userId, int id, NewsFeedItemModel.NewsFeedTypeId newsFeedTypeId)
+        {
+            dbContext.NewsFeedLike.Add(new EFModel.Tables.NewsFeedLike
+            {
+                AreaId = id,
+                NewsFeedTypeId = (int)newsFeedTypeId,
+                UserIdThatLikedItem = userId,
+                CreatedDate = DateTime.Now
+            });
+
+            await dbContext.SaveChangesAsync();
+
+            return true;
         }
 
     }

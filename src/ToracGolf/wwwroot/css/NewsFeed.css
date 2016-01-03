@@ -1,3 +1,7 @@
 ﻿.NewsFeedCourseImage {
     max-height: 350px;
 }
+
+.LikePost {
+    cursor: pointer;
+}

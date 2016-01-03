@@ -40,14 +40,21 @@ System.register(['angular2/core', './NewsFeedService', 'rxjs/add/operator/map'],
                 }
                 ;
                 NewsFeedApp.prototype.Like = function (id, newsFeedTypeId) {
-                    alert('need to make sure they havent already liked it');
-                    //closure 
+                    //go grab the record
+                    var recordToUpdate = this.Posts.First(function (x) { return x.Id == id && x.FeedTypeId == newsFeedTypeId; });
+                    //don't update the record again
+                    if (recordToUpdate.YouLikedItem) {
+                        return;
+                    }
+                    //closure
                     var _thisClass = this;
                     this.NewsFeedSvc.LikePost(id, newsFeedTypeId).subscribe(function (posts) {
-                        debugger;
                         //go run this so angular can update the new records
                         _thisClass.NgZoneSvc.run(function () {
-                            debugger;
+                            //go find the post and increment by 1 (instead of reloading the data)
+                            recordToUpdate.LikeCount++;
+                            //set that you liked it
+                            recordToUpdate.YouLikedItem = true;
                         });
                     });
                 };

@@ -31,6 +31,8 @@ namespace ToracGolf.MiddleLayer.NewsFeed
 
         public int LikeCount { get; set; }
 
+        public bool YouLikedItem { get; set; }
+
     }
 
     public class NewRoundNewsFeed : NewsFeedItemModel
