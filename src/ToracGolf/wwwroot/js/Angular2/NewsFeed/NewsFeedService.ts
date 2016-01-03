@@ -18,15 +18,19 @@ export class NewsFeedService {
         return this.HttpInterceptorSvc.Post('NewsFeedsGetPost', '');
     }
 
+    LikePost(id: number, feedTypeId: NewsFeedTypeId): Observable<Response> {
+        return this.HttpInterceptorSvc.Post('NewsFeedsLike', JSON.stringify({ Id: id, NewsFeedTypeId: feedTypeId }));
+    }
+
 }
 
 export class NewsFeedItem {
-    FeedTypeId: NewFeedTypeId;
+    FeedTypeId: NewsFeedTypeId;
     PostDate: Date;
     CommentCount: number;
 }
 
-enum NewFeedTypeId {
+export enum NewsFeedTypeId {
     NewRound,
-    NewCourse 
+    NewCourse
 }

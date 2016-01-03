@@ -7,7 +7,7 @@
             <span class="day">{{post.PostDate | date:'dd'}}</span>
         </div>
         <div class="like-box">
-            <a href="#" class="btn btn-block btn-xs btn-base btn-icon btn-heart">
+            <a href="#" class="btn btn-block btn-xs btn-base btn-icon btn-heart" (click)="Like(post.Id, post.FeedTypeId)">
                 <span>{{post.LikeCount | number}}</span>
             </a>
         </div>

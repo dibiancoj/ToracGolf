@@ -39,6 +39,19 @@ System.register(['angular2/core', './NewsFeedService', 'rxjs/add/operator/map'],
                     });
                 }
                 ;
+                NewsFeedApp.prototype.Like = function (id, newsFeedTypeId) {
+                    alert('need to make sure they havent already liked it');
+                    //closure 
+                    var _thisClass = this;
+                    this.NewsFeedSvc.LikePost(id, newsFeedTypeId).subscribe(function (posts) {
+                        debugger;
+                        //go run this so angular can update the new records
+                        _thisClass.NgZoneSvc.run(function () {
+                            debugger;
+                        });
+                    });
+                };
+                ;
                 NewsFeedApp = __decorate([
                     core_1.Component({
                         selector: 'NewsFeedPostContainer',

@@ -15,6 +15,8 @@ namespace ToracGolf.MiddleLayer.NewsFeed
             //what else?
         }
 
+        public int Id { get; set; }
+
         public abstract NewsFeedTypeId FeedTypeId { get; }
 
         public string TitleOfPost { get; set; }

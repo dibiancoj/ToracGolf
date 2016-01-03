@@ -30,6 +30,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map'], fun
                 HttpInterceptor.prototype.CustomHeaderSelect = function () {
                     var customHeaders = new http_1.Headers();
                     customHeaders.append('RequestVerificationToken', $('#__RequestVerificationToken').val());
+                    customHeaders.append('Content-Type', 'application/json');
                     return customHeaders;
                 };
                 HttpInterceptor = __decorate([

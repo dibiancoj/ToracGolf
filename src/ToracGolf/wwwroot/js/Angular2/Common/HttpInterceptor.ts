@@ -20,6 +20,7 @@ export class HttpInterceptor {
     private CustomHeaderSelect() {
         var customHeaders = new Headers();
         customHeaders.append('RequestVerificationToken', $('#__RequestVerificationToken').val());
+        customHeaders.append('Content-Type', 'application/json');
 
         return customHeaders;
     }

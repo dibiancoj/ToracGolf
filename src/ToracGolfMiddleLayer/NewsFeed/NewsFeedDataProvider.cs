@@ -23,6 +23,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed
                                 .Take(20)
                                 .Select(y => new
                                 {
+                                    y.RoundId,
                                     y.RoundDate,
                                     y.Score,
                                     y.CourseId,
@@ -36,6 +37,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed
 
             newsFeedItems.AddRange(myRounds.Select(x => new NewRoundNewsFeed
             {
+                Id = x.RoundId,
                 CourseImagePath = courseImageFinder.FindCourseImage(x.CourseId),
                 PostDate = x.RoundDate,
                 CommentCount = x.Comments,
@@ -66,6 +68,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed
 
             newsFeedItems.AddRange(myCourses.Select(x => new NewCourseNewsFeed
             {
+                Id = x.CourseId,
                 CourseImagePath = courseImageFinder.FindCourseImage(x.CourseId),
                 CommentCount = x.Comments,
                 LikeCount = x.Likes,

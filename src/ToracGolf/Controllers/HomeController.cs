@@ -17,6 +17,7 @@ using ToracGolf.MiddleLayer.NewsFeed;
 using ToracGolf.Settings;
 using ToracGolf.ViewModels.Home;
 using ToracGolf.ViewModels.Navigation;
+using ToracGolf.ViewModels.NewsFeed;
 using ToracLibrary.AspNet.Caching.FactoryStore;
 
 namespace ToracGolf.Controllers
@@ -144,11 +145,20 @@ namespace ToracGolf.Controllers
         }
 
         [ValidateCustomAntiForgeryToken]
-        [Route("NewsFeedsGetPost", Name = "NewsFeedsgetPost")]
+        [Route("NewsFeedsGetPost", Name = "NewsFeedsGetPost")]
         [HttpPost]
         public async Task<IActionResult> NewsFeedGet()
         {
             return Json(await NewsFeedDataProvider.NewsFeedPostSelect(DbContext, CacheFactory.GetCacheItem<CourseImageFinder>(CacheKeyNames.CourseImageFinder, Cache), GetUserId()));
+        }
+
+        [ValidateCustomAntiForgeryToken]
+        [Route("NewsFeedsLike", Name = "NewsFeedsLike")]
+        [HttpPost]
+        public async Task<IActionResult> NewsFeedLike([FromBody]NewsFeedAddLike likeModel)
+        {
+
+            throw new NotImplementedException();
         }
 
         #endregion

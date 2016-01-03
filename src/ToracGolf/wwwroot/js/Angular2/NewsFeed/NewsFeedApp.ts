@@ -1,5 +1,5 @@
 ﻿import {Component, Inject, NgZone} from 'angular2/core';
-import {NewsFeedService, NewsFeedItem} from './NewsFeedService';
+import {NewsFeedService, NewsFeedItem, NewsFeedTypeId} from './NewsFeedService';
 
 import { Http, Response } from 'angular2/http';
 import 'rxjs/add/operator/map';
@@ -34,6 +34,23 @@ export class NewsFeedApp {
                 posts.forEach(x => x.PostDate = new Date(x.PostDate.toString()));
 
                 this.Posts = posts;
+            });
+        });
+    };
+
+    Like(id: number, newsFeedTypeId: NewsFeedTypeId) {
+        
+        alert('need to make sure they havent already liked it');
+
+        //closure 
+        var _thisClass = this;
+
+        this.NewsFeedSvc.LikePost(id, newsFeedTypeId).subscribe((posts: Array<NewsFeedItem>) => {
+            debugger;
+            //go run this so angular can update the new records
+            _thisClass.NgZoneSvc.run(() => {
+
+                debugger;
             });
         });
     };

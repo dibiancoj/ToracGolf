@@ -9,7 +9,7 @@ System.register(['angular2/core', 'rxjs/add/operator/map', '../Common/httpinterc
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1, httpinterceptor_1;
-    var NewsFeedService, NewsFeedItem, NewFeedTypeId;
+    var NewsFeedService, NewsFeedItem, NewsFeedTypeId;
     return {
         setters:[
             function (core_1_1) {
@@ -27,6 +27,9 @@ System.register(['angular2/core', 'rxjs/add/operator/map', '../Common/httpinterc
                 NewsFeedService.prototype.NewFeedGet = function () {
                     return this.HttpInterceptorSvc.Post('NewsFeedsGetPost', '');
                 };
+                NewsFeedService.prototype.LikePost = function (id, feedTypeId) {
+                    return this.HttpInterceptorSvc.Post('NewsFeedsLike', JSON.stringify({ Id: id, NewsFeedTypeId: feedTypeId }));
+                };
                 NewsFeedService = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [httpinterceptor_1.HttpInterceptor])
@@ -40,10 +43,11 @@ System.register(['angular2/core', 'rxjs/add/operator/map', '../Common/httpinterc
                 return NewsFeedItem;
             })();
             exports_1("NewsFeedItem", NewsFeedItem);
-            (function (NewFeedTypeId) {
-                NewFeedTypeId[NewFeedTypeId["NewRound"] = 0] = "NewRound";
-                NewFeedTypeId[NewFeedTypeId["NewCourse"] = 1] = "NewCourse";
-            })(NewFeedTypeId || (NewFeedTypeId = {}));
+            (function (NewsFeedTypeId) {
+                NewsFeedTypeId[NewsFeedTypeId["NewRound"] = 0] = "NewRound";
+                NewsFeedTypeId[NewsFeedTypeId["NewCourse"] = 1] = "NewCourse";
+            })(NewsFeedTypeId || (NewsFeedTypeId = {}));
+            exports_1("NewsFeedTypeId", NewsFeedTypeId);
         }
     }
 });
