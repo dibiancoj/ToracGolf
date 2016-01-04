@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map';
 
 @Component({
     selector: 'NewsFeedPostContainer',
-    templateUrl: 'js/Angular2/NewsFeed/NewsFeedPostView.html',
+    templateUrl: '/NewsFeedClientView',
     bindings: [NewsFeedService]
 })
 export class NewsFeedApp {

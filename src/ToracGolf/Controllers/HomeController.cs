@@ -143,6 +143,13 @@ namespace ToracGolf.Controllers
                 BuildTokenSet(Antiforgery)));
         }
 
+        [Route("NewsFeedClientView", Name = "NewsFeedClientView")]
+        [HttpGet]
+        public IActionResult NewsFeedPostClientView()
+        {
+            return View();
+        }
+
         [ValidateCustomAntiForgeryToken]
         [Route("NewsFeedsGetPost", Name = "NewsFeedsGetPost")]
         [HttpPost]

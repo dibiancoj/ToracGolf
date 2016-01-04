@@ -1,0 +1,74 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="col-md-9">
+
+    <!-- Standard image post example -->
+    <div class="post-item style2" *ngFor="#post of Posts">
+        <div class="post-meta hidden-xs">
+            <div class="date">
+                <span class="icon"><i class="fa fa-calendar"></i></span>
+                <span class="month">{{post.PostDate | date:'MMM'}}</span>
+                <span class="day">{{post.PostDate | date:'dd'}}</span>
+            </div>
+            <div class="like-box">
+                <div class="LikePost btn btn-block btn-xs btn-base btn-icon btn-heart" (click)="Like(post.Id, post.FeedTypeId)">
+                    <span>{{post.LikeCount | number}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="post-content-wr">
+
+            <div class="post-meta-top">
+                <div class="post-image">
+                    <img src="{{post.CourseImagePath}}" class="img-responsive NewsFeedCourseImage" alt="">
+                </div>
+                <h2 class="post-title">
+                    <a href="#">{{post.TitleOfPost}}</a>
+                </h2>
+            </div>
+            <div class="post-content clearfix">
+                <div class="post-tags">Posted in <a href="#">HOTELS</a>, <a href="#">SPECIAL PROMOS</a>, <a href="#">SUMMER</a></div>
+                <div class="post-comments"><strong>{{post.CommentCount}}</strong>comments</div>
+                <div class="post-desc">
+                    <p *ngFor="#body of post.BodyOfPost">
+                        {{body}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="col-md-3">
+    <!-- SIDEBAR - BLOG -->
+    <div class="sidebar">
+        <!-- Search blog -->
+        <div class="section-title-wr">
+            <h3 class="section-title left"><span>Search our blog</span></h3>
+        </div>
+        <div class="widget">
+            <form class="form-light form-horizontal" role="form">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search blog...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-base" type="button">Go</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+
+        <!-- Categories -->
+        <div class="section-title-wr">
+            <h3 class="section-title left"><span>Categories</span></h3>
+        </div>
+        <div class="widget">
+            <ul class="categories highlight">
+                <li><a href="#">New Courses (23)</a></li>
+                <li><a href="#">New Rounds (100)</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

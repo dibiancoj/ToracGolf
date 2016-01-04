@@ -65,7 +65,7 @@ System.register(['angular2/core', './NewsFeedService', 'rxjs/add/operator/map'],
                 NewsFeedApp = __decorate([
                     core_1.Component({
                         selector: 'NewsFeedPostContainer',
-                        templateUrl: 'js/Angular2/NewsFeed/NewsFeedPostView.html',
+                        templateUrl: '/NewsFeedClientView',
                         bindings: [NewsFeedService_1.NewsFeedService]
                     }), 
                     __metadata('design:paramtypes', [NewsFeedService_1.NewsFeedService, core_1.NgZone])
