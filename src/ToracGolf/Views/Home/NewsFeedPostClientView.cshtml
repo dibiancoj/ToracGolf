@@ -66,8 +66,9 @@
         </div>
         <div class="widget">
             <ul class="categories highlight">
-                <li><a href="#">New Courses (23)</a></li>
-                <li><a href="#">New Rounds (100)</a></li>
+                <li><a (click)="FilterByType(null)" [ngClass]="{NewsFeedTypeActive: ActiveFeedTypeId == null}" class="NewsFeedTypeActive">All ({{(NewCoursePostCount+NewRoundPostCount) | number}})</a></li>
+                <li><a (click)="FilterByType(0)" [ngClass]="{NewsFeedTypeActive: ActiveFeedTypeId == 0}">New Rounds ({{NewRoundPostCount | number}})</a></li>
+                <li><a (click)="FilterByType(1)" [ngClass]="{NewsFeedTypeActive: ActiveFeedTypeId == 1}">New Courses ({{NewCoursePostCount | number}})</a></li>
             </ul>
         </div>
     </div>

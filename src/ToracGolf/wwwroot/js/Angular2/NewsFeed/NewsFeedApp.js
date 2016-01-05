@@ -1,4 +1,4 @@
-System.register(['angular2/core', './NewsFeedService', 'rxjs/add/operator/map'], function(exports_1) {
+System.register(['angular2/core', './NewsFeedService', 'angular2/common', 'rxjs/add/operator/map'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', './NewsFeedService', 'rxjs/add/operator/map'],
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, NewsFeedService_1;
+    var core_1, NewsFeedService_1, common_1;
     var NewsFeedApp;
     return {
         setters:[
@@ -18,26 +18,45 @@ System.register(['angular2/core', './NewsFeedService', 'rxjs/add/operator/map'],
             function (NewsFeedService_1_1) {
                 NewsFeedService_1 = NewsFeedService_1_1;
             },
+            function (common_1_1) {
+                common_1 = common_1_1;
+            },
             function (_1) {}],
         execute: function() {
             NewsFeedApp = (function () {
                 function NewsFeedApp(newsFeedService, ngZone) {
-                    var _this = this;
                     //set the properties
                     this.NewsFeedSvc = newsFeedService;
                     this.NgZoneSvc = ngZone;
+                    //go load the posts
+                    this.LoadPosts(null, true);
+                }
+                ;
+                NewsFeedApp.prototype.LoadPosts = function (newsFeedTypeId, setPostCount) {
+                    var _this = this;
                     //closure
                     var _thisClass = this;
+                    var resetPostCount = setPostCount;
                     //go grab the data
-                    this.NewsFeedSvc.NewFeedGet().subscribe(function (posts) {
+                    this.NewsFeedSvc.NewFeedGet(newsFeedTypeId).subscribe(function (posts) {
                         //go run this so angular can update the new records
                         _thisClass.NgZoneSvc.run(function () {
                             //the pipe for date time format doesn't support iso string's right now. so flip it to a date it can handle
                             posts.forEach(function (x) { return x.PostDate = new Date(x.PostDate.toString()); });
+                            //set the working posts
                             _this.Posts = posts;
+                            //set the counts in the nav menu?
+                            if (resetPostCount) {
+                                //go set the counts
+                                _this.NewCoursePostCount = _this.Posts.Count(function (x) { return x.FeedTypeId == NewsFeedService_1.NewsFeedTypeId.NewCourse; });
+                                //set the count for new rounds
+                                _this.NewRoundPostCount = _this.Posts.Count(function (x) { return x.FeedTypeId == NewsFeedService_1.NewsFeedTypeId.NewRound; });
+                            }
+                            //what is the active nav menu
+                            _this.ActiveFeedTypeId = newsFeedTypeId;
                         });
                     });
-                }
+                };
                 ;
                 NewsFeedApp.prototype.Like = function (id, newsFeedTypeId) {
                     //go grab the record
@@ -62,11 +81,19 @@ System.register(['angular2/core', './NewsFeedService', 'rxjs/add/operator/map'],
                     });
                 };
                 ;
+                NewsFeedApp.prototype.FilterByType = function (newsFeedTypeId, element) {
+                    //set the active news feed type id
+                    this.ActiveFeedTypeId = newsFeedTypeId;
+                    //go reload the posts
+                    this.LoadPosts(newsFeedTypeId, false);
+                };
+                ;
                 NewsFeedApp = __decorate([
                     core_1.Component({
                         selector: 'NewsFeedPostContainer',
                         templateUrl: '/NewsFeedClientView',
-                        bindings: [NewsFeedService_1.NewsFeedService]
+                        bindings: [NewsFeedService_1.NewsFeedService],
+                        directives: [common_1.NgClass]
                     }), 
                     __metadata('design:paramtypes', [NewsFeedService_1.NewsFeedService, core_1.NgZone])
                 ], NewsFeedApp);

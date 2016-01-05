@@ -14,8 +14,8 @@ export class NewsFeedService {
 
     HttpInterceptorSvc: HttpInterceptor;
 
-    NewFeedGet(): Observable<Response> {
-        return this.HttpInterceptorSvc.Post('NewsFeedsGetPost', '');
+    NewFeedGet(newsFeedTypeId: NewsFeedTypeId): Observable<Response> {
+        return this.HttpInterceptorSvc.Post('NewsFeedsGetPost', JSON.stringify({ NewsFeedTypeIdFilter: newsFeedTypeId }));
     }
 
     LikePost(id: number, newsFeedTypeId: NewsFeedTypeId): Observable<Response> {

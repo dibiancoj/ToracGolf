@@ -153,9 +153,9 @@ namespace ToracGolf.Controllers
         [ValidateCustomAntiForgeryToken]
         [Route("NewsFeedsGetPost", Name = "NewsFeedsGetPost")]
         [HttpPost]
-        public async Task<IActionResult> NewsFeedGet()
+        public async Task<IActionResult> NewsFeedGet([FromBody]NewsFeedGetRequest filterParams)
         {
-            return Json(await NewsFeedDataProvider.NewsFeedPostSelect(DbContext, CacheFactory.GetCacheItem<CourseImageFinder>(CacheKeyNames.CourseImageFinder, Cache), GetUserId()));
+            return Json(await NewsFeedDataProvider.NewsFeedPostSelect(DbContext, CacheFactory.GetCacheItem<CourseImageFinder>(CacheKeyNames.CourseImageFinder, Cache), GetUserId(), filterParams.NewsFeedTypeIdFilter));
         }
 
         [ValidateCustomAntiForgeryToken]

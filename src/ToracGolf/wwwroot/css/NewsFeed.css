@@ -5,3 +5,7 @@
 .LikePost {
     cursor: pointer;
 }
+
+.NewsFeedTypeActive {
+    background-color: lightblue;
+}
