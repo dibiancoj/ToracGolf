@@ -91,7 +91,7 @@ System.register(['angular2/core', './NewsFeedService', 'angular2/common', 'rxjs/
                 NewsFeedApp = __decorate([
                     core_1.Component({
                         selector: 'NewsFeedPostContainer',
-                        templateUrl: '/NewsFeedClientView',
+                        templateUrl: 'NewsFeedClientView',
                         bindings: [NewsFeedService_1.NewsFeedService],
                         directives: [common_1.NgClass]
                     }), 
