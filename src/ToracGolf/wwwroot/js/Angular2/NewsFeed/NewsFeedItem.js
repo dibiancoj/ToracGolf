@@ -21,7 +21,7 @@ System.register(['angular2/core', './NewsFeedService'], function(exports_1) {
         execute: function() {
             NewsFeedItemPost = (function () {
                 function NewsFeedItemPost() {
-                    this.LikeEvent = new core_1.EventEmitter();
+                    this.LikeEvent = new core_1.EventEmitter(); //declared on NewsFeedPostClientView. its the event we bind with the parent component.
                 }
                 NewsFeedItemPost.prototype.LikeClick = function (id, newsFeedTypeId) {
                     //pass this back to the parent component.
@@ -32,13 +32,14 @@ System.register(['angular2/core', './NewsFeedService'], function(exports_1) {
                     __metadata('design:type', NewsFeedService_1.NewsFeedItem)
                 ], NewsFeedItemPost.prototype, "Post", void 0);
                 __decorate([
+                    //declared on NewsFeedPostClientView. it's the attribute name where we pass in the object
                     core_1.Output(), 
                     __metadata('design:type', Object)
                 ], NewsFeedItemPost.prototype, "LikeEvent", void 0);
                 NewsFeedItemPost = __decorate([
                     core_1.Component({
                         selector: 'NewsFeedPostItem',
-                        templateUrl: 'NewsFeedItemClientView',
+                        templateUrl: 'NewsFeedItemClientView'
                     }), 
                     __metadata('design:paramtypes', [])
                 ], NewsFeedItemPost);

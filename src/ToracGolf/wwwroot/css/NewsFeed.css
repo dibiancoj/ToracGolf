@@ -9,3 +9,9 @@
 .NewsFeedTypeActive {
     background-color: lightblue;
 }
+
+.CommentIcon {
+    width: 120px;
+    padding-left: 25px;
+    margin-top: 10px;
+}
