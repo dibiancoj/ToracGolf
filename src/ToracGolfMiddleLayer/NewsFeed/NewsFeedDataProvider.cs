@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.MiddleLayer.Courses;
 using ToracGolf.MiddleLayer.EFModel;
+using ToracGolf.MiddleLayer.NewsFeed.Models;
 
 namespace ToracGolf.MiddleLayer.NewsFeed
 {
@@ -12,35 +13,51 @@ namespace ToracGolf.MiddleLayer.NewsFeed
     public static class NewsFeedDataProvider
     {
 
-        public static async Task<IEnumerable<NewsFeedItemModel>> NewsFeedPostSelect(ToracGolfContext dbContext, CourseImageFinder courseImageFinder, int userId, NewsFeedItemModel.NewsFeedTypeId? newsFeedTypeIdFilter)
+        public static async Task<NewsFeedQueryResult> NewsFeedPostSelect(ToracGolfContext dbContext,
+                                                                                    CourseImageFinder courseImageFinder,
+                                                                                    int userId,
+                                                                                    NewsFeedItemModel.NewsFeedTypeId? newsFeedTypeIdFilter,
+                                                                                    string searchFilterText)
         {
             var newsFeedItems = new List<NewsFeedItemModel>();
 
             int newRoundEnumValue = (int)NewsFeedItemModel.NewsFeedTypeId.NewRound;
             int newCourseEnumValue = (int)NewsFeedItemModel.NewsFeedTypeId.NewCourse;
 
+            int newCourseCount;
+            int newRoundCount;
+
             //grab my rounds
+
+            var myRoundsQuery = dbContext.Rounds.AsNoTracking()
+                                .Where(x => x.UserId == userId)
+                                .OrderByDescending(x => x.RoundDate)
+                                .Take(20).AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchFilterText))
+            {
+                myRoundsQuery = myRoundsQuery.Where(x => x.User.FirstName.Contains(searchFilterText) || x.User.LastName.Contains(searchFilterText) || x.Course.Name.Contains(searchFilterText));
+            }
+
+            newRoundCount = await myRoundsQuery.CountAsync();
+
+            var myRounds = await myRoundsQuery.Select(y => new
+            {
+                y.RoundId,
+                y.RoundDate,
+                y.Score,
+                y.CourseId,
+                CourseName = y.Course.Name,
+                TeeBoxDescription = y.CourseTeeLocation.Description,
+                Likes = dbContext.NewsFeedLike.Count(x => x.NewsFeedTypeId == newRoundEnumValue && x.AreaId == y.RoundId),
+                Comments = dbContext.NewsFeedComment.Count(x => x.NewsFeedTypeId == newRoundEnumValue && x.AreaId == y.RoundId),
+                AdjustedScore = y.Score - y.Handicap.HandicapBeforeRound,
+                RoundHandicap = y.RoundHandicap,
+                YouLikedItem = dbContext.NewsFeedLike.Any(x => x.AreaId == y.RoundId && x.NewsFeedTypeId == newRoundEnumValue && x.UserIdThatLikedItem == userId)
+            }).ToArrayAsync();
+
             if (!newsFeedTypeIdFilter.HasValue || newsFeedTypeIdFilter.Value == NewsFeedItemModel.NewsFeedTypeId.NewRound)
             {
-                var myRounds = await dbContext.Rounds.AsNoTracking()
-                                    .Where(x => x.UserId == userId)
-                                    .OrderByDescending(x => x.RoundDate)
-                                    .Take(20)
-                                    .Select(y => new
-                                    {
-                                        y.RoundId,
-                                        y.RoundDate,
-                                        y.Score,
-                                        y.CourseId,
-                                        CourseName = y.Course.Name,
-                                        TeeBoxDescription = y.CourseTeeLocation.Description,
-                                        Likes = dbContext.NewsFeedLike.Count(x => x.NewsFeedTypeId == newRoundEnumValue && x.AreaId == y.RoundId),
-                                        Comments = dbContext.NewsFeedComment.Count(x => x.NewsFeedTypeId == newRoundEnumValue && x.AreaId == y.RoundId),
-                                        AdjustedScore = y.Score - y.Handicap.HandicapBeforeRound,
-                                        RoundHandicap = y.RoundHandicap,
-                                        YouLikedItem = dbContext.NewsFeedLike.Any(x => x.AreaId == y.RoundId && x.NewsFeedTypeId == newRoundEnumValue && x.UserIdThatLikedItem == userId)
-                                    }).ToArrayAsync();
-
                 newsFeedItems.AddRange(myRounds.Select(x => new NewRoundNewsFeed
                 {
                     Id = x.RoundId,
@@ -58,25 +75,34 @@ namespace ToracGolf.MiddleLayer.NewsFeed
                 }));
             }
 
+
+            //go add the courses now
+            var myCoursesQueryable = dbContext.Course.AsNoTracking()
+                        .OrderBy(x => x.CreatedDate)
+                        .Take(20).AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchFilterText))
+            {
+                myCoursesQueryable = myCoursesQueryable.Where(x => x.Name.Contains(searchFilterText) || x.Description.Contains(searchFilterText) || x.City.Contains(searchFilterText));
+            }
+
+            newCourseCount = await myCoursesQueryable.CountAsync();
+
+            var myCourses = await myCoursesQueryable.Select(x => new
+            {
+                CreatedDate = x.CreatedDate,
+                CourseName = x.Name,
+                CourseId = x.CourseId,
+                CourseDescription = x.Description,
+                StateTxt = x.State.Description,
+                City = x.City,
+                Likes = dbContext.NewsFeedLike.Count(y => y.NewsFeedTypeId == newCourseEnumValue && y.AreaId == x.CourseId),
+                Comments = dbContext.NewsFeedComment.Count(y => y.NewsFeedTypeId == newCourseEnumValue && y.AreaId == x.CourseId),
+                YouLikedItem = dbContext.NewsFeedLike.Any(y => x.CourseId == y.AreaId && y.NewsFeedTypeId == newCourseEnumValue && y.UserIdThatLikedItem == userId)
+            }).ToArrayAsync();
+
             if (!newsFeedTypeIdFilter.HasValue || newsFeedTypeIdFilter.Value == NewsFeedItemModel.NewsFeedTypeId.NewCourse)
             {
-                //go add the courses now
-                var myCourses = await dbContext.Course.AsNoTracking()
-                            .OrderBy(x => x.CreatedDate)
-                            .Take(20)
-                            .Select(x => new
-                            {
-                                CreatedDate = x.CreatedDate,
-                                CourseName = x.Name,
-                                CourseId = x.CourseId,
-                                CourseDescription = x.Description,
-                                StateTxt = x.State.Description,
-                                City = x.City,
-                                Likes = dbContext.NewsFeedLike.Count(y => y.NewsFeedTypeId == newCourseEnumValue && y.AreaId == x.CourseId),
-                                Comments = dbContext.NewsFeedComment.Count(y => y.NewsFeedTypeId == newCourseEnumValue && y.AreaId == x.CourseId),
-                                YouLikedItem = dbContext.NewsFeedLike.Any(y => x.CourseId == y.AreaId && y.NewsFeedTypeId == newCourseEnumValue && y.UserIdThatLikedItem == userId)
-                            }).ToArrayAsync();
-
                 newsFeedItems.AddRange(myCourses.Select(x => new NewCourseNewsFeed
                 {
                     Id = x.CourseId,
@@ -90,7 +116,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed
                 }));
             }
 
-            return newsFeedItems.OrderByDescending(x => x.PostDate).ToArray();
+            return new NewsFeedQueryResult(newsFeedItems.OrderByDescending(x => x.PostDate).ToArray(), newRoundCount, newCourseCount);
         }
 
         public static async Task<bool> NewsFeedLikeAdd(ToracGolfContext dbContext, int userId, int id, NewsFeedItemModel.NewsFeedTypeId newsFeedTypeId)

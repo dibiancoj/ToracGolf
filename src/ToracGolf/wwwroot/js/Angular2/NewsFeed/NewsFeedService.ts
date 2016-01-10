@@ -14,14 +14,20 @@ export class NewsFeedService {
 
     HttpInterceptorSvc: HttpInterceptor;
 
-    NewFeedGet(newsFeedTypeId: NewsFeedTypeId): Observable<Response> {
-        return this.HttpInterceptorSvc.Post('NewsFeedsGetPost', JSON.stringify({ NewsFeedTypeIdFilter: newsFeedTypeId }));
+    NewFeedGet(newsFeedTypeId: NewsFeedTypeId, searchFilterText: string): Observable<Response> {
+        return this.HttpInterceptorSvc.Post('NewsFeedsGetPost', JSON.stringify({ NewsFeedTypeIdFilter: newsFeedTypeId, SearchFilterText: searchFilterText }));
     }
 
     LikePost(id: number, newsFeedTypeId: NewsFeedTypeId): Observable<Response> {
         return this.HttpInterceptorSvc.Post('NewsFeedsLike', JSON.stringify({ Id: id, NewsFeedTypeId: newsFeedTypeId }));
     }
 
+}
+
+export class NewsFeedQueryResult {
+    Results: NewsFeedItem[];
+    UnFilteredRoundCount: number;
+    UnFilteredCourseCount: number;
 }
 
 export class NewsFeedItem {

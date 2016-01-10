@@ -52,9 +52,9 @@
         <div class="widget">
             <form class="form-light form-horizontal" role="form">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search blog...">
+                    <input type="text" class="form-control" placeholder="Search blog..." [(ngModel)]="SearchFilterText" (keyup.enter)="ReRunSearch()" />
                     <span class="input-group-btn">
-                        <button class="btn btn-base" type="button">Go</button>
+                        <button class="btn btn-base" type="button" (click)="ReRunSearch()">Filter</button>
                     </span>
                 </div>
             </form>

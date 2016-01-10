@@ -9,5 +9,6 @@ namespace ToracGolf.ViewModels.NewsFeed
     public class NewsFeedGetRequest
     {
         public NewsFeedItemModel.NewsFeedTypeId? NewsFeedTypeIdFilter { get; set; }
+        public string SearchFilterText { get; set; }
     }
 }

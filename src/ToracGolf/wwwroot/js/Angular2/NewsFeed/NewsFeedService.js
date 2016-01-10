@@ -9,7 +9,7 @@ System.register(['angular2/core', 'rxjs/add/operator/map', '../Common/httpinterc
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1, httpinterceptor_1;
-    var NewsFeedService, NewsFeedItem, NewsFeedTypeId;
+    var NewsFeedService, NewsFeedQueryResult, NewsFeedItem, NewsFeedTypeId;
     return {
         setters:[
             function (core_1_1) {
@@ -24,8 +24,8 @@ System.register(['angular2/core', 'rxjs/add/operator/map', '../Common/httpinterc
                 function NewsFeedService(httpInterceptor) {
                     this.HttpInterceptorSvc = httpInterceptor;
                 }
-                NewsFeedService.prototype.NewFeedGet = function (newsFeedTypeId) {
-                    return this.HttpInterceptorSvc.Post('NewsFeedsGetPost', JSON.stringify({ NewsFeedTypeIdFilter: newsFeedTypeId }));
+                NewsFeedService.prototype.NewFeedGet = function (newsFeedTypeId, searchFilterText) {
+                    return this.HttpInterceptorSvc.Post('NewsFeedsGetPost', JSON.stringify({ NewsFeedTypeIdFilter: newsFeedTypeId, SearchFilterText: searchFilterText }));
                 };
                 NewsFeedService.prototype.LikePost = function (id, newsFeedTypeId) {
                     return this.HttpInterceptorSvc.Post('NewsFeedsLike', JSON.stringify({ Id: id, NewsFeedTypeId: newsFeedTypeId }));
@@ -37,6 +37,12 @@ System.register(['angular2/core', 'rxjs/add/operator/map', '../Common/httpinterc
                 return NewsFeedService;
             })();
             exports_1("NewsFeedService", NewsFeedService);
+            NewsFeedQueryResult = (function () {
+                function NewsFeedQueryResult() {
+                }
+                return NewsFeedQueryResult;
+            })();
+            exports_1("NewsFeedQueryResult", NewsFeedQueryResult);
             NewsFeedItem = (function () {
                 function NewsFeedItem() {
                 }

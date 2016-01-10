@@ -1,6 +1,6 @@
 ﻿/// <reference path="../../../lib/jlinq/jlinq.ts" />
 import {Component, Inject, NgZone} from 'angular2/core';
-import {NewsFeedService, NewsFeedItem, NewsFeedTypeId} from './NewsFeedService';
+import {NewsFeedService, NewsFeedItem, NewsFeedQueryResult, NewsFeedTypeId} from './NewsFeedService';
 import {NgClass} from 'angular2/common';
 
 import { Http, Response } from 'angular2/http';
@@ -20,6 +20,7 @@ export class NewsFeedApp {
     NewCoursePostCount: number;
     NewRoundPostCount: number;
     ActiveFeedTypeId: number;
+    SearchFilterText: string;
 
     constructor(newsFeedService: NewsFeedService, ngZone: NgZone) {
 
@@ -27,38 +28,35 @@ export class NewsFeedApp {
         this.NewsFeedSvc = newsFeedService;
         this.NgZoneSvc = ngZone;
 
+        //initial property setting
+        this.SearchFilterText = '';
+
         //go load the posts
-        this.LoadPosts(null, true);
+        this.LoadPosts(null, null);
     };
 
-    LoadPosts(newsFeedTypeId: NewsFeedTypeId, setPostCount: boolean) {
-
+    LoadPosts(newsFeedTypeId: NewsFeedTypeId, searchFilterText: string) {
+        
         //closure
         var _thisClass = this;
 
-        var resetPostCount = setPostCount;
-
         //go grab the data
-        this.NewsFeedSvc.NewFeedGet(newsFeedTypeId).subscribe((posts: Array<NewsFeedItem>) => {
+        this.NewsFeedSvc.NewFeedGet(newsFeedTypeId, searchFilterText).subscribe((queryResult: NewsFeedQueryResult) => {
 
             //go run this so angular can update the new records
             _thisClass.NgZoneSvc.run(() => {
 
                 //the pipe for date time format doesn't support iso string's right now. so flip it to a date it can handle
-                posts.forEach(x => x.PostDate = new Date(x.PostDate.toString()));
+                queryResult.Results.forEach(x => x.PostDate = new Date(x.PostDate.toString()));
 
                 //set the working posts
-                this.Posts = posts;
+                this.Posts = queryResult.Results;
 
-                //set the counts in the nav menu?
-                if (resetPostCount) {
+                //go set the counts
+                this.NewCoursePostCount = queryResult.UnFilteredCourseCount; //this.Posts.Count(x => x.FeedTypeId == NewsFeedTypeId.NewCourse);
 
-                    //go set the counts
-                    this.NewCoursePostCount = this.Posts.Count(x => x.FeedTypeId == NewsFeedTypeId.NewCourse);
-
-                    //set the count for new rounds
-                    this.NewRoundPostCount = this.Posts.Count(x => x.FeedTypeId == NewsFeedTypeId.NewRound);
-                }
+                //set the count for new rounds
+                this.NewRoundPostCount = queryResult.UnFilteredRoundCount; //this.Posts.Count(x => x.FeedTypeId == NewsFeedTypeId.NewRound);k
 
                 //what is the active nav menu
                 this.ActiveFeedTypeId = newsFeedTypeId;
@@ -102,7 +100,12 @@ export class NewsFeedApp {
         this.ActiveFeedTypeId = newsFeedTypeId;
        
         //go reload the posts
-        this.LoadPosts(newsFeedTypeId, false);
+        this.LoadPosts(newsFeedTypeId, this.SearchFilterText);
     };
+
+    ReRunSearch() {
+        //they want to filter backed on text box
+        this.LoadPosts(this.ActiveFeedTypeId, this.SearchFilterText);
+    }
 
 }

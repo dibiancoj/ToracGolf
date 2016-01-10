@@ -47,5 +47,7 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
 
         public virtual Handicap Handicap { get; set; }
 
+        public virtual UserAccounts User { get; set; }
+
     }
 }

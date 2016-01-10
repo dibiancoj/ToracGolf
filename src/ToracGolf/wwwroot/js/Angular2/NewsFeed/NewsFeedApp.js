@@ -28,30 +28,28 @@ System.register(['angular2/core', './NewsFeedService', 'angular2/common', 'rxjs/
                     //set the properties
                     this.NewsFeedSvc = newsFeedService;
                     this.NgZoneSvc = ngZone;
+                    //initial property setting
+                    this.SearchFilterText = '';
                     //go load the posts
-                    this.LoadPosts(null, true);
+                    this.LoadPosts(null, null);
                 }
                 ;
-                NewsFeedApp.prototype.LoadPosts = function (newsFeedTypeId, setPostCount) {
+                NewsFeedApp.prototype.LoadPosts = function (newsFeedTypeId, searchFilterText) {
                     var _this = this;
                     //closure
                     var _thisClass = this;
-                    var resetPostCount = setPostCount;
                     //go grab the data
-                    this.NewsFeedSvc.NewFeedGet(newsFeedTypeId).subscribe(function (posts) {
+                    this.NewsFeedSvc.NewFeedGet(newsFeedTypeId, searchFilterText).subscribe(function (queryResult) {
                         //go run this so angular can update the new records
                         _thisClass.NgZoneSvc.run(function () {
                             //the pipe for date time format doesn't support iso string's right now. so flip it to a date it can handle
-                            posts.forEach(function (x) { return x.PostDate = new Date(x.PostDate.toString()); });
+                            queryResult.Results.forEach(function (x) { return x.PostDate = new Date(x.PostDate.toString()); });
                             //set the working posts
-                            _this.Posts = posts;
-                            //set the counts in the nav menu?
-                            if (resetPostCount) {
-                                //go set the counts
-                                _this.NewCoursePostCount = _this.Posts.Count(function (x) { return x.FeedTypeId == NewsFeedService_1.NewsFeedTypeId.NewCourse; });
-                                //set the count for new rounds
-                                _this.NewRoundPostCount = _this.Posts.Count(function (x) { return x.FeedTypeId == NewsFeedService_1.NewsFeedTypeId.NewRound; });
-                            }
+                            _this.Posts = queryResult.Results;
+                            //go set the counts
+                            _this.NewCoursePostCount = queryResult.UnFilteredCourseCount; //this.Posts.Count(x => x.FeedTypeId == NewsFeedTypeId.NewCourse);
+                            //set the count for new rounds
+                            _this.NewRoundPostCount = queryResult.UnFilteredRoundCount; //this.Posts.Count(x => x.FeedTypeId == NewsFeedTypeId.NewRound);k
                             //what is the active nav menu
                             _this.ActiveFeedTypeId = newsFeedTypeId;
                         });
@@ -85,9 +83,13 @@ System.register(['angular2/core', './NewsFeedService', 'angular2/common', 'rxjs/
                     //set the active news feed type id
                     this.ActiveFeedTypeId = newsFeedTypeId;
                     //go reload the posts
-                    this.LoadPosts(newsFeedTypeId, false);
+                    this.LoadPosts(newsFeedTypeId, this.SearchFilterText);
                 };
                 ;
+                NewsFeedApp.prototype.ReRunSearch = function () {
+                    //they want to filter backed on text box
+                    this.LoadPosts(this.ActiveFeedTypeId, this.SearchFilterText);
+                };
                 NewsFeedApp = __decorate([
                     core_1.Component({
                         selector: 'NewsFeedPostContainer',
