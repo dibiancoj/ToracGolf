@@ -53,10 +53,10 @@ export class NewsFeedApp {
                 this.Posts = queryResult.Results;
 
                 //go set the counts
-                this.NewCoursePostCount = queryResult.UnFilteredCourseCount; //this.Posts.Count(x => x.FeedTypeId == NewsFeedTypeId.NewCourse);
+                this.NewCoursePostCount = queryResult.UnFilteredCourseCount;
 
                 //set the count for new rounds
-                this.NewRoundPostCount = queryResult.UnFilteredRoundCount; //this.Posts.Count(x => x.FeedTypeId == NewsFeedTypeId.NewRound);k
+                this.NewRoundPostCount = queryResult.UnFilteredRoundCount;
 
                 //what is the active nav menu
                 this.ActiveFeedTypeId = newsFeedTypeId;
