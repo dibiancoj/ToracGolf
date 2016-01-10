@@ -28,18 +28,20 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map'], fun
                     var _this = this;
                     //show the spinner
                     this.ShowAjaxSpinner(true);
-                    //grab the query so we can fork this
-                    var ajaxCall = this.HttpModule.post(url, body, { headers: this.CustomHeaderSelect() })
-                        .map(function (res) { return res.json(); });
-                    //fork this so we can remove the ajax waiting panel
-                    ajaxCall.subscribe(function (res) { return _this.ShowAjaxSpinner(false); }, function (err) { return _this.ErrorHandler(err); });
-                    //return the ajax call
-                    return ajaxCall;
+                    //grab the query so we can fork this (i'm hooking into the map to hide the show dialog)...using multiple subscribe caused 2 ajax calls to be made.
+                    //now sure if this is the best way to do this. It works though. Couldn't find much documentation on how to do this. Basically fork and run multiple methods
+                    //off an observable. 
+                    return this.HttpModule.post(url, body, { headers: this.CustomHeaderSelect() })
+                        .map(function (res) { return res.json(); })
+                        .map(function (x) {
+                        _this.ShowAjaxSpinner(false);
+                        return x;
+                    });
                 };
-                HttpInterceptor.prototype.ErrorHandler = function (err) {
-                    alert('Ajax Angular 2 Error');
-                    alert(JSON.stringify(err));
-                };
+                //private ErrorHandler(err) {
+                //    alert('Ajax Angular 2 Error');
+                //    alert(JSON.stringify(err));
+                //}
                 HttpInterceptor.prototype.ShowAjaxSpinner = function (showSpinner) {
                     if (showSpinner) {
                         $("#loadingDiv").show();

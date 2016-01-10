@@ -18,22 +18,21 @@ export class HttpInterceptor {
         //show the spinner
         this.ShowAjaxSpinner(true);
 
-        //grab the query so we can fork this
-        var ajaxCall = this.HttpModule.post(url, body, { headers: this.CustomHeaderSelect() })
+        //grab the query so we can fork this (i'm hooking into the map to hide the show dialog)...using multiple subscribe caused 2 ajax calls to be made.
+        //now sure if this is the best way to do this. It works though. Couldn't find much documentation on how to do this. Basically fork and run multiple methods
+        //off an observable. 
+        return this.HttpModule.post(url, body, { headers: this.CustomHeaderSelect() })
             .map(res => res.json())
-
-        //fork this so we can remove the ajax waiting panel
-        ajaxCall.subscribe(res => this.ShowAjaxSpinner(false),
-            err => this.ErrorHandler(err));
-
-        //return the ajax call
-        return ajaxCall;
+            .map(x => {
+                this.ShowAjaxSpinner(false);
+                return x;
+            });
     }
 
-    private ErrorHandler(err) {
-        alert('Ajax Angular 2 Error');
-        alert(JSON.stringify(err));
-    }
+    //private ErrorHandler(err) {
+    //    alert('Ajax Angular 2 Error');
+    //    alert(JSON.stringify(err));
+    //}
 
     private ShowAjaxSpinner(showSpinner: boolean) {
         if (showSpinner) {
