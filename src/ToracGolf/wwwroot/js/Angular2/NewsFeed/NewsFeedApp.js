@@ -60,7 +60,6 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedItem', 'angula
                 };
                 ;
                 NewsFeedApp.prototype.Like = function (likeConfig) {
-                    debugger;
                     //go grab the record
                     var recordToUpdate = this.Posts.First(function (x) { return x.Id == likeConfig.Id && x.FeedTypeId == likeConfig.NewsFeedTypeId; });
                     //if you already like the item, you want to unlike the item

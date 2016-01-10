@@ -1,4 +1,4 @@
-System.register(['angular2/core'], function(exports_1) {
+System.register(['angular2/core', './NewsFeedService'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,12 +8,15 @@ System.register(['angular2/core'], function(exports_1) {
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1;
+    var core_1, NewsFeedService_1;
     var NewsFeedItemPost;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
+            },
+            function (NewsFeedService_1_1) {
+                NewsFeedService_1 = NewsFeedService_1_1;
             }],
         execute: function() {
             NewsFeedItemPost = (function () {
@@ -21,9 +24,13 @@ System.register(['angular2/core'], function(exports_1) {
                     this.LikeEvent = new core_1.EventEmitter();
                 }
                 NewsFeedItemPost.prototype.LikeClick = function (id, newsFeedTypeId) {
-                    debugger;
+                    //pass this back to the parent component.
                     this.LikeEvent.emit({ Id: id, NewsFeedTypeId: newsFeedTypeId });
                 };
+                __decorate([
+                    core_1.Input(), 
+                    __metadata('design:type', NewsFeedService_1.NewsFeedItem)
+                ], NewsFeedItemPost.prototype, "Post", void 0);
                 __decorate([
                     core_1.Output(), 
                     __metadata('design:type', Object)
@@ -32,7 +39,6 @@ System.register(['angular2/core'], function(exports_1) {
                     core_1.Component({
                         selector: 'NewsFeedPostItem',
                         templateUrl: 'NewsFeedItemClientView',
-                        inputs: ['Post']
                     }), 
                     __metadata('design:paramtypes', [])
                 ], NewsFeedItemPost);
