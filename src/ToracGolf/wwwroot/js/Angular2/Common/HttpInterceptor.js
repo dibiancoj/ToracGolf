@@ -25,7 +25,28 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map'], fun
                     this.HttpModule = http;
                 }
                 HttpInterceptor.prototype.Post = function (url, body) {
-                    return this.HttpModule.post(url, body, { headers: this.CustomHeaderSelect() }).map(function (res) { return res.json(); });
+                    var _this = this;
+                    //show the spinner
+                    this.ShowAjaxSpinner(true);
+                    //grab the query so we can fork this
+                    var ajaxCall = this.HttpModule.post(url, body, { headers: this.CustomHeaderSelect() })
+                        .map(function (res) { return res.json(); });
+                    //fork this so we can remove the ajax waiting panel
+                    ajaxCall.subscribe(function (res) { return _this.ShowAjaxSpinner(false); }, function (err) { return _this.ErrorHandler(err); });
+                    //return the ajax call
+                    return ajaxCall;
+                };
+                HttpInterceptor.prototype.ErrorHandler = function (err) {
+                    alert('Ajax Angular 2 Error');
+                    alert(JSON.stringify(err));
+                };
+                HttpInterceptor.prototype.ShowAjaxSpinner = function (showSpinner) {
+                    if (showSpinner) {
+                        $("#loadingDiv").show();
+                    }
+                    else {
+                        $("#loadingDiv").hide();
+                    }
                 };
                 HttpInterceptor.prototype.CustomHeaderSelect = function () {
                     var customHeaders = new http_1.Headers();
