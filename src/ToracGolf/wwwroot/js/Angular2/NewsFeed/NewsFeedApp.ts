@@ -1,6 +1,7 @@
 ﻿/// <reference path="../../../lib/jlinq/jlinq.ts" />
 import {Component, Inject, NgZone} from 'angular2/core';
 import {NewsFeedService, NewsFeedItem, NewsFeedQueryResult, NewsFeedTypeId} from './NewsFeedService';
+import {NewsFeedItemPost} from './NewsFeedItem';
 import {NgClass} from 'angular2/common';
 
 import { Http, Response } from 'angular2/http';
@@ -10,7 +11,7 @@ import 'rxjs/add/operator/map';
     selector: 'NewsFeedPostContainer',
     templateUrl: 'NewsFeedClientView',
     bindings: [NewsFeedService],
-    directives: [NgClass]
+    directives: [NgClass, NewsFeedItemPost]
 })
 export class NewsFeedApp {
 
@@ -64,10 +65,10 @@ export class NewsFeedApp {
         });
     };
 
-    Like(id: number, newsFeedTypeId: NewsFeedTypeId) {
-
+    Like(likeConfig: { Id: number, NewsFeedTypeId: NewsFeedTypeId }) {
+        
         //go grab the record
-        var recordToUpdate = this.Posts.First(function (x) { return x.Id == id && x.FeedTypeId == newsFeedTypeId });
+        var recordToUpdate = this.Posts.First(function (x) { return x.Id == likeConfig.Id && x.FeedTypeId == likeConfig.NewsFeedTypeId });
 
         //if you already like the item, you want to unlike the item
         var youLikeTheItemAlready = recordToUpdate.YouLikedItem;
@@ -75,7 +76,7 @@ export class NewsFeedApp {
         //closure
         var _thisClass = this;
 
-        this.NewsFeedSvc.LikePost(id, newsFeedTypeId).subscribe((posts: Array<NewsFeedItem>) => {
+        this.NewsFeedSvc.LikePost(likeConfig.Id, likeConfig.NewsFeedTypeId).subscribe((posts: Array<NewsFeedItem>) => {
          
             //go run this so angular can update the new records
             _thisClass.NgZoneSvc.run(() => {

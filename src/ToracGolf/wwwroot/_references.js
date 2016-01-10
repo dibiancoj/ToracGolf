@@ -25,6 +25,7 @@
 /// <reference path="js/angular2/common/httpinterceptor.js" />
 /// <reference path="js/angular2/newsfeed/boot.js" />
 /// <reference path="js/angular2/newsfeed/newsfeedapp.js" />
+/// <reference path="js/angular2/newsfeed/newsfeeditem.js" />
 /// <reference path="js/angular2/newsfeed/newsfeedservice.js" />
 /// <reference path="js/Common/AjaxCommon.js" />
 /// <reference path="js/login.js" />

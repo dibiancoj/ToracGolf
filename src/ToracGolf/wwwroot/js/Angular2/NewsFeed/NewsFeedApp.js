@@ -1,4 +1,4 @@
-System.register(['angular2/core', './NewsFeedService', 'angular2/common', 'rxjs/add/operator/map'], function(exports_1) {
+System.register(['angular2/core', './NewsFeedService', './NewsFeedItem', 'angular2/common', 'rxjs/add/operator/map'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', './NewsFeedService', 'angular2/common', 'rxjs/
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, NewsFeedService_1, common_1;
+    var core_1, NewsFeedService_1, NewsFeedItem_1, common_1;
     var NewsFeedApp;
     return {
         setters:[
@@ -17,6 +17,9 @@ System.register(['angular2/core', './NewsFeedService', 'angular2/common', 'rxjs/
             },
             function (NewsFeedService_1_1) {
                 NewsFeedService_1 = NewsFeedService_1_1;
+            },
+            function (NewsFeedItem_1_1) {
+                NewsFeedItem_1 = NewsFeedItem_1_1;
             },
             function (common_1_1) {
                 common_1 = common_1_1;
@@ -47,23 +50,24 @@ System.register(['angular2/core', './NewsFeedService', 'angular2/common', 'rxjs/
                             //set the working posts
                             _this.Posts = queryResult.Results;
                             //go set the counts
-                            _this.NewCoursePostCount = queryResult.UnFilteredCourseCount; //this.Posts.Count(x => x.FeedTypeId == NewsFeedTypeId.NewCourse);
+                            _this.NewCoursePostCount = queryResult.UnFilteredCourseCount;
                             //set the count for new rounds
-                            _this.NewRoundPostCount = queryResult.UnFilteredRoundCount; //this.Posts.Count(x => x.FeedTypeId == NewsFeedTypeId.NewRound);k
+                            _this.NewRoundPostCount = queryResult.UnFilteredRoundCount;
                             //what is the active nav menu
                             _this.ActiveFeedTypeId = newsFeedTypeId;
                         });
                     });
                 };
                 ;
-                NewsFeedApp.prototype.Like = function (id, newsFeedTypeId) {
+                NewsFeedApp.prototype.Like = function (likeConfig) {
+                    debugger;
                     //go grab the record
-                    var recordToUpdate = this.Posts.First(function (x) { return x.Id == id && x.FeedTypeId == newsFeedTypeId; });
+                    var recordToUpdate = this.Posts.First(function (x) { return x.Id == likeConfig.Id && x.FeedTypeId == likeConfig.NewsFeedTypeId; });
                     //if you already like the item, you want to unlike the item
                     var youLikeTheItemAlready = recordToUpdate.YouLikedItem;
                     //closure
                     var _thisClass = this;
-                    this.NewsFeedSvc.LikePost(id, newsFeedTypeId).subscribe(function (posts) {
+                    this.NewsFeedSvc.LikePost(likeConfig.Id, likeConfig.NewsFeedTypeId).subscribe(function (posts) {
                         //go run this so angular can update the new records
                         _thisClass.NgZoneSvc.run(function () {
                             //go find the post and increment by 1 (instead of reloading the data)
@@ -95,7 +99,7 @@ System.register(['angular2/core', './NewsFeedService', 'angular2/common', 'rxjs/
                         selector: 'NewsFeedPostContainer',
                         templateUrl: 'NewsFeedClientView',
                         bindings: [NewsFeedService_1.NewsFeedService],
-                        directives: [common_1.NgClass]
+                        directives: [common_1.NgClass, NewsFeedItem_1.NewsFeedItemPost]
                     }), 
                     __metadata('design:paramtypes', [NewsFeedService_1.NewsFeedService, core_1.NgZone])
                 ], NewsFeedApp);
