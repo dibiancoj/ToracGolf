@@ -26,6 +26,11 @@
     padding-left: 5px;
 }
 
-.NoPadding{
+.NoPadding {
     padding-left: 0px !important;
+}
+
+.post-comments {
+    padding-top: 0px;
+    padding-right: 0px !important;
 }
