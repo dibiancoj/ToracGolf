@@ -93,6 +93,9 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedItem', 'angula
                     //they want to filter backed on text box
                     this.LoadPosts(this.ActiveFeedTypeId, this.SearchFilterText);
                 };
+                NewsFeedApp.prototype.SaveComment = function (commentConfig) {
+                    debugger;
+                };
                 NewsFeedApp = __decorate([
                     core_1.Component({
                         selector: 'NewsFeedPostContainer',

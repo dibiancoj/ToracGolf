@@ -3,7 +3,6 @@
 }
 
 <div class="post-meta hidden-xs">
-    
     <div class="date">
         <span class="icon"><i class="fa fa-calendar"></i></span>
         <span class="month">{{Post.PostDate | date:'MMM'}}</span>
@@ -16,7 +15,6 @@
     </div>
 </div>
 <div class="post-content-wr">
-
     <div class="post-meta-top">
         <div class="post-image">
             <img src="{{Post.CourseImagePath}}" class="img-responsive NewsFeedCourseImage" alt="">
@@ -26,12 +24,24 @@
         </h2>
     </div>
     <div class="post-content clearfix">
-        <div class="post-tags">Posted in <a href="#">HOTELS</a>, <a href="#">SPECIAL PROMOS</a>, <a href="#">SUMMER</a></div>
-        <div class="post-comments"><strong>{{Post.CommentCount}}</strong><div class="fa-comments CommentIcon btn btn-block btn-xs btn-base btn-icon">comments</div></div>
+        <div class="post-comments" style="padding-top:0px;">
+            <strong>{{Post.CommentCount}}</strong>
+            <div class="fa-comments CommentIcon btn btn-block btn-xs btn-base btn-icon">
+                comments
+            </div>
+        </div>
         <div class="post-desc">
             <p *ngFor="#body of Post.BodyOfPost">
                 {{body}}
             </p>
+        </div>
+        <div class="row commententer">
+            <div class="col-xs-6">
+                <input #PostComment class="commententertextbox" type="text" placeholder="Enter A Comment" />
+            </div>
+            <div class="col-xs-2 NoPadding">
+                <div class="fa-floppy-o btn btn-block btn-xs btn-base btn-icon" (click)="SaveComment(Post.Id, Post.FeedTypeId, PostComment.value)">SAVE</div>
+            </div>
         </div>
     </div>
 </div>

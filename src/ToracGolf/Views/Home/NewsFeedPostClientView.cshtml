@@ -6,7 +6,7 @@
 
     <!-- Standard image post example -->
     <div class="post-item style2" *ngFor="#post of Posts">
-           <NewsFeedPostItem [Post]="post" (LikeEvent)="Like($event)"></NewsFeedPostItem>
+           <NewsFeedPostItem [Post]="post" (LikeEvent)="Like($event)" (CommentSaveEvent)="SaveComment($event)"></NewsFeedPostItem>
     </div>
 
 </div>

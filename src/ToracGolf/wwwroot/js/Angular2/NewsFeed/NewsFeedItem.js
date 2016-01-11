@@ -22,10 +22,15 @@ System.register(['angular2/core', './NewsFeedService'], function(exports_1) {
             NewsFeedItemPost = (function () {
                 function NewsFeedItemPost() {
                     this.LikeEvent = new core_1.EventEmitter(); //declared on NewsFeedPostClientView. its the event we bind with the parent component.
+                    this.CommentSaveEvent = new core_1.EventEmitter(); //declared on NewsFeedPostClientView. its the event we bind with the parent component.
                 }
                 NewsFeedItemPost.prototype.LikeClick = function (id, newsFeedTypeId) {
                     //pass this back to the parent component.
                     this.LikeEvent.emit({ Id: id, NewsFeedTypeId: newsFeedTypeId });
+                };
+                NewsFeedItemPost.prototype.SaveComment = function (id, newsFeedTypeId, comment) {
+                    //pass this back to the parent component
+                    this.CommentSaveEvent.emit({ Id: id, NewsFeedTypeId: newsFeedTypeId, Comment: comment });
                 };
                 __decorate([
                     core_1.Input(), 
@@ -36,6 +41,11 @@ System.register(['angular2/core', './NewsFeedService'], function(exports_1) {
                     core_1.Output(), 
                     __metadata('design:type', Object)
                 ], NewsFeedItemPost.prototype, "LikeEvent", void 0);
+                __decorate([
+                    //declared on NewsFeedPostClientView. its the event we bind with the parent component.
+                    core_1.Output(), 
+                    __metadata('design:type', Object)
+                ], NewsFeedItemPost.prototype, "CommentSaveEvent", void 0);
                 NewsFeedItemPost = __decorate([
                     core_1.Component({
                         selector: 'NewsFeedPostItem',

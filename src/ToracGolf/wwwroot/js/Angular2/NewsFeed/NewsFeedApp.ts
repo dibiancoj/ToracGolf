@@ -109,4 +109,8 @@ export class NewsFeedApp {
         this.LoadPosts(this.ActiveFeedTypeId, this.SearchFilterText);
     }
 
+    SaveComment(commentConfig: { Id: number, NewsFeedTypeId: NewsFeedTypeId, Comment: string }) {
+        debugger;
+    }
+
 }
