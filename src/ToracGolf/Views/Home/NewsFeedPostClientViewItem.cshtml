@@ -26,7 +26,7 @@
     <div class="post-content clearfix">
         <div class="post-comments">
             <strong>{{Post.CommentCount}}</strong>
-            <div class="fa-comments CommentIcon btn btn-block btn-xs btn-base btn-icon">
+            <div class="fa-comments CommentIcon NewsPostIcon btn btn-block btn-xs btn-base btn-icon">
                 comments
             </div>
         </div>
@@ -40,7 +40,7 @@
                 <input #PostComment class="commententertextbox" type="text" placeholder="Enter A Comment" />
             </div>
             <div class="col-xs-2 NoPadding">
-                <div class="fa-floppy-o btn btn-block btn-xs btn-base btn-icon" (click)="SaveComment(Post.Id, Post.FeedTypeId, PostComment.value)">SAVE</div>
+                <div class="fa-floppy-o NewsPostIcon btn btn-block btn-xs btn-base btn-icon" (click)="SaveComment(Post.Id, Post.FeedTypeId, PostComment.value)">SAVE</div>
             </div>
         </div>
     </div>
