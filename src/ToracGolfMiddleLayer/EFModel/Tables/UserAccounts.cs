@@ -10,7 +10,6 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
     public class UserAccounts
     {
 
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
 
         [Required]

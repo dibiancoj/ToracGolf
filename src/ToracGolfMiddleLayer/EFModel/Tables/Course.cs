@@ -10,7 +10,6 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
     public class Course
     {
 
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CourseId { get; set; }
 
         [Required]
@@ -48,6 +47,8 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
         //public CourseImages CourseImage { get; set; }
 
         public Ref_State State { get; set; }
+
+        public ICollection<Round> Rounds { get; set; }
 
     }
 }

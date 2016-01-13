@@ -10,8 +10,6 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
 
     public class Handicap
     {
-
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int RoundId { get; set; }
 
         public double HandicapBeforeRound { get; set; }

@@ -9,7 +9,6 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
     public class Ref_State
     {
 
-        [Key]
         public int StateId { get; set; }
 
         [Required]

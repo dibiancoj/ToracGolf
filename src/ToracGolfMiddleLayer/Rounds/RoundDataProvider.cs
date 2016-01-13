@@ -266,8 +266,8 @@ namespace ToracGolf.MiddleLayer.Rounds
                 RoundDate = x.RoundDate,
                 Score = x.Score,
                 SeasonId = x.SeasonId,
-                TeeBoxLocation = dbContext.CourseTeeLocations.FirstOrDefault(y => y.CourseId == x.CourseId && y.CourseTeeLocationId == x.CourseTeeLocationId),
-                HandicapBeforeRound = dbContext.Handicap.FirstOrDefault(y => y.RoundId == x.RoundId).HandicapBeforeRound,
+                TeeBoxLocation = x.CourseTeeLocation,
+                HandicapBeforeRound = x.Handicap.HandicapBeforeRound,
 
                 Putts = x.Putts,
                 FairwaysHit = x.FairwaysHit,

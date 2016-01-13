@@ -116,18 +116,18 @@ namespace ToracGolf.MiddleLayer.Courses
             var query = sortedQueryable.Select(x => new CourseListingData
             {
                 CourseData = x,
-                StateDescription = dbContext.Ref_State.FirstOrDefault(y => y.StateId == x.StateId).Description,
+                StateDescription = x.State.Description,
                 TeeLocationCount = x.CourseTeeLocations.Count,
 
-                NumberOfRounds = dbContext.Rounds.Count(y => y.CourseId == x.CourseId && y.UserId == userId),
-                TopScore = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.Score).Min(),
-                WorseScore = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.Score).Max(),
-                AverageScore = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.Score).Average(),
+                NumberOfRounds = x.Rounds.Count(y => y.UserId == userId),
+                TopScore = x.Rounds.Where(y => y.UserId == userId).Min(y => y.Score),
+                WorseScore = x.Rounds.Where(y => y.UserId == userId).Max(y => y.Score),
+                AverageScore = x.Rounds.Where(y => y.UserId == userId).Average(y => y.Score),
 
-                FairwaysHit = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.FairwaysHit).Sum(),
-                FairwaysHitAttempted = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.CourseTeeLocation.FairwaysOnCourse).Sum(),
-                GreensInRegulation = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.GreensInRegulation).Average(),
-                NumberOfPutts = dbContext.Rounds.Where(y => y.CourseId == x.CourseId && y.UserId == userId).Select(y => y.Putts).Average()
+                FairwaysHit = x.Rounds.Where(y => y.UserId == userId).Sum(y => y.FairwaysHit),
+                FairwaysHitAttempted = x.Rounds.Where(y => y.UserId == userId).Sum(y => y.CourseTeeLocation.FairwaysOnCourse),
+                GreensInRegulation = x.Rounds.Where(y => y.UserId == userId).Average(y => y.GreensInRegulation),
+                NumberOfPutts = x.Rounds.Where(y => y.UserId == userId).Average(y => y.Putts)
             });
 
             //go execute it and return it

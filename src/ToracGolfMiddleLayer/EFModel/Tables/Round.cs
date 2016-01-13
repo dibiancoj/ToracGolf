@@ -10,7 +10,6 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
     public class Round
     {
 
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int RoundId { get; set; }
 
         [Required]

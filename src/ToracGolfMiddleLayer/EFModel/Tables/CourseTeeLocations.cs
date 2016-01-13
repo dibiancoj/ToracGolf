@@ -9,7 +9,6 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
 {
     public class CourseTeeLocations
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CourseTeeLocationId { get; set; }
 
         [Required]

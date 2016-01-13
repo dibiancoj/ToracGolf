@@ -40,10 +40,10 @@ namespace ToracGolf.MiddleLayer.Season
                           {
                               Description = refSeasons.SeasonText,
                               SeasonId = refSeasons.SeasonId,
-                              NumberOfRounds = dbContext.Rounds.Count(x => x.UserId == userId && x.SeasonId == mySeasons.SeasonId),
-                              TopScore = dbContext.Rounds.Where(x => x.UserId == userId && x.SeasonId == mySeasons.SeasonId).Min(x => x.Score),
-                              WorseScore = dbContext.Rounds.Where(x => x.UserId == userId && x.SeasonId == mySeasons.SeasonId).Max(x => x.Score),
-                              AverageScore = dbContext.Rounds.Where(x => x.UserId == userId && x.SeasonId == mySeasons.SeasonId).Average(x => x.Score),
+                              NumberOfRounds = mySeasons.Rounds.Count(),
+                              TopScore = mySeasons.Rounds.Min(x => x.Score),
+                              WorseScore = mySeasons.Rounds.Max(x => x.Score),
+                              AverageScore = mySeasons.Rounds.Average(x => x.Score),
                           }).ToArrayAsync();
         }
 

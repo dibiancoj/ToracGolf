@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,26 +27,49 @@ namespace ToracGolf.MiddleLayer.EFModel
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserSeason>().ToTable("UserSeason");
-            modelBuilder.Entity<Course>().ToTable("Course");
-            modelBuilder.Entity<Handicap>().ToTable("Handicap");
+            modelBuilder.Entity<UserSeason>().ToTable("UserSeason").HasKey(x => new { x.UserId, x.SeasonId });
+            modelBuilder.Entity<Handicap>().ToTable("Handicap").HasKey(x => x.RoundId);
 
-            modelBuilder.Entity<Round>().ToTable("Round");//.HasRequired(x => x.CourseTeeLocationId);
+            modelBuilder.Entity<NewsFeedLike>().ToTable("NewsFeedLike").HasKey(x => new { x.AreaId, x.NewsFeedTypeId, x.UserIdThatLikedItem });
 
-            modelBuilder.Entity<Round>()
-                .HasRequired(x => x.Handicap)
-                .WithRequiredPrincipal(c2 => c2.Round); //need this otherwise when we go to insert a round it blows up 
-            //.HasForeignKey(x => x.RoundId);
+            modelBuilder.Entity<NewsFeedComment>().ToTable("NewsFeedComment").HasKey(x => new { x.AreaId, x.NewsFeedTypeId, x.UserIdThatCommented });
 
+            modelBuilder.Entity<Course>().ToTable("Course")
+                .HasKey(x => x.CourseId)
+                .Property(x => x.CourseId)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-
-            //modelBuilder.Entity<CourseTeeLocations>().HasKey(e => e.CourseTeeLocationId);
-
-            //modelBuilder.Entity<Course>().HasOptional(x => x.CourseImage).WithRequired(x => x.Course);
-
-            modelBuilder.Entity<Ref_State>().HasKey(x => x.StateId);
             modelBuilder.Entity<Course>().HasRequired(x => x.State).WithMany(x => x.Courses);
 
+            //need this otherwise when we go to insert a round it blows up 
+
+            modelBuilder.Entity<Round>().ToTable("Round")
+                .HasKey(x => x.RoundId)
+                .Property(x => x.RoundId)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
+            modelBuilder.Entity<Round>()
+             .HasRequired(x => x.Handicap)
+             .WithRequiredPrincipal(c2 => c2.Round);
+
+            modelBuilder.Entity<UserAccounts>()
+                .HasKey(x => x.UserId)
+                .Property(x => x.UserId)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
+            modelBuilder.Entity<Ref_State>().HasKey(x => x.StateId);
+
+            modelBuilder.Entity<CourseTeeLocations>()
+                .HasKey(x => x.CourseTeeLocationId)
+                .Property(x => x.CourseTeeLocationId)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
+            modelBuilder.Entity<Ref_State>().HasKey(x => x.StateId);
+
+            modelBuilder.Entity<Ref_Season>()
+                .HasKey(x => x.SeasonId)
+                .Property(x => x.SeasonId)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
         }
 
     }
