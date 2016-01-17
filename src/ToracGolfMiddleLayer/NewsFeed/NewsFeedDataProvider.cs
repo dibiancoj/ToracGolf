@@ -143,7 +143,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed
             return true;
         }
 
-        public static async Task<bool> CommentAdd(ToracGolfContext dbContext, int userId, int id, NewsFeedItemModel.NewsFeedTypeId newsFeedTypeId, string commentToAdd)
+        public static async Task<IEnumerable<NewsFeedCommentRow>> CommentAdd(ToracGolfContext dbContext, int userId, int id, NewsFeedItemModel.NewsFeedTypeId newsFeedTypeId, string commentToAdd)
         {
             dbContext.NewsFeedComment.Add(new EFModel.Tables.NewsFeedComment
             {
@@ -156,7 +156,23 @@ namespace ToracGolf.MiddleLayer.NewsFeed
 
             await dbContext.SaveChangesAsync();
 
-            return true;
+            //go return this posts comment
+            return await CommentSelect(dbContext, userId, id, newsFeedTypeId);
+        }
+
+        public static async Task<IEnumerable<NewsFeedCommentRow>> CommentSelect(ToracGolfContext dbContext, int userId, int id, NewsFeedItemModel.NewsFeedTypeId newsFeedTypeId)
+        {
+            //now go return the comments for this post
+            var data = await dbContext.NewsFeedComment.AsNoTracking()
+                                .Where(x => x.AreaId == id && x.NewsFeedTypeId == (int)newsFeedTypeId)
+                                .OrderBy(x => x.CreatedDate)
+                                .Select(x => new
+                                {
+                                    User = x.User.FirstName + " " + x.User.LastName,
+                                    x.Comment
+                                }).ToArrayAsync();
+
+            return data.Select(x => new NewsFeedCommentRow(x.User, x.Comment)).ToArray();
         }
 
     }

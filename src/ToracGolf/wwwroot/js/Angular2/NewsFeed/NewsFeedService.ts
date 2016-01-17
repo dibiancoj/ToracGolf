@@ -22,8 +22,12 @@ export class NewsFeedService {
         return this.HttpInterceptorSvc.Post('NewsFeedsLike', JSON.stringify({ Id: id, NewsFeedTypeId: newsFeedTypeId }));
     }
 
-    NewsFeedComment(id: number, newsFeedTypeId: NewsFeedTypeId, commentToAdd: string): Observable<Response> {
+    NewsFeedCommentSave(id: number, newsFeedTypeId: NewsFeedTypeId, commentToAdd: string): Observable<Response> {
         return this.HttpInterceptorSvc.Post('NewsFeedsComment', JSON.stringify({ Id: id, NewsFeedTypeId: newsFeedTypeId, CommentToAdd: commentToAdd }));
+    }
+
+    NewsFeedCommentSelect(id: number, newsFeedTypeId: NewsFeedTypeId): Observable<Response> {
+        return this.HttpInterceptorSvc.Post('NewsFeedsCommentSelect', JSON.stringify({ Id: id, NewsFeedTypeId: newsFeedTypeId }));
     }
 
 }
@@ -41,6 +45,7 @@ export class NewsFeedItem {
     CommentCount: number;
     LikeCount: number;
     YouLikedItem: boolean;
+    Comments: Array<NewsFeedComment>;
 }
 
 export class NewsFeedComment {

@@ -26,14 +26,20 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedComment'], fun
                 function NewsFeedItemPost() {
                     this.LikeEvent = new core_1.EventEmitter(); //declared on NewsFeedPostClientView. its the event we bind with the parent component.
                     this.CommentSaveEvent = new core_1.EventEmitter(); //declared on NewsFeedPostClientView. its the event we bind with the parent component.
+                    this.ShowHideCommentEvent = new core_1.EventEmitter();
                 }
                 NewsFeedItemPost.prototype.LikeClick = function (id, newsFeedTypeId) {
                     //pass this back to the parent component.
                     this.LikeEvent.emit({ Id: id, NewsFeedTypeId: newsFeedTypeId });
                 };
                 NewsFeedItemPost.prototype.SaveComment = function (id, newsFeedTypeId, comment) {
+                    debugger;
                     //pass this back to the parent component
                     this.CommentSaveEvent.emit({ Id: id, NewsFeedTypeId: newsFeedTypeId, Comment: comment });
+                };
+                NewsFeedItemPost.prototype.ShowHideComments = function (id, newsFeedTypeId, comment) {
+                    //pass this back to the parent component
+                    this.ShowHideCommentEvent.emit({ Id: id, NewsFeedTypeId: newsFeedTypeId });
                 };
                 __decorate([
                     core_1.Input(), 
@@ -49,6 +55,11 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedComment'], fun
                     core_1.Output(), 
                     __metadata('design:type', Object)
                 ], NewsFeedItemPost.prototype, "CommentSaveEvent", void 0);
+                __decorate([
+                    //declared on NewsFeedPostClientView. its the event we bind with the parent component.
+                    core_1.Output(), 
+                    __metadata('design:type', Object)
+                ], NewsFeedItemPost.prototype, "ShowHideCommentEvent", void 0);
                 NewsFeedItemPost = __decorate([
                     core_1.Component({
                         selector: 'NewsFeedPostItem',

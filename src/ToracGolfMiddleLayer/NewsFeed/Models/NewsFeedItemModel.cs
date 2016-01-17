@@ -11,11 +11,11 @@ namespace ToracGolf.MiddleLayer.NewsFeed
 
         public NewsFeedItemModel()
         {
-            // Comments = Enumerable.Empty<NewsFeedCommentRow>();
-            Comments = new List<NewsFeedCommentRow>()
-           {
-               new NewsFeedCommentRow ("jason dibianco","NewsFeedItemModel in constructor...to test comment row...remove when done")
-           };
+           // Comments = Enumerable.Empty<NewsFeedCommentRow>();
+            // Comments = new List<NewsFeedCommentRow>()
+            //{
+            //    new NewsFeedCommentRow ("jason dibianco","NewsFeedItemModel in constructor...to test comment row...remove when done")
+            //};
         }
 
         public enum NewsFeedTypeId

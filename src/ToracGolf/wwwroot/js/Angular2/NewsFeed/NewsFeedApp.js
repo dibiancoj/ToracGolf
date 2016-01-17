@@ -102,14 +102,35 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedItem', './News
                     //go grab the record
                     var recordToUpdate = this.Posts.First(function (x) { return x.Id == commentConfig.Id && x.FeedTypeId == commentConfig.NewsFeedTypeId; });
                     //go save the comment
-                    this.NewsFeedSvc.NewsFeedComment(commentConfig.Id, commentConfig.NewsFeedTypeId, commentConfig.Comment).subscribe(function (posts) {
+                    this.NewsFeedSvc.NewsFeedCommentSave(commentConfig.Id, commentConfig.NewsFeedTypeId, commentConfig.Comment).subscribe(function (comments) {
                         //go run this so angular can update the new records
                         _thisClass.NgZoneSvc.run(function () {
                             //increase the tally of comments
                             recordToUpdate.CommentCount++;
-                            alert('need to add this comment to the list and display it');
+                            //go add it to the list of comments
+                            recordToUpdate.Comments = comments;
                         });
                     });
+                };
+                NewsFeedApp.prototype.ShowHideComment = function (showHideConfig) {
+                    //closure
+                    var _thisClass = this;
+                    //try to find out if we have any comments
+                    var recordToUpdate = this.Posts.First(function (x) { return x.Id == showHideConfig.Id && x.FeedTypeId == showHideConfig.NewsFeedTypeId; });
+                    //if we have 0 comments, then just set it to null and don't go to the server
+                    if (recordToUpdate.Comments != null || recordToUpdate.CommentCount == 0) {
+                        recordToUpdate.Comments = null; //set it back to null
+                    }
+                    else {
+                        //go get the comments
+                        this.NewsFeedSvc.NewsFeedCommentSelect(showHideConfig.Id, showHideConfig.NewsFeedTypeId).subscribe(function (comments) {
+                            //go run this so angular can update the new records
+                            _thisClass.NgZoneSvc.run(function () {
+                                //go add it to the list of comments
+                                recordToUpdate.Comments = comments;
+                            });
+                        });
+                    }
                 };
                 NewsFeedApp = __decorate([
                     core_1.Component({

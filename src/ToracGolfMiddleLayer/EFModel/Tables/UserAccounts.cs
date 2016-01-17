@@ -37,5 +37,7 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
         [Required]
         public int StateId { get; set; }
 
+        public ICollection<NewsFeedComment> Comments { get; set; }
+
     }
 }

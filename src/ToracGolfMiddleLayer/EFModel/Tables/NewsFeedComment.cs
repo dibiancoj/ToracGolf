@@ -12,7 +12,7 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
     {
 
         public int CommentId { get; set; }
-  
+
         public int NewsFeedTypeId { get; set; }
 
         public int AreaId { get; set; }
@@ -22,6 +22,8 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
         public string Comment { get; set; }
 
         public DateTime CreatedDate { get; set; }
+
+        public UserAccounts User { get; set; }
 
     }
 }

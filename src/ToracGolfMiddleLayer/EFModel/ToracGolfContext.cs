@@ -37,6 +37,11 @@ namespace ToracGolf.MiddleLayer.EFModel
                 .Property(x => x.CommentId)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
+            modelBuilder.Entity<NewsFeedComment>()
+                .HasRequired(x => x.User)
+                .WithMany(x => x.Comments)
+                .HasForeignKey(x => x.UserIdThatCommented);
+
             modelBuilder.Entity<Course>().ToTable("Course")
                 .HasKey(x => x.CourseId)
                 .Property(x => x.CourseId)

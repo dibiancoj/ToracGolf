@@ -12,6 +12,7 @@ export class NewsFeedItemPost {
     @Input() Post: NewsFeedItem; //declared on NewsFeedPostClientView. it's the attribute name where we pass in the object
     @Output() LikeEvent = new EventEmitter(); //declared on NewsFeedPostClientView. its the event we bind with the parent component.
     @Output() CommentSaveEvent = new EventEmitter(); //declared on NewsFeedPostClientView. its the event we bind with the parent component.
+    @Output() ShowHideCommentEvent = new EventEmitter();
 
     LikeClick(id: number, newsFeedTypeId: NewsFeedTypeId) {
     
@@ -20,8 +21,14 @@ export class NewsFeedItemPost {
     }
 
     SaveComment(id: number, newsFeedTypeId: NewsFeedTypeId, comment: string) {
-        
+
         //pass this back to the parent component
         this.CommentSaveEvent.emit({ Id: id, NewsFeedTypeId: newsFeedTypeId, Comment: comment });
+    }
+
+    ShowHideComments(id: number, newsFeedTypeId: NewsFeedTypeId, comment: string) {
+
+        //pass this back to the parent component
+        this.ShowHideCommentEvent.emit({ Id: id, NewsFeedTypeId: newsFeedTypeId });
     }
 }

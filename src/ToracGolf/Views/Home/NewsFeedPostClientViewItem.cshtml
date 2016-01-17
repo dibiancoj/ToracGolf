@@ -27,7 +27,7 @@
         <div class="post-comments">
             <strong>{{Post.CommentCount}}</strong>
             <div class="fa-comments CommentIcon NewsPostIcon btn btn-block btn-xs btn-base btn-icon">
-                comments
+                <div (click)="ShowHideComments(Post.Id, Post.FeedTypeId)">comments</div>
             </div>
         </div>
         <div class="post-desc">
