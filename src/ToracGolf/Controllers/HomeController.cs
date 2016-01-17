@@ -157,6 +157,13 @@ namespace ToracGolf.Controllers
             return View();
         }
 
+        [Route("NewsFeedCommentItemClientView", Name = "NewsFeedCommentItemClientView")]
+        [HttpGet]
+        public IActionResult NewsFeedPostCommentClientView()
+        {
+            return View();
+        }
+
         [ValidateCustomAntiForgeryToken]
         [Route("NewsFeedsGetPost", Name = "NewsFeedsGetPost")]
         [HttpPost]

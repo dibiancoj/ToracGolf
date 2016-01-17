@@ -9,7 +9,7 @@ System.register(['angular2/core', 'rxjs/add/operator/map', '../Common/httpinterc
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1, httpinterceptor_1;
-    var NewsFeedService, NewsFeedQueryResult, NewsFeedItem, NewsFeedTypeId;
+    var NewsFeedService, NewsFeedQueryResult, NewsFeedItem, NewsFeedComment, NewsFeedTypeId;
     return {
         setters:[
             function (core_1_1) {
@@ -52,6 +52,12 @@ System.register(['angular2/core', 'rxjs/add/operator/map', '../Common/httpinterc
                 return NewsFeedItem;
             })();
             exports_1("NewsFeedItem", NewsFeedItem);
+            NewsFeedComment = (function () {
+                function NewsFeedComment() {
+                }
+                return NewsFeedComment;
+            })();
+            exports_1("NewsFeedComment", NewsFeedComment);
             (function (NewsFeedTypeId) {
                 NewsFeedTypeId[NewsFeedTypeId["NewRound"] = 0] = "NewRound";
                 NewsFeedTypeId[NewsFeedTypeId["NewCourse"] = 1] = "NewCourse";

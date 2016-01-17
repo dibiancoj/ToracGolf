@@ -35,6 +35,11 @@
                 {{body}}
             </p>
         </div>
+
+        <div *ngFor="#comment of Post.Comments">
+            <NewsFeedCommentItem [Comment]="comment"></NewsFeedCommentItem>
+        </div>
+
         <div class="row commententer">
             <div class="col-xs-10">
                 <input #PostComment class="commententertextbox" type="text" placeholder="Enter A Comment" />

@@ -2,6 +2,7 @@
 import {Component, Inject, NgZone} from 'angular2/core';
 import {NewsFeedService, NewsFeedItem, NewsFeedQueryResult, NewsFeedTypeId} from './NewsFeedService';
 import {NewsFeedItemPost} from './NewsFeedItem';
+import {NewsFeedItemComment} from './NewsFeedComment';
 import {NgClass} from 'angular2/common';
 
 import { Http, Response } from 'angular2/http';
@@ -11,7 +12,7 @@ import 'rxjs/add/operator/map';
     selector: 'NewsFeedPostContainer',
     templateUrl: 'NewsFeedClientView',
     bindings: [NewsFeedService],
-    directives: [NgClass, NewsFeedItemPost]
+    directives: [NgClass, NewsFeedItemPost, NewsFeedItemComment]
 })
 export class NewsFeedApp {
 

@@ -2,11 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ToracGolf.MiddleLayer.NewsFeed.Models;
 
 namespace ToracGolf.MiddleLayer.NewsFeed
 {
     public abstract class NewsFeedItemModel
     {
+
+        public NewsFeedItemModel()
+        {
+            // Comments = Enumerable.Empty<NewsFeedCommentRow>();
+            Comments = new List<NewsFeedCommentRow>()
+           {
+               new NewsFeedCommentRow ("jason dibianco","NewsFeedItemModel in constructor...to test comment row...remove when done")
+           };
+        }
 
         public enum NewsFeedTypeId
         {
@@ -32,6 +42,8 @@ namespace ToracGolf.MiddleLayer.NewsFeed
         public int LikeCount { get; set; }
 
         public bool YouLikedItem { get; set; }
+
+        public IEnumerable<NewsFeedCommentRow> Comments { get; set; }
 
     }
 

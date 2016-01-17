@@ -1,9 +1,11 @@
 ﻿import {Component, Input, Inject, Output, EventEmitter} from 'angular2/core';
 import {NewsFeedItem, NewsFeedTypeId} from './NewsFeedService';
+import {NewsFeedItemComment} from './NewsFeedComment';
 
 @Component({
     selector: 'NewsFeedPostItem',
-    templateUrl: 'NewsFeedItemClientView'
+    templateUrl: 'NewsFeedItemClientView',
+    directives: [NewsFeedItemComment]
 })
 export class NewsFeedItemPost {
 

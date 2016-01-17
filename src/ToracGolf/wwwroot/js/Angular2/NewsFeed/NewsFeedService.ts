@@ -43,6 +43,11 @@ export class NewsFeedItem {
     YouLikedItem: boolean;
 }
 
+export class NewsFeedComment {
+    User: string;
+    CommentText: string;
+}
+
 export enum NewsFeedTypeId {
     NewRound,
     NewCourse

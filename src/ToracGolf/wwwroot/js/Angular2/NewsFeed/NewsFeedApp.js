@@ -1,4 +1,4 @@
-System.register(['angular2/core', './NewsFeedService', './NewsFeedItem', 'angular2/common', 'rxjs/add/operator/map'], function(exports_1) {
+System.register(['angular2/core', './NewsFeedService', './NewsFeedItem', './NewsFeedComment', 'angular2/common', 'rxjs/add/operator/map'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedItem', 'angula
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, NewsFeedService_1, NewsFeedItem_1, common_1;
+    var core_1, NewsFeedService_1, NewsFeedItem_1, NewsFeedComment_1, common_1;
     var NewsFeedApp;
     return {
         setters:[
@@ -20,6 +20,9 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedItem', 'angula
             },
             function (NewsFeedItem_1_1) {
                 NewsFeedItem_1 = NewsFeedItem_1_1;
+            },
+            function (NewsFeedComment_1_1) {
+                NewsFeedComment_1 = NewsFeedComment_1_1;
             },
             function (common_1_1) {
                 common_1 = common_1_1;
@@ -113,7 +116,7 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedItem', 'angula
                         selector: 'NewsFeedPostContainer',
                         templateUrl: 'NewsFeedClientView',
                         bindings: [NewsFeedService_1.NewsFeedService],
-                        directives: [common_1.NgClass, NewsFeedItem_1.NewsFeedItemPost]
+                        directives: [common_1.NgClass, NewsFeedItem_1.NewsFeedItemPost, NewsFeedComment_1.NewsFeedItemComment]
                     }), 
                     __metadata('design:paramtypes', [NewsFeedService_1.NewsFeedService, core_1.NgZone])
                 ], NewsFeedApp);

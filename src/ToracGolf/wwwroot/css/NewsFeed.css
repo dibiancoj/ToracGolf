@@ -37,3 +37,21 @@
 .NewsPostIcon {
     width: 115px;
 }
+
+.CommentRow {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+
+.CommentContent {
+    background-color: rgb(246, 247, 248);
+    padding-left: 5px;
+}
+
+.commentuser {
+    font-weight: bold;
+}
+
+.commentlike {
+    color: #7f7f7f;
+}
