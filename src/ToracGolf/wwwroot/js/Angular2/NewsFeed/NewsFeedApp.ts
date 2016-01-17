@@ -110,10 +110,13 @@ export class NewsFeedApp {
         this.LoadPosts(this.ActiveFeedTypeId, this.SearchFilterText);
     }
 
-    SaveComment(commentConfig: { Id: number, NewsFeedTypeId: NewsFeedTypeId, Comment: string }) {
+    SaveComment(commentConfig: { Id: number, NewsFeedTypeId: NewsFeedTypeId, Comment: string, TextBoxElement: HTMLInputElement }) {
        
         //closure
         var _thisClass = this;
+
+        //throw the element into a closure
+        var inputElement = commentConfig.TextBoxElement;
 
         //go grab the record
         var recordToUpdate = this.Posts.First(function (x) { return x.Id == commentConfig.Id && x.FeedTypeId == commentConfig.NewsFeedTypeId });
@@ -124,13 +127,14 @@ export class NewsFeedApp {
             //go run this so angular can update the new records
             _thisClass.NgZoneSvc.run(() => {
 
+                //clear the textbox
+                inputElement.value = '';
+
                 //increase the tally of comments
                 recordToUpdate.CommentCount++;
 
                 //go add it to the list of comments
                 recordToUpdate.Comments = comments;
-
-                alert('need to clear out the comment textbox value');
             });
         });
     }

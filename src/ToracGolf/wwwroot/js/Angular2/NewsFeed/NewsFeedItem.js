@@ -32,10 +32,9 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedComment'], fun
                     //pass this back to the parent component.
                     this.LikeEvent.emit({ Id: id, NewsFeedTypeId: newsFeedTypeId });
                 };
-                NewsFeedItemPost.prototype.SaveComment = function (id, newsFeedTypeId, comment) {
-                    debugger;
+                NewsFeedItemPost.prototype.SaveComment = function (id, newsFeedTypeId, comment, InputElement) {
                     //pass this back to the parent component
-                    this.CommentSaveEvent.emit({ Id: id, NewsFeedTypeId: newsFeedTypeId, Comment: comment });
+                    this.CommentSaveEvent.emit({ Id: id, NewsFeedTypeId: newsFeedTypeId, Comment: comment, TextBoxElement: InputElement });
                 };
                 NewsFeedItemPost.prototype.ShowHideComments = function (id, newsFeedTypeId, comment) {
                     //pass this back to the parent component

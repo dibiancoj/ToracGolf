@@ -42,10 +42,10 @@
 
         <div class="row commententer">
             <div class="col-xs-10">
-                <input #PostComment class="commententertextbox" type="text" placeholder="Enter A Comment" />
+                <input #PostComment class="commententertextbox" type="text" placeholder="Enter A Comment" maxlength="255" />
             </div>
             <div class="col-xs-2 NoPadding">
-                <div class="fa-floppy-o NewsPostIcon btn btn-block btn-xs btn-base btn-icon" (click)="SaveComment(Post.Id, Post.FeedTypeId, PostComment.value)">SAVE</div>
+                <div class="fa-floppy-o NewsPostIcon btn btn-block btn-xs btn-base btn-icon" (click)="SaveComment(Post.Id, Post.FeedTypeId, PostComment.value, PostComment)">SAVE</div>
             </div>
         </div>
     </div>

@@ -20,10 +20,10 @@ export class NewsFeedItemPost {
         this.LikeEvent.emit({ Id: id, NewsFeedTypeId: newsFeedTypeId });
     }
 
-    SaveComment(id: number, newsFeedTypeId: NewsFeedTypeId, comment: string) {
+    SaveComment(id: number, newsFeedTypeId: NewsFeedTypeId, comment: string, InputElement: HTMLInputElement) {
 
         //pass this back to the parent component
-        this.CommentSaveEvent.emit({ Id: id, NewsFeedTypeId: newsFeedTypeId, Comment: comment });
+        this.CommentSaveEvent.emit({ Id: id, NewsFeedTypeId: newsFeedTypeId, Comment: comment, TextBoxElement: InputElement });
     }
 
     ShowHideComments(id: number, newsFeedTypeId: NewsFeedTypeId, comment: string) {

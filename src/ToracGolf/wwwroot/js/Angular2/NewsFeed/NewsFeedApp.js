@@ -99,12 +99,16 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedItem', './News
                 NewsFeedApp.prototype.SaveComment = function (commentConfig) {
                     //closure
                     var _thisClass = this;
+                    //throw the element into a closure
+                    var inputElement = commentConfig.TextBoxElement;
                     //go grab the record
                     var recordToUpdate = this.Posts.First(function (x) { return x.Id == commentConfig.Id && x.FeedTypeId == commentConfig.NewsFeedTypeId; });
                     //go save the comment
                     this.NewsFeedSvc.NewsFeedCommentSave(commentConfig.Id, commentConfig.NewsFeedTypeId, commentConfig.Comment).subscribe(function (comments) {
                         //go run this so angular can update the new records
                         _thisClass.NgZoneSvc.run(function () {
+                            //clear the textbox
+                            inputElement.value = '';
                             //increase the tally of comments
                             recordToUpdate.CommentCount++;
                             //go add it to the list of comments
