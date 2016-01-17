@@ -114,10 +114,17 @@ export class NewsFeedApp {
         //closure
         var _thisClass = this;
 
+        //go grab the record
+        var recordToUpdate = this.Posts.First(function (x) { return x.Id == commentConfig.Id && x.FeedTypeId == commentConfig.NewsFeedTypeId });
+
+        //go save the comment
         this.NewsFeedSvc.NewsFeedComment(commentConfig.Id, commentConfig.NewsFeedTypeId, commentConfig.Comment).subscribe((posts: Array<NewsFeedItem>) => {
          
             //go run this so angular can update the new records
             _thisClass.NgZoneSvc.run(() => {
+
+                //increase the tally of comments
+                recordToUpdate.CommentCount++;
 
                 alert('need to add this comment to the list and display it');
 

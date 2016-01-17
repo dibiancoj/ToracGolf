@@ -10,6 +10,8 @@ namespace ToracGolf.MiddleLayer.EFModel.Tables
 
     public class NewsFeedComment
     {
+
+        public int CommentId { get; set; }
   
         public int NewsFeedTypeId { get; set; }
 

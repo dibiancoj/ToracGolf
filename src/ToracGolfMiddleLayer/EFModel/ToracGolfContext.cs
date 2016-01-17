@@ -32,7 +32,10 @@ namespace ToracGolf.MiddleLayer.EFModel
 
             modelBuilder.Entity<NewsFeedLike>().ToTable("NewsFeedLike").HasKey(x => new { x.AreaId, x.NewsFeedTypeId, x.UserIdThatLikedItem });
 
-            modelBuilder.Entity<NewsFeedComment>().ToTable("NewsFeedComment").HasKey(x => new { x.AreaId, x.NewsFeedTypeId, x.UserIdThatCommented });
+            modelBuilder.Entity<NewsFeedComment>().ToTable("NewsFeedComment")
+                .HasKey(x => x.CommentId)
+                .Property(x => x.CommentId)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             modelBuilder.Entity<Course>().ToTable("Course")
                 .HasKey(x => x.CourseId)
