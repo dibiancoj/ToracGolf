@@ -143,6 +143,22 @@ namespace ToracGolf.MiddleLayer.NewsFeed
             return true;
         }
 
+        public static async Task<bool> CommentAdd(ToracGolfContext dbContext, int userId, int id, NewsFeedItemModel.NewsFeedTypeId newsFeedTypeId, string commentToAdd)
+        {
+            dbContext.NewsFeedComment.Add(new EFModel.Tables.NewsFeedComment
+            {
+                AreaId = id,
+                NewsFeedTypeId = (int)newsFeedTypeId,
+                UserIdThatCommented = userId,
+                CreatedDate = DateTime.Now,
+                Comment = commentToAdd
+            });
+
+            await dbContext.SaveChangesAsync();
+
+            return true;
+        }
+
     }
 
 }

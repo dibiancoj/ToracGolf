@@ -173,6 +173,15 @@ namespace ToracGolf.Controllers
             return Json(await NewsFeedDataProvider.NewsFeedLikeAdd(DbContext, GetUserId(), likeModel.Id, likeModel.NewsFeedTypeId));
         }
 
+        [ValidateCustomAntiForgeryToken]
+        [Route("NewsFeedsComment", Name = "NewsFeedsComment")]
+        [HttpPost]
+        public async Task<IActionResult> NewsFeedComment([FromBody]NewsFeedAddComment commentModel)
+        {
+            //go save the comment
+            return Json(await NewsFeedDataProvider.CommentAdd(DbContext, GetUserId(), commentModel.Id, commentModel.NewsFeedTypeId, commentModel.CommentToAdd));
+        }
+
         #endregion
 
         #region Error Handling

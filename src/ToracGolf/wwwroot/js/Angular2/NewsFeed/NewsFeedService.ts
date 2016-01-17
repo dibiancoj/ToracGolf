@@ -22,6 +22,10 @@ export class NewsFeedService {
         return this.HttpInterceptorSvc.Post('NewsFeedsLike', JSON.stringify({ Id: id, NewsFeedTypeId: newsFeedTypeId }));
     }
 
+    NewsFeedComment(id: number, newsFeedTypeId: NewsFeedTypeId, commentToAdd: string): Observable<Response> {
+        return this.HttpInterceptorSvc.Post('NewsFeedsComment', JSON.stringify({ Id: id, NewsFeedTypeId: newsFeedTypeId, CommentToAdd: commentToAdd }));
+    }
+
 }
 
 export class NewsFeedQueryResult {

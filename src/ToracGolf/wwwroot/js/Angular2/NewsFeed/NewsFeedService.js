@@ -30,6 +30,9 @@ System.register(['angular2/core', 'rxjs/add/operator/map', '../Common/httpinterc
                 NewsFeedService.prototype.LikePost = function (id, newsFeedTypeId) {
                     return this.HttpInterceptorSvc.Post('NewsFeedsLike', JSON.stringify({ Id: id, NewsFeedTypeId: newsFeedTypeId }));
                 };
+                NewsFeedService.prototype.NewsFeedComment = function (id, newsFeedTypeId, commentToAdd) {
+                    return this.HttpInterceptorSvc.Post('NewsFeedsComment', JSON.stringify({ Id: id, NewsFeedTypeId: newsFeedTypeId, CommentToAdd: commentToAdd }));
+                };
                 NewsFeedService = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [httpinterceptor_1.HttpInterceptor])

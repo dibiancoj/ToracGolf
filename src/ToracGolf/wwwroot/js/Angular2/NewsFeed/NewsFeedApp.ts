@@ -110,7 +110,19 @@ export class NewsFeedApp {
     }
 
     SaveComment(commentConfig: { Id: number, NewsFeedTypeId: NewsFeedTypeId, Comment: string }) {
-        debugger;
+       
+        //closure
+        var _thisClass = this;
+
+        this.NewsFeedSvc.NewsFeedComment(commentConfig.Id, commentConfig.NewsFeedTypeId, commentConfig.Comment).subscribe((posts: Array<NewsFeedItem>) => {
+         
+            //go run this so angular can update the new records
+            _thisClass.NgZoneSvc.run(() => {
+
+                alert('need to add this comment to the list and display it');
+
+            });
+        });
     }
 
 }

@@ -94,7 +94,13 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedItem', 'angula
                     this.LoadPosts(this.ActiveFeedTypeId, this.SearchFilterText);
                 };
                 NewsFeedApp.prototype.SaveComment = function (commentConfig) {
-                    debugger;
+                    //closure
+                    var _thisClass = this;
+                    this.NewsFeedSvc.NewsFeedComment(commentConfig.Id, commentConfig.NewsFeedTypeId, commentConfig.Comment).subscribe(function (posts) {
+                        //go run this so angular can update the new records
+                        _thisClass.NgZoneSvc.run(function () {
+                        });
+                    });
                 };
                 NewsFeedApp = __decorate([
                     core_1.Component({
