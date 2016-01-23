@@ -35,7 +35,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.Likes
         public async Task<bool> AddOrRemoveLike(int areaId, NewsFeedItemModel.NewsFeedTypeId newsFeedTypeId, int userId)
         {
             //so you like the item already?
-            var alreadyLikeItem = await GetLikesByIdAndUserId(areaId, NewsFeedItemModel.NewsFeedTypeId.Comment, userId);
+            var alreadyLikeItem = await GetLikesByIdAndUserId(areaId, newsFeedTypeId, userId);
 
             //did we find this record? if so we delete it
             if (alreadyLikeItem != null)
