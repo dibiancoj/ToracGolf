@@ -41,7 +41,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed
             {
                 myRoundsQuery = myRoundsQuery.Where(x => x.User.FirstName.Contains(searchFilterText) || x.User.LastName.Contains(searchFilterText) || x.Course.Name.Contains(searchFilterText));
             }
-
+             
             newRoundCount = await myRoundsQuery.CountAsync();
 
             var myRounds = await myRoundsQuery.Select(y => new
