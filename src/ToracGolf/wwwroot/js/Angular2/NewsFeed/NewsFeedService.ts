@@ -30,6 +30,10 @@ export class NewsFeedService {
         return this.HttpInterceptorSvc.Post('NewsFeedsCommentSelect', JSON.stringify({ Id: id, NewsFeedTypeId: newsFeedTypeId }));
     }
 
+    CommentLikeClick(commentId: number): Observable<Response> {
+        return this.HttpInterceptorSvc.Post('NewsFeedsCommentLike', JSON.stringify({ CommentId: commentId }));
+    }
+
 }
 
 export class NewsFeedQueryResult {
@@ -49,11 +53,15 @@ export class NewsFeedItem {
 }
 
 export class NewsFeedComment {
+    CommentId: number;
     User: string;
     CommentText: string;
+    NumberOfLikes: number;
+    //UserLikesThisComment: boolean;
 }
 
 export enum NewsFeedTypeId {
     NewRound,
-    NewCourse
+    NewCourse,
+    FeedTypeId
 }

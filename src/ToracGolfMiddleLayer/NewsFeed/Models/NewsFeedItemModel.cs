@@ -21,7 +21,8 @@ namespace ToracGolf.MiddleLayer.NewsFeed
         public enum NewsFeedTypeId
         {
             NewRound = 0,
-            NewCourse = 1
+            NewCourse = 1,
+            Comment = 2
             //what else?
         }
 

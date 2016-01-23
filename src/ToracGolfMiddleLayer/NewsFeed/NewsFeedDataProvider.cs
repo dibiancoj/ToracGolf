@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.MiddleLayer.Courses;
 using ToracGolf.MiddleLayer.EFModel;
+using ToracGolf.MiddleLayer.EFModel.Tables;
 using ToracGolf.MiddleLayer.NewsFeed.Models;
 
 namespace ToracGolf.MiddleLayer.NewsFeed
@@ -168,11 +169,43 @@ namespace ToracGolf.MiddleLayer.NewsFeed
                                 .OrderBy(x => x.CreatedDate)
                                 .Select(x => new
                                 {
+                                    CommentId = x.CommentId,
                                     User = x.User.FirstName + " " + x.User.LastName,
-                                    x.Comment
+                                    x.Comment,
+                                    LikeCount = dbContext.NewsFeedLike.Count(y => y.AreaId == x.CommentId && y.NewsFeedTypeId == (int)NewsFeedItemModel.NewsFeedTypeId.Comment),
+                                    // UserLikesComment = dbContext.NewsFeedLike.Any(y => y.UserIdThatLikedItem == userId && y.AreaId == x.AreaId && y.NewsFeedTypeId == (int)NewsFeedItemModel.NewsFeedTypeId.Comment),
                                 }).ToArrayAsync();
 
-            return data.Select(x => new NewsFeedCommentRow(x.User, x.Comment)).ToArray();
+            return data.Select(x => new NewsFeedCommentRow(x.CommentId, x.User, x.Comment, x.LikeCount)).ToArray();
+        }
+
+        public static async Task<int> CommentLikeAddOrRemove(ToracGolfContext dbContext, int userId, int commentId)
+        {
+            //does this user already like this comment?
+            var userLikesCommentAlready = await dbContext.NewsFeedLike
+                                        .FirstOrDefaultAsync(x => x.AreaId == commentId && x.NewsFeedTypeId == (int)NewsFeedItemModel.NewsFeedTypeId.Comment && x.UserIdThatLikedItem == userId);
+
+            if (userLikesCommentAlready == null)
+            {
+                //add the comment
+                dbContext.NewsFeedLike.Add(new NewsFeedLike
+                {
+                    AreaId = commentId,
+                    CreatedDate = DateTime.Now,
+                    NewsFeedTypeId = (int)NewsFeedItemModel.NewsFeedTypeId.Comment,
+                    UserIdThatLikedItem = userId
+                });
+            }
+            else
+            {
+                dbContext.NewsFeedLike.Remove(userLikesCommentAlready);
+            }
+
+            //save the changes 
+            await dbContext.SaveChangesAsync();
+
+            //return the new count
+            return await dbContext.NewsFeedLike.AsNoTracking().CountAsync(x => x.AreaId == commentId && x.NewsFeedTypeId == (int)NewsFeedItemModel.NewsFeedTypeId.Comment);
         }
 
     }

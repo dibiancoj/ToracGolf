@@ -36,6 +36,9 @@ System.register(['angular2/core', 'rxjs/add/operator/map', '../Common/httpinterc
                 NewsFeedService.prototype.NewsFeedCommentSelect = function (id, newsFeedTypeId) {
                     return this.HttpInterceptorSvc.Post('NewsFeedsCommentSelect', JSON.stringify({ Id: id, NewsFeedTypeId: newsFeedTypeId }));
                 };
+                NewsFeedService.prototype.CommentLikeClick = function (commentId) {
+                    return this.HttpInterceptorSvc.Post('NewsFeedsCommentLike', JSON.stringify({ CommentId: commentId }));
+                };
                 NewsFeedService = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [httpinterceptor_1.HttpInterceptor])
@@ -64,6 +67,7 @@ System.register(['angular2/core', 'rxjs/add/operator/map', '../Common/httpinterc
             (function (NewsFeedTypeId) {
                 NewsFeedTypeId[NewsFeedTypeId["NewRound"] = 0] = "NewRound";
                 NewsFeedTypeId[NewsFeedTypeId["NewCourse"] = 1] = "NewCourse";
+                NewsFeedTypeId[NewsFeedTypeId["FeedTypeId"] = 2] = "FeedTypeId";
             })(NewsFeedTypeId || (NewsFeedTypeId = {}));
             exports_1("NewsFeedTypeId", NewsFeedTypeId);
         }

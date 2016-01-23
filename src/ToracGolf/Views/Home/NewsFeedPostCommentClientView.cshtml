@@ -11,8 +11,9 @@
             </span>{{Comment.CommentText}}
         </div>
 
-        <div class="col-xs-3">
-            Like <span><i class="fa fa-thumbs-o-up commentlike"></i></span>
+        <div class="col-xs-3 commentLikeBtn" (click)="LikeComment(Comment.CommentId)">
+            <span>Like </span><span><i class="fa fa-thumbs-o-up commentlike"></i></span>
+            <span>{{Comment.NumberOfLikes | number}}</span>
         </div>
     </div>
 

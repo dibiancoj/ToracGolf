@@ -69,7 +69,7 @@ export class NewsFeedApp {
     Like(likeConfig: { Id: number, NewsFeedTypeId: NewsFeedTypeId }) {
         
         //go grab the record
-        var recordToUpdate = this.Posts.First(function (x) { return x.Id == likeConfig.Id && x.FeedTypeId == likeConfig.NewsFeedTypeId });
+        var recordToUpdate = this.Posts.First(x => x.Id == likeConfig.Id && x.FeedTypeId == likeConfig.NewsFeedTypeId);
 
         //if you already like the item, you want to unlike the item
         var youLikeTheItemAlready = recordToUpdate.YouLikedItem;
@@ -119,7 +119,7 @@ export class NewsFeedApp {
         var inputElement = commentConfig.TextBoxElement;
 
         //go grab the record
-        var recordToUpdate = this.Posts.First(function (x) { return x.Id == commentConfig.Id && x.FeedTypeId == commentConfig.NewsFeedTypeId });
+        var recordToUpdate = this.Posts.First(x => x.Id == commentConfig.Id && x.FeedTypeId == commentConfig.NewsFeedTypeId);
 
         //go save the comment
         this.NewsFeedSvc.NewsFeedCommentSave(commentConfig.Id, commentConfig.NewsFeedTypeId, commentConfig.Comment).subscribe((comments: Array<NewsFeedComment>) => {
@@ -145,7 +145,7 @@ export class NewsFeedApp {
         var _thisClass = this;
 
         //try to find out if we have any comments
-        var recordToUpdate = this.Posts.First(function (x) { return x.Id == showHideConfig.Id && x.FeedTypeId == showHideConfig.NewsFeedTypeId });
+        var recordToUpdate = this.Posts.First(x => x.Id == showHideConfig.Id && x.FeedTypeId == showHideConfig.NewsFeedTypeId);
 
         //if we have 0 comments, then just set it to null and don't go to the server
         if (recordToUpdate.Comments != null || recordToUpdate.CommentCount == 0) {

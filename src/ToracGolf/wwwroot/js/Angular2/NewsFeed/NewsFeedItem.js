@@ -1,4 +1,4 @@
-System.register(['angular2/core', './NewsFeedService', './NewsFeedComment'], function(exports_1) {
+System.register(['angular2/core', './NewsFeedService', './NewsFeedComment', 'rxjs/add/operator/map'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -20,14 +20,19 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedComment'], fun
             },
             function (NewsFeedComment_1_1) {
                 NewsFeedComment_1 = NewsFeedComment_1_1;
-            }],
+            },
+            function (_1) {}],
         execute: function() {
             NewsFeedItemPost = (function () {
-                function NewsFeedItemPost() {
+                function NewsFeedItemPost(newsFeedService, ngZone) {
                     this.LikeEvent = new core_1.EventEmitter(); //declared on NewsFeedPostClientView. its the event we bind with the parent component.
                     this.CommentSaveEvent = new core_1.EventEmitter(); //declared on NewsFeedPostClientView. its the event we bind with the parent component.
                     this.ShowHideCommentEvent = new core_1.EventEmitter();
+                    //set the properties
+                    this.NewsFeedSvc = newsFeedService;
+                    this.NgZoneSvc = ngZone;
                 }
+                ;
                 NewsFeedItemPost.prototype.LikeClick = function (id, newsFeedTypeId) {
                     //pass this back to the parent component.
                     this.LikeEvent.emit({ Id: id, NewsFeedTypeId: newsFeedTypeId });
@@ -39,6 +44,19 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedComment'], fun
                 NewsFeedItemPost.prototype.ShowHideComments = function (id, newsFeedTypeId, comment) {
                     //pass this back to the parent component
                     this.ShowHideCommentEvent.emit({ Id: id, NewsFeedTypeId: newsFeedTypeId });
+                };
+                NewsFeedItemPost.prototype.LikeCommentBubble = function (commentId) {
+                    //closure
+                    var _thisClass = this;
+                    //go grab the record
+                    var recordToUpdate = this.Post.Comments.First(function (x) { return x.CommentId == commentId; });
+                    //go save the comment
+                    this.NewsFeedSvc.CommentLikeClick(commentId).subscribe(function (likeCount) {
+                        //go run this so angular can update the new records
+                        _thisClass.NgZoneSvc.run(function () {
+                            recordToUpdate.NumberOfLikes = likeCount;
+                        });
+                    });
                 };
                 __decorate([
                     core_1.Input(), 
@@ -65,7 +83,7 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedComment'], fun
                         templateUrl: 'NewsFeedItemClientView',
                         directives: [NewsFeedComment_1.NewsFeedItemComment]
                     }), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [NewsFeedService_1.NewsFeedService, core_1.NgZone])
                 ], NewsFeedItemPost);
                 return NewsFeedItemPost;
             })();

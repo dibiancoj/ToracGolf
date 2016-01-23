@@ -7,19 +7,12 @@ import {NewsFeedComment, NewsFeedTypeId} from './NewsFeedService';
 })
 export class NewsFeedItemComment {
 
-    @Input() Comment: NewsFeedComment; //declared on NewsFeedPostClientView. it's the attribute name where we pass in the object
-//    @Output() LikeEvent = new EventEmitter(); //declared on NewsFeedPostClientView. its the event we bind with the parent component.
-//    @Output() CommentSaveEvent = new EventEmitter(); //declared on NewsFeedPostClientView. its the event we bind with the parent component.
+    @Input() Comment: NewsFeedComment;
+    @Output() LikeCommentEvent = new EventEmitter();
 
-//    LikeClick(id: number, newsFeedTypeId: NewsFeedTypeId) {
-    
-//        //pass this back to the parent component.
-//        this.LikeEvent.emit({ Id: id, NewsFeedTypeId: newsFeedTypeId });
-//    }
+    LikeComment(commentId: number) {
+        //pass this back to the parent component.
+        this.LikeCommentEvent.emit(commentId);
+    }
 
-//    SaveComment(id: number, newsFeedTypeId: NewsFeedTypeId, comment: string) {
-        
-//        //pass this back to the parent component
-//        this.CommentSaveEvent.emit({ Id: id, NewsFeedTypeId: newsFeedTypeId, Comment: comment });
-//    }
 }
