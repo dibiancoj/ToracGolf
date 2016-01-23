@@ -181,9 +181,9 @@ namespace ToracGolf.Controllers
         }
 
         [ValidateCustomAntiForgeryToken]
-        [Route("NewsFeedsComment", Name = "NewsFeedsComment")]
+        [Route("NewsFeedCommentSave", Name = "NewsFeedCommentSave")]
         [HttpPost]
-        public async Task<IActionResult> NewsFeedComment([FromBody]NewsFeedAddComment commentModel)
+        public async Task<IActionResult> NewsFeedCommentSaveRecord([FromBody]NewsFeedAddComment commentModel)
         {
             //go save the comment
             return Json(await NewsFeedDataProvider.CommentAdd(DbContext, GetUserId(), commentModel.Id, commentModel.NewsFeedTypeId, commentModel.CommentToAdd));

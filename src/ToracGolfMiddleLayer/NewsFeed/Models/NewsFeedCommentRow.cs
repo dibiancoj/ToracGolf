@@ -8,15 +8,6 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Models
     public class NewsFeedCommentRow
     {
 
-        public NewsFeedCommentRow(int commentId, string user, string commentText, int numberOfLikes)//, bool userLikesThisComment)
-        {
-            CommentId = commentId;
-            User = user;
-            CommentText = commentText;
-            NumberOfLikes = numberOfLikes;
-            //UserLikesThisComment = userLikesThisComment;
-        }
-
         public int CommentId { get; set; }
         public string User { get; set; }
         public string CommentText { get; set; }

@@ -111,6 +111,12 @@ export class NewsFeedApp {
     }
 
     SaveComment(commentConfig: { Id: number, NewsFeedTypeId: NewsFeedTypeId, Comment: string, TextBoxElement: HTMLInputElement }) {
+
+        //make sure this comment is filled out
+        if (commentConfig.Comment == null || commentConfig.Comment.length == 0) {
+            //don't do anything this comment is null
+            return;
+        }
        
         //closure
         var _thisClass = this;

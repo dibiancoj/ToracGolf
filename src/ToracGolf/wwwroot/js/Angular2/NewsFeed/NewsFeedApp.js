@@ -97,6 +97,11 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedItem', './News
                     this.LoadPosts(this.ActiveFeedTypeId, this.SearchFilterText);
                 };
                 NewsFeedApp.prototype.SaveComment = function (commentConfig) {
+                    //make sure this comment is filled out
+                    if (commentConfig.Comment == null || commentConfig.Comment.length == 0) {
+                        //don't do anything this comment is null
+                        return;
+                    }
                     //closure
                     var _thisClass = this;
                     //throw the element into a closure

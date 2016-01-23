@@ -23,7 +23,7 @@ export class NewsFeedService {
     }
 
     NewsFeedCommentSave(id: number, newsFeedTypeId: NewsFeedTypeId, commentToAdd: string): Observable<Response> {
-        return this.HttpInterceptorSvc.Post('NewsFeedsComment', JSON.stringify({ Id: id, NewsFeedTypeId: newsFeedTypeId, CommentToAdd: commentToAdd }));
+        return this.HttpInterceptorSvc.Post('NewsFeedCommentSave', JSON.stringify({ Id: id, NewsFeedTypeId: newsFeedTypeId, CommentToAdd: commentToAdd }));
     }
 
     NewsFeedCommentSelect(id: number, newsFeedTypeId: NewsFeedTypeId): Observable<Response> {
