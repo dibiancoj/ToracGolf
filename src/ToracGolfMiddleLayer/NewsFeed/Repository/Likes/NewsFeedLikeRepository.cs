@@ -30,6 +30,34 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.Likes
 
         #region Repository
 
+        #region Add - Remove Based On Record
+
+        public async Task<bool> AddOrRemoveLike(int areaId, NewsFeedItemModel.NewsFeedTypeId newsFeedTypeId, int userId)
+        {
+            //so you like the item already?
+            var alreadyLikeItem = await GetLikesByIdAndUserId(areaId, NewsFeedItemModel.NewsFeedTypeId.Comment, userId);
+
+            //did we find this record? if so we delete it
+            if (alreadyLikeItem != null)
+            {
+                //we want to remove this record
+                return await Delete(alreadyLikeItem);
+            }
+
+            //else we don't have a record, we are in add mode
+            return await Add(new NewsFeedLike
+            {
+                AreaId = areaId,
+                NewsFeedTypeId = (int)newsFeedTypeId,
+                UserIdThatLikedItem = userId,
+                CreatedDate = DateTime.Now
+            });
+        }
+
+        #endregion
+
+        #region Select
+
         public IQueryable<NewsFeedLike> GetLikes()
         {
             //start the query
@@ -45,6 +73,8 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.Likes
         {
             return await GetLikes().Where(x => x.UserIdThatLikedItem == userId && x.AreaId == areaId && x.NewsFeedTypeId == (int)newsFeedTypeId).FirstOrDefaultAsync();
         }
+
+        #endregion
 
         #region Delete
 

@@ -17,6 +17,8 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.Likes
 
         Task<NewsFeedLike> GetLikesByIdAndUserId(int areaId, NewsFeedItemModel.NewsFeedTypeId newsFeedTypeId, int userId);
 
+        Task<bool> AddOrRemoveLike(int areaId, NewsFeedItemModel.NewsFeedTypeId newsFeedTypeId, int userId);
+
         Task<bool> Add(IEnumerable<NewsFeedLike> recordsToAdd);
 
         Task<bool> Add(NewsFeedLike recordToAdd);
