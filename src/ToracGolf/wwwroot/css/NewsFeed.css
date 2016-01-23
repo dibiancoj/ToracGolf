@@ -58,6 +58,8 @@
 .CommentItemsContainer {
     background-color: rgb(246, 247, 248);
     margin-top: 30px;
+    max-height: 300px;
+    overflow-y: auto;
 }
 
 .commentLikeBtn {
