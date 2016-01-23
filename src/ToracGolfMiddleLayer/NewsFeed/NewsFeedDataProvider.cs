@@ -81,7 +81,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed
 
             //go add the courses now
             var myCoursesQueryable = dbContext.Course.AsNoTracking()
-                        .OrderBy(x => x.CreatedDate)
+                        .OrderByDescending(x => x.CreatedDate)
                         .Take(20).AsQueryable();
 
             if (!string.IsNullOrEmpty(searchFilterText))
