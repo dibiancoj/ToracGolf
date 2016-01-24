@@ -29,13 +29,19 @@ namespace ToracGolf.Controllers
 
         #region Constructor
 
-        public HomeController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, ToracGolfContext dbContext, IAntiforgery antiforgery, IOptions<AppSettings> configuration)
+        public HomeController(IMemoryCache cache,
+                              ICacheFactoryStore cacheFactoryStore,
+                              ToracGolfContext dbContext,
+                              IAntiforgery antiforgery,
+                              IOptions<AppSettings> configuration,
+                              Lazy<NewsFeedDataProvider> newsFeedDataProvider)
         {
             DbContext = dbContext;
             Cache = cache;
             CacheFactory = cacheFactoryStore;
             Antiforgery = antiforgery;
             Configuration = configuration;
+            NewsFeedDataProvider = newsFeedDataProvider;
         }
 
         #endregion
@@ -51,6 +57,8 @@ namespace ToracGolf.Controllers
         private IAntiforgery Antiforgery { get; }
 
         private IOptions<AppSettings> Configuration { get; }
+
+        private Lazy<NewsFeedDataProvider> NewsFeedDataProvider { get; }
 
         #endregion
 
@@ -169,7 +177,7 @@ namespace ToracGolf.Controllers
         [HttpPost]
         public async Task<IActionResult> NewsFeedGet([FromBody]NewsFeedGetRequest filterParams)
         {
-            return Json(await NewsFeedDataProvider.NewsFeedPostSelect(DbContext, CacheFactory.GetCacheItem<CourseImageFinder>(CacheKeyNames.CourseImageFinder, Cache), GetUserId(), filterParams.NewsFeedTypeIdFilter, filterParams.SearchFilterText));
+            return Json(await NewsFeedDataProvider.Value.NewsFeedPostSelect(GetUserId(), filterParams.NewsFeedTypeIdFilter, filterParams.SearchFilterText, CacheFactory.GetCacheItem<CourseImageFinder>(CacheKeyNames.CourseImageFinder, Cache)));
         }
 
         [ValidateCustomAntiForgeryToken]
@@ -177,7 +185,7 @@ namespace ToracGolf.Controllers
         [HttpPost]
         public async Task<IActionResult> NewsFeedLike([FromBody]NewsFeedAddLike likeModel)
         {
-            return Json(await NewsFeedDataProvider.NewsFeedLikeAdd(DbContext, GetUserId(), likeModel.Id, likeModel.NewsFeedTypeId));
+            return Json(await NewsFeedDataProvider.Value.NewsFeedLikeAdd(DbContext, GetUserId(), likeModel.Id, likeModel.NewsFeedTypeId));
         }
 
         [ValidateCustomAntiForgeryToken]
@@ -186,7 +194,7 @@ namespace ToracGolf.Controllers
         public async Task<IActionResult> NewsFeedCommentSaveRecord([FromBody]NewsFeedAddComment commentModel)
         {
             //go save the comment
-            return Json(await NewsFeedDataProvider.CommentAdd(DbContext, GetUserId(), commentModel.Id, commentModel.NewsFeedTypeId, commentModel.CommentToAdd));
+            return Json(await NewsFeedDataProvider.Value.CommentAdd(DbContext, GetUserId(), commentModel.Id, commentModel.NewsFeedTypeId, commentModel.CommentToAdd));
         }
 
         [ValidateCustomAntiForgeryToken]
@@ -195,7 +203,7 @@ namespace ToracGolf.Controllers
         public async Task<IActionResult> NewsFeedCommentGet([FromBody]NewsFeedCommentSelect commentModel)
         {
             //go save the comment
-            return Json(await NewsFeedDataProvider.CommentSelect(DbContext, GetUserId(), commentModel.Id, commentModel.NewsFeedTypeId));
+            return Json(await NewsFeedDataProvider.Value.CommentSelect(DbContext, GetUserId(), commentModel.Id, commentModel.NewsFeedTypeId));
         }
 
         [ValidateCustomAntiForgeryToken]
@@ -204,7 +212,7 @@ namespace ToracGolf.Controllers
         public async Task<IActionResult> NewsFeedCommentLikeAddOrRemove([FromBody]NewsFeedCommentLike commentModel)
         {
             //go save the comment
-            return Json(await NewsFeedDataProvider.CommentLikeAddOrRemove(DbContext, GetUserId(), commentModel.CommentId));
+            return Json(await NewsFeedDataProvider.Value.CommentLikeAddOrRemove(DbContext, GetUserId(), commentModel.CommentId));
         }
 
         #endregion

@@ -65,3 +65,7 @@
 .commentLikeBtn {
     cursor: pointer;
 }
+
+.CommentDate {
+    margin-left: 15px;
+}

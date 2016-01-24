@@ -55,6 +55,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.Comments
                 User = x.User.FirstName + " " + x.User.LastName,
                 CommentText = x.Comment,
                 NumberOfLikes = DbContext.NewsFeedLike.Count(y => y.AreaId == x.CommentId && y.NewsFeedTypeId == (int)NewsFeedItemModel.NewsFeedTypeId.Comment),
+                CommentDate = x.CreatedDate
             };
         }
 

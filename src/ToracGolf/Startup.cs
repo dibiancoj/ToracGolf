@@ -22,9 +22,12 @@ using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.EFModel.Tables;
 using ToracGolf.MiddleLayer.GridCommon;
 using ToracGolf.MiddleLayer.ListingFactories;
+using ToracGolf.MiddleLayer.NewsFeed;
+using ToracGolf.MiddleLayer.NewsFeed.Repository.Comments;
+using ToracGolf.MiddleLayer.NewsFeed.Repository.GridQueries;
+using ToracGolf.MiddleLayer.NewsFeed.Repository.Likes;
 using ToracGolf.MiddleLayer.Rounds;
 using ToracGolf.MiddleLayer.Rounds.Models;
-using ToracGolf.Services;
 using ToracGolf.Settings;
 using ToracLibrary.AspNet.Caching.FactoryStore;
 
@@ -111,6 +114,16 @@ namespace ToracGolf
             // You will also need to add the Microsoft.AspNet.Mvc.WebApiCompatShim package to the 'dependencies' section of project.json.
             // services.AddWebApiConventions();
 
+            //add the news feed data provider
+            services.AddTransient<INewsFeedGridQueries, NewsFeedGridQueries>(x => new NewsFeedGridQueries(x.GetRequiredService<ToracGolfContext>()));
+            services.AddTransient<INewsFeedLikeRepository, NewsFeedLikeRepository>(x => new NewsFeedLikeRepository(x.GetRequiredService<ToracGolfContext>()));
+            services.AddTransient<INewsFeedCommentRepository, NewsFeedCommentRepository>(x => new NewsFeedCommentRepository(x.GetRequiredService<ToracGolfContext>()));
+
+            services.AddTransient(x => 
+                new Lazy<NewsFeedDataProvider>(() =>
+                new NewsFeedDataProvider(x.GetRequiredService<INewsFeedGridQueries>(), 
+                                         x.GetRequiredService<INewsFeedLikeRepository>(), 
+                                         x.GetRequiredService<INewsFeedCommentRepository>()), true));
 
             //add the IMemory cache so we can add this now
             services.AddSingleton<IMemoryCache, MemoryCache>();
@@ -138,8 +151,7 @@ namespace ToracGolf
             var courseImageFilePath = Configuration["CourseImageSavePath"];
             var courseImageVirtualUrlPath = Configuration["CourseImageVirtualUrl"];
 
-            cacheFactory.AddConfiguration(CacheKeyNames.CourseImageFinder,
-                () => new CourseImageFinder(courseImageFilePath, courseImageVirtualUrlPath));
+            cacheFactory.AddConfiguration(CacheKeyNames.CourseImageFinder, () => new CourseImageFinder(courseImageFilePath, courseImageVirtualUrlPath));
 
             //add the state listing factory configuration
             cacheFactory.AddConfiguration(CacheKeyNames.StateListing,

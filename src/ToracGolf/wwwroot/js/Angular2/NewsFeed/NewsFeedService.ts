@@ -57,6 +57,7 @@ export class NewsFeedComment {
     User: string;
     CommentText: string;
     NumberOfLikes: number;
+    CommentDate: Date;
     //UserLikesThisComment: boolean;
 }
 

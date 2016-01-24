@@ -12,15 +12,14 @@ using ToracGolf.MiddleLayer.NewsFeed.Models;
 namespace ToracGolf.MiddleLayer.NewsFeed.Repository.GridQueries
 {
 
-    public class NewsFeedGridQueries
+    public class NewsFeedGridQueries : INewsFeedGridQueries
     {
 
         #region Constructor
 
-        public NewsFeedGridQueries(ToracGolfContext dbContext, CourseImageFinder courseImageFinder)
+        public NewsFeedGridQueries(ToracGolfContext dbContext)
         {
             DbContext = dbContext;
-            CourseImageFinder = courseImageFinder;
         }
 
         #endregion
@@ -29,13 +28,11 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.GridQueries
 
         private ToracGolfContext DbContext { get; }
 
-        private CourseImageFinder CourseImageFinder { get; }
-
         #endregion
 
         #region Methods
 
-        public async Task<NewsFeedQueryResult> NewsFeedPostSelect(int userId, NewsFeedItemModel.NewsFeedTypeId? newsFeedTypeIdFilter, string searchFilterText)
+        public async Task<NewsFeedQueryResult> NewsFeedPostSelect(int userId, NewsFeedItemModel.NewsFeedTypeId? newsFeedTypeIdFilter, string searchFilterText, CourseImageFinder courseImageFinder)
         {
             const int takeAmount = 20;
 
@@ -73,12 +70,12 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.GridQueries
             //only rounds?
             if (ShouldRunQuery(NewsFeedItemModel.NewsFeedTypeId.NewRound, newsFeedTypeIdFilter))
             {
-                newsFeedItems.AddRange(await RoundSelect(roundQuery, userId));
+                newsFeedItems.AddRange(await RoundSelect(roundQuery, userId, courseImageFinder));
             }
 
             if (ShouldRunQuery(NewsFeedItemModel.NewsFeedTypeId.NewCourse, newsFeedTypeIdFilter))
             {
-                newsFeedItems.AddRange(await CourseSelect(courseQuery, userId));
+                newsFeedItems.AddRange(await CourseSelect(courseQuery, userId, courseImageFinder));
             }
 
             //now return the model
@@ -105,7 +102,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.GridQueries
             return DbContext.Rounds.AsQueryable();
         }
 
-        private async Task<IEnumerable<NewRoundNewsFeed>> RoundSelect(IQueryable<Round> query, int userId)
+        private async Task<IEnumerable<NewRoundNewsFeed>> RoundSelect(IQueryable<Round> query, int userId, CourseImageFinder courseImageFinder)
         {
             int newRoundTypeId = (int)NewsFeedItemModel.NewsFeedTypeId.NewRound;
 
@@ -125,7 +122,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.GridQueries
             }).ToArrayAsync()).Select(x => new NewRoundNewsFeed
             {
                 Id = x.RoundId,
-                CourseImagePath = CourseImageFinder.FindCourseImage(x.CourseId),
+                CourseImagePath = courseImageFinder.FindCourseImage(x.CourseId),
                 PostDate = x.RoundDate,
                 CommentCount = x.Comments,
                 LikeCount = x.Likes,
@@ -148,7 +145,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.GridQueries
             return DbContext.Course.AsQueryable();
         }
 
-        private async Task<IEnumerable<NewCourseNewsFeed>> CourseSelect(IQueryable<Course> query, int userId)
+        private async Task<IEnumerable<NewCourseNewsFeed>> CourseSelect(IQueryable<Course> query, int userId, CourseImageFinder courseImageFinder)
         {
             int newCourseTypeId = (int)NewsFeedItemModel.NewsFeedTypeId.NewCourse;
 
@@ -166,7 +163,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.GridQueries
             }).ToArrayAsync()).Select(x => new NewCourseNewsFeed
             {
                 Id = x.CourseId,
-                CourseImagePath = CourseImageFinder.FindCourseImage(x.CourseId),
+                CourseImagePath = courseImageFinder.FindCourseImage(x.CourseId),
                 CommentCount = x.Comments,
                 LikeCount = x.Likes,
                 PostDate = x.CreatedDate,

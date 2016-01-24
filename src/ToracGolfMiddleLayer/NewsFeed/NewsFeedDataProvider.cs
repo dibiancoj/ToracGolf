@@ -14,21 +14,40 @@ using ToracGolf.MiddleLayer.NewsFeed.Repository.Likes;
 namespace ToracGolf.MiddleLayer.NewsFeed
 {
 
-    public static class NewsFeedDataProvider
+    public class NewsFeedDataProvider
     {
 
-        public static async Task<NewsFeedQueryResult> NewsFeedPostSelect(ToracGolfContext dbContext,
-                                                                                    CourseImageFinder courseImageFinder,
-                                                                                    int userId,
-                                                                                    NewsFeedItemModel.NewsFeedTypeId? newsFeedTypeIdFilter,
-                                                                                    string searchFilterText)
+        #region Constructor
+
+        public NewsFeedDataProvider(INewsFeedGridQueries gridQueryRepository, INewsFeedLikeRepository likeRepository, INewsFeedCommentRepository commentRepository)
         {
-            return await new NewsFeedGridQueries(dbContext, courseImageFinder).NewsFeedPostSelect(userId, newsFeedTypeIdFilter, searchFilterText);
+            GridQueryRepository = gridQueryRepository;
+            LikeRepository = likeRepository;
+            CommentRepository = commentRepository;
         }
+
+        #endregion
+
+        #region Properties
+
+        public INewsFeedGridQueries GridQueryRepository { get; }
+        public INewsFeedCommentRepository CommentRepository { get; }
+        public INewsFeedLikeRepository LikeRepository { get; }
+
+        #endregion
+
+        #region Query 
+
+        public async Task<NewsFeedQueryResult> NewsFeedPostSelect(int userId, NewsFeedItemModel.NewsFeedTypeId? newsFeedTypeIdFilter, string searchFilterText, CourseImageFinder courseImageLocator)
+        {
+            return await GridQueryRepository.NewsFeedPostSelect(userId, newsFeedTypeIdFilter, searchFilterText, courseImageLocator);
+        }
+
+        #endregion
 
         #region Likes
 
-        public static async Task<bool> NewsFeedLikeAdd(ToracGolfContext dbContext, int userId, int id, NewsFeedItemModel.NewsFeedTypeId newsFeedTypeId)
+        public async Task<bool> NewsFeedLikeAdd(ToracGolfContext dbContext, int userId, int id, NewsFeedItemModel.NewsFeedTypeId newsFeedTypeId)
         {
             INewsFeedLikeRepository repository = new NewsFeedLikeRepository(dbContext);
 
@@ -39,12 +58,10 @@ namespace ToracGolf.MiddleLayer.NewsFeed
 
         #region Comments
 
-        public static async Task<IEnumerable<NewsFeedCommentRow>> CommentAdd(ToracGolfContext dbContext, int userId, int id, NewsFeedItemModel.NewsFeedTypeId newsFeedTypeId, string commentToAdd)
+        public async Task<IEnumerable<NewsFeedCommentRow>> CommentAdd(ToracGolfContext dbContext, int userId, int id, NewsFeedItemModel.NewsFeedTypeId newsFeedTypeId, string commentToAdd)
         {
-            INewsFeedCommentRepository repository = new NewsFeedCommentRepository(dbContext);
-
             //lets go add the row
-            await repository.Add(new NewsFeedComment
+            await CommentRepository.Add(new NewsFeedComment
             {
                 AreaId = id,
                 NewsFeedTypeId = (int)newsFeedTypeId,
@@ -57,27 +74,21 @@ namespace ToracGolf.MiddleLayer.NewsFeed
             return await CommentSelect(dbContext, userId, id, newsFeedTypeId);
         }
 
-        public static async Task<IEnumerable<NewsFeedCommentRow>> CommentSelect(ToracGolfContext dbContext, int userId, int id, NewsFeedItemModel.NewsFeedTypeId newsFeedTypeId)
+        public async Task<IEnumerable<NewsFeedCommentRow>> CommentSelect(ToracGolfContext dbContext, int userId, int id, NewsFeedItemModel.NewsFeedTypeId newsFeedTypeId)
         {
-            INewsFeedCommentRepository repository = new NewsFeedCommentRepository(dbContext);
-
-            return await repository.GetComments().AsNoTracking()
+            return await CommentRepository.GetComments().AsNoTracking()
                          .Where(x => x.AreaId == id && x.NewsFeedTypeId == (int)newsFeedTypeId)
-                         .OrderBy(x => x.CreatedDate)
-                         .Select(repository.SelectCommand).ToArrayAsync();
-
+                         .OrderByDescending(x => x.CreatedDate)
+                         .Select(CommentRepository.SelectCommand).ToArrayAsync();
         }
 
-        public static async Task<int> CommentLikeAddOrRemove(ToracGolfContext dbContext, int userId, int commentId)
+        public async Task<int> CommentLikeAddOrRemove(ToracGolfContext dbContext, int userId, int commentId)
         {
-            //create the repository
-            INewsFeedLikeRepository likeRepository = new NewsFeedLikeRepository(dbContext);
-
             //go take care of the like
-            await likeRepository.AddOrRemoveLike(commentId, NewsFeedItemModel.NewsFeedTypeId.Comment, userId);
+            await LikeRepository.AddOrRemoveLike(commentId, NewsFeedItemModel.NewsFeedTypeId.Comment, userId);
 
             //return the new count
-            return await likeRepository.GetLikes().AsNoTracking().CountAsync(x => x.AreaId == commentId && x.NewsFeedTypeId == (int)NewsFeedItemModel.NewsFeedTypeId.Comment);
+            return await LikeRepository.GetLikes().AsNoTracking().CountAsync(x => x.AreaId == commentId && x.NewsFeedTypeId == (int)NewsFeedItemModel.NewsFeedTypeId.Comment);
         }
 
         #endregion

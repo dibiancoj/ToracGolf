@@ -14,6 +14,8 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Models
 
         public int NumberOfLikes { get; set; }
 
+        public DateTime CommentDate { get; set; }
+
         //public bool UserLikesThisComment { get; set; }
 
     }
