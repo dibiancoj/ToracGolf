@@ -82,7 +82,7 @@ namespace ToracGolf.Controllers
             #region Only Here For Debugging
 #if DEBUG
             LogUserIn(SecurityDataProvider.UserLogIn(DbContext, "dibiancoj@gmail.com", "0").Result).Wait();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("NewsFeedIndex", "Home");
 #endif
             #endregion
 

@@ -1,4 +1,4 @@
-System.register(['angular2/core', './NewsFeedService', './NewsFeedComment', 'rxjs/add/operator/map'], function(exports_1) {
+System.register(['angular2/core', './NewsFeedService', '../Common/CustomFormatterService', './NewsFeedComment', 'rxjs/add/operator/map'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedComment', 'rxj
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, NewsFeedService_1, NewsFeedComment_1;
+    var core_1, NewsFeedService_1, CustomFormatterService_1, NewsFeedComment_1;
     var NewsFeedItemPost;
     return {
         setters:[
@@ -18,19 +18,23 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedComment', 'rxj
             function (NewsFeedService_1_1) {
                 NewsFeedService_1 = NewsFeedService_1_1;
             },
+            function (CustomFormatterService_1_1) {
+                CustomFormatterService_1 = CustomFormatterService_1_1;
+            },
             function (NewsFeedComment_1_1) {
                 NewsFeedComment_1 = NewsFeedComment_1_1;
             },
             function (_1) {}],
         execute: function() {
             NewsFeedItemPost = (function () {
-                function NewsFeedItemPost(newsFeedService, ngZone) {
+                function NewsFeedItemPost(newsFeedService, ngZone, customFormatter) {
                     this.LikeEvent = new core_1.EventEmitter(); //declared on NewsFeedPostClientView. its the event we bind with the parent component.
                     this.CommentSaveEvent = new core_1.EventEmitter(); //declared on NewsFeedPostClientView. its the event we bind with the parent component.
                     this.ShowHideCommentEvent = new core_1.EventEmitter();
                     //set the properties
                     this.NewsFeedSvc = newsFeedService;
                     this.NgZoneSvc = ngZone;
+                    this.CustomFormatterSvc = customFormatter;
                 }
                 ;
                 NewsFeedItemPost.prototype.LikeClick = function (id, newsFeedTypeId) {
@@ -58,13 +62,6 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedComment', 'rxj
                         });
                     });
                 };
-                NewsFeedItemPost.prototype.DateTimePipeHack = function (dateTimeIsoValue, isMonth) {
-                    var dateToFormat = new Date(dateTimeIsoValue);
-                    if (isMonth) {
-                        return this.NewsFeedSvc.MonthNameSelect(dateToFormat.getMonth());
-                    }
-                    return dateToFormat.getDate().toString();
-                };
                 __decorate([
                     core_1.Input(), 
                     __metadata('design:type', NewsFeedService_1.NewsFeedItem)
@@ -90,7 +87,7 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedComment', 'rxj
                         templateUrl: 'NewsFeedItemClientView',
                         directives: [NewsFeedComment_1.NewsFeedItemComment]
                     }), 
-                    __metadata('design:paramtypes', [NewsFeedService_1.NewsFeedService, core_1.NgZone])
+                    __metadata('design:paramtypes', [NewsFeedService_1.NewsFeedService, core_1.NgZone, CustomFormatterService_1.CustomFormatterService])
                 ], NewsFeedItemPost);
                 return NewsFeedItemPost;
             })();

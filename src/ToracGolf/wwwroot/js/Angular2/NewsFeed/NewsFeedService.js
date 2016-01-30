@@ -43,9 +43,6 @@ System.register(['angular2/core', 'rxjs/add/operator/map', '../Common/httpinterc
                 NewsFeedService.prototype.CommentLikeClick = function (commentId) {
                     return this.HttpInterceptorSvc.Post('NewsFeedsCommentLike', JSON.stringify({ CommentId: commentId }));
                 };
-                NewsFeedService.prototype.MonthNameSelect = function (monthId) {
-                    return this.MonthNameArray[monthId];
-                };
                 NewsFeedService = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [httpinterceptor_1.HttpInterceptor])

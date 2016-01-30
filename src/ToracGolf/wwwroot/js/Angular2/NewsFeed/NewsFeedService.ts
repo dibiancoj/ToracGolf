@@ -40,10 +40,6 @@ export class NewsFeedService {
         return this.HttpInterceptorSvc.Post('NewsFeedsCommentLike', JSON.stringify({ CommentId: commentId }));
     }
 
-    MonthNameSelect(monthId: number): string {
-        return this.MonthNameArray[monthId];
-    }
-
 }
 
 export class NewsFeedQueryResult {

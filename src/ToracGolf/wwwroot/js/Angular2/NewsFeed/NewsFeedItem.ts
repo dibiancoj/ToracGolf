@@ -1,5 +1,6 @@
 ﻿import {Component, Input, Inject, Output, EventEmitter, NgZone} from 'angular2/core';
 import {NewsFeedService, NewsFeedItem, NewsFeedTypeId} from './NewsFeedService';
+import {CustomFormatterService} from '../Common/CustomFormatterService';
 import {NewsFeedItemComment} from './NewsFeedComment';
 
 import { Http, Response } from 'angular2/http';
@@ -19,12 +20,14 @@ export class NewsFeedItemPost {
 
     NewsFeedSvc: NewsFeedService;
     NgZoneSvc: NgZone;
+    CustomFormatterSvc: CustomFormatterService;
 
-    constructor(newsFeedService: NewsFeedService, ngZone: NgZone) {
+    constructor(newsFeedService: NewsFeedService, ngZone: NgZone, customFormatter: CustomFormatterService) {
 
         //set the properties
         this.NewsFeedSvc = newsFeedService;
         this.NgZoneSvc = ngZone;
+        this.CustomFormatterSvc = customFormatter;
     };
 
     LikeClick(id: number, newsFeedTypeId: NewsFeedTypeId) {
@@ -62,17 +65,6 @@ export class NewsFeedItemPost {
                 recordToUpdate.NumberOfLikes = likeCount;
             });
         });
-    }
-
-    DateTimePipeHack(dateTimeIsoValue: string, isMonth: boolean): string {
-
-        var dateToFormat = new Date(dateTimeIsoValue);
-
-        if (isMonth) {
-            return this.NewsFeedSvc.MonthNameSelect(dateToFormat.getMonth());
-        }
-
-        return dateToFormat.getDate().toString();
     }
 
 }

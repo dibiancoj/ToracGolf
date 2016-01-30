@@ -1,4 +1,4 @@
-System.register(['angular2/core', './NewsFeedService', './NewsFeedItem', './NewsFeedComment', 'angular2/common', 'rxjs/add/operator/map'], function(exports_1) {
+System.register(['angular2/core', './NewsFeedService', '../Common/CustomFormatterService', './NewsFeedItem', './NewsFeedComment', 'angular2/common', 'rxjs/add/operator/map'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedItem', './News
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, NewsFeedService_1, NewsFeedItem_1, NewsFeedComment_1, common_1;
+    var core_1, NewsFeedService_1, CustomFormatterService_1, NewsFeedItem_1, NewsFeedComment_1, common_1;
     var NewsFeedApp;
     return {
         setters:[
@@ -17,6 +17,9 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedItem', './News
             },
             function (NewsFeedService_1_1) {
                 NewsFeedService_1 = NewsFeedService_1_1;
+            },
+            function (CustomFormatterService_1_1) {
+                CustomFormatterService_1 = CustomFormatterService_1_1;
             },
             function (NewsFeedItem_1_1) {
                 NewsFeedItem_1 = NewsFeedItem_1_1;
@@ -30,9 +33,10 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedItem', './News
             function (_1) {}],
         execute: function() {
             NewsFeedApp = (function () {
-                function NewsFeedApp(newsFeedService, ngZone) {
+                function NewsFeedApp(newsFeedService, ngZone, customFormatter) {
                     //set the properties
                     this.NewsFeedSvc = newsFeedService;
+                    this.CustomFormatterSvc = customFormatter;
                     this.NgZoneSvc = ngZone;
                     //initial property setting
                     this.SearchFilterText = '';
@@ -48,8 +52,6 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedItem', './News
                     this.NewsFeedSvc.NewFeedGet(newsFeedTypeId, searchFilterText).subscribe(function (queryResult) {
                         //go run this so angular can update the new records
                         _thisClass.NgZoneSvc.run(function () {
-                            //the pipe for date time format doesn't support iso string's right now. so flip it to a date it can handle
-                            //queryResult.Results.forEach(x => x.PostDate = new Date(x.PostDate.toString()));
                             //set the working posts
                             _this.Posts = queryResult.Results;
                             //go set the counts
@@ -135,8 +137,6 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedItem', './News
                         this.NewsFeedSvc.NewsFeedCommentSelect(showHideConfig.Id, showHideConfig.NewsFeedTypeId).subscribe(function (comments) {
                             //go run this so angular can update the new records
                             _thisClass.NgZoneSvc.run(function () {
-                                //the pipe for date time format doesn't support iso string's right now. so flip it to a date it can handle
-                                //comments.forEach(x => x.CommentDate = new Date(x.CommentDate.toString()));
                                 //go add it to the list of comments
                                 recordToUpdate.Comments = comments;
                             });
@@ -147,10 +147,10 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedItem', './News
                     core_1.Component({
                         selector: 'NewsFeedPostContainer',
                         templateUrl: 'NewsFeedClientView',
-                        bindings: [NewsFeedService_1.NewsFeedService],
+                        bindings: [NewsFeedService_1.NewsFeedService, CustomFormatterService_1.CustomFormatterService],
                         directives: [common_1.NgClass, NewsFeedItem_1.NewsFeedItemPost, NewsFeedComment_1.NewsFeedItemComment]
                     }), 
-                    __metadata('design:paramtypes', [NewsFeedService_1.NewsFeedService, core_1.NgZone])
+                    __metadata('design:paramtypes', [NewsFeedService_1.NewsFeedService, core_1.NgZone, CustomFormatterService_1.CustomFormatterService])
                 ], NewsFeedApp);
                 return NewsFeedApp;
             })();

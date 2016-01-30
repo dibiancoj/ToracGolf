@@ -13,9 +13,10 @@
 
         <div class="col-xs-12 commentLikeBtn" (click)="LikeComment(Comment.CommentId)">
             <span>Like </span><span><i class="fa fa-thumbs-o-up commentlike"></i></span>
-            <span>({{Comment.NumberOfLikes | number}})</span>
+            @*<span>({{(Comment.NumberOfLikes | number}})</span>*@
+            <span>({{CustomFormatterSvc.NumberPipe(Comment.NumberOfLikes)}})</span>
             @*<span class="CommentDate">{{Comment.CommentDate | date:'medium'}}</span>*@
-            <span class="CommentDate">{{DateTimeHack(Comment.CommentDate)}}</span>
+            <span class="CommentDate">{{CustomFormatterSvc.DatePipe(Comment.CommentDate, 'DT')}}</span>
         </div>
     </div>
 

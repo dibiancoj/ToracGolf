@@ -1,6 +1,7 @@
 ﻿/// <reference path="../../../lib/jlinq/jlinq.ts" />
 import {Component, Inject, NgZone} from 'angular2/core';
 import {NewsFeedService, NewsFeedItem, NewsFeedComment, NewsFeedQueryResult, NewsFeedTypeId} from './NewsFeedService';
+import {CustomFormatterService} from '../Common/CustomFormatterService';
 import {NewsFeedItemPost} from './NewsFeedItem';
 import {NewsFeedItemComment} from './NewsFeedComment';
 import {NgClass} from 'angular2/common';
@@ -11,12 +12,13 @@ import 'rxjs/add/operator/map';
 @Component({
     selector: 'NewsFeedPostContainer',
     templateUrl: 'NewsFeedClientView',
-    bindings: [NewsFeedService],
+    bindings: [NewsFeedService, CustomFormatterService],
     directives: [NgClass, NewsFeedItemPost, NewsFeedItemComment]
 })
 export class NewsFeedApp {
 
     NewsFeedSvc: NewsFeedService;
+    CustomFormatterSvc: CustomFormatterService;
     NgZoneSvc: NgZone;
     Posts: Array<NewsFeedItem>;
     NewCoursePostCount: number;
@@ -24,10 +26,11 @@ export class NewsFeedApp {
     ActiveFeedTypeId: number;
     SearchFilterText: string;
 
-    constructor(newsFeedService: NewsFeedService, ngZone: NgZone) {
+    constructor(newsFeedService: NewsFeedService, ngZone: NgZone, customFormatter: CustomFormatterService) {
 
         //set the properties
         this.NewsFeedSvc = newsFeedService;
+        this.CustomFormatterSvc = customFormatter;
         this.NgZoneSvc = ngZone;
 
         //initial property setting
@@ -47,9 +50,6 @@ export class NewsFeedApp {
 
             //go run this so angular can update the new records
             _thisClass.NgZoneSvc.run(() => {
-
-                //the pipe for date time format doesn't support iso string's right now. so flip it to a date it can handle
-                //queryResult.Results.forEach(x => x.PostDate = new Date(x.PostDate.toString()));
 
                 //set the working posts
                 this.Posts = queryResult.Results;
@@ -165,9 +165,6 @@ export class NewsFeedApp {
                 //go run this so angular can update the new records
                 _thisClass.NgZoneSvc.run(() => {
                   
-                    //the pipe for date time format doesn't support iso string's right now. so flip it to a date it can handle
-                    //comments.forEach(x => x.CommentDate = new Date(x.CommentDate.toString()));
-                    
                     //go add it to the list of comments
                     recordToUpdate.Comments = comments;
                 });
