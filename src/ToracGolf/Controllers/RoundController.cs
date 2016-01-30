@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.Constants;
 using ToracGolf.Filters;
+using ToracGolf.MiddleLayer;
 using ToracGolf.MiddleLayer.Courses;
 using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.EFModel.Tables;
@@ -247,7 +248,7 @@ namespace ToracGolf.Controllers
 
             return Json(new
             {
-                PagedData = await RoundDataProvider.RoundSelect(RoundListingFactory, DbContext, userId, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, seasonFilter, listNav.RoundsPerPage, listNav.RoundDateStartFilter, listNav.RoundDateEndFilter, CacheFactory.GetCacheItem<CourseImageFinder>(CacheKeyNames.CourseImageFinder, Cache), listNav.HandicappedRoundsOnly),
+                PagedData = await RoundDataProvider.RoundSelect(RoundListingFactory, DbContext, userId, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, seasonFilter, listNav.RoundsPerPage, listNav.RoundDateStartFilter, listNav.RoundDateEndFilter, CacheFactory.GetCacheItem<ImageFinder>(CacheKeyNames.CourseImageFinder, Cache), listNav.HandicappedRoundsOnly),
                 TotalNumberOfPages = totalNumberOfPages,
                 TotalNumberOfRecords = totalNumberOfRecords
             });

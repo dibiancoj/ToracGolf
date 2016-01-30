@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.Constants;
 using ToracGolf.Filters;
+using ToracGolf.MiddleLayer;
 using ToracGolf.MiddleLayer.Courses;
 using ToracGolf.MiddleLayer.Dashboard;
 using ToracGolf.MiddleLayer.Dashboard.Models;
@@ -177,7 +178,7 @@ namespace ToracGolf.Controllers
         [HttpPost]
         public async Task<IActionResult> NewsFeedGet([FromBody]NewsFeedGetRequest filterParams)
         {
-            return Json(await NewsFeedDataProvider.Value.NewsFeedPostSelect(GetUserId(), filterParams.NewsFeedTypeIdFilter, filterParams.SearchFilterText, CacheFactory.GetCacheItem<CourseImageFinder>(CacheKeyNames.CourseImageFinder, Cache)));
+            return Json(await NewsFeedDataProvider.Value.NewsFeedPostSelect(GetUserId(), filterParams.NewsFeedTypeIdFilter, filterParams.SearchFilterText, CacheFactory.GetCacheItem<ImageFinder>(CacheKeyNames.CourseImageFinder, Cache)));
         }
 
         [ValidateCustomAntiForgeryToken]

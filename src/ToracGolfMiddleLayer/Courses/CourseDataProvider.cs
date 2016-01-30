@@ -104,7 +104,7 @@ namespace ToracGolf.MiddleLayer.Courses
                                                                               int? stateFilter,
                                                                               int recordsPerPage,
                                                                               int userId,
-                                                                              CourseImageFinder courseImageFinder)
+                                                                              ImageFinder courseImageFinder)
         {
             //go grab the query
             var queryable = CourseSelectQueryBuilder(dbContext, courseListingFactory, courseNameFilter, stateFilter);
@@ -182,7 +182,7 @@ namespace ToracGolf.MiddleLayer.Courses
 
         #region Course Select
 
-        public static async Task<CourseStatsModel> CourseStatsSelect(ToracGolfContext dbContext, int courseId, int userId, CourseImageFinder courseImageFinder)
+        public static async Task<CourseStatsModel> CourseStatsSelect(ToracGolfContext dbContext, int courseId, int userId, ImageFinder courseImageFinder)
         {
             var courseRecord = await dbContext.Course.AsNoTracking().Select(x => new CourseStatsModel
             {

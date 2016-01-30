@@ -38,7 +38,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed
 
         #region Query 
 
-        public async Task<NewsFeedQueryResult> NewsFeedPostSelect(int userId, NewsFeedItemModel.NewsFeedTypeId? newsFeedTypeIdFilter, string searchFilterText, CourseImageFinder courseImageLocator)
+        public async Task<NewsFeedQueryResult> NewsFeedPostSelect(int userId, NewsFeedItemModel.NewsFeedTypeId? newsFeedTypeIdFilter, string searchFilterText, ImageFinder courseImageLocator)
         {
             return await GridQueryRepository.NewsFeedPostSelect(userId, newsFeedTypeIdFilter, searchFilterText, courseImageLocator);
         }

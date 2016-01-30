@@ -32,7 +32,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.GridQueries
 
         #region Methods
 
-        public async Task<NewsFeedQueryResult> NewsFeedPostSelect(int userId, NewsFeedItemModel.NewsFeedTypeId? newsFeedTypeIdFilter, string searchFilterText, CourseImageFinder courseImageFinder)
+        public async Task<NewsFeedQueryResult> NewsFeedPostSelect(int userId, NewsFeedItemModel.NewsFeedTypeId? newsFeedTypeIdFilter, string searchFilterText, ImageFinder courseImageFinder)
         {
             const int takeAmount = 20;
 
@@ -102,7 +102,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.GridQueries
             return DbContext.Rounds.AsQueryable();
         }
 
-        private async Task<IEnumerable<NewRoundNewsFeed>> RoundSelect(IQueryable<Round> query, int userId, CourseImageFinder courseImageFinder)
+        private async Task<IEnumerable<NewRoundNewsFeed>> RoundSelect(IQueryable<Round> query, int userId, ImageFinder courseImageFinder)
         {
             int newRoundTypeId = (int)NewsFeedItemModel.NewsFeedTypeId.NewRound;
 
@@ -145,7 +145,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.GridQueries
             return DbContext.Course.AsQueryable();
         }
 
-        private async Task<IEnumerable<NewCourseNewsFeed>> CourseSelect(IQueryable<Course> query, int userId, CourseImageFinder courseImageFinder)
+        private async Task<IEnumerable<NewCourseNewsFeed>> CourseSelect(IQueryable<Course> query, int userId, ImageFinder courseImageFinder)
         {
             int newCourseTypeId = (int)NewsFeedItemModel.NewsFeedTypeId.NewCourse;
 

@@ -7,5 +7,7 @@
   },
   "DefaultListingRecordsPerPage": 10,
   "CourseImageSavePath": "C:\\inetpub\\wwwroot\\ToracGolfCourses",
-  "CourseImageVirtualUrl": "http://hpdesktop/ToracGolfCourses/"
+  "CourseImageVirtualUrl": "http://hpdesktop/ToracGolfCourses/",
+  "UserImageSavePath": "C:\\inetpub\\wwwroot\\ToracGolfUserImages",
+  "UserImagesVirtualUrl": "http://hpdesktop/ToracGolfUserImages/"
 }

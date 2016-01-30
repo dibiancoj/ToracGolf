@@ -248,7 +248,7 @@ namespace ToracGolf.MiddleLayer.Rounds
                                                                int recordsPerPage,
                                                                DateTime? roundDateStartFilter,
                                                                DateTime? roundDateEndFilter,
-                                                               CourseImageFinder courseImageFinder,
+                                                               ImageFinder courseImageFinder,
                                                                bool handicappedRoundOnly)
         {
             //go grab the query

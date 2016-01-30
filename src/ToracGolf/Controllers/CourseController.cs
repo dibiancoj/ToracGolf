@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.Constants;
 using ToracGolf.Filters;
+using ToracGolf.MiddleLayer;
 using ToracGolf.MiddleLayer.Courses;
 using ToracGolf.MiddleLayer.Courses.Models.CourseStats;
 using ToracGolf.MiddleLayer.EFModel;
@@ -253,7 +254,7 @@ namespace ToracGolf.Controllers
 
             return Json(new
             {
-                PagedData = await CourseDataProvider.CourseSelect(CourseListingFactory, DbContext, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, stateFilter, listNav.CoursesPerPage, GetUserId(), CacheFactory.GetCacheItem<CourseImageFinder>(CacheKeyNames.CourseImageFinder, Cache)),
+                PagedData = await CourseDataProvider.CourseSelect(CourseListingFactory, DbContext, listNav.PageIndexId, listNav.SortBy, listNav.CourseNameFilter, stateFilter, listNav.CoursesPerPage, GetUserId(), CacheFactory.GetCacheItem<ImageFinder>(CacheKeyNames.CourseImageFinder, Cache)),
                 TotalNumberOfPages = totalNumberOfPages,
                 TotalNumberOfRecords = totalNumberOfRecords
             });
@@ -296,7 +297,7 @@ namespace ToracGolf.Controllers
             var userSeasons = (await SeasonDataProvider.SeasonSelectForUser(DbContext, userId));
 
             //grab the course
-            var courseData = await CourseDataProvider.CourseStatsSelect(DbContext, CourseId, userId, CacheFactory.GetCacheItem<CourseImageFinder>(CacheKeyNames.CourseImageFinder, Cache));
+            var courseData = await CourseDataProvider.CourseStatsSelect(DbContext, CourseId, userId, CacheFactory.GetCacheItem<ImageFinder>(CacheKeyNames.CourseImageFinder, Cache));
 
             return View(new CourseStatsViewModel(
                 await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),

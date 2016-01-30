@@ -17,6 +17,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using ToracGolf.Constants;
+using ToracGolf.MiddleLayer;
 using ToracGolf.MiddleLayer.Courses;
 using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.EFModel.Tables;
@@ -151,7 +152,7 @@ namespace ToracGolf
             var courseImageFilePath = Configuration["CourseImageSavePath"];
             var courseImageVirtualUrlPath = Configuration["CourseImageVirtualUrl"];
 
-            cacheFactory.AddConfiguration(CacheKeyNames.CourseImageFinder, () => new CourseImageFinder(courseImageFilePath, courseImageVirtualUrlPath));
+            cacheFactory.AddConfiguration(CacheKeyNames.CourseImageFinder, () => new ImageFinder(courseImageFilePath, courseImageVirtualUrlPath));
 
             //add the state listing factory configuration
             cacheFactory.AddConfiguration(CacheKeyNames.StateListing,
