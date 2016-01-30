@@ -23,6 +23,10 @@ System.register(['angular2/core', 'rxjs/add/operator/map', '../Common/httpinterc
             NewsFeedService = (function () {
                 function NewsFeedService(httpInterceptor) {
                     this.HttpInterceptorSvc = httpInterceptor;
+                    //build the month name array
+                    this.MonthNameArray = ["January", "February", "March", "April", "May", "June",
+                        "July", "August", "September", "October", "November", "December"
+                    ];
                 }
                 NewsFeedService.prototype.NewFeedGet = function (newsFeedTypeId, searchFilterText) {
                     return this.HttpInterceptorSvc.Post('NewsFeedsGetPost', JSON.stringify({ NewsFeedTypeIdFilter: newsFeedTypeId, SearchFilterText: searchFilterText }));
@@ -38,6 +42,9 @@ System.register(['angular2/core', 'rxjs/add/operator/map', '../Common/httpinterc
                 };
                 NewsFeedService.prototype.CommentLikeClick = function (commentId) {
                     return this.HttpInterceptorSvc.Post('NewsFeedsCommentLike', JSON.stringify({ CommentId: commentId }));
+                };
+                NewsFeedService.prototype.MonthNameSelect = function (monthId) {
+                    return this.MonthNameArray[monthId];
                 };
                 NewsFeedService = __decorate([
                     core_1.Injectable(), 

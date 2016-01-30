@@ -15,7 +15,7 @@
             <span>Like </span><span><i class="fa fa-thumbs-o-up commentlike"></i></span>
             <span>({{Comment.NumberOfLikes | number}})</span>
             @*<span class="CommentDate">{{Comment.CommentDate | date:'medium'}}</span>*@
-            <span class="CommentDate">{{Comment.CommentDate}}</span>
+            <span class="CommentDate">{{DateTimeHack(Comment.CommentDate)}}</span>
         </div>
     </div>
 

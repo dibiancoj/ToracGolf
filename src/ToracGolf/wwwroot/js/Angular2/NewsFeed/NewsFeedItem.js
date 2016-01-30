@@ -58,6 +58,13 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedComment', 'rxj
                         });
                     });
                 };
+                NewsFeedItemPost.prototype.DateTimePipeHack = function (dateTimeIsoValue, isMonth) {
+                    var dateToFormat = new Date(dateTimeIsoValue);
+                    if (isMonth) {
+                        return this.NewsFeedSvc.MonthNameSelect(dateToFormat.getMonth());
+                    }
+                    return dateToFormat.getDate().toString();
+                };
                 __decorate([
                     core_1.Input(), 
                     __metadata('design:type', NewsFeedService_1.NewsFeedItem)

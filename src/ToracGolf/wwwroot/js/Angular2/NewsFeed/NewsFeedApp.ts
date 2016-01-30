@@ -49,7 +49,7 @@ export class NewsFeedApp {
             _thisClass.NgZoneSvc.run(() => {
 
                 //the pipe for date time format doesn't support iso string's right now. so flip it to a date it can handle
-                queryResult.Results.forEach(x => x.PostDate = new Date(x.PostDate.toString()));
+                //queryResult.Results.forEach(x => x.PostDate = new Date(x.PostDate.toString()));
 
                 //set the working posts
                 this.Posts = queryResult.Results;

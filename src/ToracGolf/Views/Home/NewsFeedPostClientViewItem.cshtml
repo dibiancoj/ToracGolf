@@ -5,8 +5,10 @@
 <div class="post-meta hidden-xs">
     <div class="date">
         <span class="icon"><i class="fa fa-calendar"></i></span>
-        <span class="month">{{Post.PostDate | date:'MMM'}}</span>
-        <span class="day">{{Post.PostDate | date:'dd'}}</span>
+        @*<span class="month">{{Post.PostDate | date:'MMM'}}</span>
+        <span class="day">{{Post.PostDate | date:'dd'}}</span>*@
+        <span class="month">{{DateTimePipeHack(Post.PostDate, true)}}</span>
+        <span class="day">{{DateTimePipeHack(Post.PostDate, false)}}</span>
     </div>
     <div class="like-box">
         <div class="LikePost btn btn-block btn-xs btn-base btn-icon fa-thumbs-up" (click)="LikeClick(Post.Id, Post.FeedTypeId)">

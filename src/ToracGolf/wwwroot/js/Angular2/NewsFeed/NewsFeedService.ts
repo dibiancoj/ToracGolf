@@ -10,9 +10,15 @@ export class NewsFeedService {
 
     constructor(httpInterceptor: HttpInterceptor) {
         this.HttpInterceptorSvc = httpInterceptor;
+
+        //build the month name array
+        this.MonthNameArray = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
     }
 
     HttpInterceptorSvc: HttpInterceptor;
+    private MonthNameArray: string[];
 
     NewFeedGet(newsFeedTypeId: NewsFeedTypeId, searchFilterText: string): Observable<Response> {
         return this.HttpInterceptorSvc.Post('NewsFeedsGetPost', JSON.stringify({ NewsFeedTypeIdFilter: newsFeedTypeId, SearchFilterText: searchFilterText }));
@@ -32,6 +38,10 @@ export class NewsFeedService {
 
     CommentLikeClick(commentId: number): Observable<Response> {
         return this.HttpInterceptorSvc.Post('NewsFeedsCommentLike', JSON.stringify({ CommentId: commentId }));
+    }
+
+    MonthNameSelect(monthId: number): string {
+        return this.MonthNameArray[monthId];
     }
 
 }

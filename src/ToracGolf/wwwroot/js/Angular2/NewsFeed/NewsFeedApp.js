@@ -49,7 +49,7 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedItem', './News
                         //go run this so angular can update the new records
                         _thisClass.NgZoneSvc.run(function () {
                             //the pipe for date time format doesn't support iso string's right now. so flip it to a date it can handle
-                            queryResult.Results.forEach(function (x) { return x.PostDate = new Date(x.PostDate.toString()); });
+                            //queryResult.Results.forEach(x => x.PostDate = new Date(x.PostDate.toString()));
                             //set the working posts
                             _this.Posts = queryResult.Results;
                             //go set the counts
