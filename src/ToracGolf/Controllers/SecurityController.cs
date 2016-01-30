@@ -9,6 +9,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ToracGolf.Constants;
+using ToracGolf.MiddleLayer;
 using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.EFModel.Tables;
 using ToracGolf.MiddleLayer.Security;
@@ -67,6 +68,10 @@ namespace ToracGolf.Controllers
             claims.Add(new Claim(ClaimTypes.Name, userLogInAttempt.FirstName + " " + userLogInAttempt.LastName));
             claims.Add(new Claim(ClaimTypes.Email, userLogInAttempt.EmailAddress));
             claims.Add(new Claim(ClaimTypes.StateOrProvince, userLogInAttempt.StateId.ToString()));
+
+            //claims.Add(new Claim(SecuritySettings.UserImageClaimUrl, CacheFactory.GetCacheItem<ImageFinder>(CacheKeyNames.UserImageFinder, Cache).FindImage(userLogInAttempt.UserId)));
+            claims.Add(new Claim(SecuritySettings.UserImageClaimUrl, "https://lh3.googleusercontent.com/--LDT0wSuaA8/AAAAAAAAAAI/AAAAAAAAAEU/jIcMb4MHAQE/s120-c/photo.jpg"));
+
 
             //sign the user in
             await HttpContext.Authentication.SignInAsync(SecuritySettings.SecurityType, new ClaimsPrincipal(new ClaimsIdentity(claims, SecuritySettings.SecurityType)));

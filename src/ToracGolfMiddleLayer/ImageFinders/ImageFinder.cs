@@ -39,7 +39,7 @@ namespace ToracGolf.MiddleLayer
             return dct;
         }
 
-        public string FindCourseImage(int id)
+        public string FindImage(int id)
         {
             string fullPath;
 

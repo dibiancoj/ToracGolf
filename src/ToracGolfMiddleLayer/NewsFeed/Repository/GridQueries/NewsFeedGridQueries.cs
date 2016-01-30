@@ -122,7 +122,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.GridQueries
             }).ToArrayAsync()).Select(x => new NewRoundNewsFeed
             {
                 Id = x.RoundId,
-                CourseImagePath = courseImageFinder.FindCourseImage(x.CourseId),
+                CourseImagePath = courseImageFinder.FindImage(x.CourseId),
                 PostDate = x.RoundDate,
                 CommentCount = x.Comments,
                 LikeCount = x.Likes,
@@ -163,7 +163,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.GridQueries
             }).ToArrayAsync()).Select(x => new NewCourseNewsFeed
             {
                 Id = x.CourseId,
-                CourseImagePath = courseImageFinder.FindCourseImage(x.CourseId),
+                CourseImagePath = courseImageFinder.FindImage(x.CourseId),
                 CommentCount = x.Comments,
                 LikeCount = x.Likes,
                 PostDate = x.CreatedDate,

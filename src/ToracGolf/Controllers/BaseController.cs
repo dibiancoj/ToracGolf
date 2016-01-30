@@ -35,8 +35,8 @@ namespace ToracGolf.Controllers
         public bool IsUserAuthenticated()
         {
             return HttpContext.User != null &&
-               HttpContext.User.Identity != null &&
-               HttpContext.User.Identity.IsAuthenticated;
+              HttpContext.User.Identity != null &&
+              HttpContext.User.Identity.IsAuthenticated;
         }
 
         public async Task<int> UserCurrentSeason(ToracGolfContext dbContext, int userId)

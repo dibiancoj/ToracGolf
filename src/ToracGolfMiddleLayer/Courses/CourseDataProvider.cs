@@ -134,7 +134,7 @@ namespace ToracGolf.MiddleLayer.Courses
             var data = await EFPaging.PageEfQuery(query, pageId, recordsPerPage).ToListAsync();
 
             //go find the course paths
-            data.ForEach(x => x.CourseImageLocation = courseImageFinder.FindCourseImage(x.CourseData.CourseId));
+            data.ForEach(x => x.CourseImageLocation = courseImageFinder.FindImage(x.CourseData.CourseId));
 
             //return the data set
             return data;
@@ -204,7 +204,7 @@ namespace ToracGolf.MiddleLayer.Courses
             }).FirstAsync(x => x.CourseId == courseId);
 
             //set the url path
-            courseRecord.CourseImageUrl = courseImageFinder.FindCourseImage(courseRecord.CourseId);
+            courseRecord.CourseImageUrl = courseImageFinder.FindImage(courseRecord.CourseId);
 
             return courseRecord;
         }

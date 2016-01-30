@@ -289,7 +289,7 @@ namespace ToracGolf.MiddleLayer.Rounds
                 round.RoundPerformance = (int)RoundPerformance.CalculateRoundPerformance(round.TeeBoxLocation.Front9Par + round.TeeBoxLocation.Back9Par, round.AdjustedScore);
 
                 //set the image path
-                round.CourseImagePath = courseImageFinder.FindCourseImage(round.CourseId);
+                round.CourseImagePath = courseImageFinder.FindImage(round.CourseId);
             }
 
             //go return the lookup now

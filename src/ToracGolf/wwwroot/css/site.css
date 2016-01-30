@@ -6,6 +6,13 @@
     cursor: pointer !important;
 }
 
+#UserProfile {
+    margin-left: 15px;
+    float: right;
+    height: 75px;
+    width: 75px;
+}
+
 #OptHeaderRow {
     margin-left: 0px !important;
 }

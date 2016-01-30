@@ -9,5 +9,7 @@ namespace ToracGolf.Constants
     {
         public const string SecurityType = "Cookies";
         public const string AntiforgeryCookieName = "TGAntiForgeryCookie";
+
+        public const string UserImageClaimUrl = "UserImageClaimUrl";
     }
 }
