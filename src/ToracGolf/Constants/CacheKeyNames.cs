@@ -14,6 +14,7 @@ namespace ToracGolf.Constants
         public const string RoundListingSortOrder = "RoundListingSortOrder";
         public const string NumberOfListingsPerPage = "ListingPerPage";
         public const string CourseImageFinder = "CourseImageFinder";
+        public const string UserImageFinder = "UserImageFinder";
     }
 
 }

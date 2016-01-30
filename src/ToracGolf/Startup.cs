@@ -120,10 +120,10 @@ namespace ToracGolf
             services.AddTransient<INewsFeedLikeRepository, NewsFeedLikeRepository>(x => new NewsFeedLikeRepository(x.GetRequiredService<ToracGolfContext>()));
             services.AddTransient<INewsFeedCommentRepository, NewsFeedCommentRepository>(x => new NewsFeedCommentRepository(x.GetRequiredService<ToracGolfContext>()));
 
-            services.AddTransient(x => 
+            services.AddTransient(x =>
                 new Lazy<NewsFeedDataProvider>(() =>
-                new NewsFeedDataProvider(x.GetRequiredService<INewsFeedGridQueries>(), 
-                                         x.GetRequiredService<INewsFeedLikeRepository>(), 
+                new NewsFeedDataProvider(x.GetRequiredService<INewsFeedGridQueries>(),
+                                         x.GetRequiredService<INewsFeedLikeRepository>(),
                                          x.GetRequiredService<INewsFeedCommentRepository>()), true));
 
             //add the IMemory cache so we can add this now
@@ -148,6 +148,11 @@ namespace ToracGolf
             // utilize resource only available with .NET Framework
             //add my cached items
             var cacheFactory = new CacheFactoryStore();
+
+            var userImageFilePath = Configuration["UserImageSavePath"];
+            var userImageVirtualUrlPath = Configuration["UserImagesVirtualUrl"];
+
+            cacheFactory.AddConfiguration(CacheKeyNames.UserImageFinder, () => new ImageFinder(userImageFilePath, userImageVirtualUrlPath));
 
             var courseImageFilePath = Configuration["CourseImageSavePath"];
             var courseImageVirtualUrlPath = Configuration["CourseImageVirtualUrl"];
