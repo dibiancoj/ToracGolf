@@ -136,7 +136,7 @@ System.register(['angular2/core', './NewsFeedService', './NewsFeedItem', './News
                             //go run this so angular can update the new records
                             _thisClass.NgZoneSvc.run(function () {
                                 //the pipe for date time format doesn't support iso string's right now. so flip it to a date it can handle
-                                comments.forEach(function (x) { return x.CommentDate = new Date(x.CommentDate.toString()); });
+                                //comments.forEach(x => x.CommentDate = new Date(x.CommentDate.toString()));
                                 //go add it to the list of comments
                                 recordToUpdate.Comments = comments;
                             });
