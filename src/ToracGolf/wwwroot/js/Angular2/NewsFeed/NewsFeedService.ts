@@ -56,6 +56,7 @@ export class NewsFeedItem {
     CommentCount: number;
     LikeCount: number;
     YouLikedItem: boolean;
+    CourseId: number;
     Comments: Array<NewsFeedComment>;
 }
 

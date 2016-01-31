@@ -84,7 +84,7 @@ namespace ToracGolf.Controllers
         #region Add A Round
 
         [HttpGet]
-        [Route("AddARound", Name = "AddARound")]
+        [Route(ApplicationConstants.AddARoundRouteName, Name = ApplicationConstants.AddARoundRouteName)]
         public async Task<IActionResult> RoundAdd()
         {
             //go build the breadcrumb
@@ -106,7 +106,7 @@ namespace ToracGolf.Controllers
         }
 
         [HttpPost]
-        [Route("AddARound", Name = "AddARound")]
+        [Route(ApplicationConstants.AddARoundRouteName, Name = ApplicationConstants.AddARoundRouteName)]
         [ValidateCustomAntiForgeryToken()]
         public async Task<IActionResult> RoundAdd([FromBody]RoundAddEnteredData model)
         {
@@ -189,7 +189,7 @@ namespace ToracGolf.Controllers
         #region Round Listing
 
         [HttpGet]
-        [Route("ViewRounds", Name = "ViewRounds")]
+        [Route(ApplicationConstants.RoundListingRouteName, Name = ApplicationConstants.RoundListingRouteName)]
         public async Task<IActionResult> RoundListing()
         {
             //go build the breadcrumb

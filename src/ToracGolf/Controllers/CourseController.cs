@@ -84,7 +84,7 @@ namespace ToracGolf.Controllers
         #region Add A Course
 
         [HttpGet]
-        [Route("AddACourse", Name = "AddACourse")]
+        [Route(ApplicationConstants.AddACourseRouteName, Name = ApplicationConstants.AddACourseRouteName)]
         public async Task<IActionResult> CourseAdd()
         {
             //build the breadcrumb
@@ -108,7 +108,7 @@ namespace ToracGolf.Controllers
         }
 
         [HttpPost]
-        [Route("AddACourse", Name = "AddACourse")]
+        [Route(ApplicationConstants.AddACourseRouteName, Name = ApplicationConstants.AddACourseRouteName)]
         [ValidateCustomAntiForgeryToken()]
         public async Task<IActionResult> CourseAdd([FromBody]CourseAddEnteredData model)
         {

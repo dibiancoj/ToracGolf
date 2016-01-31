@@ -53,7 +53,7 @@ namespace ToracGolf.Controllers
         #region Methods
 
         [HttpGet]
-        [Route("ChangeMySettings", Name = "ChangeMySettings")]
+        [Route(ApplicationConstants.ChangeMySettingsRouteName, Name = ApplicationConstants.ChangeMySettingsRouteName)]
         public IActionResult Index()
         {
             return View();
@@ -62,7 +62,7 @@ namespace ToracGolf.Controllers
         #region Change Password
 
         [HttpGet]
-        [Route("ChangePassword", Name = "ChangePassword")]
+        [Route(ApplicationConstants.ChangePasswordRouteName, Name = ApplicationConstants.ChangePasswordRouteName)]
         public async Task<IActionResult> ChangeMyPasswords()
         {
             //grab the user id
@@ -80,7 +80,7 @@ namespace ToracGolf.Controllers
         }
 
         [HttpPost]
-        [Route("ChangePassword", Name = "ChangePassword")]
+        [Route(ApplicationConstants.ChangePasswordRouteName, Name = ApplicationConstants.ChangePasswordRouteName)]
         [ValidateCustomAntiForgeryToken()]
         public async Task<IActionResult> ChangePassword(ChangePasswordAttemptViewModel changePasswordViewModel)
         {
@@ -114,7 +114,7 @@ namespace ToracGolf.Controllers
 
         #region Edit And Find Friends
 
-        [Route(ApplicationConstants.EditAndFindFriends, Name = ApplicationConstants.EditAndFindFriends)]
+        [Route(ApplicationConstants.EditAndFindFriendsRouteName, Name = ApplicationConstants.EditAndFindFriendsRouteName)]
         [HttpGet]
         public async Task<IActionResult> EditFriends()
         {

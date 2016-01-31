@@ -7,14 +7,20 @@ namespace ToracGolf.Constants
 {
     public static class ApplicationConstants
     {
-        public const string CourseListingRouteName = "ViewCourses";
-        public const string RoundListingRouteName = "ViewRounds";
-        public const string SeasonListingRouteName = "ViewSeasons";
-
         public const string MainLandingPage = "Dashboard";
-
         public const string NewsFeed = "NewsFeed";
 
-        public const string EditAndFindFriends = "AddAndEditFriends";
+        public const string AddARoundRouteName = "AddARound";
+        public const string RoundListingRouteName = "ViewRounds";
+
+        public const string AddACourseRouteName = "AddACourse";
+        public const string CourseListingRouteName = "ViewCourses";
+
+        public const string AddASeasonRouteName = "AddASeason";
+        public const string SeasonListingRouteName = "ViewSeasons";
+
+        public const string ChangeMySettingsRouteName = "ChangeMySettings";
+        public const string ChangePasswordRouteName = "ChangePassword";
+        public const string EditAndFindFriendsRouteName = "AddAndEditFriends";
     }
 }

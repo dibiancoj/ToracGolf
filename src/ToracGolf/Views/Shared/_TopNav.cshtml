@@ -1,4 +1,4 @@
-﻿
+﻿@using ToracGolf.Constants
 @model  ToracGolf.ViewModels.Navigation.TopNavViewModel
 
 <!-- MAIN NAV -->
@@ -40,40 +40,40 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Home</a>
                         <ul class="dropdown-menu">
-                            <li><a asp-route="Dashboard">Dashboard</a></li>
-                            <li><a asp-route="NewsFeed">News Feed</a></li>
+                            <li><a asp-route="@ApplicationConstants.MainLandingPage">Dashboard</a></li>
+                            <li><a asp-route="@ApplicationConstants.NewsFeed">News Feed</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Rounds</a>
                         <ul class="dropdown-menu">
-                            <li><a asp-route="AddARound">Add A Round</a></li>
-                            <li><a asp-route="ViewRounds">View Rounds</a></li>
+                            <li><a asp-route="@ApplicationConstants.AddARoundRouteName">Add A Round</a></li>
+                            <li><a asp-route="@ApplicationConstants.RoundListingRouteName">View Rounds</a></li>
                         </ul>
                     </li>
 
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Courses</a>
                         <ul class="dropdown-menu">
-                            <li><a asp-route="AddACourse">Add A Course</a></li>
-                            <li><a asp-route="ViewCourses">View Courses</a></li>
+                            <li><a asp-route="@ApplicationConstants.AddACourseRouteName">Add A Course</a></li>
+                            <li><a asp-route="@ApplicationConstants.CourseListingRouteName">View Courses</a></li>
                         </ul>
                     </li>
 
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Seasons</a>
                         <ul class="dropdown-menu">
-                            <li><a asp-route="AddASeason">Add A Season</a></li>
-                            <li><a asp-route="ViewSeasons">Season Listing</a></li>
+                            <li><a asp-route="@ApplicationConstants.AddASeasonRouteName">Add A Season</a></li>
+                            <li><a asp-route="@ApplicationConstants.SeasonListingRouteName">Season Listing</a></li>
                         </ul>
                     </li>
 
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Settings</a>
                         <ul class="dropdown-menu">
-                            <li><a asp-route="ChangeMySettings">Change My Settings</a></li>
-                            <li><a asp-route="ChangePassword">Change Password</a></li>
-                            <li><a asp-route="EditAndFindFriends">Add & Edit Friends</a></li>
+                            <li><a asp-route="@ApplicationConstants.ChangeMySettingsRouteName">Change My Settings</a></li>
+                            <li><a asp-route="@ApplicationConstants.ChangePasswordRouteName">Change Password</a></li>
+                            <li><a asp-route="@ApplicationConstants.EditAndFindFriendsRouteName">Add & Edit Friends</a></li>
                         </ul>
                     </li>
                 </ul>

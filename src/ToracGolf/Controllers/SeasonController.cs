@@ -64,10 +64,10 @@ namespace ToracGolf.Controllers
 
         #endregion
 
-        #region Add A Round
+        #region Add A Season
 
         [HttpGet]
-        [Route("AddASeason", Name = "AddASeason")]
+        [Route(ApplicationConstants.AddASeasonRouteName, Name = ApplicationConstants.AddASeasonRouteName)]
         public async Task<IActionResult> SeasonAdd()
         {
             //go build the breadcrumb
@@ -88,7 +88,7 @@ namespace ToracGolf.Controllers
         }
 
         [HttpPost]
-        [Route("AddASeason", Name = "AddASeason")]
+        [Route(ApplicationConstants.AddASeasonRouteName, Name = ApplicationConstants.AddASeasonRouteName)]
         [ValidateCustomAntiForgeryToken()]
         public async Task<IActionResult> SeasonAdd([FromBody]SeasonAddEnteredData model)
         {
@@ -136,7 +136,7 @@ namespace ToracGolf.Controllers
         #region Season Listing
 
         [HttpGet]
-        [Route("ViewSeasons", Name = "ViewSeasons")]
+        [Route(ApplicationConstants.SeasonListingRouteName, Name = ApplicationConstants.SeasonListingRouteName)]
         public async Task<IActionResult> SeasonListing()
         {
             //go build the breadcrumb
