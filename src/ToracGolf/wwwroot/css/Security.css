@@ -1,3 +1,7 @@
 ﻿.ForceBlueColor {
     color: #3498db !important;
 }
+
+#UserProfilePicture {
+    width: 100%;
+}

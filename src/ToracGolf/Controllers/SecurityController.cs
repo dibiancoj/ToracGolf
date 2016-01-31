@@ -1,10 +1,14 @@
 ﻿using Microsoft.AspNet.Authorization;
+using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.OptionsModel;
+using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -14,6 +18,7 @@ using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.EFModel.Tables;
 using ToracGolf.MiddleLayer.Security;
 using ToracGolf.MiddleLayer.SecurityManager;
+using ToracGolf.Settings;
 using ToracGolf.ViewModels.Navigation;
 using ToracGolf.ViewModels.Security;
 using ToracLibrary.AspNet.Caching.FactoryStore;
@@ -27,11 +32,12 @@ namespace ToracGolf.Controllers
 
         #region Constructor
 
-        public SecurityController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, ToracGolfContext dbContext)
+        public SecurityController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, ToracGolfContext dbContext, IOptions<AppSettings> configuration)
         {
             DbContext = dbContext;
             Cache = cache;
             CacheFactory = cacheFactoryStore;
+            Configuration = configuration;
         }
 
         #endregion
@@ -43,6 +49,8 @@ namespace ToracGolf.Controllers
         private IMemoryCache Cache { get; }
 
         private ICacheFactoryStore CacheFactory { get; }
+
+        private IOptions<AppSettings> Configuration { get; }
 
         #endregion
 
@@ -69,8 +77,8 @@ namespace ToracGolf.Controllers
             claims.Add(new Claim(ClaimTypes.Email, userLogInAttempt.EmailAddress));
             claims.Add(new Claim(ClaimTypes.StateOrProvince, userLogInAttempt.StateId.ToString()));
 
-            //claims.Add(new Claim(SecuritySettings.UserImageClaimUrl, CacheFactory.GetCacheItem<ImageFinder>(CacheKeyNames.UserImageFinder, Cache).FindImage(userLogInAttempt.UserId)));
-            claims.Add(new Claim(SecuritySettings.UserImageClaimUrl, "https://lh3.googleusercontent.com/--LDT0wSuaA8/AAAAAAAAAAI/AAAAAAAAAEU/jIcMb4MHAQE/s120-c/photo.jpg"));
+            claims.Add(new Claim(SecuritySettings.UserImageClaimUrl, CacheFactory.GetCacheItem<ImageFinder>(CacheKeyNames.UserImageFinder, Cache).FindImage(userLogInAttempt.UserId)));
+            //claims.Add(new Claim(SecuritySettings.UserImageClaimUrl, "https://lh3.googleusercontent.com/--LDT0wSuaA8/AAAAAAAAAAI/AAAAAAAAAEU/jIcMb4MHAQE/s120-c/photo.jpg"));
 
 
             //sign the user in
@@ -162,7 +170,7 @@ namespace ToracGolf.Controllers
         [AllowAnonymous]
         [Route("SignUp", Name = "SignUp")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SignUp(SignUpEnteredData model)
+        public async Task<IActionResult> SignUp(SignUpEnteredData model, IFormFile UserProfilePicture)
         {
             //do we have a valid model?
             if (ModelState.IsValid)
@@ -173,6 +181,17 @@ namespace ToracGolf.Controllers
                 {
                     //let's try to add this user to the system
                     userRegisterAttempt = await SecurityDataProvider.RegisterUser(DbContext, model);
+
+                    //successful. go add the image if they have one
+                    if (UserProfilePicture != null)
+                    {
+                        var tryToGetFileExtension = UserProfilePicture.ContentType.Split('/')[1];
+
+                        await UserProfilePicture.SaveAsAsync(Path.Combine(Configuration.Value.UserImageSavePath, userRegisterAttempt.UserId.ToString() + "." + tryToGetFileExtension));
+
+                        //go invalidate the user cache
+                        CacheFactory.RemoveCacheItem(CacheKeyNames.UserImageFinder, Cache);
+                    }
                 }
                 catch (Exception ex)
                 {

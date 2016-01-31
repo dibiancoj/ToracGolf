@@ -16,6 +16,10 @@ namespace ToracGolf.Settings
         public string CourseImageSavePath { get; set; }
 
         public string CourseImageVirtualUrl { get; set; }
+
+        public string UserImageSavePath { get; set; }
+
+        public string UserImagesVirtualUrl { get; set; }
     }
 
     public class AppSettingsData

@@ -27,7 +27,7 @@
                             <h2>Create your own account</h2>
                         </div>
                         <div class="form-body">
-                            <form id="frmRegister" asp-route="SignUp" method="post" class="sky-form">
+                            <form id="frmRegister" asp-route="SignUp" method="post" class="sky-form" enctype="multipart/form-data">
                                 <fieldset class="no-padding">
                                     <section class="">
                                         <div class="row">
@@ -104,6 +104,16 @@
                                                     <label asp-for="SignUpUserEntered.HomeState" class="label"></label>
                                                     <label class="select">
                                                         <select name="HomeState" asp-for="SelectedState" asp-items="Model.StateListing"></select>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="label">Profile Picture</label>
+                                                    <label class="select">
+                                                        <input type="file" id="UserProfilePicture" name="UserProfilePicture" />
                                                     </label>
                                                 </div>
                                             </div>
