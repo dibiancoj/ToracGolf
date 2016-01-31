@@ -9,7 +9,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.GridQueries
 {
     public interface INewsFeedGridQueries
     {
-        Task<NewsFeedQueryResult> NewsFeedPostSelect(int userId, NewsFeedItemModel.NewsFeedTypeId? newsFeedTypeIdFilter, string searchFilterText, ImageFinder courseImageFinder);
+        Task<NewsFeedQueryResult> NewsFeedPostSelect(int userId, NewsFeedItemModel.NewsFeedTypeId? newsFeedTypeIdFilter, string searchFilterText, ImageFinder courseImageFinder, ImageFinder userImageLocator);
     }
 
 }

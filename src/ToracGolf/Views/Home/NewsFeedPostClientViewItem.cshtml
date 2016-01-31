@@ -6,7 +6,7 @@
     <div class="date">
         <span class="icon"><i class="fa fa-calendar"></i></span>
         @*<span class="month">{{Post.PostDate | date:'MMM'}}</span>
-        <span class="day">{{Post.PostDate | date:'dd'}}</span>*@
+            <span class="day">{{Post.PostDate | date:'dd'}}</span>*@
         <span class="month">{{CustomFormatterSvc.DatePipe(Post.PostDate, 'M')}}</span>
         <span class="day">{{CustomFormatterSvc.DatePipe(Post.PostDate, 'D')}}</span>
     </div>
@@ -35,9 +35,25 @@
             </div>
         </div>
         <div class="post-desc">
-            <p *ngFor="#body of Post.BodyOfPost">
-                {{body}}
+
+
+            <p *ngIf="Post.FeedTypeId == 1">
+                {{Post.BodyOfPost.NewCourseStory}}
             </p>
+
+            <div *ngIf="Post.FeedTypeId == 0" class="row">
+                <div class="col-xs-2">
+                    <img class="NewRoundUserImage" src="{{Post.BodyOfPost.UserImageUrl}}">
+                </div>
+                <div class="col-xs-5">
+                    <p>
+                        Adjusted Score: {{CustomFormatterSvc.NumberPipe(Post.BodyOfPost.AdjustedScore)}}
+                    </p><p>
+                        Round Handicap: {{CustomFormatterSvc.NumberPipe(Post.BodyOfPost.RoundHandicap)}}
+                    </p>
+                </div>
+            </div>
+
         </div>
 
         <div class="CommentItemsContainer">

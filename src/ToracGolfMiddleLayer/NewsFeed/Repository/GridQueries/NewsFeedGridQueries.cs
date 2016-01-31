@@ -32,7 +32,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.GridQueries
 
         #region Methods
 
-        public async Task<NewsFeedQueryResult> NewsFeedPostSelect(int userId, NewsFeedItemModel.NewsFeedTypeId? newsFeedTypeIdFilter, string searchFilterText, ImageFinder courseImageFinder)
+        public async Task<NewsFeedQueryResult> NewsFeedPostSelect(int userId, NewsFeedItemModel.NewsFeedTypeId? newsFeedTypeIdFilter, string searchFilterText, ImageFinder courseImageFinder, ImageFinder userImageLocator)
         {
             const int takeAmount = 20;
 
@@ -70,7 +70,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.GridQueries
             //only rounds?
             if (ShouldRunQuery(NewsFeedItemModel.NewsFeedTypeId.NewRound, newsFeedTypeIdFilter))
             {
-                newsFeedItems.AddRange(await RoundSelect(roundQuery, userId, courseImageFinder));
+                newsFeedItems.AddRange(await RoundSelect(roundQuery, userId, courseImageFinder, userImageLocator));
             }
 
             if (ShouldRunQuery(NewsFeedItemModel.NewsFeedTypeId.NewCourse, newsFeedTypeIdFilter))
@@ -102,12 +102,14 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.GridQueries
             return DbContext.Rounds.AsQueryable();
         }
 
-        private async Task<IEnumerable<NewRoundNewsFeed>> RoundSelect(IQueryable<Round> query, int userId, ImageFinder courseImageFinder)
+        private async Task<IEnumerable<NewRoundNewsFeed>> RoundSelect(IQueryable<Round> query, int userId, ImageFinder courseImageFinder, ImageFinder userImageFinder)
         {
             int newRoundTypeId = (int)NewsFeedItemModel.NewsFeedTypeId.NewRound;
 
             return (await query.Select(y => new
             {
+                UserId = y.UserId,
+                UserName = y.User.FirstName + " " + y.User.LastName,
                 RoundId = y.RoundId,
                 RoundDate = y.RoundDate,
                 Score = y.Score,
@@ -127,12 +129,13 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.GridQueries
                 CommentCount = x.Comments,
                 LikeCount = x.Likes,
                 YouLikedItem = x.YouLikedItem,
-                TitleOfPost = string.Format($"You Scored A {x.Score} At {x.CourseName} - {x.TeeBoxDescription}"),
-                BodyOfPost = new string[]
- {
-                    string.Format($"Adjusted Score: {Convert.ToInt32(Math.Round(x.AdjustedScore, 1))}"),
-                    string.Format($"Round Handicap: {Math.Round(x.RoundHandicap, 2)}")
- }
+                TitleOfPost = string.Format($"{(x.UserId == userId ? "You" : x.UserName)} Scored A {x.Score} At {x.CourseName} - {x.TeeBoxDescription}"),
+                BodyOfPost = new NewRoundBody
+                {
+                    AdjustedScore = Convert.ToInt32(Math.Round(x.AdjustedScore, 1)),
+                    RoundHandicap = Math.Round(x.RoundHandicap, 2),
+                    UserImageUrl = userImageFinder.FindImage(x.UserId)
+                }
             });
         }
 
@@ -169,7 +172,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.GridQueries
                 PostDate = x.CreatedDate,
                 YouLikedItem = x.YouLikedItem,
                 TitleOfPost = string.Format($"{x.CourseName} In {x.City}, {x.StateTxt} Has Been Created."),
-                BodyOfPost = new string[] { x.CourseDescription }
+                BodyOfPost = new NewCourseBody { NewCourseStory = x.CourseDescription }
             });
         }
 

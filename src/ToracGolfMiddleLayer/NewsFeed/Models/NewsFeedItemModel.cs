@@ -32,7 +32,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed
 
         public string TitleOfPost { get; set; }
 
-        public IEnumerable<string> BodyOfPost { get; set; }
+        public INewsFeedBody BodyOfPost { get; set; }
 
         public DateTime PostDate { get; set; }
 
@@ -46,6 +46,22 @@ namespace ToracGolf.MiddleLayer.NewsFeed
 
         public IEnumerable<NewsFeedCommentRow> Comments { get; set; }
 
+    }
+
+    public interface INewsFeedBody
+    {
+    }
+
+    public class NewRoundBody : INewsFeedBody
+    {
+        public string UserImageUrl { get; set; }
+        public int AdjustedScore { get; set; }
+        public double RoundHandicap { get; set; }
+    }
+
+    public class NewCourseBody : INewsFeedBody
+    {
+        public string NewCourseStory { get; set; }
     }
 
     public class NewRoundNewsFeed : NewsFeedItemModel
