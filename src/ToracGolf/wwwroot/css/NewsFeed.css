@@ -7,7 +7,18 @@
 }
 
 .NewsFeedTypeActive {
-    background-color: lightblue;
+    background-color: #3498db;
+    color: white;
+}
+
+    .NewsFeedTypeActive .NewsFeedBadge {
+        background-color: white !important;
+        color: black !important;
+    }
+
+.NewsFeedBadgeHover:hover a .NewsFeedBadge {
+    background-color: white !important;
+    color: black !important;
 }
 
 .CommentIcon {
