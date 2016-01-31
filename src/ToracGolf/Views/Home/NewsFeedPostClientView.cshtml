@@ -6,7 +6,7 @@
 
     <!-- Standard image post example -->
     <div class="post-item style2" *ngFor="#post of Posts">
-           <NewsFeedPostItem [Post]="post" (LikeEvent)="Like($event)" (CommentSaveEvent)="SaveComment($event)" (ShowHideCommentEvent)="ShowHideComment($event)"></NewsFeedPostItem>
+        <NewsFeedPostItem [Post]="post" (LikeEvent)="Like($event)" (CommentSaveEvent)="SaveComment($event)" (ShowHideCommentEvent)="ShowHideComment($event)"></NewsFeedPostItem>
     </div>
 
 </div>
@@ -36,11 +36,11 @@
         <div class="widget">
             <ul class="categories highlight">
                 @*<li><a (click)="FilterByType(null)" [ngClass]="{NewsFeedTypeActive: ActiveFeedTypeId == null}" class="NewsFeedTypeActive">All ({{(NewCoursePostCount+NewRoundPostCount) | number}})</a></li>
-                <li><a (click)="FilterByType(0)" [ngClass]="{NewsFeedTypeActive: ActiveFeedTypeId == 0}">New Rounds ({{NewRoundPostCount | number}})</a></li>
-                <li><a (click)="FilterByType(1)" [ngClass]="{NewsFeedTypeActive: ActiveFeedTypeId == 1}">New Courses ({{NewCoursePostCount | number}})</a></li>*@
-                <li><a (click)="FilterByType(null)" [ngClass]="{NewsFeedTypeActive: ActiveFeedTypeId == null}" class="NewsFeedTypeActive">All ({{CustomFormatterSvc.NumberPipe(NewCoursePostCount+NewRoundPostCount)}})</a></li>
-                <li><a (click)="FilterByType(0)" [ngClass]="{NewsFeedTypeActive: ActiveFeedTypeId == 0}">New Rounds ({{CustomFormatterSvc.NumberPipe(NewRoundPostCount)}})</a></li>
-                <li><a (click)="FilterByType(1)" [ngClass]="{NewsFeedTypeActive: ActiveFeedTypeId == 1}">New Courses ({{CustomFormatterSvc.NumberPipe(NewCoursePostCount)}})</a></li>
+                    <li><a (click)="FilterByType(0)" [ngClass]="{NewsFeedTypeActive: ActiveFeedTypeId == 0}">New Rounds ({{NewRoundPostCount | number}})</a></li>
+                    <li><a (click)="FilterByType(1)" [ngClass]="{NewsFeedTypeActive: ActiveFeedTypeId == 1}">New Courses ({{NewCoursePostCount | number}})</a></li>*@
+                <li><a (click)="FilterByType(null)" [ngClass]="{NewsFeedTypeActive: ActiveFeedTypeId == null}" class="NewsFeedTypeActive">All <span class="badge">{{CustomFormatterSvc.NumberPipe(NewCoursePostCount+NewRoundPostCount)}}</span></a></li>
+                <li><a (click)="FilterByType(0)" [ngClass]="{NewsFeedTypeActive: ActiveFeedTypeId == 0}">New Rounds <span class="badge">{{CustomFormatterSvc.NumberPipe(NewRoundPostCount)}}</span></a></li>
+                <li><a (click)="FilterByType(1)" [ngClass]="{NewsFeedTypeActive: ActiveFeedTypeId == 1}">New Courses <span class="badge">{{CustomFormatterSvc.NumberPipe(NewCoursePostCount)}}</span></a></li>
             </ul>
         </div>
 
@@ -49,7 +49,7 @@
         </div>
         <div class="widget">
             <ul class="categories highlight">
-                <li><a href="EditNewsFeedSettings">Edit Friends</a></li>
+                <li><a href="EditNewsFeedSettings">Edit Friends <span class="badge">{{FriendCount}}</span></a></li>
             </ul>
         </div>
     </div>

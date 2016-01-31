@@ -58,6 +58,8 @@ System.register(['angular2/core', './NewsFeedService', '../Common/CustomFormatte
                             _this.NewCoursePostCount = queryResult.UnFilteredCourseCount;
                             //set the count for new rounds
                             _this.NewRoundPostCount = queryResult.UnFilteredRoundCount;
+                            //set the friend count
+                            _this.FriendCount = queryResult.FriendCount;
                             //what is the active nav menu
                             _this.ActiveFeedTypeId = newsFeedTypeId;
                         });

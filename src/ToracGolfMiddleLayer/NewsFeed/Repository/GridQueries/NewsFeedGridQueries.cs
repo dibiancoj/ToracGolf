@@ -43,7 +43,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.GridQueries
             int newRoundCount;
 
             //grab the user's friends
-            var usersFriendIds = FriendsDataProvider.GetUsersFriendList(DbContext, userId).ToList();
+            var usersFriendIds = await FriendsDataProvider.GetUsersFriendList(DbContext, userId).ToArrayAsync();
 
             //let's go grab the round query
             var roundQuery = RoundGet().AsNoTracking()
@@ -83,7 +83,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.GridQueries
             }
 
             //now return the model
-            return new NewsFeedQueryResult(newsFeedItems.OrderByDescending(x => x.PostDate).ToArray(), newRoundCount, newCourseCount);
+            return new NewsFeedQueryResult(newsFeedItems.OrderByDescending(x => x.PostDate).ToArray(), newRoundCount, newCourseCount, usersFriendIds.Length);
         }
 
         #endregion

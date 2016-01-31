@@ -46,6 +46,7 @@ export class NewsFeedQueryResult {
     Results: NewsFeedItem[];
     UnFilteredRoundCount: number;
     UnFilteredCourseCount: number;
+    FriendCount: number;
 }
 
 export class NewsFeedItem {

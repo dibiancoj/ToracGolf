@@ -25,6 +25,7 @@ export class NewsFeedApp {
     NewRoundPostCount: number;
     ActiveFeedTypeId: number;
     SearchFilterText: string;
+    FriendCount: number;
 
     constructor(newsFeedService: NewsFeedService, ngZone: NgZone, customFormatter: CustomFormatterService) {
 
@@ -59,6 +60,9 @@ export class NewsFeedApp {
 
                 //set the count for new rounds
                 this.NewRoundPostCount = queryResult.UnFilteredRoundCount;
+
+                //set the friend count
+                this.FriendCount = queryResult.FriendCount;
 
                 //what is the active nav menu
                 this.ActiveFeedTypeId = newsFeedTypeId;
