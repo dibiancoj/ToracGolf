@@ -14,5 +14,7 @@ namespace ToracGolf.Constants
         public const string MainLandingPage = "Dashboard";
 
         public const string NewsFeed = "NewsFeed";
+
+        public const string EditAndFindFriends = "AddAndEditFriends";
     }
 }

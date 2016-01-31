@@ -1,0 +1,47 @@
+﻿@{
+    Layout = "_ToracGolfLayout";
+    ViewBag.Title = "Add & Edit Friends";
+}
+@model ToracGolf.ViewModels.Settings.AddAndEditFriendsViewModel
+
+@section Breadcrumb{
+    @Html.Partial("_Breadcrumb", Model.Breadcrumb)
+}
+
+@section TopNav{
+    @Html.Partial("_TopNav", new ToracGolf.ViewModels.Navigation.TopNavViewModel(true))
+}
+
+@section HandicapStatus{
+    @Html.Partial("_HandicapStatus", Model.HandicapStatus)
+}
+
+@section Styles{
+
+}
+
+@section Scripts{
+
+}
+
+<section class="slice slice-lg bg-image" style="background-image:url(images/backgrounds/SeasonAdd.jpg);">
+
+    <div id="ChangeMyPassword" class="wp-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+                    <div class="wp-block default user-form user-form-alpha no-margin">
+                        <div class="form-header">
+                            <h2>Change My Password</h2>
+                        </div>
+                        <div class="form-body">
+                            @Html.Partial("_AngularTokenSet", Model.TokenSet)
+
+                            <form id="ChangePwForm" class="sky-form"></form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -59,6 +59,8 @@ namespace ToracGolf.Controllers
             return View();
         }
 
+        #region Change Password
+
         [HttpGet]
         [Route("ChangePassword", Name = "ChangePassword")]
         public async Task<IActionResult> ChangeMyPasswords()
@@ -107,6 +109,30 @@ namespace ToracGolf.Controllers
             //return the error here
             return new BadRequestObjectResult(ModelState);
         }
+
+        #endregion
+
+        #region Edit And Find Friends
+
+        [Route(ApplicationConstants.EditAndFindFriends, Name = ApplicationConstants.EditAndFindFriends)]
+        [HttpGet]
+        public async Task<IActionResult> EditFriends()
+        {
+            //grab the user id
+            var userId = GetUserId();
+
+            var breadCrumb = new List<BreadcrumbNavItem>();
+
+            breadCrumb.Add(new BreadcrumbNavItem("Home", ApplicationConstants.MainLandingPage));
+            breadCrumb.Add(new BreadcrumbNavItem("Add & Edit Friends", "#"));
+
+            return View(new AddAndEditFriendsViewModel(
+                await HandicapStatusBuilder(DbContext, userId, await UserCurrentSeason(DbContext, userId)),
+                breadCrumb,
+                BuildTokenSet(Antiforgery)));
+        }
+
+        #endregion
 
         #endregion
 

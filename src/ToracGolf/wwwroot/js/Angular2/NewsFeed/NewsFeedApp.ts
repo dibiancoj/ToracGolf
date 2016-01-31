@@ -28,7 +28,7 @@ export class NewsFeedApp {
     FriendCount: number;
 
     constructor(newsFeedService: NewsFeedService, ngZone: NgZone, customFormatter: CustomFormatterService) {
-
+     
         //set the properties
         this.NewsFeedSvc = newsFeedService;
         this.CustomFormatterSvc = customFormatter;
