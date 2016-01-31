@@ -24,6 +24,7 @@ namespace ToracGolf.MiddleLayer.EFModel
         public virtual DbSet<Handicap> Handicap { get; set; }
         public virtual DbSet<NewsFeedLike> NewsFeedLike { get; set; }
         public virtual DbSet<NewsFeedComment> NewsFeedComment { get; set; }
+        public virtual DbSet<Friends> Friends { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -78,6 +79,9 @@ namespace ToracGolf.MiddleLayer.EFModel
                 .HasKey(x => x.SeasonId)
                 .Property(x => x.SeasonId)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
+            modelBuilder.Entity<Friends>()
+                .HasKey(x => new { x.UserId, x.FriendId });
         }
 
     }

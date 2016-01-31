@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ToracGolf.MiddleLayer.Courses;
 using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.EFModel.Tables;
+using ToracGolf.MiddleLayer.Friend;
 using ToracGolf.MiddleLayer.NewsFeed.Models;
 
 namespace ToracGolf.MiddleLayer.NewsFeed.Repository.GridQueries
@@ -41,9 +42,12 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.GridQueries
             int newCourseCount;
             int newRoundCount;
 
+            //grab the user's friends
+            var usersFriendIds = FriendsDataProvider.GetUsersFriendList(DbContext, userId).ToList();
+
             //let's go grab the round query
             var roundQuery = RoundGet().AsNoTracking()
-                            .Where(x => x.UserId == userId)
+                            .Where(x => x.UserId == userId || usersFriendIds.Contains(x.UserId))
                             .OrderByDescending(x => x.RoundDate)
                             .Take(takeAmount);
 

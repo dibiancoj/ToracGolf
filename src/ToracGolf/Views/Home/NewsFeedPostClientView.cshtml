@@ -43,5 +43,14 @@
                 <li><a (click)="FilterByType(1)" [ngClass]="{NewsFeedTypeActive: ActiveFeedTypeId == 1}">New Courses ({{CustomFormatterSvc.NumberPipe(NewCoursePostCount)}})</a></li>
             </ul>
         </div>
+
+        <div class="section-title-wr">
+            <h3 class="section-title left"><span>Edit Settings</span></h3>
+        </div>
+        <div class="widget">
+            <ul class="categories highlight">
+                <li><a href="EditNewsFeedSettings">Edit Friends</a></li>
+            </ul>
+        </div>
     </div>
 </div>
