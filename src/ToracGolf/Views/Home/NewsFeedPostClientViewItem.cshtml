@@ -57,7 +57,7 @@
         </div>
 
         <div class="CommentItemsContainer">
-            <div *ngFor="#comment of Post.Comments">
+            <div *ngFor="#comment of Post.Comments" class="NewsFeedCommentDiv">
                 <NewsFeedCommentItem (LikeCommentEvent)="LikeCommentBubble($event)" [Comment]="comment"></NewsFeedCommentItem>
             </div>
         </div>

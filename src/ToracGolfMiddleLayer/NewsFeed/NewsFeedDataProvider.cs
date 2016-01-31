@@ -58,7 +58,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed
 
         #region Comments
 
-        public async Task<IEnumerable<NewsFeedCommentRow>> CommentAdd(ToracGolfContext dbContext, int userId, int id, NewsFeedItemModel.NewsFeedTypeId newsFeedTypeId, string commentToAdd)
+        public async Task<IEnumerable<NewsFeedCommentRow>> CommentAdd(ToracGolfContext dbContext, int userId, int id, NewsFeedItemModel.NewsFeedTypeId newsFeedTypeId, string commentToAdd, ImageFinder userImageFinder)
         {
             //lets go add the row
             await CommentRepository.Add(new NewsFeedComment
@@ -71,15 +71,19 @@ namespace ToracGolf.MiddleLayer.NewsFeed
             });
 
             //go return this posts comment
-            return await CommentSelect(dbContext, userId, id, newsFeedTypeId);
+            return await CommentSelect(dbContext, userId, id, newsFeedTypeId, userImageFinder);
         }
 
-        public async Task<IEnumerable<NewsFeedCommentRow>> CommentSelect(ToracGolfContext dbContext, int userId, int id, NewsFeedItemModel.NewsFeedTypeId newsFeedTypeId)
+        public async Task<IEnumerable<NewsFeedCommentRow>> CommentSelect(ToracGolfContext dbContext, int userId, int id, NewsFeedItemModel.NewsFeedTypeId newsFeedTypeId, ImageFinder userImageFinder)
         {
-            return await CommentRepository.GetComments().AsNoTracking()
+            var data = await CommentRepository.GetComments().AsNoTracking()
                          .Where(x => x.AreaId == id && x.NewsFeedTypeId == (int)newsFeedTypeId)
                          .OrderByDescending(x => x.CreatedDate)
-                         .Select(CommentRepository.SelectCommand).ToArrayAsync();
+                         .Select(CommentRepository.SelectCommand).ToListAsync();
+
+            data.ForEach(x => x.UserProfileUrl = userImageFinder.FindImage(x.UserIdThatMadeComment));
+
+            return data;
         }
 
         public async Task<int> CommentLikeAddOrRemove(ToracGolfContext dbContext, int userId, int commentId)

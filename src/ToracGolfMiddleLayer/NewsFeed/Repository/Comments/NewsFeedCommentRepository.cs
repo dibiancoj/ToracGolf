@@ -22,6 +22,8 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.Comments
 
             //just set the method....we are doing this so the calling user doesn't have to populate it in a variable first
             SelectCommand = SelectCommentsBuilder();
+
+            //UserProfileFinder = userProfileFinder;
         }
 
         #endregion
@@ -31,6 +33,8 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.Comments
         public ToracGolfContext DbContext { get; }
 
         public Expression<Func<NewsFeedComment, NewsFeedCommentRow>> SelectCommand { get; }
+
+        public ImageFinder UserProfileFinder { get; }
 
         #endregion
 
@@ -55,7 +59,9 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Repository.Comments
                 User = x.User.FirstName + " " + x.User.LastName,
                 CommentText = x.Comment,
                 NumberOfLikes = DbContext.NewsFeedLike.Count(y => y.AreaId == x.CommentId && y.NewsFeedTypeId == (int)NewsFeedItemModel.NewsFeedTypeId.Comment),
-                CommentDate = x.CreatedDate
+                CommentDate = x.CreatedDate,
+                UserIdThatMadeComment = x.UserIdThatCommented
+                //UserProfileUrl = UserProfileFinder.FindImage(x.UserIdThatCommented)
             };
         }
 

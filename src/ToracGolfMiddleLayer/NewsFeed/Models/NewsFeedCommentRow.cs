@@ -16,6 +16,10 @@ namespace ToracGolf.MiddleLayer.NewsFeed.Models
 
         public DateTime CommentDate { get; set; }
 
+        public int UserIdThatMadeComment { get; set; }
+
+        public string UserProfileUrl { get; set; }
+
         //public bool UserLikesThisComment { get; set; }
 
     }

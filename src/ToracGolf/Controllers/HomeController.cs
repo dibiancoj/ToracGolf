@@ -179,10 +179,10 @@ namespace ToracGolf.Controllers
         public async Task<IActionResult> NewsFeedGet([FromBody]NewsFeedGetRequest filterParams)
         {
             return Json(await NewsFeedDataProvider.Value.NewsFeedPostSelect(
-                GetUserId(), 
-                filterParams.NewsFeedTypeIdFilter, 
-                filterParams.SearchFilterText, 
-                CacheFactory.GetCacheItem<ImageFinder>(CacheKeyNames.CourseImageFinder, Cache), 
+                GetUserId(),
+                filterParams.NewsFeedTypeIdFilter,
+                filterParams.SearchFilterText,
+                CacheFactory.GetCacheItem<ImageFinder>(CacheKeyNames.CourseImageFinder, Cache),
                 CacheFactory.GetCacheItem<ImageFinder>(CacheKeyNames.UserImageFinder, Cache)));
         }
 
@@ -200,7 +200,7 @@ namespace ToracGolf.Controllers
         public async Task<IActionResult> NewsFeedCommentSaveRecord([FromBody]NewsFeedAddComment commentModel)
         {
             //go save the comment
-            return Json(await NewsFeedDataProvider.Value.CommentAdd(DbContext, GetUserId(), commentModel.Id, commentModel.NewsFeedTypeId, commentModel.CommentToAdd));
+            return Json(await NewsFeedDataProvider.Value.CommentAdd(DbContext, GetUserId(), commentModel.Id, commentModel.NewsFeedTypeId, commentModel.CommentToAdd, CacheFactory.GetCacheItem<ImageFinder>(CacheKeyNames.UserImageFinder, Cache)));
         }
 
         [ValidateCustomAntiForgeryToken]
@@ -209,7 +209,7 @@ namespace ToracGolf.Controllers
         public async Task<IActionResult> NewsFeedCommentGet([FromBody]NewsFeedCommentSelect commentModel)
         {
             //go save the comment
-            return Json(await NewsFeedDataProvider.Value.CommentSelect(DbContext, GetUserId(), commentModel.Id, commentModel.NewsFeedTypeId));
+            return Json(await NewsFeedDataProvider.Value.CommentSelect(DbContext, GetUserId(), commentModel.Id, commentModel.NewsFeedTypeId, CacheFactory.GetCacheItem<ImageFinder>(CacheKeyNames.UserImageFinder, Cache)));
         }
 
         [ValidateCustomAntiForgeryToken]
