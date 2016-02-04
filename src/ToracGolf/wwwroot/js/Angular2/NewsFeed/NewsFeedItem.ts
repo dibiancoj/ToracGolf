@@ -57,7 +57,7 @@ export class NewsFeedItemPost {
         var recordToUpdate = this.Post.Comments.First(x=> x.CommentId == commentId);
 
         //go save the comment
-        this.NewsFeedSvc.CommentLikeClick(commentId).subscribe((likeCount: number) => {
+        this.NewsFeedSvc.CommentLikeClick<number>(commentId).subscribe((likeCount: number) => {
          
             //go run this so angular can update the new records
             _thisClass.NgZoneSvc.run(() => {

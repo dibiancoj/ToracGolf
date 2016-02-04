@@ -20,24 +20,24 @@ export class NewsFeedService {
     HttpInterceptorSvc: HttpInterceptor;
     private MonthNameArray: string[];
 
-    NewFeedGet(newsFeedTypeId: NewsFeedTypeId, searchFilterText: string): Observable<Response> {
-        return this.HttpInterceptorSvc.Post('NewsFeedsGetPost', JSON.stringify({ NewsFeedTypeIdFilter: newsFeedTypeId, SearchFilterText: searchFilterText }));
+    NewFeedGet<T>(newsFeedTypeId: NewsFeedTypeId, searchFilterText: string): Observable<T> {
+        return this.HttpInterceptorSvc.Post<T>('NewsFeedsGetPost', JSON.stringify({ NewsFeedTypeIdFilter: newsFeedTypeId, SearchFilterText: searchFilterText }));
     }
 
-    LikePost(id: number, newsFeedTypeId: NewsFeedTypeId): Observable<Response> {
-        return this.HttpInterceptorSvc.Post('NewsFeedsLike', JSON.stringify({ Id: id, NewsFeedTypeId: newsFeedTypeId }));
+    LikePost<T>(id: number, newsFeedTypeId: NewsFeedTypeId): Observable<T> {
+        return this.HttpInterceptorSvc.Post<T>('NewsFeedsLike', JSON.stringify({ Id: id, NewsFeedTypeId: newsFeedTypeId }));
     }
 
-    NewsFeedCommentSave(id: number, newsFeedTypeId: NewsFeedTypeId, commentToAdd: string): Observable<Response> {
-        return this.HttpInterceptorSvc.Post('NewsFeedCommentSave', JSON.stringify({ Id: id, NewsFeedTypeId: newsFeedTypeId, CommentToAdd: commentToAdd }));
+    NewsFeedCommentSave<T>(id: number, newsFeedTypeId: NewsFeedTypeId, commentToAdd: string): Observable<T> {
+        return this.HttpInterceptorSvc.Post<T>('NewsFeedCommentSave', JSON.stringify({ Id: id, NewsFeedTypeId: newsFeedTypeId, CommentToAdd: commentToAdd }));
     }
 
-    NewsFeedCommentSelect(id: number, newsFeedTypeId: NewsFeedTypeId): Observable<Response> {
-        return this.HttpInterceptorSvc.Post('NewsFeedsCommentSelect', JSON.stringify({ Id: id, NewsFeedTypeId: newsFeedTypeId }));
+    NewsFeedCommentSelect<T>(id: number, newsFeedTypeId: NewsFeedTypeId): Observable<T> {
+        return this.HttpInterceptorSvc.Post<T>('NewsFeedsCommentSelect', JSON.stringify({ Id: id, NewsFeedTypeId: newsFeedTypeId }));
     }
 
-    CommentLikeClick(commentId: number): Observable<Response> {
-        return this.HttpInterceptorSvc.Post('NewsFeedsCommentLike', JSON.stringify({ CommentId: commentId }));
+    CommentLikeClick<T>(commentId: number): Observable<T> {
+        return this.HttpInterceptorSvc.Post<T>('NewsFeedsCommentLike', JSON.stringify({ CommentId: commentId }));
     }
 
 }

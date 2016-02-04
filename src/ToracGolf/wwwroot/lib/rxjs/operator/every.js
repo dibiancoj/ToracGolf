@@ -9,11 +9,16 @@ var throw_1 = require('../observable/throw');
 var Subscriber_1 = require('../Subscriber');
 var tryCatch_1 = require('../util/tryCatch');
 var errorObject_1 = require('../util/errorObject');
+/**
+ * Returns an Observable that emits whether or not every item of the source satisfies the condition specified.
+ * @param {function} predicate a function for determining if an item meets a specified condition.
+ * @param {any} [thisArg] optional object to use for `this` in the callback
+ * @returns {Observable} an Observable of booleans that determines if all items of the source Observable meet the condition specified.
+ */
 function every(predicate, thisArg) {
     var source = this;
-    var result;
     if (source._isScalar) {
-        result = tryCatch_1.tryCatch(predicate).call(thisArg || this, source.value, 0, source);
+        var result = tryCatch_1.tryCatch(predicate).call(thisArg || this, source.value, 0, source);
         if (result === errorObject_1.errorObject) {
             return new throw_1.ErrorObservable(errorObject_1.errorObject.e, source.scheduler);
         }
@@ -23,12 +28,14 @@ function every(predicate, thisArg) {
     }
     if (source instanceof fromArray_1.ArrayObservable) {
         var array = source.array;
-        var result_1 = tryCatch_1.tryCatch(function (array, predicate, thisArg) { return array.every(predicate, thisArg); })(array, predicate, thisArg);
-        if (result_1 === errorObject_1.errorObject) {
+        var result = tryCatch_1.tryCatch(function (array, predicate, thisArg) {
+            return array.every(predicate, thisArg);
+        })(array, predicate, thisArg);
+        if (result === errorObject_1.errorObject) {
             return new throw_1.ErrorObservable(errorObject_1.errorObject.e, source.scheduler);
         }
         else {
-            return new ScalarObservable_1.ScalarObservable(result_1, source.scheduler);
+            return new ScalarObservable_1.ScalarObservable(result, source.scheduler);
         }
     }
     return source.lift(new EveryOperator(predicate, thisArg, source));

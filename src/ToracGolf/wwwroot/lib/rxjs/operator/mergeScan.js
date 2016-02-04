@@ -43,7 +43,7 @@ var MergeScanSubscriber = (function (_super) {
             var ish = tryCatch_1.tryCatch(this.project)(this.acc, value);
             var destination = this.destination;
             if (ish === errorObject_1.errorObject) {
-                destination.error(ish.e);
+                destination.error(errorObject_1.errorObject.e);
             }
             else {
                 this.active++;

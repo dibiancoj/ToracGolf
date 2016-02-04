@@ -5,9 +5,9 @@ var root_1 = require('./root');
 var ImmediateDefinition = (function () {
     function ImmediateDefinition(root) {
         this.root = root;
-        if (root.setImmediate) {
-            this.setImmediate = root.setImmediate;
-            this.clearImmediate = root.clearImmediate;
+        if (root.setImmediate && typeof root.setImmediate === 'function') {
+            this.setImmediate = root.setImmediate.bind(root);
+            this.clearImmediate = root.clearImmediate.bind(root);
         }
         else {
             this.nextHandle = 1;

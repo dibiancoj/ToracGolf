@@ -24,7 +24,7 @@ var WindowSubscriber = (function (_super) {
         _super.call(this, destination);
         this.destination = destination;
         this.closingNotifier = closingNotifier;
-        this.add(closingNotifier._subscribe(new WindowClosingNotifierSubscriber(this)));
+        this.add(closingNotifier.subscribe(new WindowClosingNotifierSubscriber(this)));
         this.openWindow();
     }
     WindowSubscriber.prototype._next = function (value) {
@@ -48,22 +48,28 @@ var WindowSubscriber = (function (_super) {
         destination.add(newWindow);
         destination.next(newWindow);
     };
+    WindowSubscriber.prototype.errorWindow = function (err) {
+        this._error(err);
+    };
+    WindowSubscriber.prototype.completeWindow = function () {
+        this._complete();
+    };
     return WindowSubscriber;
 })(Subscriber_1.Subscriber);
 var WindowClosingNotifierSubscriber = (function (_super) {
     __extends(WindowClosingNotifierSubscriber, _super);
     function WindowClosingNotifierSubscriber(parent) {
-        _super.call(this, null);
+        _super.call(this);
         this.parent = parent;
     }
     WindowClosingNotifierSubscriber.prototype._next = function () {
         this.parent.openWindow();
     };
     WindowClosingNotifierSubscriber.prototype._error = function (err) {
-        this.parent._error(err);
+        this.parent.errorWindow(err);
     };
     WindowClosingNotifierSubscriber.prototype._complete = function () {
-        this.parent._complete();
+        this.parent.completeWindow();
     };
     return WindowClosingNotifierSubscriber;
 })(Subscriber_1.Subscriber);

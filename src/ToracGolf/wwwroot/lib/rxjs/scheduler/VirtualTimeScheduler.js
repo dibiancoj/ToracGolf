@@ -8,7 +8,7 @@ var VirtualTimeScheduler = (function () {
     function VirtualTimeScheduler() {
         this.actions = [];
         this.active = false;
-        this.scheduled = false;
+        this.scheduledId = null;
         this.index = 0;
         this.sorted = false;
         this.frame = 0;

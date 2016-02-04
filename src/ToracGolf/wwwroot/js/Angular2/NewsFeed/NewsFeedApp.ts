@@ -28,7 +28,7 @@ export class NewsFeedApp {
     FriendCount: number;
 
     constructor(newsFeedService: NewsFeedService, ngZone: NgZone, customFormatter: CustomFormatterService) {
-     
+  
         //set the properties
         this.NewsFeedSvc = newsFeedService;
         this.CustomFormatterSvc = customFormatter;
@@ -47,11 +47,11 @@ export class NewsFeedApp {
         var _thisClass = this;
 
         //go grab the data
-        this.NewsFeedSvc.NewFeedGet(newsFeedTypeId, searchFilterText).subscribe((queryResult: NewsFeedQueryResult) => {
+        this.NewsFeedSvc.NewFeedGet<NewsFeedQueryResult>(newsFeedTypeId, searchFilterText).subscribe((queryResult: NewsFeedQueryResult) => {
 
             //go run this so angular can update the new records
             _thisClass.NgZoneSvc.run(() => {
-
+            
                 //set the working posts
                 this.Posts = queryResult.Results;
 
@@ -81,7 +81,7 @@ export class NewsFeedApp {
         //closure
         var _thisClass = this;
 
-        this.NewsFeedSvc.LikePost(likeConfig.Id, likeConfig.NewsFeedTypeId).subscribe((posts: Array<NewsFeedItem>) => {
+        this.NewsFeedSvc.LikePost<Array<NewsFeedItem>>(likeConfig.Id, likeConfig.NewsFeedTypeId).subscribe((posts: Array<NewsFeedItem>) => {
          
             //go run this so angular can update the new records
             _thisClass.NgZoneSvc.run(() => {
@@ -132,7 +132,7 @@ export class NewsFeedApp {
         var recordToUpdate = this.Posts.First(x => x.Id == commentConfig.Id && x.FeedTypeId == commentConfig.NewsFeedTypeId);
 
         //go save the comment
-        this.NewsFeedSvc.NewsFeedCommentSave(commentConfig.Id, commentConfig.NewsFeedTypeId, commentConfig.Comment).subscribe((comments: Array<NewsFeedComment>) => {
+        this.NewsFeedSvc.NewsFeedCommentSave<Array<NewsFeedComment>>(commentConfig.Id, commentConfig.NewsFeedTypeId, commentConfig.Comment).subscribe((comments: Array<NewsFeedComment>) => {
          
             //go run this so angular can update the new records
             _thisClass.NgZoneSvc.run(() => {
@@ -164,7 +164,7 @@ export class NewsFeedApp {
         else {
 
             //go get the comments
-            this.NewsFeedSvc.NewsFeedCommentSelect(showHideConfig.Id, showHideConfig.NewsFeedTypeId).subscribe((comments: Array<NewsFeedComment>) => {
+            this.NewsFeedSvc.NewsFeedCommentSelect<Array<NewsFeedComment>>(showHideConfig.Id, showHideConfig.NewsFeedTypeId).subscribe((comments: Array<NewsFeedComment>) => {
          
                 //go run this so angular can update the new records
                 _thisClass.NgZoneSvc.run(() => {

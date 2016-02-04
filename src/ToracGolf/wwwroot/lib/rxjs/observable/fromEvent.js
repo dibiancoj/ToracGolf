@@ -44,10 +44,14 @@ var FromEventObservable = (function (_super) {
         var sourceObj = this.sourceObj;
         var eventName = this.eventName;
         var selector = this.selector;
-        var handler = selector ? function (e) {
-            var result = tryCatch_1.tryCatch(selector)(e);
+        var handler = selector ? function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i - 0] = arguments[_i];
+            }
+            var result = tryCatch_1.tryCatch(selector).apply(void 0, args);
             if (result === errorObject_1.errorObject) {
-                subscriber.error(result.e);
+                subscriber.error(errorObject_1.errorObject.e);
             }
             else {
                 subscriber.next(result);

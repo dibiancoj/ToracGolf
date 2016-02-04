@@ -13,7 +13,7 @@ function startWith() {
         array.pop();
     }
     else {
-        scheduler = void 0;
+        scheduler = null;
     }
     var len = array.length;
     if (len === 1) {

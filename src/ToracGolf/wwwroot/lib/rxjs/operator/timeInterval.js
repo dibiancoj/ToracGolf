@@ -4,9 +4,9 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Subscriber_1 = require('../Subscriber');
-var queue_1 = require('../scheduler/queue');
+var asap_1 = require('../scheduler/asap');
 function timeInterval(scheduler) {
-    if (scheduler === void 0) { scheduler = queue_1.queue; }
+    if (scheduler === void 0) { scheduler = asap_1.asap; }
     return this.lift(new TimeIntervalOperator(scheduler));
 }
 exports.timeInterval = timeInterval;

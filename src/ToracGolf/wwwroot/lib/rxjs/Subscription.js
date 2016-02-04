@@ -1,4 +1,6 @@
-var noop_1 = require('./util/noop');
+var isArray_1 = require('./util/isArray');
+var isObject_1 = require('./util/isObject');
+var isFunction_1 = require('./util/isFunction');
 var Subscription = (function () {
     function Subscription(_unsubscribe) {
         this.isUnsubscribed = false;
@@ -6,25 +8,24 @@ var Subscription = (function () {
             this._unsubscribe = _unsubscribe;
         }
     }
-    Subscription.prototype._unsubscribe = function () {
-        noop_1.noop();
-    };
     Subscription.prototype.unsubscribe = function () {
         if (this.isUnsubscribed) {
             return;
         }
         this.isUnsubscribed = true;
-        var unsubscribe = this._unsubscribe;
-        var subscriptions = this._subscriptions;
-        this._subscriptions = void 0;
-        if (unsubscribe) {
-            unsubscribe.call(this);
+        var _a = this, _unsubscribe = _a._unsubscribe, _subscriptions = _a._subscriptions;
+        this._subscriptions = null;
+        if (isFunction_1.isFunction(_unsubscribe)) {
+            _unsubscribe.call(this);
         }
-        if (subscriptions != null) {
+        if (isArray_1.isArray(_subscriptions)) {
             var index = -1;
-            var len = subscriptions.length;
+            var len = _subscriptions.length;
             while (++index < len) {
-                subscriptions[index].unsubscribe();
+                var subscription = _subscriptions[index];
+                if (isObject_1.isObject(subscription)) {
+                    subscription.unsubscribe();
+                }
             }
         }
     };
@@ -48,8 +49,7 @@ var Subscription = (function () {
                     sub.unsubscribe();
                 }
                 else {
-                    var subscriptions = this._subscriptions || (this._subscriptions = []);
-                    subscriptions.push(sub);
+                    (this._subscriptions || (this._subscriptions = [])).push(sub);
                 }
                 break;
             default:

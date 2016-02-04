@@ -3,22 +3,30 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Observable_1 = require('../Observable');
 var root_1 = require('../util/root');
-var SymbolShim_1 = require('../util/SymbolShim');
+var isObject_1 = require('../util/isObject');
 var tryCatch_1 = require('../util/tryCatch');
+var Observable_1 = require('../Observable');
+var isFunction_1 = require('../util/isFunction');
+var SymbolShim_1 = require('../util/SymbolShim');
 var errorObject_1 = require('../util/errorObject');
 var IteratorObservable = (function (_super) {
     __extends(IteratorObservable, _super);
     function IteratorObservable(iterator, project, thisArg, scheduler) {
         _super.call(this);
-        this.project = project;
-        this.thisArg = thisArg;
-        this.scheduler = scheduler;
         if (iterator == null) {
             throw new Error('iterator cannot be null.');
         }
-        if (project && typeof project !== 'function') {
+        if (isObject_1.isObject(project)) {
+            this.thisArg = project;
+            this.scheduler = thisArg;
+        }
+        else if (isFunction_1.isFunction(project)) {
+            this.project = project;
+            this.thisArg = thisArg;
+            this.scheduler = scheduler;
+        }
+        else if (project != null) {
             throw new Error('When provided, `project` must be a function.');
         }
         this.iterator = getIterator(iterator);
@@ -61,9 +69,9 @@ var IteratorObservable = (function (_super) {
         var index = 0;
         var _a = this, iterator = _a.iterator, project = _a.project, thisArg = _a.thisArg, scheduler = _a.scheduler;
         if (scheduler) {
-            subscriber.add(scheduler.schedule(IteratorObservable.dispatch, 0, {
+            return scheduler.schedule(IteratorObservable.dispatch, 0, {
                 index: index, thisArg: thisArg, project: project, iterator: iterator, subscriber: subscriber
-            }));
+            });
         }
         else {
             do {

@@ -104,13 +104,15 @@ export var BLANK_ROUTE_DATA = new RouteData();
  * ```
  */
 export class Instruction {
-    constructor() {
-        this.auxInstruction = {};
+    constructor(component, child, auxInstruction) {
+        this.component = component;
+        this.child = child;
+        this.auxInstruction = auxInstruction;
     }
-    get urlPath() { return this.component.urlPath; }
-    get urlParams() { return this.component.urlParams; }
+    get urlPath() { return isPresent(this.component) ? this.component.urlPath : ''; }
+    get urlParams() { return isPresent(this.component) ? this.component.urlParams : []; }
     get specificity() {
-        var total = 0;
+        var total = '';
         if (isPresent(this.component)) {
             total += this.component.specificity;
         }
@@ -164,7 +166,7 @@ export class Instruction {
     }
     /** @internal */
     _stringifyMatrixParams() {
-        return this.urlParams.length > 0 ? (';' + this.component.urlParams.join(';')) : '';
+        return this.urlParams.length > 0 ? (';' + this.urlParams.join(';')) : '';
     }
     /** @internal */
     _stringifyPathMatrixAux() {
@@ -190,10 +192,7 @@ export class Instruction {
  */
 export class ResolvedInstruction extends Instruction {
     constructor(component, child, auxInstruction) {
-        super();
-        this.component = component;
-        this.child = child;
-        this.auxInstruction = auxInstruction;
+        super(component, child, auxInstruction);
     }
     resolveComponent() {
         return PromiseWrapper.resolve(this.component);
@@ -204,9 +203,7 @@ export class ResolvedInstruction extends Instruction {
  */
 export class DefaultInstruction extends Instruction {
     constructor(component, child) {
-        super();
-        this.component = component;
-        this.child = child;
+        super(component, child, {});
     }
     resolveComponent() {
         return PromiseWrapper.resolve(this.component);
@@ -220,7 +217,7 @@ export class DefaultInstruction extends Instruction {
  */
 export class UnresolvedInstruction extends Instruction {
     constructor(_resolver, _urlPath = '', _urlParams = CONST_EXPR([])) {
-        super();
+        super(null, null, {});
         this._resolver = _resolver;
         this._urlPath = _urlPath;
         this._urlParams = _urlParams;
@@ -254,9 +251,11 @@ export class UnresolvedInstruction extends Instruction {
     }
 }
 export class RedirectInstruction extends ResolvedInstruction {
-    constructor(component, child, auxInstruction) {
+    constructor(component, child, auxInstruction, _specificity) {
         super(component, child, auxInstruction);
+        this._specificity = _specificity;
     }
+    get specificity() { return this._specificity; }
 }
 /**
  * A `ComponentInstruction` represents the route state for a single component. An `Instruction` is
@@ -265,7 +264,7 @@ export class RedirectInstruction extends ResolvedInstruction {
  * `ComponentInstructions` is a public API. Instances of `ComponentInstruction` are passed
  * to route lifecycle hooks, like {@link CanActivate}.
  *
- * `ComponentInstruction`s are [https://en.wikipedia.org/wiki/Hash_consing](hash consed). You should
+ * `ComponentInstruction`s are [hash consed](https://en.wikipedia.org/wiki/Hash_consing). You should
  * never construct one yourself with "new." Instead, rely on {@link Router/RouteRecognizer} to
  * construct `ComponentInstruction`s.
  *

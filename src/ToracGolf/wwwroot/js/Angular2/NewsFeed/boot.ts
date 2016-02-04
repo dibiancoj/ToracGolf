@@ -6,5 +6,4 @@ import { HttpInterceptor } from '../Common/httpinterceptor';
 
 
 enableProdMode();
-
 bootstrap(NewsFeedApp, [HTTP_PROVIDERS, HttpInterceptor]);

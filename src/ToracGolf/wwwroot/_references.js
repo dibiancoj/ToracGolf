@@ -23,7 +23,6 @@
 /// <reference path="js/angular/season/seasonlistingcontroller.js" />
 /// <reference path="js/angular/toracgolfapp.js" />
 /// <reference path="js/angular2/common/customformatterservice.js" />
-/// <reference path="js/angular2/common/datepipehack.js" />
 /// <reference path="js/angular2/common/httpinterceptor.js" />
 /// <reference path="js/angular2/newsfeed/boot.js" />
 /// <reference path="js/angular2/newsfeed/newsfeedapp.js" />

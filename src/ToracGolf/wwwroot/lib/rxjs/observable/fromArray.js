@@ -31,7 +31,7 @@ var ArrayObservable = (function (_super) {
             array.pop();
         }
         else {
-            scheduler = void 0;
+            scheduler = null;
         }
         var len = array.length;
         if (len > 1) {
@@ -63,9 +63,9 @@ var ArrayObservable = (function (_super) {
         var count = array.length;
         var scheduler = this.scheduler;
         if (scheduler) {
-            subscriber.add(scheduler.schedule(ArrayObservable.dispatch, 0, {
+            return scheduler.schedule(ArrayObservable.dispatch, 0, {
                 array: array, index: index, count: count, subscriber: subscriber
-            }));
+            });
         }
         else {
             for (var i = 0; i < count && !subscriber.isUnsubscribed; i++) {

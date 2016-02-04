@@ -13,7 +13,7 @@ export class HttpInterceptor {
 
     private HttpModule: Http;
 
-    Post(url: string, body: string): Observable<Response> {
+    Post<T>(url: string, body: string): Observable<T> {
 
         //show the spinner
         this.ShowAjaxSpinner(true);
