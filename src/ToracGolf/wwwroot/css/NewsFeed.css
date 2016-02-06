@@ -55,7 +55,7 @@
 }
 
 .CommentContent {
-    padding-left: 5px;
+    padding-left: 25px;
 }
 
 .commentuser {
@@ -75,6 +75,7 @@
 
 .commentLikeBtn {
     cursor: pointer;
+    padding-left: 25px;
 }
 
 .CommentDate {
