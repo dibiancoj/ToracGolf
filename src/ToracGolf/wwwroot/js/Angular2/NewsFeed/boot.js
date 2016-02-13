@@ -1,3 +1,4 @@
+/// <reference path="../../../../node_modules/angular2/typings/browser.d.ts" />
 System.register(['angular2/platform/browser', './NewsFeedApp', 'angular2/core', 'angular2/http', '../Common/httpinterceptor'], function(exports_1) {
     var browser_1, NewsFeedApp_1, core_1, http_1, httpinterceptor_1;
     return {
