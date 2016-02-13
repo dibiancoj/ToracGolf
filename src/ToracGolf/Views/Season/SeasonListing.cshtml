@@ -17,18 +17,18 @@
 }
 
 @section Styles{
-    <link href="~/css/Seasons.css" rel="stylesheet" />
+    <link href="~/css/Seasons.css" rel="stylesheet" asp-append-version="true" />
 }
 
 @section Scripts{
-    <script src="~/lib/angular/angular.js"></script>
-    <script src="~/lib/angular/angular-animate.js"></script>
-    <script src="~/js/angular/toracgolfapp.js"></script>
-    <script src="~/js/angular/common/modaleventdirective.js"></script>
-    <script src="~/js/angular/common/httprequestinterceptor.js"></script>
-    <script src="~/js/angular/common/ValidationService.js"></script>
-    <script src="~/js/angular/Season/SeasonHttp.js"></script>
-    <script src="~/js/angular/Season/SeasonListingController.js"></script>
+    <script src="~/lib/angular/angular.js" asp-append-version="true"></script>
+    <script src="~/lib/angular/angular-animate.js" asp-append-version="true"></script>
+    <script src="~/js/angular/toracgolfapp.js" asp-append-version="true"></script>
+    <script src="~/js/angular/common/modaleventdirective.js" asp-append-version="true"></script>
+    <script src="~/js/angular/common/httprequestinterceptor.js" asp-append-version="true"></script>
+    <script src="~/js/angular/common/ValidationService.js" asp-append-version="true"></script>
+    <script src="~/js/angular/Season/SeasonHttp.js" asp-append-version="true"></script>
+    <script src="~/js/angular/Season/SeasonListingController.js" asp-append-version="true"></script>
 }
 
 <section ng-cloak class="slice bg-white" ng-app="toracApp" ng-controller="SeasonListingController" ng-init="init(@Model.CurrentSeasonId)">

@@ -26,28 +26,28 @@
         </environment>*@
 
     <!-- Essential styles -->
-    <link rel="stylesheet" href="~/lib/bootstraptemplate/assets/bootstrap/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="~/lib/bootstraptemplate/font-awesome/css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="~/lib/bootstraptemplate/assets/fancybox/jquery.fancybox.css?v=2.1.5" media="screen">
+    <link rel="stylesheet" href="~/lib/bootstraptemplate/assets/bootstrap/css/bootstrap.min.css" type="text/css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstraptemplate/font-awesome/css/font-awesome.min.css" type="text/css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstraptemplate/assets/fancybox/jquery.fancybox.css?v=2.1.5" media="screen" asp-append-version="true" />
 
     <!-- Favicon -->
-    <link href="images/favicon.png" rel="icon" type="image/png">
+    <link href="images/favicon.png" rel="icon" type="image/png" />
 
     <!-- Leave outside of bundle and min. -->
-    <link id="wpStylesheet" type="text/css" href="~/lib/bootstraptemplate/css/global-style.css" rel="stylesheet" media="screen">
+    <link id="wpStylesheet" type="text/css" href="~/lib/bootstraptemplate/css/global-style.css" rel="stylesheet" media="screen" asp-append-version="true" />
 
     <!-- Boomerang styles -->
     <!-- Assets -->
     <environment names="Development">
         <!-- Torac Golf Site Level Styles -->
-        <link href="~/css/site.css" rel="stylesheet" />
+        <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
 
-        <link rel="stylesheet" href="~/lib/bootstraptemplate/assets/owl-carousel/owl.carousel.css">
-        <link rel="stylesheet" href="~/lib/bootstraptemplate/assets/owl-carousel/owl.theme.css">
-        <link rel="stylesheet" href="~/lib/bootstraptemplate/assets/sky-forms/css/sky-forms.css">
+        <link rel="stylesheet" href="~/lib/bootstraptemplate/assets/owl-carousel/owl.carousel.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/bootstraptemplate/assets/owl-carousel/owl.theme.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/bootstraptemplate/assets/sky-forms/css/sky-forms.css" asp-append-version="true" />
     </environment>
     <environment names="Staging,Production">
-        <link href="~/min/layoutboomerang.min.css" rel="stylesheet" />
+        <link href="~/min/layoutboomerang.min.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 
     <!-- Page styles -->
@@ -57,8 +57,8 @@
         <link rel="stylesheet" href="assets/sky-forms/css/sky-forms-ie8.css">
     <![endif]-->
     <!-- Required JS -->
-    <script src="~/lib/bootstraptemplate/js/jquery.js"></script>
-    <script src="~/lib/bootstraptemplate/js/jquery-ui.min.js"></script>
+    <script src="~/lib/bootstraptemplate/js/jquery.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstraptemplate/js/jquery-ui.min.js" asp-append-version="true"></script>
 </head>
 <body>
 
@@ -113,67 +113,67 @@
     @Html.Partial("_Loading")
 
     <!-- Essentials -->
-    <script src="~/lib/bootstraptemplate/js/modernizr.custom.js"></script>
-    <script src="~/lib/bootstraptemplate/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/lib/bootstraptemplate/js/modernizr.custom.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstraptemplate/assets/bootstrap/js/bootstrap.min.js" asp-append-version="true"></script>
 
     <environment names="Development">
-        <script src="~/lib/bootstraptemplate/js/jquery.mousewheel-3.0.6.pack.js"></script>
-        <script src="~/lib/bootstraptemplate/js/jquery.easing.js"></script>
-        <script src="~/lib/bootstraptemplate/js/jquery.metadata.js"></script>
-        <script src="~/lib/bootstraptemplate/js/jquery.hoverup.js"></script>
-        <script src="~/lib/bootstraptemplate/js/jquery.hoverdir.js"></script>
-        <script src="~/lib/bootstraptemplate/js/jquery.stellar.js"></script>
+        <script src="~/lib/bootstraptemplate/js/jquery.mousewheel-3.0.6.pack.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstraptemplate/js/jquery.easing.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstraptemplate/js/jquery.metadata.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstraptemplate/js/jquery.hoverup.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstraptemplate/js/jquery.hoverdir.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstraptemplate/js/jquery.stellar.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
-        <script src="~/min/boomerangejquerycontrols.min.js"></script>
+        <script src="~/min/boomerangejquerycontrols.min.js" asp-append-version="true"></script>
     </environment>
 
     <!-- Boomerang mobile nav - Optional  -->
     <environment names="Development">
-        <script src="~/lib/bootstraptemplate/assets/responsive-mobile-nav/js/jquery.dlmenu.js"></script>
-        <script src="~/lib/bootstraptemplate/assets/responsive-mobile-nav/js/jquery.dlmenu.autofill.js"></script>
+        <script src="~/lib/bootstraptemplate/assets/responsive-mobile-nav/js/jquery.dlmenu.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstraptemplate/assets/responsive-mobile-nav/js/jquery.dlmenu.autofill.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
-        <script src="~/min/boomerangresponsivemobile.min.js"></script>
+        <script src="~/min/boomerangresponsivemobile.min.js" asp-append-version="true"></script>
     </environment>
 
     <!-- Forms -->
     <environment names="Development">
-        <script src="~/lib/bootstraptemplate/assets/ui-kit/js/jquery.powerful-placeholder.min.js"></script>
-        <script src="~/lib/bootstraptemplate/assets/ui-kit/js/cusel.min.js"></script>
-        <script src="~/lib/bootstraptemplate/assets/sky-forms/js/jquery.form.min.js"></script>
-        <script src="~/lib/bootstraptemplate/assets/sky-forms/js/jquery.validate.min.js"></script>
-        <script src="~/lib/bootstraptemplate/assets/sky-forms/js/jquery.maskedinput.min.js"></script>
-        <script src="~/lib/bootstraptemplate/assets/sky-forms/js/jquery.modal.js"></script>
+        <script src="~/lib/bootstraptemplate/assets/ui-kit/js/jquery.powerful-placeholder.min.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstraptemplate/assets/ui-kit/js/cusel.min.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstraptemplate/assets/sky-forms/js/jquery.form.min.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstraptemplate/assets/sky-forms/js/jquery.validate.min.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstraptemplate/assets/sky-forms/js/jquery.maskedinput.min.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstraptemplate/assets/sky-forms/js/jquery.modal.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
-        <script src="~/min/boomerangjqueryforms.min.js"></script>
+        <script src="~/min/boomerangjqueryforms.min.js" asp-append-version="true"></script>
     </environment>
 
     <!-- Assets -->
     <environment names="Development">
-        <script src="~/lib/bootstraptemplate/assets/hover-dropdown/bootstrap-hover-dropdown.min.js"></script>
-        <script src="~/lib/bootstraptemplate/assets/page-scroller/jquery.ui.totop.min.js"></script>
-        <script src="~/lib/bootstraptemplate/assets/mixitup/jquery.mixitup.js"></script>
-        <script src="~/lib/bootstraptemplate/assets/mixitup/jquery.mixitup.init.js"></script>
-        <script src="~/lib/bootstraptemplate/assets/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
-        <script src="~/lib/bootstraptemplate/assets/waypoints/waypoints.min.js"></script>
-        <script src="~/lib/bootstraptemplate/assets/milestone-counter/jquery.countTo.js"></script>
-        <script src="~/lib/bootstraptemplate/assets/easy-pie-chart/js/jquery.easypiechart.js"></script>
-        <script src="~/lib/bootstraptemplate/assets/social-buttons/js/rrssb.min.js"></script>
-        <script src="~/lib/bootstraptemplate/assets/nouislider/js/jquery.nouislider.min.js"></script>
-        <script src="~/lib/bootstraptemplate/assets/owl-carousel/owl.carousel.js"></script>
-        <script src="~/lib/bootstraptemplate/assets/bootstrap/js/tooltip.js"></script>
-        <script src="~/lib/bootstraptemplate/assets/bootstrap/js/popover.js"></script>
+        <script src="~/lib/bootstraptemplate/assets/hover-dropdown/bootstrap-hover-dropdown.min.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstraptemplate/assets/page-scroller/jquery.ui.totop.min.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstraptemplate/assets/mixitup/jquery.mixitup.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstraptemplate/assets/mixitup/jquery.mixitup.init.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstraptemplate/assets/fancybox/jquery.fancybox.pack.js?v=2.1.5" asp-append-version="true"></script>
+        <script src="~/lib/bootstraptemplate/assets/waypoints/waypoints.min.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstraptemplate/assets/milestone-counter/jquery.countTo.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstraptemplate/assets/easy-pie-chart/js/jquery.easypiechart.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstraptemplate/assets/social-buttons/js/rrssb.min.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstraptemplate/assets/nouislider/js/jquery.nouislider.min.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstraptemplate/assets/owl-carousel/owl.carousel.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstraptemplate/assets/bootstrap/js/tooltip.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstraptemplate/assets/bootstrap/js/popover.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
-        <script src="~/lib/bootstraptemplate/assets/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
-        <script src="~/min/boomerangassets.min.js"></script>
+        <script src="~/lib/bootstraptemplate/assets/fancybox/jquery.fancybox.pack.js?v=2.1.5" asp-append-version="true"></script>
+        <script src="~/min/boomerangassets.min.js" asp-append-version="true"></script>
     </environment>
 
     <!-- Sripts for individual pages, depending on what plug-ins are used -->
     <!-- Boomerang App JS -->
-    <script src="~/lib/bootstraptemplate/js/wp.app.js"></script>
+    <script src="~/lib/bootstraptemplate/js/wp.app.js" asp-append-version="true"></script>
     <!--[if lt IE 9]>
         <script src="js/html5shiv.js"></script>
         <script src="js/respond.min.js"></script>

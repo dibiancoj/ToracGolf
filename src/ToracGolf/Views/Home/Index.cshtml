@@ -18,19 +18,19 @@
 }
 
 @section Styles{
-    <link href="~/css/Dashboard.css" rel="stylesheet" />
+    <link href="~/css/Dashboard.css" rel="stylesheet" asp-append-version="true" />
 }
 
 @section Scripts{
-    <script src="~/lib/highcharts/js/highcharts.js"></script>
+    <script src="~/lib/highcharts/js/highcharts.js" as asp-append-version="true"p-append-version="true"></script>
     <script src="~/lib/highcharts/js/highcharts-3d.js"></script>
-    <script src="~/lib/highcharts/js/modules/exporting.js"></script>
-    <script src="~/lib/angular/angular.js"></script>
-    <script src="~/lib/angular/angular-animate.js"></script>
-    <script src="~/js/angular/toracgolfapp.js"></script>
-    <script src="~/js/angular/common/httprequestinterceptor.js"></script>
-    <script src="~/js/angular/Dashboard/DashboardHttp.js"></script>
-    <script src="~/js/angular/Dashboard/DashboardController.js"></script>
+    <script src="~/lib/highcharts/js/modules/exporting.js" asp-append-version="true"></script>
+    <script src="~/lib/angular/angular.js" asp-append-version="true"></script>
+    <script src="~/lib/angular/angular-animate.js" asp-append-version="true"></script>
+    <script src="~/js/angular/toracgolfapp.js" asp-append-version="true"></script>
+    <script src="~/js/angular/common/httprequestinterceptor.js" asp-append-version="true"></script>
+    <script src="~/js/angular/Dashboard/DashboardHttp.js" asp-append-version="true"></script>
+    <script src="~/js/angular/Dashboard/DashboardController.js" asp-append-version="true"></script>
 }
 
 <section id="DashboardSection" ng-app="toracApp" ng-cloak ng-controller="DashboardController" ng-init="init('@Model.ViewType')" class="slice slice-lg bg-image">

@@ -17,20 +17,20 @@
 }
 
 @section Styles{
-    <link href="~/css/Courses.css" rel="stylesheet" />
+    <link href="~/css/Courses.css" rel="stylesheet"  asp-append-version="true" />
 }
 
 @section Scripts{
-    <script src="~/lib/angular/angular.js"></script>
-    <script src="~/lib/angular/angular-animate.js"></script>
-    <script src="~/js/angular/toracgolfapp.js"></script>
-    <script src="~/js/angular/common/percentfilter.js"></script>
-    <script src="~/js/angular/common/httprequestinterceptor.js"></script>
-    <script src="~/js/angular/common/modaleventdirective.js"></script>
-    <script src="~/js/angular/common/pagerfactory.js"></script>
-    <script src="~/js/angular/common/ValidationService.js"></script>
-    <script src="~/js/angular/courses/coursehttp.js"></script>
-    <script src="~/js/angular/courses/courselistingcontroller.js"></script>
+    <script src="~/lib/angular/angular.js" asp-append-version="true"></script>
+    <script src="~/lib/angular/angular-animate.js" asp-append-version="true"></script>
+    <script src="~/js/angular/toracgolfapp.js" asp-append-version="true"></script>
+    <script src="~/js/angular/common/percentfilter.js" asp-append-version="true"></script>
+    <script src="~/js/angular/common/httprequestinterceptor.js" asp-append-version="true"></script>
+    <script src="~/js/angular/common/modaleventdirective.js" asp-append-version="true"></script>
+    <script src="~/js/angular/common/pagerfactory.js" asp-append-version="true"></script>
+    <script src="~/js/angular/common/ValidationService.js" asp-append-version="true"></script>
+    <script src="~/js/angular/courses/coursehttp.js" asp-append-version="true"></script>
+    <script src="~/js/angular/courses/courselistingcontroller.js" asp-append-version="true"></script>
 }
 
 <section ng-cloak class="slice bg-white" ng-app="toracApp" ng-controller="CourseListingController" ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model.SortOrder), '@Model.UserStatePreference', @Model.DefaultCoursesPerPage, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.CoursesPerPage), '@Model.CourseNameFilter')">
