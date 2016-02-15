@@ -23,6 +23,7 @@
 @section Scripts{
     <script src="~/lib/jlinq/jlinq.js" asp-append-version="true"></script>
     <script src="~/lib/es6-shim/es6-shim.js" asp-append-version="true"></script>
+    <script src="~/lib/systemjs/dist/system-polyfills.js" asp-append-version="true"></script>
     <script src="~/lib/angular2/angular2-polyfills.js" asp-append-version="true"></script>
     <script src="~/lib/systemjs/dist/system.js" asp-append-version="true"></script>
     <script src="~/lib/rxjs/bundles/rx.js" asp-append-version="true"></script>
@@ -40,7 +41,7 @@
         });
 
         System.baseURL = 'lib';
-       
+
         System.import('./js/Angular2/NewsFeed/boot.js')
                 .then(null, console.error.bind(console));
     </script>
@@ -50,7 +51,7 @@
     @Html.Partial("_AngularTokenSet", Model.TokenSet)
     <div class="wp-section">
         <div class="container">
-            <div class="row">             
+            <div class="row">
                 <NewsFeedPostContainer></NewsFeedPostContainer>
             </div>
         </div>

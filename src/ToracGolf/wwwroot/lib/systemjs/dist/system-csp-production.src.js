@@ -1,5 +1,5 @@
 /*
- * SystemJS v0.19.18
+ * SystemJS v0.19.20
  */
 (function() {
 function bootstrap() {(function(__global) {
@@ -1551,7 +1551,8 @@ SystemJSLoader.prototype.config = function(cfg) {
     var hasConfig = false;
     function checkHasConfig(obj) {
       for (var p in obj)
-        return true;
+        if (hasOwnProperty.call(obj, p))
+          return true;
     }
     if (checkHasConfig(loader.packages) || checkHasConfig(loader.meta) || checkHasConfig(loader.depCache) || checkHasConfig(loader.bundles) || checkHasConfig(loader.packageConfigPaths))
       throw new TypeError('Incorrect configuration order. The baseURL must be configured with the first SystemJS.config call.');
@@ -1675,7 +1676,6 @@ SystemJSLoader.prototype.config = function(cfg) {
 
   for (var c in cfg) {
     var v = cfg[c];
-    var normalizeProp = false;
 
     if (c == 'baseURL' || c == 'map' || c == 'packages' || c == 'bundles' || c == 'paths' || c == 'warnings' || c == 'packageConfigPaths')
       continue;
@@ -1686,15 +1686,15 @@ SystemJSLoader.prototype.config = function(cfg) {
     else {
       loader[c] = loader[c] || {};
 
-      if (c == 'meta' || c == 'depCache')
-        normalizeProp = true;
-
       for (var p in v) {
         // base-level wildcard meta does not normalize to retain catch-all quality
         if (c == 'meta' && p[0] == '*') {
           loader[c][p] = v[p];
         }
-        else if (normalizeProp) {
+        else if (c == 'meta') {
+          loader[c][loader.decanonicalize(p)] = v[p];
+        }
+        else if (c == 'depCache') {
           var defaultJSExtension = loader.defaultJSExtensions && p.substr(p.length - 3, 3) != '.js';
           var prop = loader.decanonicalize(p);
           if (defaultJSExtension && prop.substr(prop.length - 3, 3) == '.js')
@@ -2580,7 +2580,7 @@ SystemJSLoader.prototype.config = function(cfg) {
  *
  */
 
-var leadingCommentAndMetaRegEx = /^\s*(\/\*[^\*]*(\*(?!\/)[^\*]*)*\*\/|\s*\/\/[^\n]*|\s*"[^"]+"\s*;?|\s*'[^']+'\s*;?)*\s*/;
+var leadingCommentAndMetaRegEx = /^(\s*\/\*[^\*]*(\*(?!\/)[^\*]*)*\*\/|\s*\/\/[^\n]*|\s*"[^"]+"\s*;?|\s*'[^']+'\s*;?)*\s*/;
 function detectRegisterFormat(source) {
   var leadingCommentAndMeta = source.match(leadingCommentAndMetaRegEx);
   return leadingCommentAndMeta && source.substr(leadingCommentAndMeta[0].length, 15) == 'System.register';
@@ -2820,7 +2820,7 @@ function createEntry() {
 
       module.locked = false;
       return value;
-    }, entry.name);
+    }, { id: entry.name });
     
     module.setters = declaration.setters;
     module.execute = declaration.execute;
@@ -3002,9 +3002,6 @@ function createEntry() {
         load.metadata.format = 'defined';
         return '';
       }
-      
-      if (load.metadata.format == 'register' && !load.metadata.authorization && load.metadata.scriptLoad !== false)
-        load.metadata.scriptLoad = true;
 
       load.metadata.deps = load.metadata.deps || [];
       
@@ -3720,36 +3717,34 @@ hookConstructor(function(constructor) {
 
   hook('translate', function(translate) {
     return function(load) {
-
-      /*
-       * Source map sanitization for load.metadata.sourceMap
-       * Used to set browser and build-level source maps for
-       * translated sources in a general way.
-       *
-       * This isn't plugin-specific, but can't go anywhere else for now
-       * As it is post-translate
-       */
-      var sourceMap = load.metadata.sourceMap;
-
-      // if an object not a JSON string do sanitizing
-      if (sourceMap && typeof sourceMap == 'object') {
-        var originalName = load.name.split('!')[0];
-        
-        // force set the filename of the original file
-        sourceMap.file = originalName + '!transpiled';
-
-        // force set the sources list if only one source
-        if (!sourceMap.sources || sourceMap.sources.length == 1)
-          sourceMap.sources = [originalName];
-        load.metadata.sourceMap = JSON.stringify(sourceMap);
-      }
-
       var loader = this;
       if (load.metadata.loaderModule && load.metadata.loaderModule.translate && load.metadata.format != 'defined') {
         return Promise.resolve(load.metadata.loaderModule.translate.call(loader, load)).then(function(result) {
-          // NB we should probably enforce a string output
+          var sourceMap = load.metadata.sourceMap;
+
+          // sanitize sourceMap if an object not a JSON string
+          if (sourceMap) {
+            if (typeof sourceMap != 'object')
+              throw new Error('load.metadata.sourceMap must be set to an object.');
+
+            var originalName = load.name.split('!')[0];
+            
+            // force set the filename of the original file
+            sourceMap.file = originalName + '!transpiled';
+
+            // force set the sources list if only one source
+            if (!sourceMap.sources || sourceMap.sources.length <= 1)
+              sourceMap.sources = [originalName];
+          }
+
+          // if running on file:/// URLs, sourcesContent is necessary
+          // load.metadata.sourceMap.sourcesContent = [load.source];
+
           if (typeof result == 'string')
             load.source = result;
+          else
+            warn.call(this, 'Plugin ' + load.metadata.loader + ' should return the source in translate, instead of setting load.source directly. This support will be deprecated.');
+
           return translate.call(loader, load);
         });
       }
@@ -4246,7 +4241,7 @@ hook('fetch', function(fetch) {
 });System = new SystemJSLoader();
 
 __global.SystemJS = System;
-System.version = '0.19.18 CSP';
+System.version = '0.19.20 CSP';
   // -- exporting --
 
   if (typeof exports === 'object')
