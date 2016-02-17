@@ -63,20 +63,12 @@ hookConstructor(function(constructor) {
     // global behaviour flags
     this.warnings = false;
     this.defaultJSExtensions = false;
-    this.globalEvaluationScope = true;
     this.pluginFirst = false;
 
     // by default load ".json" files as json
     // leading * meta doesn't need normalization
     // NB add this in next breaking release
     // this.meta['*.json'] = { format: 'json' };
-
-    // Default settings for globalEvaluationScope:
-    // Disabled for WebWorker, Chrome Extensions and jsdom
-    if (isWorker 
-        || isBrowser && window.chrome && window.chrome.extension 
-        || isBrowser && navigator.userAgent.match(/^Node\.js/))
-      this.globalEvaluationScope = false;
 
     // support the empty module, as a concept
     this.set('@empty', this.newModule({}));
@@ -107,14 +99,20 @@ var nodeCoreModules = ['assert', 'buffer', 'child_process', 'cluster', 'console'
   defines the `decanonicalize` function and normalizes everything into
   a URL.
  */
+
+function applyMap(name) {
+  // first run map config
+  if (name[0] != '.' && name[0] != '/' && !name.match(absURLRegEx)) {
+    var mapMatch = getMapMatch(this.map, name);
+    if (mapMatch)
+      return this.map[mapMatch] + name.substr(mapMatch.length);
+  }
+  return name;
+}
+
 hook('normalize', function(normalize) {
-  return function(name, parentName) {
-    // first run map config
-    if (name[0] != '.' && name[0] != '/' && !name.match(absURLRegEx)) {
-      var mapMatch = getMapMatch(this.map, name);
-      if (mapMatch)
-        name = this.map[mapMatch] + name.substr(mapMatch.length);
-    }
+  return function(name, parentName, skipExt) {
+    name = applyMap.call(this, name);
 
     // dynamically load node-core modules when requiring `@node/fs` for example
     if (name.substr(0, 6) == '@node/' && nodeCoreModules.indexOf(name.substr(6)) != -1) {
@@ -137,7 +135,7 @@ hook('normalize', function(normalize) {
 
     if (name.match(absURLRegEx)) {
       // defaultJSExtensions backwards compatibility
-      if (this.defaultJSExtensions && name.substr(name.length - 3, 3) != '.js')
+      if (this.defaultJSExtensions && name.substr(name.length - 3, 3) != '.js' && !skipExt)
         name += '.js';
       return name;
     }
@@ -146,7 +144,7 @@ hook('normalize', function(normalize) {
     name = applyPaths(this.paths, name) || name;
 
     // defaultJSExtensions backwards compatibility
-    if (this.defaultJSExtensions && name.substr(name.length - 3, 3) != '.js')
+    if (this.defaultJSExtensions && name.substr(name.length - 3, 3) != '.js' && !skipExt)
       name += '.js';
 
     // ./x, /x -> page-relative
@@ -405,7 +403,7 @@ SystemJSLoader.prototype.config = function(cfg) {
         throw new TypeError('"' + p + '" is not a valid package name.');
 
       var defaultJSExtension = loader.defaultJSExtensions && p.substr(p.length - 3, 3) != '.js';
-      var prop = loader.decanonicalize(p);
+      var prop = loader.decanonicalize(applyMap(p));
       if (defaultJSExtension && prop.substr(prop.length - 3, 3) == '.js')
         prop = prop.substr(0, prop.length - 3);
 
@@ -448,7 +446,8 @@ SystemJSLoader.prototype.config = function(cfg) {
           loader[c][p] = v[p];
         }
         else if (c == 'meta') {
-          loader[c][loader.decanonicalize(p)] = v[p];
+          // meta can go through global map
+          loader[c][loader.decanonicalize(applyMap(p))] = v[p];
         }
         else if (c == 'depCache') {
           var defaultJSExtension = loader.defaultJSExtensions && p.substr(p.length - 3, 3) != '.js';

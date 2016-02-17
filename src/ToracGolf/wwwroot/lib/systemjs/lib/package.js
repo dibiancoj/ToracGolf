@@ -319,6 +319,9 @@
   // to be deprecated!
   hook('decanonicalize', function(decanonicalize) {
     return function(name, parentName) {
+      if (this.builder)
+        return decanonicalize.call(this, name, parentName, true);
+
       var decanonicalized = decanonicalize.call(this, name, parentName);
 
       if (!this.defaultJSExtensions)

@@ -22,6 +22,8 @@
 
 @section Scripts{
     <script src="~/lib/jlinq/jlinq.js" asp-append-version="true"></script>
+    @*after beta 0 they broke many ie 11 features. The issue on github, they said add this shim for the time being until its officially fixed*@
+    <script src="~/lib/angular2shims/shims_for_ie.js" asp-append-version="true"></script>
     <script src="~/lib/es6-shim/es6-shim.js" asp-append-version="true"></script>
     <script src="~/lib/systemjs/dist/system-polyfills.js" asp-append-version="true"></script>
     <script src="~/lib/angular2/angular2-polyfills.js" asp-append-version="true"></script>
