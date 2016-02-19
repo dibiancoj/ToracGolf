@@ -16,12 +16,12 @@ namespace ToracGolf.MiddleLayer.Dashboard
 
         public static async Task<IEnumerable<DashboardRoundDisplay>> Last5RoundsSelect(ToracGolfContext dbContext, int userId, int? seasonId)
         {
-            return await BuildSelectStatement(dbContext, BuildBaseQuery(dbContext, userId, seasonId).OrderByDescending(x => x.RoundDate)).ToArrayAsync();
+            return await BuildSelectStatement(dbContext, BuildBaseQuery(dbContext, userId, seasonId).OrderByDescending(x => x.RoundDate)).ToArrayAsync().ConfigureAwait(false);
         }
 
         public static async Task<IEnumerable<DashboardRoundDisplay>> Top5RoundsSelect(ToracGolfContext dbContext, int userId, int? seasonId)
         {
-            return await BuildSelectStatement(dbContext, BuildBaseQuery(dbContext, userId, seasonId).OrderBy(x => x.Score)).ToArrayAsync();
+            return await BuildSelectStatement(dbContext, BuildBaseQuery(dbContext, userId, seasonId).OrderBy(x => x.Score)).ToArrayAsync().ConfigureAwait(false);
         }
 
         private static IQueryable<Round> BuildBaseQuery(ToracGolfContext dbContext, int userId, int? seasonId)
@@ -65,7 +65,7 @@ namespace ToracGolf.MiddleLayer.Dashboard
                     Year = x.RoundDate.Year,
                     Score = x.Score,
                     Handicap = dbContext.Handicap.FirstOrDefault(y => y.RoundId == x.RoundId).HandicapAfterRound
-                }).ToArrayAsync();
+                }).ToArrayAsync().ConfigureAwait(false);
         }
 
         #endregion
@@ -78,11 +78,11 @@ namespace ToracGolf.MiddleLayer.Dashboard
 
             var lst = new List<KeyValuePair<string, int>>();
 
-            lst.Add(new KeyValuePair<string, int>("70's", await baseQuery.CountAsync(x => x.Score < 80)));
-            lst.Add(new KeyValuePair<string, int>("80's", await baseQuery.CountAsync(x => x.Score >= 80 && x.Score <= 89)));
-            lst.Add(new KeyValuePair<string, int>("90's", await baseQuery.CountAsync(x => x.Score >= 90 && x.Score <= 99)));
-            lst.Add(new KeyValuePair<string, int>("100's", await baseQuery.CountAsync(x => x.Score >= 100 && x.Score <= 109)));
-            lst.Add(new KeyValuePair<string, int>("> 110", await baseQuery.CountAsync(x => x.Score >= 110)));
+            lst.Add(new KeyValuePair<string, int>("70's", await baseQuery.CountAsync(x => x.Score < 80).ConfigureAwait(false)));
+            lst.Add(new KeyValuePair<string, int>("80's", await baseQuery.CountAsync(x => x.Score >= 80 && x.Score <= 89).ConfigureAwait(false)));
+            lst.Add(new KeyValuePair<string, int>("90's", await baseQuery.CountAsync(x => x.Score >= 90 && x.Score <= 99).ConfigureAwait(false)));
+            lst.Add(new KeyValuePair<string, int>("100's", await baseQuery.CountAsync(x => x.Score >= 100 && x.Score <= 109).ConfigureAwait(false)));
+            lst.Add(new KeyValuePair<string, int>("> 110", await baseQuery.CountAsync(x => x.Score >= 110).ConfigureAwait(false)));
 
             return lst.Where(x => x.Value > 0).ToArray();
         }

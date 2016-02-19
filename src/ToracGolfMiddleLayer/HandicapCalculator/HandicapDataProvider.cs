@@ -38,7 +38,7 @@ namespace ToracGolf.MiddleLayer.HandicapCalculator
             {
                 HandicapBeforeRound = x.Handicap.HandicapBeforeRound,
                 HandicapAfterRound = x.Handicap.HandicapAfterRound
-            }).FirstOrDefaultAsync();
+            }).FirstOrDefaultAsync().ConfigureAwait(false);
         }
 
         #endregion

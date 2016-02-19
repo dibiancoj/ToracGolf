@@ -26,7 +26,7 @@ namespace ToracGolf.MiddleLayer.Season
                           on mySeasons.SeasonId equals refSeasons.SeasonId
                           where mySeasons.UserId == userId
                           orderby mySeasons.Rounds.Min(x => x.RoundDate) descending
-                          select refSeasons).ToDictionaryAsync(x => x.SeasonId, x => x.SeasonText);
+                          select refSeasons).ToDictionaryAsync(x => x.SeasonId, x => x.SeasonText).ConfigureAwait(false);
         }
 
         public static async Task<IEnumerable<SeasonListingData>> SeasonListingForGrid(ToracGolfContext dbContext, int userId)
@@ -44,13 +44,13 @@ namespace ToracGolf.MiddleLayer.Season
                               TopScore = mySeasons.Rounds.Min(x => x.Score),
                               WorseScore = mySeasons.Rounds.Max(x => x.Score),
                               AverageScore = mySeasons.Rounds.Average(x => x.Score),
-                          }).ToArrayAsync();
+                          }).ToArrayAsync().ConfigureAwait(false);
         }
 
         public static async Task<Ref_Season> RefSeasonAddOrGet(ToracGolfContext dbContext, string seasonText)
         {
             //let's first try to find the season with the same name
-            var seasonToAdd = await dbContext.Ref_Season.AsNoTracking().FirstOrDefaultAsync(x => x.SeasonText == seasonText);
+            var seasonToAdd = await dbContext.Ref_Season.AsNoTracking().FirstOrDefaultAsync(x => x.SeasonText == seasonText).ConfigureAwait(false);
 
             //didn't find a season with this name
             if (seasonToAdd == null)
@@ -62,7 +62,7 @@ namespace ToracGolf.MiddleLayer.Season
                 dbContext.Ref_Season.Add(seasonToAdd);
 
                 //we need to save it for foreign key 
-                await dbContext.SaveChangesAsync();
+                await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
 
             //return the record
@@ -83,7 +83,7 @@ namespace ToracGolf.MiddleLayer.Season
             dbContext.UserSeason.Add(recordToAdd);
 
             //go save the changes
-            await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync().ConfigureAwait(false);
 
             //return the record now
             return recordToAdd;
@@ -92,13 +92,13 @@ namespace ToracGolf.MiddleLayer.Season
         public static async Task<bool> MakeSeasonAsCurrent(ToracGolfContext dbContext, int userId, int currentSeasonId)
         {
             //grab the user record
-            var user = await dbContext.Users.FirstAsync(x => x.UserId == userId);
+            var user = await dbContext.Users.FirstAsync(x => x.UserId == userId).ConfigureAwait(false);
 
             //set the current season now
             user.CurrentSeasonId = currentSeasonId;
 
             //save the changes
-            await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync().ConfigureAwait(false);
 
             //return a postive result
             return true;
@@ -107,13 +107,13 @@ namespace ToracGolf.MiddleLayer.Season
         public static async Task<bool> DeleteSeason(ToracGolfContext dbContext, int userId, int seasonIdToDelete)
         {
             //go grab the season to delete
-            var seasonToDelete = await dbContext.UserSeason.FirstAsync(x => x.UserId == userId && x.SeasonId == seasonIdToDelete);
+            var seasonToDelete = await dbContext.UserSeason.FirstAsync(x => x.UserId == userId && x.SeasonId == seasonIdToDelete).ConfigureAwait(false);
 
             //remove it from the context
             dbContext.UserSeason.Remove(seasonToDelete);
 
             //save it now
-            await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync().ConfigureAwait(false);
 
             //return a postive result
             return true;

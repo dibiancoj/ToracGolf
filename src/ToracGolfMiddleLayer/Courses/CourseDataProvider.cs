@@ -52,7 +52,7 @@ namespace ToracGolf.MiddleLayer.Courses
             dbContext.Course.Add(courseToAdd);
 
             //go save it
-            await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync().ConfigureAwait(false);
 
             //do we have a course image?
             if (CourseData.CourseImage != null)
@@ -131,7 +131,7 @@ namespace ToracGolf.MiddleLayer.Courses
             });
 
             //go execute it and return it
-            var data = await EFPaging.PageEfQuery(query, pageId, recordsPerPage).ToListAsync();
+            var data = await EFPaging.PageEfQuery(query, pageId, recordsPerPage).ToListAsync().ConfigureAwait(false);
 
             //go find the course paths
             data.ForEach(x => x.CourseImageLocation = courseImageFinder.FindImage(x.CourseData.CourseId));
@@ -142,13 +142,13 @@ namespace ToracGolf.MiddleLayer.Courses
 
         public static async Task<int> TotalNumberOfCourses(ToracGolfContext dbContext, IListingFactory<CourseListingFactory.CourseListingSortEnum, Course, CourseListingData> courseListingFactory, string courseNameFilter, int? StateFilter)
         {
-            return await CourseSelectQueryBuilder(dbContext, courseListingFactory, courseNameFilter, StateFilter).CountAsync();
+            return await CourseSelectQueryBuilder(dbContext, courseListingFactory, courseNameFilter, StateFilter).CountAsync().ConfigureAwait(false);
         }
 
         public static async Task<Tuple<string, string>> CourseNameAndState(ToracGolfContext dbContext, int courseId)
         {
             //grab the course
-            var course = await dbContext.Course.AsNoTracking().Where(x => x.CourseId == courseId).Select(x => new { x.Name, x.StateId }).FirstAsync();
+            var course = await dbContext.Course.AsNoTracking().Where(x => x.CourseId == courseId).Select(x => new { x.Name, x.StateId }).FirstAsync().ConfigureAwait(false);
 
             //return the tuple
             return new Tuple<string, string>(course.Name, course.StateId.ToString());
@@ -157,13 +157,13 @@ namespace ToracGolf.MiddleLayer.Courses
         public static async Task<bool> DeleteACourse(ToracGolfContext dbContext, int courseId)
         {
             //grab the course
-            var courseToDelete = await dbContext.Course.FirstAsync(x => x.CourseId == courseId);
+            var courseToDelete = await dbContext.Course.FirstAsync(x => x.CourseId == courseId).ConfigureAwait(false);
 
             //now flip the flag on the course
             courseToDelete.IsActive = false;
 
             //save the changes
-            await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync().ConfigureAwait(false);
 
             //return a positive result
             return true;
@@ -201,7 +201,7 @@ namespace ToracGolf.MiddleLayer.Courses
                     Rating = y.Rating,
                     Slope = y.Slope
                 }).OrderBy(y => y.Yardage)
-            }).FirstAsync(x => x.CourseId == courseId);
+            }).FirstAsync(x => x.CourseId == courseId).ConfigureAwait(false);
 
             //set the url path
             courseRecord.CourseImageUrl = courseImageFinder.FindImage(courseRecord.CourseId);
@@ -238,13 +238,13 @@ namespace ToracGolf.MiddleLayer.Courses
                     BestScore = x.Min(y => y.Score),
                     TeeBoxCount = dbContext.CourseTeeLocations.Count(y => y.CourseId == queryModel.CourseId)
                 }
-            }).FirstAsync();
+            }).FirstAsync().ConfigureAwait(false);
 
-            model.RecentRounds = await RecentCourseStatRounds(dbContext, userId, queryModel.CourseId, queryModel.SeasonId, queryModel.TeeBoxLocationId);
-            model.ScoreGraphData = await ScoreGraph(dbContext, userId, queryModel.CourseId, queryModel.SeasonId, queryModel.TeeBoxLocationId);
-            model.PuttsGraphData = await PuttGraph(dbContext, userId, queryModel.CourseId, queryModel.SeasonId, queryModel.TeeBoxLocationId);
-            model.FairwaysGraphData = await FairwaysHitGraph(dbContext, userId, queryModel.CourseId, queryModel.SeasonId, queryModel.TeeBoxLocationId);
-            model.GIRGraphData = await GIRGraph(dbContext, userId, queryModel.CourseId, queryModel.SeasonId, queryModel.TeeBoxLocationId);
+            model.RecentRounds = await RecentCourseStatRounds(dbContext, userId, queryModel.CourseId, queryModel.SeasonId, queryModel.TeeBoxLocationId).ConfigureAwait(false);
+            model.ScoreGraphData = await ScoreGraph(dbContext, userId, queryModel.CourseId, queryModel.SeasonId, queryModel.TeeBoxLocationId).ConfigureAwait(false);
+            model.PuttsGraphData = await PuttGraph(dbContext, userId, queryModel.CourseId, queryModel.SeasonId, queryModel.TeeBoxLocationId).ConfigureAwait(false);
+            model.FairwaysGraphData = await FairwaysHitGraph(dbContext, userId, queryModel.CourseId, queryModel.SeasonId, queryModel.TeeBoxLocationId).ConfigureAwait(false);
+            model.GIRGraphData = await GIRGraph(dbContext, userId, queryModel.CourseId, queryModel.SeasonId, queryModel.TeeBoxLocationId).ConfigureAwait(false);
 
             return model;
         }
@@ -259,7 +259,7 @@ namespace ToracGolf.MiddleLayer.Courses
                 Score = x.Score,
                 RoundDate = x.RoundDate,
                 TeeBoxLocation = x.CourseTeeLocation.Description
-            }).OrderByDescending(x => x.RoundDate).ToArrayAsync();
+            }).OrderByDescending(x => x.RoundDate).ToArrayAsync().ConfigureAwait(false);
         }
 
         #region Graphs
@@ -292,7 +292,7 @@ namespace ToracGolf.MiddleLayer.Courses
                     Year = x.RoundDate.Year,
                     Score = x.Score,
                     Handicap = dbContext.Handicap.FirstOrDefault(y => y.RoundId == x.RoundId).HandicapAfterRound
-                }).ToArrayAsync();
+                }).ToArrayAsync().ConfigureAwait(false);
         }
 
         private static async Task<IEnumerable<PuttsCourseStatsGraph>> PuttGraph(ToracGolfContext dbContext, int userId, int courseId, int? seasonId, int? teeBoxLocationId)
@@ -305,7 +305,7 @@ namespace ToracGolf.MiddleLayer.Courses
                     Day = x.RoundDate.Day,
                     Year = x.RoundDate.Year,
                     Putts = x.Putts.Value
-                }).ToArrayAsync();
+                }).ToArrayAsync().ConfigureAwait(false);
         }
 
         private static async Task<IEnumerable<GreensInRegulationCourseStatsGraph>> GIRGraph(ToracGolfContext dbContext, int userId, int courseId, int? seasonId, int? teeBoxLocationId)
@@ -318,7 +318,7 @@ namespace ToracGolf.MiddleLayer.Courses
                     Day = x.RoundDate.Day,
                     Year = x.RoundDate.Year,
                     GreensHit = x.GreensInRegulation.Value
-                }).ToArrayAsync();
+                }).ToArrayAsync().ConfigureAwait(false);
         }
 
         private static async Task<IEnumerable<FairwaysInRegulationCourseStatsGraph>> FairwaysHitGraph(ToracGolfContext dbContext, int userId, int courseId, int? seasonId, int? teeBoxLocationId)
@@ -331,7 +331,7 @@ namespace ToracGolf.MiddleLayer.Courses
                     Day = x.RoundDate.Day,
                     Year = x.RoundDate.Year,
                     FairwaysHit = x.FairwaysHit.Value
-                }).ToArrayAsync();
+                }).ToArrayAsync().ConfigureAwait(false);
         }
 
         #endregion

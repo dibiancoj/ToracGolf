@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using ToracGolf.MiddleLayer.Courses;
 using ToracGolf.MiddleLayer.EFModel;
 using ToracGolf.MiddleLayer.EFModel.Tables;
 using ToracGolf.MiddleLayer.GridCommon;
@@ -91,7 +90,7 @@ namespace ToracGolf.MiddleLayer.Rounds
             };
 
             //go grab the tee location 
-            var teeLocation = await dbContext.CourseTeeLocations.AsNoTracking().FirstAsync(x => x.CourseTeeLocationId == roundData.TeeLocationId);
+            var teeLocation = await dbContext.CourseTeeLocations.AsNoTracking().FirstAsync(x => x.CourseTeeLocationId == roundData.TeeLocationId).ConfigureAwait(false);
 
             //add the round handicap now
             round.RoundHandicap = Handicapper.CalculateHandicap(new Last20Rounds[] { new Last20Rounds { Rating = teeLocation.Rating, Slope = teeLocation.Slope, RoundScore = round.Score } }).Value;
@@ -277,7 +276,7 @@ namespace ToracGolf.MiddleLayer.Rounds
             });
 
             //go run the query now
-            var dataSet = await EFPaging.PageEfQuery(selectableQuery, pageId, recordsPerPage).ToListAsync();
+            var dataSet = await EFPaging.PageEfQuery(selectableQuery, pageId, recordsPerPage).ToListAsync().ConfigureAwait(false);
 
             //let's loop through the rounds and display the starts
             foreach (var round in dataSet)
@@ -298,7 +297,7 @@ namespace ToracGolf.MiddleLayer.Rounds
 
         public static async Task<int> TotalNumberOfRounds(ToracGolfContext dbContext, IListingFactory<RoundListingFactory.RoundListingSortEnum, Round, RoundListingData> roundListingFactory, int userId, string roundNameFilter, int? StateFilter, DateTime? roundDateStartFilter, DateTime? roundDateEndFilter, bool onlyHandicappedRounds)
         {
-            return await RoundSelectQueryBuilder(dbContext, roundListingFactory, userId, roundNameFilter, StateFilter, roundDateStartFilter, roundDateEndFilter, onlyHandicappedRounds).CountAsync();
+            return await RoundSelectQueryBuilder(dbContext, roundListingFactory, userId, roundNameFilter, StateFilter, roundDateStartFilter, roundDateEndFilter, onlyHandicappedRounds).CountAsync().ConfigureAwait(false);
         }
 
         #endregion
@@ -314,7 +313,7 @@ namespace ToracGolf.MiddleLayer.Rounds
             dbContext.Rounds.Remove(roundToDelete);
 
             //save the changes
-            await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync().ConfigureAwait(false);
 
             //return a true result
             return true;

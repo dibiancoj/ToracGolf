@@ -16,13 +16,13 @@ namespace ToracGolf.MiddleLayer.SecurityManager
 
         public static async Task<UserAccounts> UserLogIn(ToracGolfContext dbContext, string emailAddress, string password)
         {
-            return await dbContext.Users.AsNoTracking().FirstOrDefaultAsync(x => x.EmailAddress == emailAddress && x.Password == password);
+            return await dbContext.Users.AsNoTracking().FirstOrDefaultAsync(x => x.EmailAddress == emailAddress && x.Password == password).ConfigureAwait(false);
         }
 
         public static async Task<UserAccounts> RegisterUser(ToracGolfContext dbContext, SignUpEnteredDataBase signUpModel)
         {
             //go either get the ref season record or add it
-            var refSeasonRecord = await SeasonDataProvider.RefSeasonAddOrGet(dbContext, signUpModel.CurrentSeason);
+            var refSeasonRecord = await SeasonDataProvider.RefSeasonAddOrGet(dbContext, signUpModel.CurrentSeason).ConfigureAwait(false);
 
             //user to add
             var userToAdd = new UserAccounts
@@ -40,27 +40,27 @@ namespace ToracGolf.MiddleLayer.SecurityManager
             dbContext.Users.Add(userToAdd);
 
             //go save the changes
-            await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync().ConfigureAwait(false);
 
             //add the user season now
-            await SeasonDataProvider.UserSeasonAdd(dbContext, userToAdd.UserId, refSeasonRecord);
+            await SeasonDataProvider.UserSeasonAdd(dbContext, userToAdd.UserId, refSeasonRecord).ConfigureAwait(false);
 
             //return the user now
-            return await dbContext.Users.AsNoTracking().FirstAsync(x => x.UserId == userToAdd.UserId);
+            return await dbContext.Users.AsNoTracking().FirstAsync(x => x.UserId == userToAdd.UserId).ConfigureAwait(false);
         }
 
         public static async Task<string> Password(ToracGolfContext dbContext, int userId)
         {
-            return (await dbContext.Users.AsNoTracking().FirstAsync(x => x.UserId == userId)).Password;
+            return (await dbContext.Users.AsNoTracking().FirstAsync(x => x.UserId == userId).ConfigureAwait(false)).Password;
         }
 
         public static async Task ChangePassword(ToracGolfContext dbContext, int userId, string password)
         {
-            var user = await dbContext.Users.FirstAsync(x => x.UserId == userId);
+            var user = await dbContext.Users.FirstAsync(x => x.UserId == userId).ConfigureAwait(false);
 
             user.Password = password;
 
-            await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync().ConfigureAwait(false);
         }
 
     }

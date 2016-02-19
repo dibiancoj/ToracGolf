@@ -40,7 +40,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed
 
         public async Task<NewsFeedQueryResult> NewsFeedPostSelect(int userId, NewsFeedItemModel.NewsFeedTypeId? newsFeedTypeIdFilter, string searchFilterText, ImageFinder courseImageLocator, ImageFinder userImageLocator)
         {
-            return await GridQueryRepository.NewsFeedPostSelect(userId, newsFeedTypeIdFilter, searchFilterText, courseImageLocator, userImageLocator);
+            return await GridQueryRepository.NewsFeedPostSelect(userId, newsFeedTypeIdFilter, searchFilterText, courseImageLocator, userImageLocator).ConfigureAwait(false);
         }
 
         #endregion
@@ -79,7 +79,7 @@ namespace ToracGolf.MiddleLayer.NewsFeed
             var data = await CommentRepository.GetComments().AsNoTracking()
                          .Where(x => x.AreaId == id && x.NewsFeedTypeId == (int)newsFeedTypeId)
                          .OrderByDescending(x => x.CreatedDate)
-                         .Select(CommentRepository.SelectCommand).ToListAsync();
+                         .Select(CommentRepository.SelectCommand).ToListAsync().ConfigureAwait(false);
 
             data.ForEach(x => x.UserProfileUrl = userImageFinder.FindImage(x.UserIdThatMadeComment));
 
@@ -89,10 +89,10 @@ namespace ToracGolf.MiddleLayer.NewsFeed
         public async Task<int> CommentLikeAddOrRemove(ToracGolfContext dbContext, int userId, int commentId)
         {
             //go take care of the like
-            await LikeRepository.AddOrRemoveLike(commentId, NewsFeedItemModel.NewsFeedTypeId.Comment, userId);
+            await LikeRepository.AddOrRemoveLike(commentId, NewsFeedItemModel.NewsFeedTypeId.Comment, userId).ConfigureAwait(false);
 
             //return the new count
-            return await LikeRepository.GetLikes().AsNoTracking().CountAsync(x => x.AreaId == commentId && x.NewsFeedTypeId == (int)NewsFeedItemModel.NewsFeedTypeId.Comment);
+            return await LikeRepository.GetLikes().AsNoTracking().CountAsync(x => x.AreaId == commentId && x.NewsFeedTypeId == (int)NewsFeedItemModel.NewsFeedTypeId.Comment).ConfigureAwait(false);
         }
 
         #endregion
