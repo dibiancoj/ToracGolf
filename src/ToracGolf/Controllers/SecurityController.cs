@@ -3,6 +3,7 @@ using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.OptionsModel;
 using Microsoft.Net.Http.Headers;
 using System;
@@ -32,12 +33,13 @@ namespace ToracGolf.Controllers
 
         #region Constructor
 
-        public SecurityController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, ToracGolfContext dbContext, IOptions<AppSettings> configuration)
+        public SecurityController(IMemoryCache cache, ICacheFactoryStore cacheFactoryStore, ToracGolfContext dbContext, IOptions<AppSettings> configuration, ILogger<SecurityController> logger)
         {
             DbContext = dbContext;
             Cache = cache;
             CacheFactory = cacheFactoryStore;
             Configuration = configuration;
+            Logger = logger;
         }
 
         #endregion
@@ -51,6 +53,8 @@ namespace ToracGolf.Controllers
         private ICacheFactoryStore CacheFactory { get; }
 
         private IOptions<AppSettings> Configuration { get; }
+
+        private ILogger<SecurityController> Logger { get; }
 
         #endregion
 
@@ -70,6 +74,9 @@ namespace ToracGolf.Controllers
 
         private async Task LogUserIn(UserAccounts userLogInAttempt)
         {
+            //log the attemtp
+            Logger.LogInformation("Log In Attempt: User = {0}", userLogInAttempt.EmailAddress);
+
             var claims = new List<Claim>();
 
             claims.Add(new Claim(ClaimTypes.Hash, userLogInAttempt.UserId.ToString()));
