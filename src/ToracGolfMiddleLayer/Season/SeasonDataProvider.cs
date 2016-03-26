@@ -25,7 +25,7 @@ namespace ToracGolf.MiddleLayer.Season
                           join refSeasons in dbContext.Ref_Season.AsNoTracking()
                           on mySeasons.SeasonId equals refSeasons.SeasonId
                           where mySeasons.UserId == userId
-                          orderby mySeasons.Rounds.Min(x => x.RoundDate) descending
+                          orderby mySeasons.Rounds.Select(x => x.RoundDate).DefaultIfEmpty(DateTime.MaxValue).Min() descending
                           select refSeasons).ToDictionaryAsync(x => x.SeasonId, x => x.SeasonText).ConfigureAwait(false);
         }
 
