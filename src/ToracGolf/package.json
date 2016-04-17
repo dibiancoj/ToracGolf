@@ -8,12 +8,12 @@
     "gulp-uglify": "1.5.2",
     "rimraf": "2.5.2",
     "gulp-react": "3.1.0",
-    "angular2": "2.0.0-beta.6",
-    "systemjs": "0.19.22",
+    "angular2": "2.0.0-beta.15",
+    "systemjs": "0.19.26",
     "es6-promise": "3.1.2",
-    "es6-shim": "0.33.3",
+    "es6-shim": "0.35.0",
     "reflect-metadata": "0.1.2",
-    "rxjs": "5.0.0-beta.0",
-    "zone.js": "0.5.14"
+    "rxjs": "5.0.0-beta.2",
+    "zone.js": "0.6.11"
   }
 }

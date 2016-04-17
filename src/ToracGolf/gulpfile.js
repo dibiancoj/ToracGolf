@@ -168,6 +168,7 @@ var config = {
     lib: [
         //require.resolve('systemjs/dist/system.js'),
         require.resolve('es6-shim/es6-shim.js'),
+        require.resolve('zone.js/dist/zone.js'),
     ]
 };
 

@@ -1,4 +1,6 @@
-System.register(['angular2/core', 'rxjs/add/operator/map', '../Common/httpinterceptor'], function(exports_1) {
+System.register(['angular2/core', 'rxjs/add/operator/map', '../Common/httpinterceptor'], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -48,25 +50,25 @@ System.register(['angular2/core', 'rxjs/add/operator/map', '../Common/httpinterc
                     __metadata('design:paramtypes', [httpinterceptor_1.HttpInterceptor])
                 ], NewsFeedService);
                 return NewsFeedService;
-            })();
+            }());
             exports_1("NewsFeedService", NewsFeedService);
             NewsFeedQueryResult = (function () {
                 function NewsFeedQueryResult() {
                 }
                 return NewsFeedQueryResult;
-            })();
+            }());
             exports_1("NewsFeedQueryResult", NewsFeedQueryResult);
             NewsFeedItem = (function () {
                 function NewsFeedItem() {
                 }
                 return NewsFeedItem;
-            })();
+            }());
             exports_1("NewsFeedItem", NewsFeedItem);
             NewsFeedComment = (function () {
                 function NewsFeedComment() {
                 }
                 return NewsFeedComment;
-            })();
+            }());
             exports_1("NewsFeedComment", NewsFeedComment);
             (function (NewsFeedTypeId) {
                 NewsFeedTypeId[NewsFeedTypeId["NewRound"] = 0] = "NewRound";

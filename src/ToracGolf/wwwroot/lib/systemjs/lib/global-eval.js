@@ -6,27 +6,21 @@ var __exec;
 
   var hasBtoa = typeof btoa != 'undefined';
 
-  // used to support leading #!/usr/bin/env in scripts as supported in Node
-  var hashBangRegEx = /^\#\!.*/;
-
   function getSource(load) {
     var lastLineIndex = load.source.lastIndexOf('\n');
 
     // wrap ES formats with a System closure for System global encapsulation
-    var wrap = load.metadata.format == 'esm' || load.metadata.format == 'register' || load.metadata.bundle;
+    var wrap = load.metadata.format != 'global';
 
     var sourceMap = load.metadata.sourceMap;
     if (sourceMap) {
       if (typeof sourceMap != 'object')
         throw new TypeError('load.metadata.sourceMap must be set to an object.');
 
-      if (sourceMap.mappings)
-        sourceMap.mappings = ';' + sourceMap.mappings;
+      sourceMap = JSON.stringify(sourceMap);
     }
-    
-    sourceMap = JSON.stringify(sourceMap);
 
-    return (wrap ? '(function(System, SystemJS) {' : '') + (load.metadata.format == 'cjs' ? load.source.replace(hashBangRegEx, '') : load.source) + (wrap ? '\n})(System, System);' : '')
+    return (wrap ? '(function(System, SystemJS) {' : '') + load.source + (wrap ? '\n})(System, System);' : '')
         // adds the sourceURL comment if not already present
         + (load.source.substr(lastLineIndex, 15) != '\n//# sourceURL=' 
           ? '\n//# sourceURL=' + load.address + (sourceMap ? '!transpiled' : '') : '')
@@ -63,13 +57,21 @@ var __exec;
     curLoad = undefined;
   }
 
+  var vm;
   __exec = function(load) {
     if ((load.metadata.integrity || load.metadata.nonce) && supportsScriptExec)
       return scriptExec.call(this, load);
     try {
       preExec(this, load);
       curLoad = load;
-      (0, eval)(getSource(load));
+      // global scoped eval for node (avoids require scope leak)
+      if (this._nodeRequire) {
+        vm = vm || this._nodeRequire('vm');
+        vm.runInThisContext(getSource(load));
+      }
+      else {
+        (0, eval)(getSource(load));
+      }
       postExec();
     }
     catch(e) {
