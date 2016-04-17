@@ -1,3 +1,4 @@
+"use strict";
 /* tslint:disable:no-unused-variable */
 // Subject imported before Observable to bypass circular dependency issue since
 // Subject extends Observable and Observable references Subject in it's
@@ -9,9 +10,9 @@ var Observable_1 = require('./Observable');
 exports.Observable = Observable_1.Observable;
 // statics
 /* tslint:disable:no-use-before-declare */
-require('./add/operator/combineLatest-static');
-require('./add/operator/concat-static');
-require('./add/operator/merge-static');
+require('./add/observable/combineLatest');
+require('./add/observable/concat');
+require('./add/observable/merge');
 require('./add/observable/bindCallback');
 require('./add/observable/defer');
 require('./add/observable/empty');
@@ -26,7 +27,7 @@ require('./add/observable/never');
 require('./add/observable/range');
 require('./add/observable/throw');
 require('./add/observable/timer');
-require('./add/operator/zip-static');
+require('./add/observable/zip');
 require('./add/observable/dom/ajax');
 require('./add/observable/dom/webSocket');
 //operators
@@ -48,6 +49,7 @@ require('./add/operator/debounce');
 require('./add/operator/debounceTime');
 require('./add/operator/defaultIfEmpty');
 require('./add/operator/delay');
+require('./add/operator/delayWhen');
 require('./add/operator/distinctUntilChanged');
 require('./add/operator/do');
 require('./add/operator/expand');
@@ -56,6 +58,8 @@ require('./add/operator/finally');
 require('./add/operator/first');
 require('./add/operator/groupBy');
 require('./add/operator/ignoreElements');
+require('./add/operator/inspect');
+require('./add/operator/inspectTime');
 require('./add/operator/every');
 require('./add/operator/last');
 require('./add/operator/map');
@@ -90,6 +94,7 @@ require('./add/operator/switch');
 require('./add/operator/switchMap');
 require('./add/operator/switchMapTo');
 require('./add/operator/take');
+require('./add/operator/takeLast');
 require('./add/operator/takeUntil');
 require('./add/operator/takeWhile');
 require('./add/operator/throttle');
@@ -109,6 +114,7 @@ require('./add/operator/zipAll');
 /* tslint:disable:no-unused-variable */
 var Subscription_1 = require('./Subscription');
 exports.Subscription = Subscription_1.Subscription;
+exports.UnsubscriptionError = Subscription_1.UnsubscriptionError;
 var Subscriber_1 = require('./Subscriber');
 exports.Subscriber = Subscriber_1.Subscriber;
 var AsyncSubject_1 = require('./subject/AsyncSubject');
@@ -131,10 +137,10 @@ var asap_1 = require('./scheduler/asap');
 var queue_1 = require('./scheduler/queue');
 var animationFrame_1 = require('./scheduler/animationFrame');
 var rxSubscriber_1 = require('./symbol/rxSubscriber');
-var ajax_1 = require('./observable/dom/ajax');
-exports.AjaxResponse = ajax_1.AjaxResponse;
-exports.AjaxError = ajax_1.AjaxError;
-exports.AjaxTimeoutError = ajax_1.AjaxTimeoutError;
+var AjaxObservable_1 = require('./observable/dom/AjaxObservable');
+exports.AjaxResponse = AjaxObservable_1.AjaxResponse;
+exports.AjaxError = AjaxObservable_1.AjaxError;
+exports.AjaxTimeoutError = AjaxObservable_1.AjaxTimeoutError;
 /* tslint:enable:no-unused-variable */
 /* tslint:disable:no-var-keyword */
 var Scheduler = {

@@ -1,3 +1,4 @@
+"use strict";
 function letProto(func) {
     return func(this);
 }

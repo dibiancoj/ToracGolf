@@ -1,3 +1,4 @@
+"use strict";
 var map_1 = require('./map');
 /**
  * Retrieves the value of a specified nested property from all elements in
