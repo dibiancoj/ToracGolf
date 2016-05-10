@@ -1,8 +1,8 @@
-﻿import { Injectable, Inject } from 'angular2/core';
-import { Http, Headers, Response } from 'angular2/http';
+﻿import { Injectable, Inject } from '@angular/core';
+import { Http, Headers, Response } from '@angular/http';
 
+import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class HttpInterceptor {
@@ -21,6 +21,7 @@ export class HttpInterceptor {
         //grab the query so we can fork this (i'm hooking into the map to hide the show dialog)...using multiple subscribe caused 2 ajax calls to be made.
         //now sure if this is the best way to do this. It works though. Couldn't find much documentation on how to do this. Basically fork and run multiple methods
         //off an observable. 
+
         return this.HttpModule.post(url, body, { headers: this.CustomHeaderSelect() })
             .map(res => res.json())
             .map(x => {

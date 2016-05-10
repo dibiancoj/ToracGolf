@@ -5,7 +5,7 @@
 <div class="col-md-9">
 
     <!-- Standard image post example -->
-    <div class="post-item style2" *ngFor="#post of Posts">
+    <div class="post-item style2" *ngFor="let post of Posts">
         <NewsFeedPostItem [Post]="post" (LikeEvent)="Like($event)" (CommentSaveEvent)="SaveComment($event)" (ShowHideCommentEvent)="ShowHideComment($event)"></NewsFeedPostItem>
     </div>
 

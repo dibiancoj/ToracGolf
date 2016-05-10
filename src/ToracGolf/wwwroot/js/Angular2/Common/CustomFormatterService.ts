@@ -1,5 +1,5 @@
 ﻿/* this is mainly to handle the issues with piping on the ipad. Hopefully they fix all this once they go live */
-import { Injectable } from 'angular2/core';
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class CustomFormatterService {

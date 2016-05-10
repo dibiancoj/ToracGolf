@@ -1,12 +1,12 @@
-/// <reference path="../../../../node_modules/angular2/typings/browser.d.ts" />
-System.register(['angular2/platform/browser', './NewsFeedApp', 'angular2/core', 'angular2/http', '../Common/httpinterceptor'], function(exports_1, context_1) {
+/// <reference path="../../../../node_modules/angular2-in-memory-web-api/typings/browser.d.ts" />
+System.register(['@angular/platform-browser-dynamic', './NewsFeedApp', '@angular/core', '@angular/http', '../Common/httpinterceptor'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var browser_1, NewsFeedApp_1, core_1, http_1, httpinterceptor_1;
+    var platform_browser_dynamic_1, NewsFeedApp_1, core_1, http_1, httpinterceptor_1;
     return {
         setters:[
-            function (browser_1_1) {
-                browser_1 = browser_1_1;
+            function (platform_browser_dynamic_1_1) {
+                platform_browser_dynamic_1 = platform_browser_dynamic_1_1;
             },
             function (NewsFeedApp_1_1) {
                 NewsFeedApp_1 = NewsFeedApp_1_1;
@@ -22,7 +22,7 @@ System.register(['angular2/platform/browser', './NewsFeedApp', 'angular2/core', 
             }],
         execute: function() {
             core_1.enableProdMode();
-            browser_1.bootstrap(NewsFeedApp_1.NewsFeedApp, [http_1.HTTP_PROVIDERS, httpinterceptor_1.HttpInterceptor]);
+            platform_browser_dynamic_1.bootstrap(NewsFeedApp_1.NewsFeedApp, [http_1.HTTP_PROVIDERS, httpinterceptor_1.HttpInterceptor]);
         }
     }
 });

@@ -1,4 +1,4 @@
-﻿import {Component, Input, Inject, Output, EventEmitter} from 'angular2/core';
+﻿import {Component, Input, Inject, Output, EventEmitter} from '@angular/core';
 import {NewsFeedComment, NewsFeedTypeId, NewsFeedService} from './NewsFeedService';
 import {CustomFormatterService} from '../Common/CustomFormatterService';
 

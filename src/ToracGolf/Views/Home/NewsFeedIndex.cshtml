@@ -22,29 +22,32 @@
 
 @section Scripts{
     <script src="~/lib/jlinq/jlinq.js" asp-append-version="true"></script>
+    @* <script src="~/lib/es6-shim/es6-shim.js" asp-append-version="true"></script>
+        <script src="~/lib/systemjs/dist/system-polyfills.js" asp-append-version="true"></script>
+        <script src="~/lib/angular2/es6/dev/src/testing/shims_for_IE.js" asp-append-version="true"></script>
+
+
+        <script src="~/lib/angular2/bundles/angular2-polyfills.js" asp-append-version="true"></script>
+        <script src="~/lib/systemjs/dist/system.js" asp-append-version="true"></script>
+        <script src="~/lib/rxjs/bundles/rx.js" asp-append-version="true"></script>
+        <script src="~/lib/angular2/bundles/angular2.dev.js" asp-append-version="true"></script>*@
+
+    <!-- 1. Load libraries -->
+    <!-- Polyfill(s) for older browsers -->
     <script src="~/lib/es6-shim/es6-shim.js" asp-append-version="true"></script>
-    <script src="~/lib/systemjs/dist/system-polyfills.js" asp-append-version="true"></script>
-    <script src="~/lib/angular2/es6/dev/src/testing/shims_for_IE.js" asp-append-version="true"></script>
+    <script src="~/lib/zone.js/dist/zone.js" asp-append-version="true"></script>
+    <script src="~/lib/reflect-metadata/reflect.js" asp-append-version="true"></script>
+    <script src="~/lib/systemjs/dist/system.src.js" asp-append-version="true"></script>
 
+    <!-- 2. Configure SystemJS -->
+    @*<script src="~/lib/systemjsconfig/system.config.js"></script>*@
 
-    <script src="~/lib/angular2/bundles/angular2-polyfills.js" asp-append-version="true"></script>
-    <script src="~/lib/systemjs/dist/system.js" asp-append-version="true"></script>
-    <script src="~/lib/rxjs/bundles/rx.js" asp-append-version="true"></script>
-    <script src="~/lib/angular2/bundles/angular2.dev.js" asp-append-version="true"></script>
+    <script src="~/lib/systemjs.config.js" asp-append-version="true"></script>
 
     <script>
-        System.config({
-            defaultJSExtensions: true,
-            packages: {
-                app: {
-                    format: 'register',
-                    defaultExtension: 'js'
-                }
-            }
-        });
-
-        System.baseURL = 'lib';
-
+       
+        //System.baseURL = 'lib';
+ 
         System.import('./js/Angular2/NewsFeed/boot.js')
                 .then(null, console.error.bind(console));
     </script>

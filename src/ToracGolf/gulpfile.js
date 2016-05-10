@@ -163,24 +163,30 @@ gulp.task("OnPublishToServer", ["reactValidation", "reactFormatting", "reactTran
 
 //the following is all for angular 2 and dealing with the npm crap...copying it over to wwwroot
 
-var config = {
-    libBase: 'node_modules',
-    lib: [
-        //require.resolve('systemjs/dist/system.js'),
-        require.resolve('es6-shim/es6-shim.js'),
-        require.resolve('zone.js/dist/zone.js'),
-    ]
-};
+//var config = {
+//    libBase: 'node_modules',
+//    lib: [
+//        //require.resolve('systemjs/dist/system.js'),
+//        require.resolve('es6-shim/es6-shim.js'),
+//        require.resolve('zone.js/dist/zone.js'),
+//        require.resolve('angular2-in-memory-web-api/typings/main/ambient/es6-shim/index.d.ts')
+//    ]
+//};
 
-gulp.task('copy_NPM', function () {
-    return gulp.src(config.lib, { base: config.libBase })
-        .pipe(gulp.dest(paths.webroot + 'lib'));
-});
+//gulp.task('copy_NPM', function () {
+//    return gulp.src(config.lib, { base: config.libBase })
+//        .pipe(gulp.dest(paths.webroot + 'lib'));
+//});
 
 
 gulp.task('CopyAngular2FromNPMToWWWLib', function () {
-    return gulp.src('node_modules' + '/angular2' + "/**/*.js")
-        .pipe(gulp.dest(paths.webroot + 'lib/angular2'));
+    return gulp.src('node_modules/@angular/**/*.js')
+        .pipe(gulp.dest(paths.webroot + 'lib/@angular'));
+});
+
+gulp.task('angular2-in-memory-web-api', function () {
+    return gulp.src('node_modules/angular2-in-memory-web-api/**/*.js')
+        .pipe(gulp.dest(paths.webroot + 'lib/angular2-in-memory-web-api'));
 });
 
 gulp.task('CopyRXJSFromNPMToWWWLib', function () {
@@ -192,3 +198,41 @@ gulp.task('CopySystemJsFromNPMToWWWLib', function () {
     return gulp.src('node_modules' + '/systemjs' + "/**/*.js")
         .pipe(gulp.dest(paths.webroot + 'lib/systemjs'));
 });
+
+gulp.task('ES6Shim', function () {
+    return gulp.src('node_modules' + '/es6-shim' + "/**/*.js")
+        .pipe(gulp.dest(paths.webroot + 'lib/es6-shim'));
+});
+
+gulp.task('Reflect', function () {
+    return gulp.src('node_modules' + '/reflect-metadata' + "/**/*.js")
+        .pipe(gulp.dest(paths.webroot + 'lib/reflect-metadata'));
+});
+
+gulp.task('Zone', function () {
+    return gulp.src('node_modules' + '/zone.js' + "/**/*.js")
+        .pipe(gulp.dest(paths.webroot + 'lib/zone.js'));
+});
+
+
+////Moves Angular 2 & related scripts to wwwroot folder of ASP.NET Core app
+//gulp.task("scriptsNStyles", () => {
+//    gulp.src([
+//            'es6-shim/es6-shim.min.js',
+//            'systemjs/dist/system-polyfills.js',
+//            'systemjs/dist/system.src.js',
+//            'reflect-metadata/Reflect.js',
+//            'rxjs/**',
+//            'zone.js/dist/**',
+//            '@angular/**',
+//            'jquery/dist/jquery.*js',
+//            'bootstrap/dist/js/bootstrap*.js',
+//    ], {
+//        cwd: "node_modules/**"
+//    })
+//        .pipe(gulp.dest("./wwwroot/lib"));
+
+//    gulp.src([
+//        'node_modules/bootstrap/dist/css/bootstrap.css'
+//    ]).pipe(gulp.dest('./wwwroot/lib/css'));
+//});

@@ -1,9 +1,9 @@
-﻿import {Component, Input, Inject, Output, EventEmitter, NgZone} from 'angular2/core';
+﻿import {Component, Input, Inject, Output, EventEmitter, NgZone} from '@angular/core';
 import {NewsFeedService, NewsFeedItem, NewsFeedTypeId} from './NewsFeedService';
 import {CustomFormatterService} from '../Common/CustomFormatterService';
 import {NewsFeedItemComment} from './NewsFeedComment';
 
-import { Http, Response } from 'angular2/http';
+import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 @Component({

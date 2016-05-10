@@ -1,12 +1,12 @@
 ﻿/// <reference path="../../../lib/jlinq/jlinq.ts" />
-import {Component, Inject, NgZone} from 'angular2/core';
+import {Component, Inject, NgZone} from '@angular/core';
 import {NewsFeedService, NewsFeedItem, NewsFeedComment, NewsFeedQueryResult, NewsFeedTypeId} from './NewsFeedService';
 import {CustomFormatterService} from '../Common/CustomFormatterService';
 import {NewsFeedItemPost} from './NewsFeedItem';
 import {NewsFeedItemComment} from './NewsFeedComment';
-import {NgClass} from 'angular2/common';
+import {NgClass} from '@angular/common';
 
-import { Http, Response } from 'angular2/http';
+import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 @Component({
@@ -28,7 +28,7 @@ export class NewsFeedApp {
     FriendCount: number;
 
     constructor(newsFeedService: NewsFeedService, ngZone: NgZone, customFormatter: CustomFormatterService) {
-  
+      
         //set the properties
         this.NewsFeedSvc = newsFeedService;
         this.CustomFormatterSvc = customFormatter;
