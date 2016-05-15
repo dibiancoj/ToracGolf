@@ -18,9 +18,9 @@ export class NewsFeedItemPost {
     @Output() CommentSaveEvent = new EventEmitter(); //declared on NewsFeedPostClientView. its the event we bind with the parent component.
     @Output() ShowHideCommentEvent = new EventEmitter();
 
-    NewsFeedSvc: NewsFeedService;
-    NgZoneSvc: NgZone;
-    CustomFormatterSvc: CustomFormatterService;
+    private NewsFeedSvc: NewsFeedService;
+    private NgZoneSvc: NgZone;
+    private CustomFormatterSvc: CustomFormatterService;
 
     constructor(newsFeedService: NewsFeedService, ngZone: NgZone, customFormatter: CustomFormatterService) {
 

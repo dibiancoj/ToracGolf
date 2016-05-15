@@ -11,8 +11,8 @@ export class NewsFeedItemComment {
     @Input() Comment: NewsFeedComment;
     @Output() LikeCommentEvent = new EventEmitter();
 
-    NewsFeedSvc: NewsFeedService;
-    CustomFormatterSvc: CustomFormatterService;
+    private NewsFeedSvc: NewsFeedService;
+    private CustomFormatterSvc: CustomFormatterService;
    
     constructor(newsFeedService: NewsFeedService, customFormatter: CustomFormatterService) {
 

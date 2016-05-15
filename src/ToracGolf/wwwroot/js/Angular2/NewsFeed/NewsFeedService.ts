@@ -17,7 +17,7 @@ export class NewsFeedService {
         ];
     }
 
-    HttpInterceptorSvc: HttpInterceptor;
+    private HttpInterceptorSvc: HttpInterceptor;
     private MonthNameArray: string[];
 
     NewFeedGet<T>(newsFeedTypeId: NewsFeedTypeId, searchFilterText: string): Observable<T> {

@@ -17,15 +17,15 @@ import 'rxjs/add/operator/map';
 })
 export class NewsFeedApp {
 
-    NewsFeedSvc: NewsFeedService;
-    CustomFormatterSvc: CustomFormatterService;
-    NgZoneSvc: NgZone;
-    Posts: Array<NewsFeedItem>;
-    NewCoursePostCount: number;
-    NewRoundPostCount: number;
-    ActiveFeedTypeId: number;
-    SearchFilterText: string;
-    FriendCount: number;
+    private NewsFeedSvc: NewsFeedService;
+    private CustomFormatterSvc: CustomFormatterService;
+    private NgZoneSvc: NgZone;
+    private Posts: Array<NewsFeedItem>;
+    private NewCoursePostCount: number;
+    private NewRoundPostCount: number;
+    private ActiveFeedTypeId: number;
+    private SearchFilterText: string;
+    private FriendCount: number;
 
     constructor(newsFeedService: NewsFeedService, ngZone: NgZone, customFormatter: CustomFormatterService) {
       
