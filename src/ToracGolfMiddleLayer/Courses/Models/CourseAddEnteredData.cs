@@ -57,33 +57,33 @@ namespace ToracGolf.MiddleLayer.Courses
         public string Description { get; set; }
 
         [Display(Name = "Yardage")]
-        [Range(1, int.MaxValue, ErrorMessage = "Yardage Must Be Greater Than 0")]
         [Required(ErrorMessage = "Yardage Is A Required Field")]
+        [Range(1, int.MaxValue, ErrorMessage = "Yardage Must Be Greater Than 0")]
         public int? Yardage { get; set; }
 
         [Display(Name = "Front 9 Par")]
-        [Range(1, int.MaxValue, ErrorMessage = "Front 9 Par Must Be Greater Than 0")]
         [Required(ErrorMessage = "Front 9 Par Is A Required Field")]
+        [Range(1, int.MaxValue, ErrorMessage = "Front 9 Par Must Be Greater Than 0")]
         public int? Front9Par { get; set; }
 
         [Display(Name = "Back 9 Par")]
-        [Range(1, int.MaxValue, ErrorMessage = "Back 9 Par Must Be Greater Than 0")]
         [Required(ErrorMessage = "Back 9 Par Is A Required Field")]
+        [Range(1, int.MaxValue, ErrorMessage = "Back 9 Par Must Be Greater Than 0")]
         public int? Back9Par { get; set; }
 
         [Display(Name = "Rating")]
-        [Range(50, 100, ErrorMessage = "Rating Must Be Between 50 and 100")]
         [Required(ErrorMessage = "Rating Is A Required Field")]
+        [Range(50, 100, ErrorMessage = "Rating Must Be Between 50 and 100")]
         public double? Rating { get; set; }
 
         [Display(Name = "Slope")]
-        [Range(55, 155, ErrorMessage = "Slope Must Be Between 55 and 155")]
         [Required(ErrorMessage = "Slope Is A Required Field")]
+        [Range(55, 155, ErrorMessage = "Slope Must Be Between 55 and 155")]
         public double? Slope { get; set; }
 
         [Display(Name = "Number Of Par 3's On the Source")]
+        [Required(ErrorMessage = "Par 3's Is A Required Field")]
         [Range(1, 18, ErrorMessage = "Par 3 Holes Must Be Between 1 and 18")]
-        [Required(ErrorMessage = "{Par 3's Is A Required Field")]
         public int? NumberOfPar3s { get; set; }
 
     }
